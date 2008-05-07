@@ -1,0 +1,31 @@
+UNIQUE_KEY,EXTERNAL_IDENTIFIER,LOCATION_NAME,ADDRESS1,ADDRESS2,CITY,STATE,ZIP,PHONE_NUMBER,LOCATION_DETAILS,WEBSITE,TYPE_OF_LOCATION,COUNTRY
+1,Arizona Diamondbacks,Chase Field,401 East Jefferson St.,,Phoenix,Arizona,85001,,48570,http://arizona.diamondbacks.mlb.com/,National League,United States
+2,Atlanta Braves,Turner Field,755 Hank Aaron Drve SE,,Atlanta,Georgia,30315,,50091,http://atlanta.braves.mlb.com/,National League,United States
+3,Baltimore Orioles,Oriole Park at Camden Yards,333 West Camden Street,,Baltimore,Maryland,21201,,58626,http://baltimore.orioles.mlb.com/,American League,United States
+4,Boston Red Rox,Fenway Park,Four Yawkey Way,,Boston,Massachusetts,2215,,38800,http://boston.redsox.mlb.com/,American League,United States
+5,Chicago Cubs,Wrigley Field,1060 West Addison Street,,Chicago,Illinois,60613,,41100,http://chicago.cubs.mlb.com/,National League,United States
+6,Chicago White Sox,U.S. Cellular Field,333 West 35th Street,,Chicago,Illinois,60616,,40600,http://chicago.whitesox.mlb.com/,American League,United States
+7,Cincinnati Reds,Great American Ball Park,100 Main Street,,Cincinnati,Ohio,45202,,42000,http://cincinnati.reds.mlb.com/,National League,United States
+8,Cleveland Indians,Jacobs Field,2401 Ontario Street,,Cleveland,Ohio,44115,,43345,http://cleveland.indians.mlb.com/,American League,United States
+9,Colorado Rockies,Coors Field,2001 Blake Street,,Denver,Colorado,80204,,50200,http://colorado.rockies.mlb.com/,National League,United States
+10,Detroit Tigers,Comerica Park,2100 Woodward Avenue,,Detroit,Michigan,48201,,41070,http://detroit.tigers.mlb.com/,American League,United States
+11,Florida Marlins,Dolphin Stadium,2269 Dan Marino Boulevard,,Miami,Florida,33056,,36300,http://florida.marlins.mlb.com/,National League,United States
+12,Houston Astros,Minute Maid Park,501 Crawford Street,,Houston,Texas,77002,,41000,http://houston.astros.mlb.com/,National League,United States
+13,Kansas City Royals,Kauffman Stadium,1 Royal Way,,Kansas City,Missouri,64129,,40600,http://kansascity.royals.mlb.com/,American League,United States
+14,Los Angeles Angels of Anaheim,Angel Stadium of Anaheim,2000 Gene Autry Way,,Anaheim,California,92806,,45000,http://losangeles.angels.mlb.com/,American League,United States
+15,Los Angeles Dodgers,Dodger Stadium,1000 Elysian Park Ave,,Los Angeles,California,90012,,56000,http://losangeles.dodgers.mlb.com/ ,National League,United States
+16,Milwaukee Brewers,Miller Park,201 46th Street,,Milwaukee,Wisconsin,53201,,43000,http://milwaukee.brewers.mlb.com/,National League,United States
+17,Minnesota Twins,Hubert H. Humphrey Metrodome,900 South Fifth Street,,Minneapolis,Minnesota,55415,,48000,http://minnesota.twins.mlb.com/,American League,United States
+18,New York Mets,Shea Stadium,123-01 Roosevelt Avenue,,Flushing,New York,11368,,55600,http://newyork.mets.mlb.com/,National League,United States
+19,New York Yankees,Yankee Stadium,161st Street and River Avenue,,Bronx,New York,10451,,57545,http://newyork.yankees.mlb.com/,American League,United States
+20,Oakland Athletics,McAfee Coliseum,7000 Coliseum Way,,Oakland,California,94621,,34077,http://oakland.athletics.mlb.com/,American League,United States
+21,Philadelphia Phillies,Citizens Bank Park,One Citizens Bank Way,,Philadelphia,Pennsylvania,19148,,43300,http://philadelphia.phillies.mlb.com/,National League,United States
+22,Pittsburgh Pirates,PNC Park,115 Federal St.,,Pittsburgh,Pennsylvania,15212,,38500,http://pittsburgh.pirates.mlb.com/,National League,United States
+23,San Diego Padres,PETCO Park,19 Tony Gwynn Way,,San Diego,San Diego,92101,,42445,http://sandiego.padres.mlb.com/,National League,United States
+24,San Francisco Giants,AT&T Park,24 Willie Mays Plaza,,San Francisco,California,94107,,41500,http://sanfrancisco.giants.mlb.com/,National League,United States
+25,Seattle Mariners,Safeco Field,1516 First Avenue S,,Seattle,Washington,98134,,47100,http://seattle.mariners.mlb.com/,American League,United States
+26,St. Louis Cardinals,Busch Stadium,420 South Eighth Street,,St. Louis,Missouri,63102,,44000,http://stlouis.cardinals.mlb.com/,National League,United States
+27,Tampa Bay Devil Rays,Tropicana Field,1 Tropicana Drive,,St. Petersburg,Florida,33705,,43500,http://tampabay.devilrays.mlb.com/,American League,United States
+28,Texas Rangers,Ameriquest Field in Arlington,1000 Ballpark Way,,Arlington,Texas,76011,,49000,http://texas.rangers.mlb.com/,American League,United States
+29,Toronto Blue Jays,Rogers Centre,1 Blue Jays Way,,Toronto,Ontario,M5V 1J3,,50600,http://toronto.bluejays.mlb.com/,American League,United States
+30,Washington Nationals,Robert F. Kennedy Memorial Stadium,2400 East Capitol Street Southeast,,Washington,District of Columbia,20003,,45600,http://washington.nationals.mlb.com/,National League,United States
