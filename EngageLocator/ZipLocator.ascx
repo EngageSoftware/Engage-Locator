@@ -1,6 +1,6 @@
 ﻿<%@ Import namespace="DotNetNuke"%>
 <%@ Import namespace="DotNetNuke.Services.Localization"%>
-<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.ZipLocator" AutoEventWireup="true" Codebehind="ZipLocator.ascx.cs" %>
+<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.ZipLocator" AutoEventWireup="True" Codebehind="ZipLocator.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/sectionheadcontrol.ascx" %>
 
 <div class="locatorHeader">

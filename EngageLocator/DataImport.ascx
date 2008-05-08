@@ -1,5 +1,5 @@
 ﻿<%@ Import namespace="DotNetNuke.Services.Localization"%>
-<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.DataImport" AutoEventWireup="true"
+<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.DataImport" AutoEventWireup="True"
     Codebehind="DataImport.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 

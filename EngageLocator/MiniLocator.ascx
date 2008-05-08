@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.MiniLocator" AutoEventWireup="true" Codebehind="MiniLocator.ascx.cs" %>
+﻿<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.MiniLocator" AutoEventWireup="True" Codebehind="MiniLocator.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 
 

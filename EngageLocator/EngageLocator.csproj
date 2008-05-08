@@ -71,6 +71,12 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeDefinitions.ascx.designer.cs">
+      <DependentUpon>AttributeDefinitions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DataImport.ascx.designer.cs">
+      <DependentUpon>DataImport.ascx</DependentUpon>
+    </Compile>
     <Compile Include="FeaturesController.cs" />
     <Compile Include="LocationComment.cs" />
     <Compile Include="LocationDetails.ascx.cs">
@@ -84,17 +90,11 @@
       <DependentUpon>ManageComment.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ManageComment.ascx.designer.cs">
-      <DependentUpon>ManageComment.ascx</DependentUpon>
-    </Compile>
     <Compile Include="AttributesDataProvider.cs" />
     <Compile Include="AttributesSqlDataProvider.cs" />
     <Compile Include="AttributeDefinitions.ascx.cs">
       <DependentUpon>AttributeDefinitions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AttributeDefinitions.ascx.designer.cs">
-      <DependentUpon>AttributeDefinitions.ascx</DependentUpon>
     </Compile>
     <Compile Include="LocationTypeAttributeDefinition.cs">
     </Compile>
@@ -103,6 +103,9 @@
     </Compile>
     <Compile Include="LocationTypeAttributeDefinitionComparer.cs" />
     <Compile Include="LocationTypeController.cs" />
+    <Compile Include="ManageComment.ascx.designer.cs">
+      <DependentUpon>ManageComment.ascx</DependentUpon>
+    </Compile>
     <Compile Include="ManageLocation.ascx.cs">
       <DependentUpon>ManageLocation.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -135,19 +138,16 @@
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="settings.ascx.designer.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DataImport.ascx.cs">
       <DependentUpon>DataImport.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="DataImport.ascx.designer.cs">
-      <DependentUpon>DataImport.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DataImportScheduler.cs" />
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="SearchUtility.cs" />
+    <Compile Include="settings.ascx.designer.cs">
+      <DependentUpon>Settings.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Utility.cs" />
     <Compile Include="EditAttributeDefinition.ascx.cs">
       <DependentUpon>EditAttributeDefinition.ascx</DependentUpon>
@@ -264,12 +264,13 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1985</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost/dotnetnuke_2/desktopmodules/engagelocator</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost/dotnetnuke_2</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>

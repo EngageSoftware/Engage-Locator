@@ -1,5 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ManageLocation.ascx.cs" Inherits="Engage.Dnn.Locator.ManageLocation" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
+<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="ManageLocation.ascx.cs" Inherits="Engage.Dnn.Locator.ManageLocation" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx"%>
 

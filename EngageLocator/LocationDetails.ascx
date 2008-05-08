@@ -1,5 +1,5 @@
 <%@ Import namespace="DotNetNuke.Services.Localization"%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="LocationDetails.ascx.cs" Inherits="Engage.Dnn.Locator.LocationDetails" %>
+<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="LocationDetails.ascx.cs" Inherits="Engage.Dnn.Locator.LocationDetails" %>
 
 <script type="text/javascript">
 

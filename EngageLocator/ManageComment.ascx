@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ManageComment.ascx.cs" Inherits="Engage.Dnn.Locator.ManageComment" %>
+<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="ManageComment.ascx.cs" Inherits="Engage.Dnn.Locator.ManageComment" %>
 
 <table>
     <tr>

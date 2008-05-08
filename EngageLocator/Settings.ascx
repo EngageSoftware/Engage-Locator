@@ -1,11 +1,11 @@
-﻿<%@ Import namespace="DotNetNuke.Services.Localization"%>
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="Engage.Dnn.Locator.Settings" Codebehind="Settings.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
-<%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/sectionheadcontrol.ascx" %>
+﻿<%@ Control Language="C#" AutoEventWireup="True" Inherits="Engage.Dnn.Locator.Settings" Codebehind="Settings.ascx.cs" %>
+<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="sectionhead" Src="~/controls/sectionheadcontrol.ascx" %>
 
-<%-- <asp:UpdatePanel ID="upDisplaySettings" runat="server" > --%>
+
+<%-- <asp:UpdatePanel ID="upDisplaySettings" runat="server" > 
     <ContentTemplate>
+    --%>
         <dnn:sectionhead ID="dshMapProvider" runat="Server" text="Locator Settings" CSSClass="Head" 
                 section="tblMapProvider" resourcekey="dshMapProvider" IsExpanded="True" IncludeRule="true" />
             <table id="tblMapProvider" runat="server" cellspacing="0" cellpadding="0" style="padding-bottom: 20px;" border="0" summary="Module Mode">
@@ -37,29 +37,6 @@
 		                <div><asp:Label ID="lblApiInstructions" CssClass="Normal" runat="server" resourceKey="lblApiInstructions" /></div>
                         <asp:CustomValidator ID="CustomValidator1" runat="server" CssClass="Normal" ErrorMessage="Invalid API Key" OnServerValidate="apiKey_ServerValidate"></asp:CustomValidator>
                     </td>
-                </tr>
-                <tr>
-                    <td class="SubHead" width="150" valign="top">
-                        <dnn:Label ID="lblLocationType" resourcekey="lblLocationType" runat="server" Text="Location Type" />
-                    </td>
-                    
-                    <td width="350">
-                        <div id="dvLocationType" runat="server" visible="true">
-                            <asp:ListBox ID="lbLocationType" runat="server" SelectionMode="Multiple" Width="150px" CssClass="Normal" ></asp:ListBox>
-                            <asp:LinkButton ID="lbEditLocationType" runat="server" OnClick="lbEditLocationType_Click" CssClass="CommandButton" resourcekey="lbEditLocationType">Edit</asp:LinkButton>
-                            <asp:LinkButton ID="lbAddLocationType" runat="server" OnClick="lbAddLocationType_Click" CssClass="CommandButton" resourcekey="lbAddLocationType">Add</asp:LinkButton>
-                            <asp:LinkButton ID="lbDeleteLocationType" runat="server" OnClick="lbDeleteLocationType_Click" CssClass="CommandButton" resourcekey="lblDeleteLocatinType">Delete</asp:LinkButton>
-                        </div>
-                        <div>
-                            <asp:Label ID="lblLocationTypeNotInUse" runat="server" Visible="false" CssClass="Normal" resourcekey="lblLocationTypeNotInUse"></asp:Label>
-                        </div>
-                        <div id="dvLocationTypeEdit" runat="server" visible="false">
-                            <asp:TextBox ID="txtEditLocationType" runat="server" Width="150px" CssClass="Normal"></asp:TextBox>
-                            <asp:LinkButton ID="lbUpdateLocationType" runat="server" OnClick="lbUpdateLocationType_Click" CssClass="CommandButton">Update</asp:LinkButton>
-                            <asp:LinkButton ID="lbCancelLocationType" runat="server" OnClick="lbCancelLocationType_Click" CssClass="CommandButton">Cancel</asp:LinkButton>
-                        </div>
-		                <div><asp:Label ID="lblLocationTypeInst" CssClass="Normal" runat="server" resourceKey="lblLocationTypeInst" /></div>
-                    </td>                                               
                 </tr>
                 <tr><td>&nbsp;</td></tr>
                 <tr>
@@ -137,6 +114,30 @@
                         </asp:DropDownList>
                     </td>
                 </tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <td class="SubHead" width="150" valign="top">
+                        <dnn:Label ID="lblLocationType" resourcekey="lblLocationType" runat="server" Text="Location Type" />
+                    </td>                    
+                    <td width="350">
+                        <div id="dvLocationType" runat="server" visible="true">
+                            <asp:ListBox ID="lbLocationType" runat="server" SelectionMode="Multiple" Width="150px" CssClass="Normal" ></asp:ListBox>
+                            <asp:LinkButton ID="lbEditLocationType" runat="server" OnClick="lbEditLocationType_Click" CssClass="CommandButton" resourcekey="lbEditLocationType">Edit</asp:LinkButton>
+                            <asp:LinkButton ID="lbAddLocationType" runat="server" OnClick="lbAddLocationType_Click" CssClass="CommandButton" resourcekey="lbAddLocationType">Add</asp:LinkButton>
+                            <asp:LinkButton ID="lbDeleteLocationType" runat="server" OnClick="lbDeleteLocationType_Click" CssClass="CommandButton" resourcekey="lblDeleteLocatinType">Delete</asp:LinkButton>
+                        </div>
+                        <div>
+                            <asp:Label ID="lblLocationTypeNotInUse" runat="server" Visible="false" CssClass="Normal" resourcekey="lblLocationTypeNotInUse"></asp:Label>
+                        </div>
+                        <div id="dvLocationTypeEdit" runat="server" visible="false">
+                            <asp:TextBox ID="txtEditLocationType" runat="server" Width="150px" CssClass="Normal"></asp:TextBox>
+                            <asp:LinkButton ID="lbUpdateLocationType" runat="server" OnClick="lbUpdateLocationType_Click" CssClass="CommandButton">Update</asp:LinkButton>
+                            <asp:LinkButton ID="lbCancelLocationType" runat="server" OnClick="lbCancelLocationType_Click" CssClass="CommandButton">Cancel</asp:LinkButton>
+                        </div>
+		                <div><asp:Label ID="lblLocationTypeInst" CssClass="Normal" runat="server" resourceKey="lblLocationTypeInst" /></div>
+                    </td>                                               
+                </tr>
+
             </table>
         <dnn:sectionhead ID="dshSearchSettings" runat="Server" text="Search Settings" CSSClass="Head" 
             section="tblSearchSettings" resourcekey="tblSearchSettings" IsExpanded="true" IncludeRule="true" />   
@@ -247,5 +248,6 @@
                     </td>
                 </tr>
             </table>
+            <%-- 
         </ContentTemplate>
-<%-- </asp:UpdatePanel> --%>
+</asp:UpdatePanel> --%>

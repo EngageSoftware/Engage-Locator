@@ -109,7 +109,7 @@ namespace Engage.Dnn.Locator
                     else
                     {
                         //Get Attribute Definition from Data Store
-                        _AttributeDefinition = LocationTypeController.GetAttributeDefinition(AttributeDefinitionID);
+                        _AttributeDefinition = LocationTypeController.GetAttributeDefinition(AttributeDefinitionID, PortalId);
                     }
                 }
                 return _AttributeDefinition;
