@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Modules;
@@ -140,6 +141,12 @@ namespace Engage.Dnn.Locator
 
             rptCustomAttributes.DataSource = location.GetLocationAttributes();
             rptCustomAttributes.DataBind();
+
+            if (rptCustomAttributes.Items.Count > 0)
+            {
+                rptCustomAttributes.Visible = true;
+                lblAttributes.Visible = true;
+            }
         }
 
         private void FillState()
@@ -401,6 +408,18 @@ namespace Engage.Dnn.Locator
         {
             Location.DeleteLocation(locationId);
             Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId));
+        }
+
+        protected void rptCustomAttributes_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
+            {
+                DataRowView row = e.Item.DataItem as DataRowView;
+                Label label = (Label)e.Item.FindControl("lblCustomAttribute");
+                TextBox textBox = (TextBox)e.Item.FindControl("txtCustomAttribute");
+                label.Text = row["AttributeName"].ToString();
+                textBox.Text = row["AttributeValue"].ToString();
+            }
         }
     }
 }

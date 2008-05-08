@@ -12,16 +12,6 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
  ADD Approved bit
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
-	@locationId int
-AS
-	SELECT * FROM EngageLocator_LocationAttributes WHERE LocationId = @locationId
-GO
-
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]
 GO
@@ -312,10 +302,11 @@ DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]
 GO
 
 CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes](
-	[LocationAttributeId] [int] IDENTITY(1,1) NOT NULL,
+	[LocationAttributeId] [int] IDENTITY(1,1) NOT NULL,	
 	[LocationId] [int] NOT NULL,
+	[AttributeTypeId] [int] NOT NULL,
 	[AttributeValue] [nvarchar](255),
-	[CreateDate] [datetime],
+	[CreateDate] [datetime] NOT NULL,
 	[RevisionDate] [datetime],
 	CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationAttributes] PRIMARY KEY CLUSTERED 
 	(
@@ -554,3 +545,19 @@ CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocation
 AS
 	Delete from {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] where LocationCommentId = @commentId
 GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
+	@locationId int
+AS
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes](
+	@locationId int
+AS
+	SELECT la.AttributeValue, lta.AttributeName FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes  la
+	JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes lta on (la.AttributeTypeId = lta.AttributeDefinitionId)
+	WHERE LocationId = @locationId
+GO
+

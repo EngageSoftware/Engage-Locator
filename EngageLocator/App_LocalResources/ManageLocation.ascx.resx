@@ -255,4 +255,16 @@
   <data name="lblWebsite.Help" xml:space="preserve">
     <value>If this location has a URL enter it here.</value>
   </data>
+  <data name="lblAttributes.Help" xml:space="preserve">
+    <value>This section contains the values for your location's custom attribute types.</value>
+  </data>
+  <data name="lblAttributes.Text" xml:space="preserve">
+    <value>Custom Attributes</value>
+  </data>
+  <data name="lblCustomAttributeHeader.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="lblCustomAttributeValue.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
 </root>

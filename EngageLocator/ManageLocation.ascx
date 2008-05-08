@@ -152,6 +152,33 @@
                             <asp:RadioButton ID="rbApprove" runat="server" Text="Approve" resourcekey="rbApprove" GroupName="rblStatus" CssClass="Normal" />
                         </td>
                     </tr>
+                    <tr>
+                        <td class="SubHead">
+                            <dnn:Label ID="lblAttributes" runat="server" Visible="false" />
+                        </td>
+                        <td>
+                            <table>
+                                <asp:Repeater ID="rptCustomAttributes" runat="server" Visible="false" OnItemDataBound="rptCustomAttributes_ItemDataBound" >
+                                    <HeaderTemplate>
+                                        <tr>
+					                        <th class="thcustomAttributeHead"><asp:Label id="lblCustomAttributeHeader" runat="server" Text="Attribute Name" resourcekey="lblCustomAttributeHeader" /></th>
+					                        <th class="thcustomAttributeHead"><asp:Label id="lblCustomAttributeValue" runat="server" Text="Attribute Value" resourcekey="lblCustomAttributeValue" /></th>
+					                    </tr>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <tr>
+                                            <td>
+                                                <asp:Label ID="lblCustomAttribute" runat="server" CssClass="Normal" />
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtCustomAttribute" runat="server" CssClass="Normal" />
+                                            </td>
+                                        </tr>
+                                    </ItemTemplate>
+                            </asp:Repeater>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
         <div id="Buttons">
                 <asp:TextBox ID="txtId" runat="server" Visible="False" CssClass="SubHead"></asp:TextBox>

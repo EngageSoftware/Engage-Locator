@@ -401,6 +401,24 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.RadioButton rbApprove;
         
         /// <summary>
+        /// lblAttributes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblAttributes;
+        
+        /// <summary>
+        /// rptCustomAttributes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptCustomAttributes;
+        
+        /// <summary>
         /// txtId control.
         /// </summary>
         /// <remarks>
