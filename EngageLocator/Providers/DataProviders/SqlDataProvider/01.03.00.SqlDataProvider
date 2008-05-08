@@ -299,6 +299,23 @@ CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes](
 	[Visible] [bit] NOT NULL
 )
 
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes](
+	[LocationAttributeId] [int] IDENTITY(1,1) NOT NULL,
+	[LocationId] [int] NOT NULL,
+	[AttributeValue] [nvarchar](255),
+	[CreateDate] [datetime],
+	[RevisionDate] [datetime],
+	CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationAttributes] PRIMARY KEY CLUSTERED 
+	(
+		[LocationAttributeId]
+	)  ON [PRIMARY] 
+)
+GO
+
 if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}EngageLocator_LocationComments_{objectQualifier}EngageLocator_Location') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_LocationComments_{objectQualifier}EngageLocator_Location
 GO
