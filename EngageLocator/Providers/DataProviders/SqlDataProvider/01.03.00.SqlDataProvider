@@ -553,11 +553,8 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
 	@locationId int
 AS
-	CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes](
-	@locationId int
-AS
-	SELECT la.AttributeValue, lta.AttributeName FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes  la
-	JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes lta on (la.AttributeTypeId = lta.AttributeDefinitionId)
+	SELECT la.AttributeValue, lta.AttributeName FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]  la
+	JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes] lta on (la.AttributeTypeId = lta.AttributeDefinitionId)
 	WHERE LocationId = @locationId
 GO
 
