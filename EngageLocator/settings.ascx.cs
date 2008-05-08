@@ -8,6 +8,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Locator.Data;
+using DotNetNuke.Common;
 
 namespace Engage.Dnn.Locator
 {
@@ -337,7 +338,8 @@ namespace Engage.Dnn.Locator
 
         protected void lbEditLocationType_Click(object sender, EventArgs e)
         {
-            Response.Redirect(EditUrl("ltid", lbLocationType.SelectedValue, "AttributeDefinitions"));
+            Response.Redirect(Globals.NavigateURL(TabId, "AttributeDefinitions", "mid=" + ModuleId + "&ltid" + lbLocationType.SelectedValue));
+            //Response.Redirect(EditUrl("ltid", lbLocationType.SelectedValue, "AttributeDefinitions"));
             //txtEditLocationType.Text = lbLocationType.SelectedItem.Text;
             //dvLocationType.Visible = false;
             //dvLocationTypeEdit.Visible = true;
