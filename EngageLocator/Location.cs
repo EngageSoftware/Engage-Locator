@@ -133,6 +133,11 @@ namespace Engage.Dnn.Locator
             return loc;
         }
 
+        public DataTable GetLocationAttributes()
+        {
+            return DataProvider.Instance().GetLocationAttributes(this.locationId);
+        }
+
         #region Properties
         public int LocationId
         {

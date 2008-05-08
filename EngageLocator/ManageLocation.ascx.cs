@@ -137,6 +137,9 @@ namespace Engage.Dnn.Locator
                     parentId = region.ParentID;
             }
             ddlCountry.SelectedValue = parentId.ToString();
+
+            rptCustomAttributes.DataSource = location.GetLocationAttributes();
+            rptCustomAttributes.DataBind();
         }
 
         private void FillState()

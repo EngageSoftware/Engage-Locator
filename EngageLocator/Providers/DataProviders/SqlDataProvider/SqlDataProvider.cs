@@ -566,6 +566,11 @@ namespace Engage.Dnn.Locator.Data
             return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetEngageLocatorTabModules", CreateIntegerParam("@portalId", portalId)).Tables[0];
         }
 
+        public override DataTable GetLocationAttributes(int locationId)
+        {
+            return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationAttributes", CreateIntegerParam("@locationId", locationId)).Tables[0];
+        }
+
         public override void InsertLocationComment(int locationId, string comment, string submittteBy, bool approved)
         {
             SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spInsertLocationComment",

@@ -12,7 +12,15 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
  ADD Approved bit
 GO
 
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
+GO
 
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
+	@locationId int
+AS
+	SELECT * FROM EngageLocator_LocationAttributes WHERE LocationId = @locationId
+GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]
