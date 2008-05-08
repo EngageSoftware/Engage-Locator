@@ -320,7 +320,7 @@ namespace Engage.Dnn.Locator
 
         protected void lbEditLocationType_Click(object sender, EventArgs e)
         {
-            Response.Redirect(EditUrl("ltid", lbLocationType.SelectedValue, "AttributeDefinitions", "&mid=" + ModuleId.ToString()));
+            Response.Redirect(EditUrl("ltid", lbLocationType.SelectedValue, "AttributeDefinitions"));
             //txtEditLocationType.Text = lbLocationType.SelectedItem.Text;
             //dvLocationType.Visible = false;
             //dvLocationTypeEdit.Visible = true;
