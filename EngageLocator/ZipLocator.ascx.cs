@@ -666,6 +666,18 @@ namespace Engage.Dnn.Locator
                     }
                 }
             }
+
+            if (Convert.ToString(settings["DisplayProvider"]) == String.Empty)
+            {
+                error = "Search Setting \"Results Display Module\" not set.";
+                return false;
+            }
+
+            if (Convert.ToString(settings["ShowLocationDetails"]) == String.Empty)
+            {
+                error = "Display Setting \"Show Location Details\" not set.';
+                return false;
+            }
         }
 
         protected void rptLocations_ItemDataBound(object sender, RepeaterItemEventArgs e)
