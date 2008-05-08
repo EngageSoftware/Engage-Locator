@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Lists;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
@@ -77,6 +78,10 @@ namespace Engage.Dnn.Locator
                             else if (TabModuleSettings["ShowLocationDetails"].ToString() == "SamePage" || TabModuleSettings["ShowLocationDetails"].ToString() == "True")
                                 rbSamePage.Checked = true;
                         }
+                        else
+                        {
+                            rbNoDetails.Checked = true;
+                        }
                         //set Allow Comments
                         if (TabModuleSettings["LocationComments"] != null)
                             cbLocationComments.Checked = Convert.ToBoolean(TabModuleSettings["LocationComments"].ToString());
@@ -150,6 +155,18 @@ namespace Engage.Dnn.Locator
                                 else
                                 {
                                     rb.Checked = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (GridViewRow dr in gvTabModules.Rows)
+                            {
+                                RadioButton rb = (RadioButton)dr.FindControl("rbLocatorModule");
+                                Label lblTabId = (Label)dr.FindControl("lblTabId");
+                                if (lblTabId.Text == TabId.ToString())
+                                {
+                                    rb.Checked = true;
                                 }
                             }
                         }

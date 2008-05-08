@@ -675,7 +675,7 @@ namespace Engage.Dnn.Locator
 
             if (Convert.ToString(settings["ShowLocationDetails"]) == String.Empty)
             {
-                error = "Display Setting \"Show Location Details\" not set.';
+                error = "Display Setting \"Show Location Details\" not set.";
                 return false;
             }
         }
