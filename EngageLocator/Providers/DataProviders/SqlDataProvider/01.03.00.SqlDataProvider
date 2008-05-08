@@ -199,6 +199,21 @@ AS
 
 GO
 
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByLTID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByLTID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByLTID]
+	@LocationTypeId int
+AS
+
+	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes] lta
+	INNER JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] lt ON lt.LocationTypeId = lta.LocationTypeId
+	WHERE lt.LocationTypeId = @LocationTypeId
+	ORDER BY lta.ViewOrder 
+	
+GO
+
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]
 GO
