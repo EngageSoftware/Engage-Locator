@@ -276,9 +276,29 @@ AS
 		LocationId = @LocationId		
 GO
 
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') AND type in (N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationType]
+ADD [PortalID] [int] NOT NULL
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes](
+	[AttributeDefinitionId] [int] IDENTITY(1,1) NOT NULL,
+	[LocationTypeId] [int] NOT NULL,
+	[AttributeName] [nvarchar](255),
+	[DataType] [int] NULL,
+	[Length] [int] NULL,
+	[DefaultValue] [nvarchar](255),
+	[ValidationExpression] [nvarchar],
+	[Required] [bit] NOT NULL,
+	[ViewOrder] [int] NOT NULL,
+	[Visible] [bit] NOT NULL
+)
 
 if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}EngageLocator_LocationComments_{objectQualifier}EngageLocator_Location') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_LocationComments_{objectQualifier}EngageLocator_Location
 GO
 
