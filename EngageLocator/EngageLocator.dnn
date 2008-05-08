@@ -44,17 +44,23 @@
               <src>DesktopModules/EngageLocator/EditAttributeDefinition.ascx</src>
               <type>Edit</type>
             </control>
-			      <control>
-				      <key>ManageComments</key>
-				      <title>Manage Comments</title>
-				      <src>DesktopModules/EngageLocator/ManageComment.ascx</src>
-				      <type>Edit</type>
-			      </control>
+			  <control>
+				  <key>ManageComments</key>
+				  <title>Manage Comments</title>
+				  <src>DesktopModules/EngageLocator/ManageComment.ascx</src>
+				  <type>Edit</type>
+			  </control>
+			  <control>
+				  <key>LocationDetails</key>
+				  <title>Location Details</title>
+				  <src>DesktopModules/EngageLocator/LocationDetails.ascx</src>
+				  <type>View</type>
+			  </control>
             <control>
               <key>Settings</key>
               <title>Locator Settings</title>
               <src>DesktopModules/EngageLocator/Settings.ascx</src>
-              <type>View</type>
+              <type>Edit</type>
             </control>
           </controls>
         </module>
