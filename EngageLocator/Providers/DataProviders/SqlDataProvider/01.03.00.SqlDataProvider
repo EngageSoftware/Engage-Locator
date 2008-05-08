@@ -278,7 +278,7 @@ GO
 
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') AND type in (N'U'))
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationType]
-ADD [PortalID] [int] NOT NULL
+ADD [PortalID] [int] NULL
 GO
 
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]') AND type in (N'U'))
