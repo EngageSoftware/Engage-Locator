@@ -99,6 +99,13 @@ namespace Engage.Dnn.Locator
         }
 
         #endregion
+
+        #region
+
+        public abstract string MapProviderUrl { get; }
+
+        #endregion
+
     }
 
     

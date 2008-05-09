@@ -17,7 +17,12 @@ namespace Engage.Dnn.Locator
             set { _locatorTabModuleId = value; }
         }
 
-        #region IMapProvider Members
+        #region MapProvider Members
+
+        public override string MapProviderUrl
+        {
+            get { return "http://maps.google.com/maps?f=q&hl=en&geocode=&q="; }
+        }
 
         public override string GenerateMiniMapScriptCore()
         {

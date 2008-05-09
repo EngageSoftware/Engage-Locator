@@ -8,6 +8,14 @@ namespace Engage.Dnn.Locator
 {
     public class YahooProvider:MapProvider
     {
+
+        #region MapProvider Members
+
+        public override string MapProviderUrl
+        {
+            get { return "http://maps.yahoo.com/broadband#q1="; }
+        }
+
         public override string GenerateMapScriptCore(string mapType)
         {
             if (SearchCriteria == null) { throw new InvalidOperationException("Search Criteria is not defined"); }
@@ -191,8 +199,6 @@ namespace Engage.Dnn.Locator
             script.AppendFormat(CultureInfo.InvariantCulture, "</script>");
             return script.ToString();
         }
-
-        #region GetMapUrl
 
         public override string GetMapUrl(string apiKey)
         {
