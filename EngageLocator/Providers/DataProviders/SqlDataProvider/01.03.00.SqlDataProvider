@@ -304,7 +304,7 @@ GO
 CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes](
 	[LocationAttributeId] [int] IDENTITY(1,1) NOT NULL,	
 	[LocationId] [int] NOT NULL,
-	[attributeDefinitionId] [int] NOT NULL,
+	[AttributeDefinitionId] [int] NOT NULL,
 	[AttributeValue] [nvarchar](255),
 	[CreateDate] [datetime] NOT NULL,
 	[RevisionDate] [datetime],
