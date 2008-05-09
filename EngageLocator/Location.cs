@@ -135,7 +135,17 @@ namespace Engage.Dnn.Locator
 
         public DataTable GetLocationAttributes()
         {
-            return DataProvider.Instance().GetLocationAttributes(this.locationId);
+            return DataProvider.Instance().GetLocationAttributes(this.LocationTypeId);
+        }
+
+        public static string GetLocationAttributeValue(int attributeDefinitionId, int locationId)
+        {
+            return DataProvider.Instance().GetLocationAttributeValue(attributeDefinitionId, locationId);
+        }
+
+        public void UpdateLocationAttribute(int locationAttributeId, string attributeValue)
+        {
+            DataProvider.Instance().UpdateLocationAttribute(locationAttributeId, this.locationId, attributeValue);
         }
 
         #region Properties

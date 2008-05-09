@@ -277,6 +277,12 @@ namespace Engage.Dnn.Locator
                     if (error == "Success")
                     {
                         currentLocation.Update();
+                        foreach (RepeaterItem item in rptCustomAttributes.Items)
+                        {
+                            Label lblLocationAttributeId = (Label)item.FindControl("lblLocationAttributeId");
+                            TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
+                            currentLocation.UpdateLocationAttribute(Convert.ToInt32(lblLocationAttributeId.Text), txtLocationAttributeValue.Text);
+                        }
                         Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId));
                     }
                     else
@@ -415,10 +421,13 @@ namespace Engage.Dnn.Locator
             if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
                 DataRowView row = e.Item.DataItem as DataRowView;
+                Label attributeId = (Label)e.Item.FindControl("lblLocationAttributeId");
                 Label label = (Label)e.Item.FindControl("lblCustomAttribute");
                 TextBox textBox = (TextBox)e.Item.FindControl("txtCustomAttribute");
+                attributeId.Text = row["AttributeDefinitionId"].ToString();
                 label.Text = row["AttributeName"].ToString();
-                textBox.Text = row["AttributeValue"].ToString();
+                string locationId = Request.QueryString["lid"].ToString();
+                textBox.Text = Location.GetLocationAttributeValue(Convert.ToInt32(attributeId.Text), Convert.ToInt32(locationId));
             }
         }
     }

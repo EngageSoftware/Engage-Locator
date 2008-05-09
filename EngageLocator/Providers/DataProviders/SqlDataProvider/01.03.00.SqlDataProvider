@@ -304,7 +304,7 @@ GO
 CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes](
 	[LocationAttributeId] [int] IDENTITY(1,1) NOT NULL,	
 	[LocationId] [int] NOT NULL,
-	[AttributeTypeId] [int] NOT NULL,
+	[attributeDefinitionId] [int] NOT NULL,
 	[AttributeValue] [nvarchar](255),
 	[CreateDate] [datetime] NOT NULL,
 	[RevisionDate] [datetime],
@@ -551,10 +551,34 @@ drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttri
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
+	@locationTypeId int
+AS
+	SELECT AttributeDefinitionId, AttributeName FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]
+	WHERE LocationTypeId = @locationTypeId
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValue]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValue]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValue]
+	@attributeDefinitionId int,
 	@locationId int
 AS
-	SELECT la.AttributeValue, lta.AttributeName FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]  la
-	JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes] lta on (la.AttributeTypeId = lta.AttributeDefinitionId)
-	WHERE LocationId = @locationId
+SELECT AttributeValue FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]
+WHERE LocationId = @locationId and attributeDefinitionId  = @attributeDefinitionId 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]
+	@attributeDefinitionId int,
+	@locationId int,
+	@attributeValue nvarchar(255)
+AS
+	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes] SET AttributeValue = @attributeValue 
+	WHERE AttributeDefinitionId = @attributeDefinitionId and LocationId = @locationId
 GO
 

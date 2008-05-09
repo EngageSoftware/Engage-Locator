@@ -566,9 +566,22 @@ namespace Engage.Dnn.Locator.Data
             return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetEngageLocatorTabModules", CreateIntegerParam("@portalId", portalId)).Tables[0];
         }
 
-        public override DataTable GetLocationAttributes(int locationId)
+        public override DataTable GetLocationAttributes(int locationTypeId)
         {
-            return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationAttributes", CreateIntegerParam("@locationId", locationId)).Tables[0];
+            return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationAttributes", CreateIntegerParam("@locationTypeId", locationTypeId)).Tables[0];
+        }
+
+        public override void UpdateLocationAttribute(int attributeDefinitionId, int locationId, string attributeValue)
+        {
+            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spUpdateLocationAttribute", CreateIntegerParam("@attributeDefinitionId", attributeDefinitionId), CreateIntegerParam("@locationId", locationId), CreateVarcharParam("@attributeValue", attributeValue, 255));
+        }
+
+        public override string GetLocationAttributeValue(int attributeDefinitionId, int locationId)
+        {
+            string attributeValue = string.Empty;
+            DataTable values = SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationAttributeValue", CreateIntegerParam("@attributeDefinitionId", attributeDefinitionId), CreateIntegerParam("@locationId", locationId)).Tables[0];
+            if(values.Rows.Count > 0) attributeValue = values.Rows[0]["AttributeValue"].ToString();
+            return attributeValue;            
         }
 
         public override void InsertLocationComment(int locationId, string comment, string submittteBy, bool approved)

@@ -101,6 +101,8 @@ namespace Engage.Dnn.Locator.Data
         public abstract LocationComment GetLocationComment(int commentId);
         public abstract void SaveLocationComment(LocationComment comment);
         public abstract void DeleteLocatinComment(int commentId);
-        public abstract DataTable GetLocationAttributes(int locationId);
+        public abstract DataTable GetLocationAttributes(int locationTypeId);
+        public abstract string GetLocationAttributeValue(int attributeDefinitionId, int locationId);
+        public abstract void UpdateLocationAttribute(int attributeDefinitionId, int locationId, string attributeValue);
     }
 }

@@ -168,6 +168,7 @@
                                     <ItemTemplate>
                                         <tr>
                                             <td>
+                                                <asp:Label ID="lblLocationAttributeID" runat="server" Visible="false" />
                                                 <asp:Label ID="lblCustomAttribute" runat="server" CssClass="Normal" />
                                             </td>
                                             <td>
