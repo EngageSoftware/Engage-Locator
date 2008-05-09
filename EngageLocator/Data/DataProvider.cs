@@ -10,6 +10,7 @@
 
 using System;
 using System.Data;
+using System.Diagnostics;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
 
@@ -24,6 +25,7 @@ namespace Engage.Dnn.Locator.Data
         private static DataProvider provider;
 
         // return the provider
+    [DebuggerStepThroughAttribute]
         public static DataProvider Instance()
         {
             if (provider == null)
@@ -101,8 +103,9 @@ namespace Engage.Dnn.Locator.Data
         public abstract LocationComment GetLocationComment(int commentId);
         public abstract void SaveLocationComment(LocationComment comment);
         public abstract void DeleteLocatinComment(int commentId);
-        public abstract DataTable GetLocationAttributes(int locationTypeId);
-        public abstract string GetLocationAttributeValue(int attributeDefinitionId, int locationId);
+        public abstract DataTable GetLocationAttributeDefinitions(int locationTypeId);
+        public abstract DataTable GetLocationAttributeValues(int locationId);
+        public abstract void AddLocationAttribute(int attributeDefinitionId, int locationId, string attributeValue);
         public abstract void UpdateLocationAttribute(int attributeDefinitionId, int locationId, string attributeValue);
     }
 }

@@ -10,6 +10,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.Utilities;
 using Globals=DotNetNuke.Common.Globals;
+using System.Globalization;
 
 namespace Engage.Dnn.Locator
 {
@@ -70,6 +71,9 @@ namespace Engage.Dnn.Locator
                     rbWaitingForApproval.Visible = false;
                     this.lblStatus.Visible = false;
                 }
+
+                LoadCustomAttributes();
+                
                 txtLocationId.Focus();
             }
         }
@@ -139,7 +143,7 @@ namespace Engage.Dnn.Locator
             }
             ddlCountry.SelectedValue = parentId.ToString();
 
-            rptCustomAttributes.DataSource = location.GetLocationAttributes();
+            rptCustomAttributes.DataSource = LocationAttribute.GetLocationAttributes(Convert.ToInt32(ddlType.SelectedValue), location.LocationId);
             rptCustomAttributes.DataBind();
 
             if (rptCustomAttributes.Items.Count > 0)
@@ -276,13 +280,21 @@ namespace Engage.Dnn.Locator
                         currentLocation.Approved = true;
                     if (error == "Success")
                     {
-                        currentLocation.Update();
                         foreach (RepeaterItem item in rptCustomAttributes.Items)
                         {
-                            Label lblLocationAttributeId = (Label)item.FindControl("lblLocationAttributeId");
+                            HiddenField hdnLocationAttributeID = (HiddenField)item.FindControl("hdnLocationAttributeID");
+                            HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
                             TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
-                            currentLocation.UpdateLocationAttribute(Convert.ToInt32(lblLocationAttributeId.Text), txtLocationAttributeValue.Text);
+                            if (Convert.ToInt32(hdnLocationAttributeID.Value) > 0)
+                            {
+                                LocationAttribute.UpdateLocationAttribute(Convert.ToInt32(hdnLocationAttributeID.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
+                            }
+                            else
+                            {
+                                LocationAttribute.AddLocationAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
+                            }
                         }
+                        currentLocation.Update();
                         Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId));
                     }
                     else
@@ -343,10 +355,21 @@ namespace Engage.Dnn.Locator
                         newLocation.Latitude = Convert.ToDouble(latitude);
                         newLocation.Longitude = Convert.ToDouble(longitude);
                     }
-                    lblError.Visible = true;
+                    if (Settings["ModerateSubmissions"].ToString() == "True")
+                        newLocation.Approved = rbApprove.Checked;
+                    else
+                        newLocation.Approved = true;
+
                     if (error == "Success")
                     {
+                        lblError.Visible = false;
                         newLocation.Save();
+                        foreach (RepeaterItem item in rptCustomAttributes.Items)
+                        {
+                            HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
+                            TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
+                            LocationAttribute.AddLocationAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), newLocation.LocationId, txtLocationAttributeValue.Text);
+                        }
                         if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
                             Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId));
                         else
@@ -420,15 +443,33 @@ namespace Engage.Dnn.Locator
         {
             if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
-                DataRowView row = e.Item.DataItem as DataRowView;
-                Label attributeId = (Label)e.Item.FindControl("lblLocationAttributeId");
+                LocationAttribute attribute = (LocationAttribute)e.Item.DataItem;
+                HiddenField locationAttributeId = (HiddenField)e.Item.FindControl("hdnLocationAttributeID");
+                HiddenField attributeDefinitionId = (HiddenField)e.Item.FindControl("hdnAttributeDefinitionId");
                 Label label = (Label)e.Item.FindControl("lblCustomAttribute");
                 TextBox textBox = (TextBox)e.Item.FindControl("txtCustomAttribute");
-                attributeId.Text = row["AttributeDefinitionId"].ToString();
-                label.Text = row["AttributeName"].ToString();
-                string locationId = Request.QueryString["lid"].ToString();
-                textBox.Text = Location.GetLocationAttributeValue(Convert.ToInt32(attributeId.Text), Convert.ToInt32(locationId));
+                locationAttributeId.Value = attribute.LocationAttributeId.ToString();
+                attributeDefinitionId.Value = attribute.AttributeDefinitionId.ToString(CultureInfo.InvariantCulture);
+                label.Text = attribute.AttributeName;
+                textBox.Text = attribute.AttributeValue;
             }
+        }
+
+        private void LoadCustomAttributes()
+        {
+            rptCustomAttributes.DataSource = LocationAttribute.GetLocationAttributes(Convert.ToInt32(ddlType.SelectedValue), locationId);
+            rptCustomAttributes.DataBind();
+
+            if (rptCustomAttributes.Items.Count > 0)
+            {
+                rptCustomAttributes.Visible = true;
+                lblAttributes.Visible = true;
+            }
+        }
+
+        protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadCustomAttributes();
         }
     }
 }

@@ -43,8 +43,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation
 	@Website nvarchar(255),
 	@Latitude float,
 	@Longitude float,
-	@CountryName nvarchar(255),
-	@StateAbbreviation nvarchar(50),
+	@RegionId int,
+	@CountryId int,
 	@City nvarchar(255),
 	@Address nvarchar(255),
 	@PostalCode nvarchar(255),
@@ -53,19 +53,11 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation
 	@LocationTypeId int,
 	@CsvLineNumber int,
 	@PortalId int,
-	@successful varchar(25),
 	@approved bit,
 	@Report nvarchar(2000) = '' OUTPUT 	
 AS
-DECLARE @CountryId int
-	SELECT @CountryId = EntryId FROM {databaseOwner}[{objectQualifier}Lists] WHERE [Text] = @CountryName and ListName = 'Country'
 
-	DECLARE @RegionId int
-	SELECT @RegionId = EntryId FROM {databaseOwner}[{objectQualifier}Lists] WITH (NOLOCK) WHERE [Value] = @StateAbbreviation 
-	AND ListName = 'Region'
-	--We've already added all necessary states, we'll just ignore it if it isn't in the list
-
-	INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] (ExternalIdentifier, Name, Website, Latitude, Longitude, CountryId, RegionId, City, Address, PostalCode, Phone, LocationDetails, LocationTypeId, PortalId, LastUpdatedDate, CsvLineNumber, Approved)
+	INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_Location] (ExternalIdentifier, Name, Website, Latitude, Longitude, CountryId, RegionId, City, Address, PostalCode, Phone, LocationDetails, LocationTypeId, PortalId, LastUpdatedDate, CsvLineNumber, Approved)
 	VALUES (@ExternalIdentifier, @Name, @Website, @Latitude, @Longitude, @CountryId, @RegionId, @City, @Address, @PostalCode, @Phone, @LocationDetails, @LocationTypeId, @PortalId, getdate(), 0, @approved)
 GO
 
@@ -170,14 +162,12 @@ CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]
 	@locationId int
 AS
 	SELECT 
-			LocationId, ExternalIdentifier, l.[Name], Latitude, Longitude, City, region.Text as StateName, region.EntryId as RegionId, Address, Phone, 
+			LocationId, ExternalIdentifier, l.[Name], Latitude, Longitude, City, (select [Text] from Lists where EntryId = l.RegionId) as StateName, l.RegionId, Address, Phone, 
 			LocationDetails, LocationTypeId, PostalCode, Website, LocationDetails, Approved
 		FROM 
 			{databaseOwner}[{objectQualifier}EngageLocator_Location] l  
-			join {databaseOwner}[{objectQualifier}Lists] region on (l.RegionId = region.EntryId)
 		WHERE 
-			LocationId = @locationId
-			
+			LocationId = @locationId 
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') and OBJECTPROPERTY(id, N'IsView') = 1)
@@ -430,7 +420,6 @@ drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocationCo
 GO
 
 CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocationComment]
-
 	@locationId int,
 	@comment varchar(200),
 	@submittedBy varchar(50),
@@ -546,27 +535,26 @@ AS
 	Delete from {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] where LocationCommentId = @commentId
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributes]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]
 	@locationTypeId int
 AS
 	SELECT AttributeDefinitionId, AttributeName FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]
 	WHERE LocationTypeId = @locationTypeId
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValue]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValue]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValue]
-	@attributeDefinitionId int,
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]
 	@locationId int
 AS
-SELECT AttributeValue FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]
-WHERE LocationId = @locationId and attributeDefinitionId  = @attributeDefinitionId 
+SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]
+WHERE LocationId = @locationId
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -574,11 +562,24 @@ drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAt
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]
-	@attributeDefinitionId int,
+	@locationAttributeId int,
 	@locationId int,
 	@attributeValue nvarchar(255)
 AS
 	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes] SET AttributeValue = @attributeValue 
-	WHERE AttributeDefinitionId = @attributeDefinitionId and LocationId = @locationId
+	WHERE LocationAttributeId = @locationAttributeId and LocationId = @locationId
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]
+	@attributeDefinitionId int,
+	@locationId int,
+	@attributeValue nvarchar(255)
+AS
+	Insert into {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes] (LocationId, AttributeDefinitionId, AttributeValue, CreateDate, RevisionDate)
+	Values (@locationId, @attributeDefinitionId, @attributeValue, getdate(), getdate())
 GO
 

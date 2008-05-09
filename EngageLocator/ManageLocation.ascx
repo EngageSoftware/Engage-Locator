@@ -1,6 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="True" CodeBehind="ManageLocation.ascx.cs" Inherits="Engage.Dnn.Locator.ManageLocation" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx"%>
+<%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 
 <div runat="server" id="singleDivError" visible="false">
     <asp:Label runat="server" ID="singleError">Please go to Module settings page and add a Location Type prior to adding a Location.</asp:Label>
@@ -136,7 +137,7 @@
                             <dnn:label id="lblType" runat="server" text="Location Type" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlType" CssClass="Normal" runat="server" TabIndex="13">
+                            <asp:DropDownList ID="ddlType" CssClass="Normal" runat="server" TabIndex="13" AutoPostBack="true" OnSelectedIndexChanged="ddlType_SelectedIndexChanged">
                             </asp:DropDownList>
                             <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddlType"
                                 ErrorMessage="Please Select a Location Type" Operator="NotEqual" ValueToCompare="-1"
@@ -161,14 +162,15 @@
                                 <asp:Repeater ID="rptCustomAttributes" runat="server" Visible="false" OnItemDataBound="rptCustomAttributes_ItemDataBound" >
                                     <HeaderTemplate>
                                         <tr>
-					                        <th class="thcustomAttributeHead"><asp:Label id="lblCustomAttributeHeader" runat="server" Text="Attribute Name" resourcekey="lblCustomAttributeHeader" /></th>
-					                        <th class="thcustomAttributeHead"><asp:Label id="lblCustomAttributeValue" runat="server" Text="Attribute Value" resourcekey="lblCustomAttributeValue" /></th>
-					                    </tr>
+			                                <th class="thcustomAttributeHead"><asp:Label id="lblCustomAttributeHeader" runat="server" Text="Attribute Name" resourcekey="lblCustomAttributeHeader" /></th>
+			                                <th class="thcustomAttributeHead"><asp:Label id="lblCustomAttributeValue" runat="server" Text="Attribute Value" resourcekey="lblCustomAttributeValue" /></th>
+			                            </tr>
                                     </HeaderTemplate>
                                     <ItemTemplate>
                                         <tr>
                                             <td>
-                                                <asp:Label ID="lblLocationAttributeID" runat="server" Visible="false" />
+                                                <asp:HiddenField ID="hdnLocationAttributeID" runat="server" Visible="false" />
+                                                <asp:HiddenField ID="hdnAttributeDefinitionId" runat="server" Visible="false" />
                                                 <asp:Label ID="lblCustomAttribute" runat="server" CssClass="Normal" />
                                             </td>
                                             <td>
