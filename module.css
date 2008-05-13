@@ -1,0 +1,320 @@
+﻿.requiredAsterisk
+{
+	color: red;
+	font-weight: bold;
+}
+
+.groupingPanel
+{
+	border: none 0px;
+	clear:both;
+}
+
+.groupingPanel table, .addressPanel table
+{
+	margin-left: 5px;
+	vertical-align: middle;
+}
+.groupingPanel fieldset
+{
+	border-color:#6A82A4;
+	border-style:solid none none; 
+	border-width:1px 0px 0px; 
+	padding: 10px; 
+	margin: 0;
+}
+	
+.locatorBody
+{
+	margin-left:20px;
+	width:100%;
+}
+
+
+.locatorSubHead
+{
+	background-color: #6A82A4;
+	color: White;
+	margin-top:0px;
+}
+
+.locatorLandingPage
+{
+	font-size: 13px;
+}
+
+.locatorInputLabel
+{
+	width:160px;
+	font-weight:bold;
+	margin:2px 0px 0px;
+	padding:0pt;
+}
+
+.locatorSubmit{margin-top: 0px;
+	position: relative;
+	top: 0px;
+}
+.locatorErrorPanel
+{
+}
+.locatorErrorMessageText
+{
+	color: Red;
+}
+.locationsGrid td
+{
+	border: solid 1px Black;
+}
+.datagridLocations input
+{
+	width: 90px;
+}
+.locationsGridAddress
+{
+	width: 150px;
+}
+.locationsGrid
+{
+	width: 100%;
+	border: solid 1px Black;
+}
+.locationsGridIndex{border-left: none 0px;}
+
+.locatorMap{height: 400px; margin: 0 auto; background: #fff; border: 1px #999 solid; width: 100% !important;}
+
+.pnlAddress{ width: 300px; vertical-align:middle; }
+.dvMapImage{ float: left; width: 70px; padding-top: 10px; }
+.dvAddressContent{ float: left; width: 230px; font-size:12px; }
+.dvAddressContent a { font-size: 10px; font-weight: bold; }
+.locatorMapSmall{width: 250px; /*Keep this value same as in .locatorMapLabelWrapper */height: 200px;position: fixed;background-color: #f8f1c2;border:solid 1px #000;padding:2px;text-align:left;margin-top:10px;visibility: hidden;position: absolute;cursor:pointer}
+
+
+
+.locationMapHeading {padding: 0; width:100%; clear: both; overflow:hidden; padding: 10px 0px;}
+	.closestsLocations {float: left; width: 20%;}
+	.closestLocationTitle {float:right; text-align:left; width:80%;}
+
+.locatorMapLabelWrapper{font-size: 100%; padding: 10px 0 0 0;}
+.locatorMapLabel{}
+
+.inputTable, .noteTable{border: none 0px;width: 100%;font-size: 14px;}
+.locatorRightAlignCell{text-align: right}
+.locatorInputLabelNote, .locatorLabelNote{font-size: small;}
+.locatorLabelCell{width: 100%;}
+.hideCurrentlyMapped{display: none;visibility: hidden;}
+.locationsGridLocationName{font-weight: bold;color: #960000;font-size: 1.1em;}
+.locationsGridDescriptionPopup{width: 200px;}
+
+.importInputLabel{padding-right: 20px;}
+.importPanel{width: 100%;margin: 0 auto;}
+	.importPanel table{width: 100%;}
+
+.importPanelSingle{padding: 10px; margin-top: 15px; border: 1px #ccc solid; background: #f8f8f8;}
+.importPanelSingleCenter{margin: 0 auto; text-align: left; background: #fff; padding: 20px; }
+.importPanelSingleCenter input {width: 180px;}
+.importPanelSingleCenter select {width: 180px;}
+.importPanelSingleCenter textarea {width: 180px;}
+.importPanelSingleCenter .importButton input {width:80px;}
+.importTableSingle{margin: 0 auto;}
+.datagridLocations{font-size: 14px;}
+.rbstatus {width: 150px; }
+.rbstatus input {width: 30px; }
+
+.InnerLocationDisplay{}
+.LocationDisplayHeaders{}
+.LocationDisplayTitles{font: bold;}
+
+.LocationDisplay{vertical-align: top; width: 480px; border-bottom: 1px #ccc solid;}
+.LocationDisplay td{vertical-align: top;}
+
+tr.locationEntryTR
+{
+	height:75px;
+	vertical-align:top;
+	
+}
+
+.locationTitleTD_Number
+{
+	width: 10px;
+	vertical-align:text-top;
+}
+
+.locationTitleTD
+{
+	width: 170px;
+}
+
+td.locationTitleTD
+{
+	padding: 0;
+}
+
+.locationDetailsTitleTD
+{
+	width: 150px;
+}
+
+td.locationDetailsTitleTD
+{
+	padding: 5px 0 0 20px;
+}
+
+.distanceTitleTD
+{
+	width: 150px;
+}
+
+td.distanceTitleTD
+{
+	padding: 5px 0 0 20px;
+	width: 150px;
+}
+
+.titleHeading th
+{
+	font: bold 11px "Trebuchet MS", Helvetica, Verdana, Arial, sans-serif;
+	color: #4f6b72;
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	border-top: 1px solid #C1DAD7;letter-spacing: 2px; text-transform: uppercase;	text-align: left;padding: 2px 6px 2px 12px;background: #e7f6f7;
+}
+
+.dataImportHeader{font: bold 11px "Trebuchet MS", Helvetica, Verdana, Arial, sans-serif; color: #000;border-right: 1px solid #C1DAD7;border-bottom: 1px solid #C1DAD7;border-top: 1px solid #C1DAD7; letter-spacing: 2px;	text-align: left;padding: 6px 6px 6px 12px;background: #e7f6f7;
+}
+
+.dataImportPage{background: #f8f8f8; border-right: 1px #f1f1f1 solid; border-bottom: 1px #f1f1f1 solid;
+}
+
+.titleHeading{width: 480px;
+}
+.locationTitleHead
+{
+	width: 180px;
+}
+
+.locationDetailsTitleHead
+{
+	width: 150px;
+}
+
+.distanceTitleHead
+{
+	width: 150px;
+}
+
+.progress
+{
+	position:relative;
+	z-index: 1;
+	margin-top: 10px;
+}
+
+.progressZipLocator
+{
+	position:relative;
+	z-index: 1;
+	margin-left: 300px;
+	text-align: center;
+	margin: 0 auto; 
+}
+
+.LocatorBackButton{}
+
+.LocatorMapItButton{}
+
+.viewMapBt{padding: 5px 0;}
+
+
+.LocatorInput{width: 100%; clear: both;}
+	.LocatorInput p{padding: 0; margin: 0;}
+
+.addressFirstLine{clear: both; width: 100%; overflow: hidden; padding: 5px 0; }
+	.addressFirstLine .Normal, .addressSecondLine .Normal {float: left; width: 50px; text-align: right; padding-top: 1px; padding-right: 5px; }
+	.addressFirstLine .LocatorInputText{float: left; width: 100px;}
+	.addressFirstLine .LocatorInputText input { width: 315px; } 
+
+
+.addressSecondLine{clear: both; width: 100%; overflow: hidden; padding: 5px 0; }
+	.addressSecondLine .LocatorInputText{float: left; width: 100px;}
+	
+	.addressSecondLine .ltCity{float: left; width: 215px;}
+		.addressSecondLine .ltCity input {width: 160px;}
+	.addressSecondLine .ltRegion{float: left; width: 155px;}
+		.addressSecondLine .ltDropDownList .Normal{text-align: left; width: 100px; padding-right: 0;}
+			
+	.addressSecondLine .ltPostalCode{float: left; width: 130px;}
+		.addressSecondLine .LocationPostalCode{width: 50px; float: left;}
+	
+	.addressSecondLine .LocatorInputText input {}
+	
+.addressThirdLine {clear: both; width: 100%; overflow: hidden; margin-left: 325px; padding: 5px 0;}
+	.addressThirdLine .Normal { float: left; width: 50px; padding-top: 1px; }
+	.addressThirdLine .ltCountry { float: left; width: 185px; margin-left: 0;}
+		.addressThirdLine .ltCountry select { width: 100px; }
+
+.addressPanel{vertical-align: middle; }
+.LocatorSubmitButton{margin: 0 0 0 75px;}
+/*.LocatorInputText input{ width: 160px; display: inline; font-size: 11px; border-left: 1px #ccc solid; border-top: 1px #bbb solid;}
+.LocatorInput{ margin-bottom: 15px; }
+.LocatorInputText { margin: 4px 0 0 0; vertical-align: middle; float:left; }
+.LocatorInputLabel { margin: 4px 0 0 0; text-align: right; width: 50px; float: left; vertical-align: middle; }
+.LocationPostalCode { float:left; width: 50px; font-size: 11px; border-left: 1px #ccc solid; border-top: 1px #bbb solid; }
+*/
+.f02{ width: 100% }
+.ddlDistance{ width: 150px; margin: 0 0 0 10px;}
+.ddlCountry{ width: 150px; margin: 0 0 0 80px; }
+
+.idDataGridFooter input { width: 60px; }
+.nameDataGridFooter input { width: 90px; }
+.cityDataGridFooter input { width: 70px; }
+.stateDataGridFooter select { width: 70px; }
+.zipDataGridFooter input { width: 45px; }
+.countryDataGridFooter select { width: 95px; }
+.phoneDataGridFooter input { width: 70px; }
+.locationDetailsDataGridFooter input { width: 100px; }
+.typeDataGridFooter select { width: 70px; }
+
+.divPanelTab{padding: 10px 0;}
+
+.ajax__tab_xp .ajax__tab_header{text-align:left !important;}
+
+.importData{background: #fff !important; font-size: 12px; font-family: Helvetica, Arial, sans-serif; border: none; width: 100%; text-align: left;}
+.importData td{padding: 5px;}
+.importData td a{color: #960000 !important;}
+
+.rbLocations { margin-bottom: 10px;}
+
+.searchOptions {}
+	.searchOptionsFirstLine {clear: both; width: 100%; overflow: hidden; }
+		.searchOptionsFirstLine .Normal { float: left;}
+	.searchOptionsSecondLine {clear: both; width: 100%; overflow: hidden; }
+		.searchOptionsSecondLine .chkCityRegion { float: left; width: 200px; }
+			.searchOptionsSecondLine .chkCityRegion label { width: 200px; }
+			.searchOptionsSecondLine .chkCityRegion input { width: 200px; }
+		.searchOptionsSecondLine .chkPostalCode { float: left; width: 100px; }
+	.searchOptionsThirdLine {clear: both; width: 100%; overflow: hidden; }
+		.searchOptionsFirstLine .chkCountry { float: left; }
+
+#Buttons{width: 100%; text-align:center;}
+#Buttons .CommandButton{text-align: center; width: 75px;}
+
+
+/**********************Mini Search***********************************/
+.MiniSearch {width: 200px;}
+
+#msFirstLine {}
+	.msFirstLine { float: left;}
+	.msFirstLine .Head {}
+#msPostalCode { width: 75px; }
+	.msPostalCode{clear: both; float: left; width: 70px;}
+		.msPostalCode input {width: 65px; }
+#msSubmit {}
+	.msSubmit { float: left; margin-left: 5px;}
+	
+/**********************Mini Search Settings***************************/
+.cvMiniSearch { clear: both;}
+
+/************************Comments************************************/
+.locationComment { width: 250px;}

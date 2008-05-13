@@ -1,0 +1,93 @@
+<dotnetnuke version="3.0" type="Module">
+  <folders>
+    <folder>
+      <name>Engage Locator</name>
+      <friendlyname>Engage: Locator</friendlyname>
+      <foldername>EngageLocator</foldername>
+      <modulename>Engage: Locator</modulename>
+      <description>
+        The DotNetNuke Locator module by Engage Software (www.engagemodules.com)
+      </description>
+      <version>01.03.00</version>
+      <businesscontrollerclass>Engage.Dnn.Locator.FeaturesController</businesscontrollerclass>
+	  <dependencies>AjaxControlToolkit.TabPanel; AjaxControlToolkit.ToolkitScriptManager</dependencies>
+      <resourcefile>Resources.zip</resourcefile>
+      <modules>
+        <module>
+          <friendlyname>EngageLocator</friendlyname>
+          <cachetime>0</cachetime>
+          <controls>
+            <control>
+              <src>DesktopModules/EngageLocator/ZipLocator.ascx</src>
+              <type>View</type>
+            </control>
+            <control>
+              <key>Import</key>
+              <src>DesktopModules/EngageLocator/DataImport.ascx</src>
+              <type>Edit</type>
+            </control>
+            <control>
+              <key>ManageLocations</key>
+              <title>Manage Locations</title>
+              <src>DesktopModules/EngageLocator/ManageLocation.ascx</src>
+              <type>Edit</type>
+            </control>
+            <control>
+              <key>AttributeDefinitions</key>
+              <title>Location Type Attributes</title>
+              <src>DesktopModules/EngageLocator/AttributeDefinitions.ascx</src>
+              <type>Edit</type>
+            </control>
+            <control>
+              <key>EditAttributeDefiniton</key>
+              <title>Edit Attribute Definition</title>
+              <src>DesktopModules/EngageLocator/EditAttributeDefinition.ascx</src>
+              <type>Edit</type>
+            </control>
+			  <control>
+				  <key>ManageComments</key>
+				  <title>Manage Comments</title>
+				  <src>DesktopModules/EngageLocator/ManageComment.ascx</src>
+				  <type>Edit</type>
+			  </control>
+			  <control>
+				  <key>LocationDetails</key>
+				  <title>Location Details</title>
+				  <src>DesktopModules/EngageLocator/LocationDetails.ascx</src>
+				  <type>View</type>
+			  </control>
+            <control>
+              <key>Settings</key>
+              <title>Locator Settings</title>
+              <src>DesktopModules/EngageLocator/Settings.ascx</src>
+              <type>Edit</type>
+            </control>
+          </controls>
+        </module>
+      </modules>
+      <files>
+		<file>
+          <path>Providers\DataProviders\SqlDataProvider</path>
+          <name>01.00.00.SqlDataProvider</name>
+        </file>
+		<file>
+			<path>Providers\DataProviders\SqlDataProvider</path>
+			<name>01.02.00.SqlDataProvider</name>
+		</file>
+		<file>
+			<path>Providers\DataProviders\SqlDataProvider</path>
+			<name>01.03.00.SqlDataProvider</name>
+		</file>
+        <file>
+          <name>Uninstall.SqlDataProvider</name>
+        </file>
+        <file>
+          <name>EngageLocator.dll</name>
+        </file>
+        <file>
+          <name>LumenWorks.Framework.IO.dll</name>
+        </file>
+      </files>
+    </folder>
+  </folders>
+</dotnetnuke>

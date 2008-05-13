@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lblAPIKey.Help" xml:space="preserve">
+    <value>Google API Key - Allows the Locator Module to communicate with google's API. Click the Link to register your Domain with Google.&lt;br /&gt;
+&lt;a href="http://www.google.com/apis/maps/signup.html" target="_blank"&gt;Google API Key&lt;/a&gt; &lt;br /&gt; &lt;br /&gt;
+Yahoo API Key - Allows the Locator Module to communicate with google's API. Click the Link to register your Domain with Yahoo.&lt;br /&gt;
+&lt;a href="http://developer.yahoo.com/wsregapp/" target="_blank"&gt;Yahoo API Key&lt;/a&gt;</value>
+  </data>
+  <data name="lblAPIKey.Text" xml:space="preserve">
+    <value>API Key</value>
+  </data>
+  <data name="lblApiMapProvider.Text" xml:space="preserve">
+    <value>Please specify a map provider to obtain your API key.</value>
+  </data>
+  <data name="lblApiInstructions.Text" xml:space="preserve">
+    <value>A map provider API key is required. &lt;br /&gt;You can choose from &lt;a href="http://www.google.com/apis/maps/signup.html" target="_blank"&gt;Google &lt;/a&gt; or &lt;a href="http://developer.yahoo.com/wsregapp/" target="_blank"&gt;Yahoo&lt;/a&gt;</value>
+  </data>
+  <data name="lblLocationType.Help" xml:space="preserve">
+    <value>Add, or Remove Location Types that are assigned to each location.  You can also select multiple location types to only allow those to be searchable.</value>
+  </data>
+  <data name="lblLocationTypeInst.Text" xml:space="preserve">
+    <value>Press and hold Ctrl to select multiple location types that allow users to search.</value>
+  </data>
+  <data name="lblMapProviders.Help" xml:space="preserve">
+    <value>Select the Map Provider that you would like to use when search and Geo-Coding locations. You will have to have an API key loaded when using each respective Provider.</value>
+  </data>
+  <data name="lblMapProviders.Text" xml:space="preserve">
+    <value>Map Provider</value>
+  </data>
+  <data name="lblOptional.Help" xml:space="preserve">
+    <value>These are optional search settings to display the ability to vary the search radius and search within a certain country.</value>
+  </data>
+  <data name="lblOptionalInst.Text" xml:space="preserve">
+    <value>Provide users the ability to narrow their search by checking the above option(s).</value>
+  </data>
+  <data name="lblSearchTitle.Help" xml:space="preserve">
+    <value>This allows you to change the text that appears above the Search Text Box on the main screen of the Locator Module.</value>
+  </data>
+  <data name="lblSearchInst.Text" xml:space="preserve">
+    <value>Specify the instructions for users to search, this appears on top of the search input on the module.</value>
+  </data>
+  <data name="lblLocationTypeNotInUse.Text" xml:space="preserve">
+    <value>This location type can not be deleted because it is being utilized by a location. Please remove the type from all locations before deleting the location type.</value>
+  </data>
+  <data name="cbCountry.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="cbRadius.Text" xml:space="preserve">
+    <value>Radius</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Engage: Locator</value>
+  </data>
+  <data name="lbAddLocationType.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="lbEditLocationType.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="lblDeleteLocatinType.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="lblLocationType.Text" xml:space="preserve">
+    <value>Location Type</value>
+  </data>
+  <data name="lblOptional.Text" xml:space="preserve">
+    <value>Search Restrictions</value>
+  </data>
+  <data name="lblSearchTitle.Text" xml:space="preserve">
+    <value>Search Instructions</value>
+  </data>
+  <data name="lblShowLocationDetails.Help" xml:space="preserve">
+    <value>This allows you to determine if the location details are displayed for all locations. Choose Same Page to display on the list of all locations. Choose Details Page if you want to display custom attributes, comments or any location details for the selected location.</value>
+  </data>
+  <data name="lblShowLocationDetails.Text" xml:space="preserve">
+    <value>Show Location Details</value>
+  </data>
+  <data name="lblDefaultDisplay.Help" xml:space="preserve">
+    <value>Choose if you would like the default display for the end user to display the search option, list all of your Locations without the map or list all of your Locations with the map.</value>
+  </data>
+  <data name="lblDefaultDisplay.Text" xml:space="preserve">
+    <value>Default Display</value>
+  </data>
+  <data name="ChooseOne.Text" xml:space="preserve">
+    <value>Choose One</value>
+  </data>
+  <data name="dshLocator.Text" xml:space="preserve">
+    <value>Display Settings</value>
+  </data>
+  <data name="dshMapProvider.Text" xml:space="preserve">
+    <value>Map Provider Settings</value>
+  </data>
+  <data name="lblLocatorCountry.Help" xml:space="preserve">
+    <value>Identify the default country to be used when importing Locations.</value>
+  </data>
+  <data name="lblLocatorCountry.Text" xml:space="preserve">
+    <value>Locator Country</value>
+  </data>
+  <data name="tblSearchSettings.Text" xml:space="preserve">
+    <value>Search Settings</value>
+  </data>
+  <data name="rfvLocatorCountry.Text" xml:space="preserve">
+    <value>Please select a default country.</value>
+  </data>
+  <data name="dshSubmissionSettings.Text" xml:space="preserve">
+    <value>Location Submission Settings</value>
+  </data>
+  <data name="lblAllowSubmissions.Help" xml:space="preserve">
+    <value>Check if you want locations to be submitted.</value>
+  </data>
+  <data name="lblAllowSubmissions.Text" xml:space="preserve">
+    <value>Allow Submissions</value>
+  </data>
+  <data name="lblMapType.Help" xml:space="preserve">
+    <value>Choose which map type to be utilized with the locations.</value>
+  </data>
+  <data name="lblMapType.Text" xml:space="preserve">
+    <value>Map Display Type</value>
+  </data>
+  <data name="lblSubmissionModeration.Help" xml:space="preserve">
+    <value>Check if you want locations to be moderated before they are included in the search results. </value>
+  </data>
+  <data name="lblSubmissionModeration.Text" xml:space="preserve">
+    <value>Moderate Submissions</value>
+  </data>
+  <data name="ControlTitle_settings.Text1" xml:space="preserve">
+    <value>Engage: Locator Mini Search</value>
+  </data>
+  <data name="lblLocatorModules.Help" xml:space="preserve">
+    <value>Choose which Engage:Locator module you want to display your search results on.</value>
+  </data>
+  <data name="lblLocatorModules.Text" xml:space="preserve">
+    <value>Results Display Module</value>
+  </data>
+  <data name="lblLocationComments.Help" xml:space="preserve">
+    <value>Select this option if you want to allow users to submit comments on a location from the Location Details page.</value>
+  </data>
+  <data name="lblLocationComments.Text" xml:space="preserve">
+    <value>Allow Location Comments</value>
+  </data>
+  <data name="rbDetailsPage.Text" xml:space="preserve">
+    <value>Details Page</value>
+  </data>
+  <data name="rbDisplayAll.Text" xml:space="preserve">
+    <value>Show Locations</value>
+  </data>
+  <data name="rbNoDetails.Text" xml:space="preserve">
+    <value>Don't Display Details</value>
+  </data>
+  <data name="rbSamePage.Text" xml:space="preserve">
+    <value>On Same Page</value>
+  </data>
+  <data name="rbSearch.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="rbShowMap.Text" xml:space="preserve">
+    <value>Show Locations &amp; Map</value>
+  </data>
+  <data name="lblModerateComments.Text" xml:space="preserve">
+    <value>Moderate Comments</value>
+  </data>
+  <data name="dshDisplaySetting.Text" xml:space="preserve">
+    <value>Locator Display Settings</value>
+  </data>
+  <data name="chkAddress.Text" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="chkCityState.Text" xml:space="preserve">
+    <value>City/State</value>
+  </data>
+  <data name="chkCountry.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="chkPostalCode.Text" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="lblSearchOptions.Text" xml:space="preserve">
+    <value>Search Options</value>
+  </data>
+</root>

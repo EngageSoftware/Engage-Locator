@@ -1,0 +1,401 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_Country]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_Country
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_State_{objectQualifier}EngageLocator_Country]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_State] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_State_{objectQualifier}EngageLocator_Country
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_TempLocation_{objectQualifier}EngageLocator_Country]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_TempLocation_{objectQualifier}EngageLocator_Country
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_LocationType]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_LocationType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_TempLocation_{objectQualifier}EngageLocator_LocationType]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_TempLocation_{objectQualifier}EngageLocator_LocationType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_State]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_State
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_TempLocation_{objectQualifier}EngageLocator_State]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_TempLocation_{objectQualifier}EngageLocator_State
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Location_Update]') and OBJECTPROPERTY(id, N'IsTrigger') = 1)
+drop trigger {databaseOwner}[{objectQualifier}EngageLocator_Location_Update]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_fnDistanceBetween]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}EngageLocator_fnDistanceBetween]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeName]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetFilesToImport]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetFilesToImport]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Country]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageLocator_Country]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Files]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageLocator_Files]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_LocationComments_{objectQualifier}EngageLocator_Location]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_LocationComments_{objectQualifier}EngageLocator_Location
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageLocator_Location]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageLocator_LocationType]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_State]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageLocator_State]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}EngageLocator_fnDistanceBetween] (@Lat1 as float, 
+                @Long1 as float, @Lat2 as float, @Long2 as float)
+RETURNS float
+AS
+BEGIN
+
+DECLARE @dLat1InRad as float(53);
+SET @dLat1InRad = @Lat1 * (PI()/180.0);
+DECLARE @dLong1InRad as float(53);
+SET @dLong1InRad = @Long1 * (PI()/180.0);
+DECLARE @dLat2InRad as float(53);
+SET @dLat2InRad = @Lat2 * (PI()/180.0);
+DECLARE @dLong2InRad as float(53);
+SET @dLong2InRad = @Long2 * (PI()/180.0);
+
+DECLARE @dLongitude as float(53);
+SET @dLongitude = @dLong2InRad - @dLong1InRad;
+DECLARE @dLatitude as float(53);
+SET @dLatitude = @dLat2InRad - @dLat1InRad;
+/* Intermediate result a. */
+DECLARE @a as float(53);
+SET @a = SQUARE (SIN (@dLatitude / 2.0)) 
+		+ COS (@dLat1InRad) * COS (@dLat2InRad) 
+		* SQUARE(SIN (@dLongitude / 2.0));
+/* Intermediate result c (great circle distance in Radians). */
+DECLARE @c as float;
+SET @c = 2.0 * ATN2 (SQRT (@a), SQRT (1.0 - @a));
+DECLARE @kEarthRadius as float;
+SET @kEarthRadius = 3956.0; /* miles */
+/*SET @kEarthRadius = 6376.5 kms */
+
+DECLARE @dDistance as float;
+SET @dDistance = @kEarthRadius * @c;
+return (@dDistance);
+END
+
+
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_Files] (
+	[FileId] [int] NOT NULL,
+	[UserId] [int] NOT NULL ,
+	[TabModuleId] [int] NOT NULL,
+	[PortalId] [int] NOT NULL ,	
+	[UploadDate] [datetime] NOT NULL ,
+	[Succeeded] [bit] NULL,
+	[Processed] [int] NULL
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] (
+	[Locationid] [int] IDENTITY (1, 1) NOT NULL ,
+	[ExternalIdentifier] [nvarchar] (255) NOT NULL ,
+	[PortalId] [int] NOT NULL ,	
+	[Name] [nvarchar] (255) NULL ,
+	[Description] [nvarchar] (255) NULL ,
+	[Latitude] [float] NULL ,
+	[Longitude] [float] NULL ,
+	[CountryId] [int] NOT NULL ,
+	[RegionId] [int] NULL ,
+	[City] [nvarchar] (255) NOT NULL ,
+	[Address] [nvarchar] (255) NOT NULL ,
+	[PostalCode] [nvarchar] (255) NULL ,
+	[Phone] [nvarchar] (255) NULL ,
+	[LocationDetails] [nvarchar] (255) NULL ,
+	[LocationTypeId] [int] NOT NULL ,
+	[LastUpdatedDate] [datetime] NOT NULL ,
+	[CsvLineNumber] [int] NOT NULL ,
+	[Website] [nvarchar] (255) NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationType] (
+	[LocationTypeId] [int] IDENTITY (1, 1) NOT NULL ,
+	[LocationTypeName] [nvarchar] (50) NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] (
+	[Locationid] [int] IDENTITY (1, 1) NOT NULL ,
+	[ExternalIdentifier] [nvarchar](255) NOT NULL,
+	[PortalId] [int] NOT NULL ,
+	[Name] [nvarchar] (255) NULL ,
+	[Latitude] [float] NULL ,
+	[Longitude] [float] NULL ,
+	[CountryId] [int] NOT NULL ,
+	[RegionId] [int] NULL ,
+	[City] [nvarchar] (255) NOT NULL ,
+	[Address] [nvarchar] (255) NOT NULL ,
+	[PostalCode] [nvarchar] (255) NULL ,
+	[Phone] [nvarchar] (255) NULL ,
+	[LocationDetails] [nvarchar] (255) NULL ,
+	[LocationTypeId] [int] NOT NULL ,
+	[LastUpdatedDate] [datetime] NOT NULL ,
+	[CsvLineNumber] [int] NOT NULL ,
+	[Website] [nvarchar] (255) NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Files] WITH NOCHECK ADD 
+	CONSTRAINT [PK_{objectQualifier}EngageLocator_Files] PRIMARY KEY  CLUSTERED 
+	(
+		[FileId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] WITH NOCHECK ADD 
+	CONSTRAINT [PK_{objectQualifier}EngageLocator_Location] PRIMARY KEY  CLUSTERED 
+	(
+		[Locationid]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationType] WITH NOCHECK ADD 
+	CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationType] PRIMARY KEY  CLUSTERED 
+	(
+		[LocationTypeId]
+	)  ON [PRIMARY] 
+GO
+
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] WITH NOCHECK ADD 
+	CONSTRAINT [PK_{objectQualifier}EngageLocator_TempLocation] PRIMARY KEY  CLUSTERED 
+	(
+		[Locationid]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] ADD 
+	CONSTRAINT [FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_LocationType] FOREIGN KEY 
+	(
+		[LocationTypeId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageLocator_LocationType] (
+		[LocationTypeId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] ADD 
+	CONSTRAINT [FK_{objectQualifier}EngageLocator_TempLocation_{objectQualifier}EngageLocator_LocationType] FOREIGN KEY 
+	(
+		[LocationTypeId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageLocator_LocationType] (
+		[LocationTypeId]
+	)
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
+AS
+	SELECT l.LocationId, l.ExternalIdentifier, l.Name AS LocationName, l.Website as Website, l.Latitude, l.Longitude, l.RegionId, 
+		country.Text AS CountryName, l.City, l.Address, l.PostalCode, l.Phone, l.LocationDetails, l.PortalId, l.LastUpdatedDate, 
+		p.LocationTypeName AS [Type], region.Text AS StateName, region.Value as Abbreviation,
+		l.CountryId
+	FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] l WITH (NOLOCK) 
+	JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] AS p ON (l.LocationTypeId = p.LocationTypeId)
+	left JOIN {databaseOwner}[{objectQualifier}lists] country on (country.EntryId = l.CountryId)
+	left JOIN {databaseOwner}[{objectQualifier}lists] region on (region.EntryId = l.RegionId)
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]
+AS
+INSERT INTO 
+	{databaseOwner}[{objectQualifier}EngageLocator_Location] (
+	ExternalIdentifier,
+	[Name],
+	Website,
+	Latitude,
+	Longitude,
+	CountryId,
+	RegionId,
+	City,
+	Address,
+	PostalCode,
+	Phone,
+	LocationDetails,
+	LocationTypeId,
+	PortalId,
+	LastUpdatedDate,
+	CSVLineNumber
+	)
+SELECT 
+	ExternalIdentifier,
+    [Name],
+	Website,
+	Latitude,
+	Longitude,
+	CountryId,
+	RegionId,
+	City,
+	Address,
+	PostalCode,
+	Phone,
+	LocationDetails,
+	LocationTypeId,
+	PortalId,
+	LastUpdatedDate,
+	CSVLineNumber
+FROM 
+	{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
+
+
+GO
+
+CREATE  PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]
+	@LocationType nvarchar(50)
+AS
+	
+	SELECT Count(*) FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations] WHERE [Type] = @LocationType
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeName]
+	@LocationTypeId int
+	
+AS
+	SELECT [LocationTypeName] from {objectQualifier}EngageLocator_LocationType where LocationTypeId = @LocationTypeId
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]
+	@ExternalIdentifier nvarchar(255),
+	@Name nvarchar(255),
+	@Description nvarchar(2000),
+	@Latitude float,
+	@Longitude float,
+	@CountryName nvarchar(255),
+	@StateAbbreviation nvarchar(50),
+	@City nvarchar(255),
+	@Address nvarchar(255),
+	@PostalCode nvarchar(255),
+	@LocationTypeId int,
+	@Website nvarchar(255),
+	@PortalId int,
+	@Report nvarchar(2000) = '' OUTPUT
+AS
+	DECLARE @CountryId int
+	SELECT @CountryId = EntryId FROM {databaseOwner}[{objectQualifier}Lists] WHERE [Text] = @CountryName and ListName = 'Country'
+
+	DECLARE @RegionId int
+	SELECT @RegionId = EntryId FROM {databaseOwner}[{objectQualifier}Lists] WHERE [Value] = @StateAbbreviation 
+	AND ListName = 'Region'
+	--We've already added all necessary states, we'll just ignore it if it isn't in the list
+
+	INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_Location] (ExternalIdentifier, [Name], [Description], Latitude, Longitude, CountryId, RegionId, City, [Address], PostalCode, Website, LocationTypeId, PortalId)
+	VALUES (@ExternalIdentifier, @Name, @Description, @Latitude, @Longitude, @CountryId, @RegionId, @City, @Address, @PostalCode, @Website, @LocationTypeId, @PortalId)
+GO
+
+CREATE  PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]
+	@ExternalIdentifier nvarchar(255),
+	@Name nvarchar(255),
+	@Website nvarchar(255),
+	@Latitude float,
+	@Longitude float,
+	@CountryName nvarchar(255),
+	@StateAbbreviation nvarchar(50),
+	@City nvarchar(255),
+	@Address nvarchar(255),
+	@PostalCode nvarchar(255),
+	@Phone nvarchar(255),
+	@LocationDetails nvarchar(255),
+	@LocationTypeId int,
+	@CsvLineNumber int,
+	@PortalId int,
+	@Report nvarchar(2000) = '' OUTPUT 
+	
+AS
+DECLARE @CountryId int
+	SELECT @CountryId = EntryId FROM {databaseOwner}[{objectQualifier}Lists] WHERE [Text] = @CountryName and ListName = 'Country'
+
+	DECLARE @RegionId int
+	SELECT @RegionId = EntryId FROM {databaseOwner}[{objectQualifier}Lists] WITH (NOLOCK) WHERE [Value] = @StateAbbreviation 
+	AND ListName = 'Region'
+	--We've already added all necessary states, we'll just ignore it if it isn't in the list
+
+	INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] (ExternalIdentifier, [Name], Website, Latitude, Longitude, CountryId, RegionId, City, [Address], PostalCode, Phone, LocationDetails, LocationTypeId, CsvLineNumber, PortalId)
+	VALUES (@ExternalIdentifier, @Name, @Website, @Latitude, @Longitude, @CountryId, @RegionId, @City, @Address, @PostalCode, @Phone, @LocationDetails, @LocationTypeId, @CsvLineNumber, @PortalId)
+GO
+
+CREATE TRIGGER [{objectQualifier}EngageLocator_Location_Update]
+ON {databaseOwner}[{objectQualifier}EngageLocator_Location] FOR UPDATE
+AS
+BEGIN
+      -- Make sure the timestamp is correct
+      UPDATE [{objectQualifier}EngageLocator_Location]
+      SET LastUpdatedDate = GETDATE()
+	  WHERE LocationId IN (select LocationId from inserted)
+END
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_LocationType] VALUES ('Default')
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}Schedule] VALUES ('Engage.Dnn.Locator.DataImportScheduler', 30, 'm',	60,	's', 25, '', 0,	1, '', NULL)
+GO
+
+CREATE  PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]
+	@FileId nvarchar(50)
+AS
+	
+	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_Files] set Processed = 1 WHERE FileId = @FileId 
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetFilesToImport]
+AS
+SELECT FileId, UserId, TabModuleId, PortalId FROM {databaseOwner}[{objectQualifier}EngageLocator_Files] WHERE Processed = 0
+GO
+
