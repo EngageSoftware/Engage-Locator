@@ -594,7 +594,7 @@ namespace Engage.Dnn.Locator
                 ModuleActionCollection mActions = new ModuleActionCollection();
 
                 mActions.Add(GetNextActionID(), Localization.GetString("Manage", LocalResourceFile),
-                             ModuleActionType.AddContent, "", "", EditUrl("","", "Import", "tmid=" + TabModuleId), false, SecurityAccessLevel.Edit,
+                             ModuleActionType.AddContent, "", "", EditUrl("Import"), false, SecurityAccessLevel.Edit,
                              true, false);
                 return mActions;
             }
@@ -696,7 +696,7 @@ namespace Engage.Dnn.Locator
                 {
                     HyperLink lnkShowLocationDetails = (HyperLink)e.Item.FindControl("lnkShowLocationDetails");
                     lnkShowLocationDetails.Visible = true;
-                    lnkShowLocationDetails.NavigateUrl = Globals.NavigateURL(TabId, "LocationDetails", "mid=" + ModuleId + "&tmid=" + TabModuleId + "&lid=" + row["LocationId"]);
+                    lnkShowLocationDetails.NavigateUrl = Globals.NavigateURL(TabId, "Details", "mid=" + ModuleId + "&lid=" + row["LocationId"]);
                     lnkShowLocationDetails.Text = Localization.GetString("lnkShowLocationDetails", LocalResourceFile);
                 }
                 if (row != null) lnkMapIt.Visible = !row["latitude"].Equals(DBNull.Value);
@@ -760,7 +760,7 @@ namespace Engage.Dnn.Locator
 
         protected void lnkSubmitLocations_Click(object sender, EventArgs e)
         {
-             Response.Redirect(Globals.NavigateURL(TabId, "ManageLocations", "mid=" + ModuleId + "&tmid=" + TabModuleId));
+             Response.Redirect(Globals.NavigateURL(TabId, "ManageLocations", "mid=" + ModuleId));
         }
     }
 }

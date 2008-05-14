@@ -139,8 +139,7 @@ namespace Engage.Dnn.Locator
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            tabModuleId = Convert.ToInt32(Request.QueryString["tmid"]);
-            
+           
             string error = String.Empty;
 
             if (IsConfigured(ref error))

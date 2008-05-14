@@ -11,7 +11,7 @@
 namespace Engage.Dnn.Locator {
     
     
-    public partial class LocationDetails {
+    public partial class Details {
         
         /// <summary>
         /// lblLocationId control.

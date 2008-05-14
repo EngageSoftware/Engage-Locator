@@ -30,7 +30,6 @@ namespace Engage.Dnn.Locator
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            tabModuleId = Convert.ToInt32(Request.QueryString["tmid"]);
             locationId = Convert.ToInt32(Request.QueryString["lid"]);
 
             if (!Page.IsPostBack)

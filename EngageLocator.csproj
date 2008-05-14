@@ -80,12 +80,12 @@
     <Compile Include="Components\FeaturesController.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="Comment.cs" />
-    <Compile Include="LocationDetails.ascx.cs">
-      <DependentUpon>LocationDetails.ascx</DependentUpon>
+    <Compile Include="Details.ascx.cs">
+      <DependentUpon>Details.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="LocationDetails.ascx.designer.cs">
-      <DependentUpon>LocationDetails.ascx</DependentUpon>
+    <Compile Include="Details.ascx.designer.cs">
+      <DependentUpon>Details.ascx</DependentUpon>
     </Compile>
     <Compile Include="ManageComment.ascx.cs">
       <DependentUpon>ManageComment.ascx</DependentUpon>
@@ -212,7 +212,7 @@
     <Content Include="App_LocalResources\ManageLocation.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="LocationDetails.ascx" />
+    <Content Include="Details.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\LocationDetails.ascx.resx">

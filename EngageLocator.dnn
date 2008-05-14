@@ -51,9 +51,9 @@
               <type>Edit</type>
             </control>
             <control>
-              <key>LocationDetails</key>
+              <key>Details</key>
               <title>Location Details</title>
-              <src>DesktopModules/EngageLocator/LocationDetails.ascx</src>
+              <src>DesktopModules/EngageLocator/Details.ascx</src>
               <type>View</type>
             </control>
             <control>

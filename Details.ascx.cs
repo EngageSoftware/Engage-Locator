@@ -6,47 +6,15 @@ using DotNetNuke.Entities.Modules;
 
 namespace Engage.Dnn.Locator
 {
-    public partial class LocationDetails : ModuleBase
+    public partial class Details : ModuleBase
     {
-        private int _tabModuleId;
-
-        #region Properties
-
-        protected bool ShowLocationDetails
-        {
-            get
-            {
-                bool showDetails = false;
-                ModuleController objModules = new ModuleController();
-
-                if (objModules.GetTabModuleSettings(_tabModuleId)["ShowLocationDetails"] != null)
-                {
-                    if (objModules.GetTabModuleSettings(_tabModuleId)["ShowLocationDetails"].ToString() == "DetailsPage")
-                        showDetails = true;
-                }
-                return showDetails;
-            }
-        }
-
-        #endregion
-
-        protected override void OnInit(EventArgs e)
-        {
-            InitializeComponent();
-            base.OnInit(e);
-        }
-
-        private void InitializeComponent()
-        {
-            btnBack.Click += btnBack_Click;
-        }
+        #region Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if(!Page.IsPostBack)
             {
                 lblLocationId.Text = Request.QueryString["lid"];
-                _tabModuleId = Convert.ToInt32(Request.QueryString["tmid"]);
                 Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text));
 
                 lblLocationName.Text = location.Name;
@@ -78,7 +46,7 @@ namespace Engage.Dnn.Locator
 
         }
 
-        public void btnBack_Click(object sender, EventArgs e)
+        protected void btnBack_Click(object sender, EventArgs e)
         {
             Response.Redirect(Globals.NavigateURL(TabId));
         }
@@ -97,5 +65,28 @@ namespace Engage.Dnn.Locator
             rptComments.DataBind();
             lblCommentSubmitted.Visible = true;
         }
+
+        #endregion
+
+        #region Properties
+
+        protected bool ShowLocationDetails
+        {
+            get
+            {
+                
+                bool showDetails = false;
+                ModuleController controller = new ModuleController();
+                if (controller.GetTabModuleSettings(TabModuleId)["ShowLocationDetails"] != null)
+                {
+                    if (controller.GetTabModuleSettings(TabModuleId)["ShowLocationDetails"].ToString() == "DetailsPage")
+                        showDetails = true;
+                }
+                return showDetails;
+            }
+        }
+
+        #endregion
+         
     }
 }
