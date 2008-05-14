@@ -1,3 +1,12 @@
+//Copyright (c) 2004-2007
+//by Engage Software ( http://www.engagesoftware.com )
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//DEALINGS IN THE SOFTWARE.
+
 using DotNetNuke.UI;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Entities.Modules;
@@ -17,46 +26,21 @@ namespace Engage.Dnn.Locator
     public class AttributeDefinition
     {
 
-        #region "Private Members"
+        #region Properties
 
-        private int _DataType = Null.NullInteger;
-        private string _DefaultValue;
-        private bool _IsDirty;
-        private int _Length;
-        private int _LocationTypeId = Null.NullInteger;
-        private int _PortalId;
-        private int _AttributeDefinitionId = Null.NullInteger;
-        private string _AttributeName;
-        private string _AttributeValue;
-        private bool _Required;
-        private string _ValidationExpression;
-        private int _ViewOrder;
-        private bool _Visible;
-        private UserVisibilityMode _Visibility = UserVisibilityMode.AdminOnly;
-
-        #endregion
-
-        public AttributeDefinition()
-        {
-        }
-
-        #region "Public Properties"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Data Type of the Profile Property
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private int _dataType = Null.NullInteger;
         [Editor("DotNetNuke.UI.WebControls.DNNListEditControl, DotNetNuke", typeof(DotNetNuke.UI.WebControls.EditControl)), List("DataType", "", ListBoundField.Id, ListBoundField.Value), IsReadOnly(true), Required(true), SortOrder(1)]
         [XmlIgnore()]
         public int DataType
         {
-            get { return _DataType; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _dataType; }
             set
             {
-                if (_DataType != value)
-                    _IsDirty = true;
-                _DataType = value;
+                if (_dataType != value)
+                    _isDirty = true;
+                _dataType = value;
             }
         }
 
@@ -65,16 +49,19 @@ namespace Engage.Dnn.Locator
         /// Gets and sets the Default Value of the Profile Property
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private string _defaultValue;
         [SortOrder(4)]
         [XmlIgnore()]
         public string DefaultValue
         {
-            get { return _DefaultValue; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _defaultValue; }
             set
             {
-                if (_DefaultValue != value)
-                    _IsDirty = true;
-                _DefaultValue = value;
+                if (_defaultValue != value)
+                    _isDirty = true;
+                _defaultValue = value;
             }
         }
 
@@ -83,11 +70,14 @@ namespace Engage.Dnn.Locator
         /// Gets whether the Definition has been modified since it has been retrieved
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private bool _isDirty;
         [Browsable(false)]
         [XmlIgnore()]
         public bool IsDirty
         {
-            get { return _IsDirty; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _isDirty; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -95,16 +85,19 @@ namespace Engage.Dnn.Locator
         /// Gets and sets the Length of the Profile Property
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private int _length;
         [SortOrder(3)]
         [XmlElement("length")]
         public int Length
         {
-            get { return _Length; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _length; }
             set
             {
-                if (_Length != value)
-                    _IsDirty = true;
-                _Length = value;
+                if (_length != value)
+                    _isDirty = true;
+                _length = value;
             }
         }
 
@@ -113,12 +106,16 @@ namespace Engage.Dnn.Locator
         /// Gets and sets the LocationTypeId
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private int _locationTypeId = Null.NullInteger;
         [Browsable(false)]
         [XmlIgnore()]
         public int LocationTypeId
         {
-            get { return _LocationTypeId; }
-            set { _LocationTypeId = value; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _locationTypeId; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            set { _locationTypeId = value; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -126,43 +123,32 @@ namespace Engage.Dnn.Locator
         /// Gets and sets the PortalId
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private int _portalId;
         [Browsable(false)]
         [XmlIgnore()]
         public int PortalId
         {
-            get { return _PortalId; }
-            set { _PortalId = value; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _portalId; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            set { _portalId = value; }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Category of the Profile Property
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        //[Required(true), SortOrder(2)]
-        //[XmlElement("attributecategory")]
-        //public string AttributeCategory
-        //{
-        //    get { return _AttributeCategory; }
-        //    set
-        //    {
-        //        if (_AttributeCategory != value)
-        //            _IsDirty = true;
-        //        _AttributeCategory = value;
-        //    }
-        //}
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Id of the LocationAttributeDefinition
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private int _attributeDefinitionId = Null.NullInteger;
         [Browsable(false)]
         [XmlIgnore()]
         public int AttributeDefinitionId
         {
-            get { return _AttributeDefinitionId; }
-            set { _AttributeDefinitionId = value; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _attributeDefinitionId; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            set { _attributeDefinitionId = value; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -170,16 +156,19 @@ namespace Engage.Dnn.Locator
         /// Gets and sets the Name of the Profile Property
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private string _name;
         [Required(true), IsReadOnly(true), SortOrder(0), RegularExpressionValidator("^[a-zA-Z0-9._%\\-+']+$")]
         [XmlElement("attributename")]
         public string AttributeName
         {
-            get { return _AttributeName; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _name; }
             set
             {
-                if (_AttributeName != value)
-                    _IsDirty = true;
-                _AttributeName = value;
+                if (_name != value)
+                    _isDirty = true;
+                _name = value;
             }
         }
 
@@ -188,16 +177,19 @@ namespace Engage.Dnn.Locator
         /// Gets and sets the Value of the Profile Property
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private string _value;       
         [Browsable(false)]
         [XmlIgnore()]
         public string AttributeValue
         {
-            get { return _AttributeValue; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _value; }
             set
             {
-                if (_AttributeValue != value)
-                    _IsDirty = true;
-                _AttributeValue = value;
+                if (_value != value)
+                    _isDirty = true;
+                _value = value;
             }
         }
 
@@ -206,16 +198,19 @@ namespace Engage.Dnn.Locator
         /// Gets and sets whether the property is required
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private bool _required;
         [SortOrder(6)]
         [XmlIgnore()]
         public bool Required
         {
-            get { return _Required; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _required; }
             set
             {
-                if (_Required != value)
-                    _IsDirty = true;
-                _Required = value;
+                if (_required != value)
+                    _isDirty = true;
+                _required = value;
             }
         }
 
@@ -224,16 +219,19 @@ namespace Engage.Dnn.Locator
         /// Gets and sets a Validation Expression (RegEx) for the Profile Property
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private string _validationExpression;
         [SortOrder(5)]
         [XmlIgnore()]
         public string ValidationExpression
         {
-            get { return _ValidationExpression; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _validationExpression; }
             set
             {
-                if (_ValidationExpression != value)
-                    _IsDirty = true;
-                _ValidationExpression = value;
+                if (_validationExpression != value)
+                    _isDirty = true;
+                _validationExpression = value;
             }
         }
 
@@ -242,16 +240,19 @@ namespace Engage.Dnn.Locator
         /// Gets and sets the View Order of the Property
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private int _viewOrder;
         [Required(true), SortOrder(8)]
         [XmlIgnore()]
         public int ViewOrder
         {
-            get { return _ViewOrder; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _viewOrder; }
             set
             {
-                if (_ViewOrder != value)
-                    _IsDirty = true;
-                _ViewOrder = value;
+                if (_viewOrder != value)
+                    _isDirty = true;
+                _viewOrder = value;
             }
         }
 
@@ -260,16 +261,19 @@ namespace Engage.Dnn.Locator
         /// Gets and sets whether the property is visible
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private bool _visible;
         [SortOrder(7)]
         [XmlIgnore()]
         public bool Visible
         {
-            get { return _Visible; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _visible; }
             set
             {
-                if (_Visible != value)
-                    _IsDirty = true;
-                _Visible = value;
+                if (_visible != value)
+                    _isDirty = true;
+                _visible = value;
             }
         }
 
@@ -278,22 +282,25 @@ namespace Engage.Dnn.Locator
         /// Gets and sets whether the property is visible
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private UserVisibilityMode _visibility = UserVisibilityMode.AdminOnly;
         [Browsable(false)]
         [XmlIgnore()]
         public UserVisibilityMode Visibility
         {
-            get { return _Visibility; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return _visibility; }
             set
             {
-                if (_Visibility != value)
-                    _IsDirty = true;
-                _Visibility = value;
+                if (_visibility != value)
+                    _isDirty = true;
+                _visibility = value;
             }
         }
 
         #endregion
 
-        #region "Public Methods"
+        #region Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -302,7 +309,7 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         public void ClearIsDirty()
         {
-            _IsDirty = false;
+            _isDirty = false;
         }
 
 

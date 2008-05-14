@@ -1,3 +1,12 @@
+//Copyright (c) 2004-2007
+//by Engage Software ( http://www.engagesoftware.com )
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//DEALINGS IN THE SOFTWARE.
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,35 +22,6 @@ namespace Engage.Dnn.Locator
     {
         public const string CacheKey = "AttributeDefinitions{0}";
         public const int CacheTimeOut = 20;
-
-        public static DataTable GetLocationTypes()
-        {
-            return DataProvider.Instance().GetLocationTypes();
-        }
-
-        public static bool GetLocationTypeInUse(string location)
-        {
-            bool inuse = false;
-            int count;
-
-            count = DataProvider.Instance().GetLocationTypeCount(location);
-            if (count > 0) inuse = true;
-
-            return inuse;
-        }
-
-        public static string GetLocationTypeName(int id)
-        {
-            DataTable dt = DataProvider.Instance().GetLocationTypeName(id);
-            string name = string.Empty;
-            if(dt.Rows.Count == 1)
-            {
-                name = dt.Rows[0]["LocationTypeName"].ToString();
-                
-            }
-
-            return name;
-        }
 
         #region Properties
 
@@ -185,7 +165,7 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region "Attribute Definition Methods"
+        #region Attribute Definition Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -352,5 +332,35 @@ namespace Engage.Dnn.Locator
         }
 
         #endregion
+
+        public static DataTable GetLocationTypes()
+        {
+            return DataProvider.Instance().GetLocationTypes();
+        }
+
+        public static bool GetLocationTypeInUse(string location)
+        {
+            bool inuse = false;
+            int count;
+
+            count = DataProvider.Instance().GetLocationTypeCount(location);
+            if (count > 0) inuse = true;
+
+            return inuse;
+        }
+
+        public static string GetLocationTypeName(int id)
+        {
+            DataTable dt = DataProvider.Instance().GetLocationTypeName(id);
+            string name = string.Empty;
+            if (dt.Rows.Count == 1)
+            {
+                name = dt.Rows[0]["LocationTypeName"].ToString();
+
+            }
+
+            return name;
+        }
+
     }
 }

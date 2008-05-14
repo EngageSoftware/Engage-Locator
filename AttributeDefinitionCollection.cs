@@ -1,3 +1,13 @@
+//Copyright (c) 2004-2007
+//by Engage Software ( http://www.engagesoftware.com )
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//DEALINGS IN THE SOFTWARE.
+
+using System;
 using DotNetNuke.UI;
 using System.Collections;
 
@@ -6,10 +16,8 @@ namespace Engage.Dnn.Locator
 
     public class AttributeDefinitionCollection : CollectionBase
     {
-        //int _index = DotNetNuke.Common.Utilities.Null.NullInteger;
-        //string _name = DotNetNuke.Common.Utilities.Null.NullString;
 
-        #region "Constructors"
+        #region Constructors
 
         public AttributeDefinitionCollection() : base()
         {
@@ -27,7 +35,7 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region "Public Properties"
+        #region Properties
 
         public AttributeDefinition this [int index]
         {
@@ -42,7 +50,8 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region "Public Methods"
+        #region Methods
+
         public int Add(AttributeDefinition value)
         {
             return List.Add(value);

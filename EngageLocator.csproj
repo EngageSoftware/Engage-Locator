@@ -78,7 +78,7 @@
       <DependentUpon>DataImport.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\FeaturesController.cs" />
-    <Compile Include="LocationAttribute.cs" />
+    <Compile Include="Attribute.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="LocationDetails.ascx.cs">
       <DependentUpon>LocationDetails.ascx</DependentUpon>

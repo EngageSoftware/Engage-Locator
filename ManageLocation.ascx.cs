@@ -143,7 +143,7 @@ namespace Engage.Dnn.Locator
             }
             ddlCountry.SelectedValue = parentId.ToString();
 
-            rptCustomAttributes.DataSource = LocationAttribute.GetLocationAttributes(Convert.ToInt32(ddlType.SelectedValue), location.LocationId);
+            rptCustomAttributes.DataSource = Attribute.GetAttributes(Convert.ToInt32(ddlType.SelectedValue), location.LocationId);
             rptCustomAttributes.DataBind();
 
             if (rptCustomAttributes.Items.Count > 0)
@@ -287,11 +287,11 @@ namespace Engage.Dnn.Locator
                             TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
                             if (Convert.ToInt32(hdnLocationAttributeID.Value) > 0)
                             {
-                                LocationAttribute.UpdateLocationAttribute(Convert.ToInt32(hdnLocationAttributeID.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
+                                Attribute.UpdateAttribute(Convert.ToInt32(hdnLocationAttributeID.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
                             }
                             else
                             {
-                                LocationAttribute.AddLocationAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
+                                Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
                             }
                         }
                         currentLocation.Update();
@@ -368,7 +368,7 @@ namespace Engage.Dnn.Locator
                         {
                             HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
                             TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
-                            LocationAttribute.AddLocationAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), newLocation.LocationId, txtLocationAttributeValue.Text);
+                            Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), newLocation.LocationId, txtLocationAttributeValue.Text);
                         }
                         if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
                             Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId));
@@ -443,12 +443,12 @@ namespace Engage.Dnn.Locator
         {
             if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
-                LocationAttribute attribute = (LocationAttribute)e.Item.DataItem;
+                Attribute attribute = (Attribute)e.Item.DataItem;
                 HiddenField locationAttributeId = (HiddenField)e.Item.FindControl("hdnLocationAttributeID");
                 HiddenField attributeDefinitionId = (HiddenField)e.Item.FindControl("hdnAttributeDefinitionId");
                 Label label = (Label)e.Item.FindControl("lblCustomAttribute");
                 TextBox textBox = (TextBox)e.Item.FindControl("txtCustomAttribute");
-                locationAttributeId.Value = attribute.LocationAttributeId.ToString();
+                locationAttributeId.Value = attribute.AttributeId.ToString();
                 attributeDefinitionId.Value = attribute.AttributeDefinitionId.ToString(CultureInfo.InvariantCulture);
                 label.Text = attribute.AttributeName;
                 textBox.Text = attribute.AttributeValue;
@@ -457,7 +457,7 @@ namespace Engage.Dnn.Locator
 
         private void LoadCustomAttributes()
         {
-            rptCustomAttributes.DataSource = LocationAttribute.GetLocationAttributes(Convert.ToInt32(ddlType.SelectedValue), locationId);
+            rptCustomAttributes.DataSource = Attribute.GetAttributes(Convert.ToInt32(ddlType.SelectedValue), locationId);
             rptCustomAttributes.DataBind();
 
             if (rptCustomAttributes.Items.Count > 0)
