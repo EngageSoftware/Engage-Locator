@@ -111,5 +111,5 @@ function show(d)
     </tr>
 </table>
 <div>
-    <asp:Button ID="btnBack" runat="server" CssClass="CommandButton" Text="Back" resourceKey="btnBack" OnClick="btnBack_Click" />
+    <asp:Button ID="btnBack" runat="server" CssClass="CommandButton" Text="Back" resourceKey="btnBack" OnClick="btnBack_Click" CausesValidation="false" />
 </div>

@@ -16,8 +16,7 @@ namespace Engage.Dnn.Locator
 {
     public partial class ManageLocation : ModuleBase
     {
-        private static int tabModuleId;
-        private static int locationId;
+        private int locationId;
 
         protected override void OnInit(EventArgs e)
         {
@@ -294,7 +293,7 @@ namespace Engage.Dnn.Locator
                             }
                         }
                         currentLocation.Update();
-                        Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId));
+                        Response.Redirect(EditUrl("Import"));
                     }
                     else
                     {
@@ -370,7 +369,7 @@ namespace Engage.Dnn.Locator
                             Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), newLocation.LocationId, txtLocationAttributeValue.Text);
                         }
                         if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
-                            Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId));
+                            Response.Redirect(EditUrl("Import"));
                         else
                             Response.Redirect(Globals.NavigateURL());
                     }
@@ -388,10 +387,10 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        private static void GetGeoCodeResults(string city, string state, string zip, string address, out double? latitude, out double? longitude, out string error, string location)
+        private void GetGeoCodeResults(string city, string state, string zip, string address, out double? latitude, out double? longitude, out string error, string location)
         {
             string apiKey = String.Empty;
-            Hashtable ht = DotNetNuke.Entities.Portals.PortalSettings.GetTabModuleSettings(tabModuleId);
+            Hashtable ht = DotNetNuke.Entities.Portals.PortalSettings.GetTabModuleSettings(TabModuleId);
             string displayProvider = Convert.ToString(ht["DisplayProvider"]);
             ReadOnlyCollection<MapProviderType> mpType = MapProviderType.GetMapProviderTypes();
             foreach (MapProviderType type in mpType)
@@ -429,13 +428,13 @@ namespace Engage.Dnn.Locator
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Globals.NavigateURL(TabId, "Import", "mid=" + ModuleId + "&tmid=" + tabModuleId));
+            Response.Redirect(Globals.NavigateURL(TabId, "Import", "mid=" + ModuleId));
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             Location.DeleteLocation(locationId);
-            Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId));
+            Response.Redirect(EditUrl("Import"));
         }
 
         protected void rptCustomAttributes_ItemDataBound(object sender, RepeaterItemEventArgs e)

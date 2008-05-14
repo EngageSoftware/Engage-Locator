@@ -29,7 +29,6 @@ namespace Engage.Dnn.Locator
 {
     partial class DataImport : ModuleBase
     {
-        private static int tabModuleId;
         protected TextEditor teLocationDetails;
         private const int checkboxColumn = 15;
         private const int commentsColumn = 14;
@@ -200,9 +199,9 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        public static bool IsConfigured(ref string error)
+        public bool IsConfigured(ref string error)
         {
-            Hashtable settings = DotNetNuke.Entities.Portals.PortalSettings.GetTabModuleSettings(tabModuleId);
+            Hashtable settings = DotNetNuke.Entities.Portals.PortalSettings.GetTabModuleSettings(base.TabModuleId);
             string mapProvider = Convert.ToString(settings["DisplayProvider"]);
             if (mapProvider == String.Empty)
             {
@@ -268,7 +267,7 @@ namespace Engage.Dnn.Locator
         protected void dgLocations_EditCommand(object source, DataGridCommandEventArgs e)
         {
             Label locationId = (Label) e.Item.FindControl("lblLocationId");
-            Response.Redirect(Globals.NavigateURL(TabId, "ManageLocations", "mid=" + ModuleId + "&tmid=" + tabModuleId + "&lid=" + locationId.Text));
+            Response.Redirect(Globals.NavigateURL(TabId, "ManageLocations", "mid=" + ModuleId + "&lid=" + locationId.Text));
         }
 
         protected void dgLocations_CancelCommand(object source, DataGridCommandEventArgs e)
@@ -296,7 +295,7 @@ namespace Engage.Dnn.Locator
        
         protected void btnAddLocation_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Globals.NavigateURL(TabId, "ManageLocations", "mid=" + ModuleId + "&tmid=" + tabModuleId));
+            Response.Redirect(Globals.NavigateURL(TabId, "ManageLocations", "mid=" + ModuleId + "&tmid=" + TabModuleId));
         }
 
         protected void rbLocations_CheckChanged(object sender, EventArgs e)
@@ -376,7 +375,7 @@ namespace Engage.Dnn.Locator
         protected void dgComments_EditCommand(object source, DataGridCommandEventArgs e)
         {
             Label commentId = (Label)e.Item.FindControl("lblCommentId");
-            Response.Redirect(Globals.NavigateURL(TabId, "ManageComments", "mid=" + ModuleId + "&tmid=" + tabModuleId + "&cid=" + commentId.Text));
+            Response.Redirect(Globals.NavigateURL(TabId, "ManageComments", "mid=" + ModuleId + "&cid=" + commentId.Text));
         }
 
         protected void dgComments_DeleteCommand(object source, DataGridCommandEventArgs e)
@@ -448,12 +447,12 @@ namespace Engage.Dnn.Locator
 
         protected void btnApprovedComments_Click(object sender, EventArgs e)
         {
-            Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId + "&lid=1186" + "&approved=true"));
+            Response.Redirect(EditUrl("", "", "Import", "lid=1186" + "&approved=true"));
         }
 
         protected void btnNewComents_Click(object sender, EventArgs e)
         {
-            Response.Redirect(EditUrl("", "", "Import", "tmid=" + TabModuleId + "&lid=1186" + "&approved=false"));
+            Response.Redirect(EditUrl("", "", "Import", "lid=1186" + "&approved=false"));
         }
 
         protected void dgLocations_ItemDataBound(object sender, DataGridItemEventArgs e)
