@@ -678,6 +678,13 @@ namespace Engage.Dnn.Locator
                 error = "Display Setting \"Show Location Details\" not set.";
                 return false;
             }
+
+            if (settings["DisplayResultsTabId"] == null)
+            {
+                error = "Display Results not set.";
+                return false;
+            }
+
         }
 
         protected void rptLocations_ItemDataBound(object sender, RepeaterItemEventArgs e)

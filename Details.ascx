@@ -52,6 +52,13 @@ function show(d)
     <% } %>
     <tr>
         <td>
+            <div id="div_customAttributes">
+                <asp:PlaceHolder ID="plhCustomAttributes" runat="server"></asp:PlaceHolder>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <div>
                 <asp:Label ID="lblLocationComments" runat="server" CssClass="SubHead" Text="Comments"
                     resourcekey="lblLocationComments" />

@@ -1,8 +1,10 @@
 using System;
 using System.Data;
+using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Localization;
 
 namespace Engage.Dnn.Locator
 {
@@ -14,7 +16,38 @@ namespace Engage.Dnn.Locator
         {
             if(!Page.IsPostBack)
             {
-                lblLocationId.Text = Request.QueryString["lid"];
+                BindData();
+            }
+
+        }
+
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(Globals.NavigateURL(TabId));
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            if(!Page.IsValid) return;
+            bool approved = false;
+            if(Settings["ModerateComments"].ToString() == "False")
+                approved = true;
+            Location.InsertComment(Convert.ToInt32(lblLocationId.Text), txtComment.Text, txtSubmittedBy.Text, approved);
+            txtComment.Text = string.Empty;
+            txtSubmittedBy.Text = string.Empty;
+            Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text));
+            rptComments.DataSource = location.GetComments(true);
+            rptComments.DataBind();
+            lblCommentSubmitted.Visible = true;
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void BindData()
+        {
+                 lblLocationId.Text = Request.QueryString["lid"];
                 Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text));
 
                 lblLocationName.Text = location.Name;
@@ -42,32 +75,26 @@ namespace Engage.Dnn.Locator
                 }
                 else
                     rptComments.Visible = false;
+
+            foreach (Attribute a in location.GetAttributes())
+            {
+                Label l = new Label();
+                string text = Localization.GetString(a.AttributeName, LocalResourceFile);
+                l.Text = text;
+                plhCustomAttributes.Controls.Add(l);
+
+                TextBox t = new TextBox();
+                t.Text = a.AttributeValue;
+                plhCustomAttributes.Controls.Add(t);
+
+                Literal lit = new Literal();
+                lit.Text = "<br />";
+                plhCustomAttributes.Controls.Add(lit);
+
             }
-
-        }
-
-        protected void btnBack_Click(object sender, EventArgs e)
-        {
-            Response.Redirect(Globals.NavigateURL(TabId));
-        }
-
-        protected void btnSubmit_Click(object sender, EventArgs e)
-        {
-            if(!Page.IsValid) return;
-            bool approved = false;
-            if(Settings["ModerateComments"].ToString() == "False")
-                approved = true;
-            Location.InsertComment(Convert.ToInt32(lblLocationId.Text), txtComment.Text, txtSubmittedBy.Text, approved);
-            txtComment.Text = string.Empty;
-            txtSubmittedBy.Text = string.Empty;
-            Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text));
-            rptComments.DataSource = location.GetComments(true);
-            rptComments.DataBind();
-            lblCommentSubmitted.Visible = true;
         }
 
         #endregion
-
         #region Properties
 
         protected bool ShowLocationDetails

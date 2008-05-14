@@ -156,4 +156,7 @@
   <data name="rfvComment.Text" xml:space="preserve">
     <value>Please enter a comment</value>
   </data>
+  <data name="Dog.Text" xml:space="preserve">
+    <value>Label is Here...</value>
+  </data>
 </root>

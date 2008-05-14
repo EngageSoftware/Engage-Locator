@@ -252,7 +252,14 @@ namespace Engage.Dnn.Locator
             return DataProvider.Instance().GetComments(_locationId, approved);
         }
 
+        public List<Attribute> GetAttributes()
+        {
+            return Attribute.GetAttributes(_locationTypeId, _locationId);
+        }
+
         #endregion
+
+        #region Static Methods
 
         public static DataTable GetCountriesList(int portalId)
         {
@@ -330,6 +337,9 @@ namespace Engage.Dnn.Locator
 
             return loc;
         }
+
+        #endregion
+
 
     }
 }
