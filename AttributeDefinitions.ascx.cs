@@ -1,3 +1,12 @@
+//Copyright (c) 2004-2007
+//by Engage Software ( http://www.engagesoftware.com )
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//DEALINGS IN THE SOFTWARE.
+
 using System;
 using System.Web.UI.WebControls;
 using DotNetNuke;
@@ -6,7 +15,6 @@ using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
-//using DotNetNuke.Entities.Profile;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
@@ -19,12 +27,6 @@ using DotNetNuke.Framework.Providers;
 
 namespace Engage.Dnn.Locator
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ProfileDefinitions PortalModuleBase is used to manage the Profile attributes
-    /// for a portal
-    /// </summary>
-    /// -----------------------------------------------------------------------------
     partial class AttributeDefinitions : PortalModuleBase, IActionable
     {
         protected override void OnInit(EventArgs e)
@@ -41,7 +43,7 @@ namespace Engage.Dnn.Locator
             this.cmdRefresh.Click += new EventHandler(cmdRefresh_Click);
         }
 
-        #region "Constants"
+        #region Constants
 
         const int COLUMN_REQUIRED = 9;
         const int COLUMN_VISIBLE = 10;
@@ -50,7 +52,7 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region "Protected Members"
+        #region Protected Members
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether we are dealing with SuperUsers
@@ -131,12 +133,12 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region "Private Members"
+        #region Private Members
         //private LocationTypeAttributeDefinitionCollection m_objAttributes;
         private DataTable _objAttributes;
         #endregion
 
-        #region "Private Methods"
+        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -349,7 +351,7 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region "Public Methods"
+        #region Public Methods
 
         public string DisplayDataType(AttributeDefinition definition)
         {
@@ -366,7 +368,7 @@ namespace Engage.Dnn.Locator
         }
         #endregion
 
-        #region "Event Handlers"
+        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -610,7 +612,7 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region "Optional Interfaces"
+        #region Optional Interfaces
 
         ModuleActionCollection IActionable.ModuleActions
         {

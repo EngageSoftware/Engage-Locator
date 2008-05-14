@@ -88,10 +88,10 @@ document.getElementById(d).style.display = "";
                 <ItemTemplate> 
                     <tr>
                         <td class="locationComment">
-                            <asp:Label ID="lblComment" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Comment").ToString())%></asp:Label>    
+                            <asp:Label ID="lblComment" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Text").ToString())%></asp:Label>    
                         </td>
                         <td>
-                            <asp:Label ID="lblCommentAuthor" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "CommentAuthor").ToString())%></asp:Label>
+                            <asp:Label ID="lblCommentAuthor" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Author").ToString())%></asp:Label>
                         </td>
                     </tr>
                 </ItemTemplate>

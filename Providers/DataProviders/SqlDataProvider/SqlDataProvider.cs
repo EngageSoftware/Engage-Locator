@@ -617,17 +617,17 @@ namespace Engage.Dnn.Locator.Data
                     CreateIntegerParam("@commentId", commentId)).Tables[0];
             Comment c = new Comment();
             c.CommentId = Convert.ToInt32(comment.Rows[0]["CommentId"]);
-            c.Text = comment.Rows[0]["Comment"].ToString();
+            c.Text = comment.Rows[0]["Text"].ToString();
             c.Approved = Convert.ToBoolean(comment.Rows[0]["Approved"].ToString());
             c.SubmittedBy = comment.Rows[0]["Author"].ToString();
-            c.LocationName = comment.Rows[0]["LocationName"].ToString();
+            c.LocationName = comment.Rows[0]["Name"].ToString();
 
             return c;
         }
 
         public override void SaveComment(Comment myComment)
         {
-            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spSaveComment", CreateIntegerParam("@commentId", myComment.CommentId), CreateVarcharParam("@comment", myComment.Text, 255), CreateVarcharParam("@submittedBy", myComment.SubmittedBy, 50), CreateIntegerParam("@approved", Convert.ToInt32(myComment.Approved)));
+            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spSaveComment", CreateIntegerParam("@commentId", myComment.CommentId), CreateVarcharParam("@text", myComment.Text, 255), CreateVarcharParam("@submittedBy", myComment.SubmittedBy, 50), CreateIntegerParam("@approved", Convert.ToInt32(myComment.Approved)));
         }
 
         public override void DeleteComment(int commentId)

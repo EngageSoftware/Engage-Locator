@@ -40,7 +40,7 @@ namespace Engage.Dnn.Locator
             //cmdDelete.Click += new EventHandler(cmdDelete_Click);
         }
 
-        #region "Private Members"
+        #region Private Members
 
         private bool _IsAddMode = Null.NullBoolean;
         private AttributeDefinition _AttributeDefinition;
@@ -48,7 +48,7 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region "Protected Members"
+        #region Protected Members
 
         protected object IsAddMode
         {
@@ -163,7 +163,7 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region "Event Handlers"
+        #region Event Handlers
 
         private void Page_Init(object sender, System.EventArgs e)
         {

@@ -14,13 +14,13 @@ namespace Engage.Dnn.Locator {
     public partial class ManageComment {
         
         /// <summary>
-        /// lblLocationCommentId control.
+        /// lblCommentId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationCommentId;
+        protected global::System.Web.UI.WebControls.Label lblCommentId;
         
         /// <summary>
         /// lblLocation control.

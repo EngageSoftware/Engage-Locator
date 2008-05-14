@@ -3,7 +3,7 @@
 <table>
     <tr>
         <td>
-            <asp:Label ID="lblLocationCommentId" runat="server" Visible="false" />
+            <asp:Label ID="lblCommentId" runat="server" Visible="false" />
         </td>
     </tr>
     <tr>

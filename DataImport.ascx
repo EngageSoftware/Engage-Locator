@@ -216,23 +216,23 @@
                             <asp:TemplateColumn HeaderText="ID" Visible="False" >
                                 <ItemTemplate>
                                     <asp:Label id="lblCommentId" runat="server" CssClass="datagridLables"
-                                        Text='<%# DataBinder.Eval(Container, "DataItem.LocationCommentId", "{0:d}") %>'>
+                                        Text='<%# DataBinder.Eval(Container, "DataItem.CommentId", "{0:d}") %>'>
                                     </asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateColumn>
                             <asp:TemplateColumn HeaderText="Location">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblLocationName" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.LocationName", "{0:d}") %>' />
+                                    <asp:Label ID="lblLocationName" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Name", "{0:d}") %>' />
                                 </ItemTemplate>
                             </asp:TemplateColumn>
                             <asp:TemplateColumn HeaderText="Comment">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblComment" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Comment", "{0:d}") %>' />
+                                    <asp:Label ID="lblComment" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Text", "{0:d}") %>' />
                                 </ItemTemplate>
                             </asp:TemplateColumn>
                             <asp:TemplateColumn HeaderText="Submitted By">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblCommentAuthor" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.CommentAuthor", "{0:d}") %>' />
+                                    <asp:Label ID="lblCommentAuthor" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Author", "{0:d}") %>' />
                                 </ItemTemplate>
                             </asp:TemplateColumn>
                             <asp:TemplateColumn HeaderText="cbApproved">
