@@ -187,15 +187,15 @@ AS
 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByLTID]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByLTID]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsById]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsById]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByLTID]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsById]
 	@LocationTypeId int
 AS
 
-	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes] lta
+	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] lta
 	INNER JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] lt ON lt.LocationTypeId = lta.LocationTypeId
 	WHERE lt.LocationTypeId = @LocationTypeId
 	ORDER BY lta.ViewOrder 
@@ -274,7 +274,15 @@ IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]
 GO
 
-CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes](
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]') AND name = N'PK_{objectQualifier}EngageLocator_AttributeDefinition')
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] DROP CONSTRAINT [PK_{objectQualifier}EngageLocator_AttributeDefinition]
+go
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition](
 	[AttributeDefinitionId] [int] IDENTITY(1,1) NOT NULL,
 	[LocationTypeId] [int] NOT NULL,
 	[AttributeName] [nvarchar](255),
@@ -287,56 +295,48 @@ CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes](
 	[Visible] [bit] NOT NULL
 )
 
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] WITH NOCHECK ADD 
+	CONSTRAINT [PK_{objectQualifier}EngageLocator_AttributeDefinition] PRIMARY KEY  CLUSTERED 
+	(
+		[AttributeDefinitionId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] ADD 
+	CONSTRAINT [FK_{objectQualifier}EngageLocator_AttributeDefinition_{objectQualifier}EngageLocator_LocationType] FOREIGN KEY 
+	(
+		[LocationTypeId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageLocator_LocationType] (
+		[LocationTypeId]
+	)
+GO
+
+
+
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]
 GO
 
-CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes](
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute](
 	[LocationAttributeId] [int] IDENTITY(1,1) NOT NULL,	
 	[LocationId] [int] NOT NULL,
 	[AttributeDefinitionId] [int] NOT NULL,
 	[AttributeValue] [nvarchar](255),
 	[CreateDate] [datetime] NOT NULL,
 	[RevisionDate] [datetime],
-	CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationAttributes] PRIMARY KEY CLUSTERED 
+	CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationAttribute] PRIMARY KEY CLUSTERED 
 	(
 		[LocationAttributeId]
 	)  ON [PRIMARY] 
 )
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}EngageLocator_LocationComments_{objectQualifier}EngageLocator_Location') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_LocationComments_{objectQualifier}EngageLocator_Location
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationComments]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments]
-GO
-
-CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments](
-	[LocationCommentId] [int] IDENTITY(1,1) NOT NULL,
-	[LocationId] [int] NOT NULL,
-	[Comment] [nvarchar](200) NOT NULL,
-	[CommentAuthor] [nvarchar](50) NULL,
-	[CreateDate] [datetime] NOT NULL,
-	[Approved] [bit] NOT NULL,
-	[ApprovedByUser] [int] NULL,
-	[ApprovalDate] [datetime] NULL
-) 
-
-IF  EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationComments]') AND name = N'PK_{objectQualifier}EngageLocator_LocationComments')
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] DROP CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationComments]
-go
-
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] WITH NOCHECK ADD 
-	CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationComments] PRIMARY KEY  CLUSTERED 
-	(
-		[LocationCommentId]
-	)  ON [PRIMARY] 
-GO
-
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] ADD 
-	CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationComments_{objectQualifier}EngageLocator_Location] FOREIGN KEY 
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] ADD 
+	CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_Location] FOREIGN KEY 
 	(
 		[LocationId]
 	) REFERENCES {databaseOwner}[{objectQualifier}EngageLocator_Location] (
@@ -344,37 +344,84 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] ADD
 	)
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spSaveLocationComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spSaveLocationComment]
+if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}EngageLocator_Comments_{objectQualifier}EngageLocator_Location') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comments] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_Comments_{objectQualifier}EngageLocator_Location
 GO
 
-CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spSaveLocationComment]
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Comments]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comments]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationComments]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comments](
+	[CommentId] [int] IDENTITY(1,1) NOT NULL,
+	[LocationId] [int] NOT NULL,
+	[Text] [nvarchar](200) NOT NULL,
+	[Author] [nvarchar](50) NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[Approved] [bit] NOT NULL,
+	[ApprovedByUser] [int] NULL,
+	[ApprovalDate] [datetime] NULL
+) 
+
+IF  EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Comments]') AND name = N'PK_{objectQualifier}EngageLocator_LocationComments')
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] DROP CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationComments]
+go
+
+IF  EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Comments]') AND name = N'PK_{objectQualifier}EngageLocator_LocationComments')
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comments] DROP CONSTRAINT [PK_{objectQualifier}EngageLocator_Comments]
+go
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comments] WITH NOCHECK ADD 
+	CONSTRAINT [PK_{objectQualifier}EngageLocator_Comments] PRIMARY KEY  CLUSTERED 
+	(
+		[CommentId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comments] ADD 
+	CONSTRAINT [FK_{objectQualifier}EngageLocator_Comments_{objectQualifier}EngageLocator_Location] FOREIGN KEY 
+	(
+		[LocationId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageLocator_Location] (
+		[LocationId]
+	)
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spSaveComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spSaveComment]
+GO
+
+CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spSaveComment]
 	@commentId int,
-	@comment nvarchar(255),
+	@text nvarchar(255),
 	@submittedBy nvarchar(50),
 	@approved bit
 AS
-	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_LocationComments]
-	SET Comment = @comment, CommentAuthor = @submittedBy, Approved = @approved
-	WHERE LocationCommentId = @commentId
+	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_Comments]
+	SET Text = @text, Author = @submittedBy, Approved = @approved
+	WHERE CommentId = @commentId
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationComment]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]
 GO
 
-CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationComment]
+CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]
 	@locationId int,
-	@comment varchar(200),
+	@text varchar(200),
 	@submittedBy varchar(50),
 	@approved bit,
 	@userId int
 AS
 	Update 
-		{databaseOwner}[{objectQualifier}EngageLocator_LocationComments]
+		{databaseOwner}[{objectQualifier}EngageLocator_Comments]
 	Set 
-		Comment = @comment, 
-		CommentAuthor = @submittedBy, 
+		[Text] = @text, 
+		Author = @submittedBy, 
 		CreateDate = getdate(), 
 		Approved = @approved, 
 		ApprovalDate = getdate()	
@@ -382,16 +429,16 @@ AS
 		LocationId = @locationId 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationComments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationComments]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetComments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetComments]
 GO
 
-CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationComments]
+CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetComments]
 	@locationId int,
 	@approved bit
 AS
-	SELECT lc.LocationId as 'LocationCommentId', lc.Comment, lc.CommentAuthor, l.[Name], lc.ApprovalDate
-	FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] lc
+	SELECT lc.CommentId, lc.Text, lc.Author, l.[Name], lc.ApprovalDate
+	FROM {databaseOwner}[{objectQualifier}EngageLocator_Comments] lc
 		join {databaseOwner}[{objectQualifier}EngageLocator_Location] l on (lc.LocationId = l.LocationId)
 	where lc.LocationId = @locationId and lc.Approved = @approved
 GO
@@ -404,10 +451,10 @@ CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetNewSubmitte
 	@portalId int,
 	@approved bit
 AS
-	SELECT lc.LocationCommentId, lc.LocationId, lc.Comment, lc.CommentAuthor, lc.Approved, l.[Name], lc.CreateDate
+	SELECT lc.CommentId, lc.LocationId, lc.Text, lc.Author, lc.Approved, l.[Name], lc.CreateDate
 	FROM 
 		{databaseOwner}[{objectQualifier}EngageLocator_Location] l
-		join {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] lc on (l.LocationId = lc.LocationId)
+		join {databaseOwner}[{objectQualifier}EngageLocator_Comments] lc on (l.LocationId = lc.LocationId)
 	WHERE 
 		PortalId = @portalId
 		and lc.Approved = @approved
@@ -415,33 +462,33 @@ AS
 		l.[Name], CreateDate
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertLocationComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocationComment]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertComment]
 GO
 
-CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocationComment]
+CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertComment]
 	@locationId int,
-	@comment varchar(200),
+	@text varchar(200),
 	@submittedBy varchar(50),
 	@approved bit
 AS
-	Insert INTO {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] (LocationId, Comment, CommentAuthor, CreateDate, Approved, ApprovalDate)
-	VALUES (@locationId, @comment, @submittedBy, getdate(), @approved, getdate())
+	Insert INTO {databaseOwner}[{objectQualifier}EngageLocator_Comments] (LocationId, [Text], Author, CreateDate, Approved, ApprovalDate)
+	VALUES (@locationId, @text, @submittedBy, getdate(), @approved, getdate())
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationComment]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetComment]
 GO
 
-CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationComment]
+CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetComment]
 	@commentId int
 AS
-	SELECT lc.LocationCommentId, lc.LocationId, lc.Comment, lc.CommentAuthor, lc.Approved, l.[Name], lc.CreateDate
+	SELECT lc.CommentId, lc.LocationId, lc.[Text], lc.Author, lc.Approved, l.[Name], lc.CreateDate
 	FROM 
 		{databaseOwner}[{objectQualifier}EngageLocator_Location] l
-		join {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] lc on (l.LocationId = lc.LocationId)
+		join {databaseOwner}[{objectQualifier}EngageLocator_Comments] lc on (l.LocationId = lc.LocationId)
 	WHERE 
-		LocationCommentId = @commentId
+		CommentId = @commentId
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -460,7 +507,7 @@ CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spAddAttributeDe
 	@Visible [bit],
 	@Length [int]
 AS
-	INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]
+	INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
 	VALUES (@LocationTypeId, @AttributeName, @DataType, @Length, @DefaultValue, @ValidationExpression, @Required, @ViewOrder, @Visible)
 GO
 
@@ -471,7 +518,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteAttributeDefinition]
 	@AttributeDefinitionId [int]
 AS
-	DELETE FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]
+	DELETE FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
 	WHERE AttributeDefinitionId = @AttributeDefinitionId
 GO
 
@@ -482,7 +529,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinition]
 	@AttributeDefinitionId int
 AS
-	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]
+	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
 	WHERE AttributeDefinitionId = @AttributeDefinitionId
 GO
 
@@ -494,7 +541,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDe
 	@PortalID [int],
 	@Name [nvarchar] (255)
 AS
-	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes] lta
+	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] lta
 	INNER JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] lt ON lt.LocationTypeId = lta.LocationTypeId
 	WHERE lt.PortalID = @PortalID
 	AND lta.AttributeName = @Name
@@ -507,7 +554,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByPortal]
 	@portalId int
 AS
-	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes] lta
+	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] lta
 	INNER JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] lt ON lt.LocationTypeId = lta.LocationTypeId
 	WHERE lt.PortalID = @portalId
 GO
@@ -519,20 +566,20 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByPortal]
 	@portalId int
 AS
-	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes] lta
+	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] lta
 	INNER JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] lt ON lt.LocationTypeId = lta.LocationTypeId
 	WHERE lt.PortalID = @portalId
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocationComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocationComment]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteComment]
 GO
 
 
-CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocationComment]
+CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteComment]
 	@commentId int
 AS
-	Delete from {databaseOwner}[{objectQualifier}EngageLocator_LocationComments] where LocationCommentId = @commentId
+	Delete from {databaseOwner}[{objectQualifier}EngageLocator_Comments] where CommentId = @commentId
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -542,7 +589,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]
 	@locationTypeId int
 AS
-	SELECT AttributeDefinitionId, AttributeName FROM {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes]
+	SELECT AttributeDefinitionId, AttributeName FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
 	WHERE LocationTypeId = @locationTypeId
 GO
 
@@ -553,7 +600,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]
 	@locationId int
 AS
-SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]
+SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
 WHERE LocationId = @locationId
 GO
 
@@ -566,7 +613,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocation
 	@locationId int,
 	@attributeValue nvarchar(255)
 AS
-	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes] SET AttributeValue = @attributeValue 
+	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] SET AttributeValue = @attributeValue 
 	WHERE LocationAttributeId = @locationAttributeId and LocationId = @locationId
 GO
 
@@ -579,7 +626,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAtt
 	@locationId int,
 	@attributeValue nvarchar(255)
 AS
-	Insert into {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes] (LocationId, AttributeDefinitionId, AttributeValue, CreateDate, RevisionDate)
+	Insert into {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] (LocationId, AttributeDefinitionId, AttributeValue, CreateDate, RevisionDate)
 	Values (@locationId, @attributeDefinitionId, @attributeValue, getdate(), getdate())
 GO
 
@@ -601,7 +648,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttribut
 
 AS
 
-	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes] 
+	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] 
 
 	SET DataType = @DataType,
 	DefaultValue = @DefaultValue,

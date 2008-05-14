@@ -9,12 +9,12 @@ using DotNetNuke.Common.Utilities;
 namespace Engage.Dnn.Locator
 {
     /// <summary>
-    /// The LocationAttributeDefinition class provides a Business Layer entity for 
+    /// The AttributeDefinition class provides a Business Layer entity for 
     /// property Definitions
     /// </summary>
     /// -----------------------------------------------------------------------------
     [XmlRoot("attributedefinition", IsNullable = false)]
-    public class LocationTypeAttributeDefinition
+    public class AttributeDefinition
     {
 
         #region "Private Members"
@@ -36,7 +36,7 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        public LocationTypeAttributeDefinition()
+        public AttributeDefinition()
         {
         }
 
@@ -306,10 +306,10 @@ namespace Engage.Dnn.Locator
         }
 
 
-        public LocationTypeAttributeDefinition Clone()
+        public AttributeDefinition Clone()
         {
 
-            LocationTypeAttributeDefinition objClone = new LocationTypeAttributeDefinition();
+            AttributeDefinition objClone = new AttributeDefinition();
             objClone.DataType = this.DataType;
             objClone.DefaultValue = this.DefaultValue;
             objClone.Length = this.Length;

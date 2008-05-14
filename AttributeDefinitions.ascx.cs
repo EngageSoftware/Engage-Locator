@@ -36,7 +36,7 @@ namespace Engage.Dnn.Locator
         private void InitializeComponent()
         {
             this.Init += new EventHandler(this.Page_Init);
-            this.Load += new EventHandler(this.Page_Load);
+            //this.Load += new EventHandler(this.Page_Load);
             this.cmdUpdate.Click += new EventHandler(cmdUpdate_Click);
             this.cmdRefresh.Click += new EventHandler(cmdRefresh_Click);
         }
@@ -143,9 +143,9 @@ namespace Engage.Dnn.Locator
         /// Gets the attributes 
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private LocationTypeAttributeDefinitionCollection GetAttributes()
+        private AttributeDefinitionCollection GetAttributes()
         {
-            return LocationTypeController.GetAttributeDefinitionsById(LocationTypeId, false);
+            return LocationType.GetAttributeDefinitionsById(LocationTypeId, false);
         }
 
         /// -----------------------------------------------------------------------------
@@ -166,10 +166,10 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void DeleteAttribute(int index)
         {
-            LocationTypeAttributeDefinitionCollection locationTypeAttributes = GetAttributes();
-            LocationTypeAttributeDefinition objAttribute = locationTypeAttributes[index];
+            AttributeDefinitionCollection locationTypeAttributes = GetAttributes();
+            AttributeDefinition objAttribute = locationTypeAttributes[index];
 
-            LocationTypeController.DeleteAttributeDefinition(objAttribute);
+            LocationType.DeleteAttributeDefinition(objAttribute);
 
             RefreshGrid();
         }
@@ -183,9 +183,9 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void MoveAttribute(int index, int destIndex)
         {
-            LocationTypeAttributeDefinitionCollection locationTypeAttributes = GetAttributes();
-            LocationTypeAttributeDefinition objAttribute = locationTypeAttributes[index];
-            LocationTypeAttributeDefinition objNext = locationTypeAttributes[destIndex];
+            AttributeDefinitionCollection locationTypeAttributes = GetAttributes();
+            AttributeDefinition objAttribute = locationTypeAttributes[index];
+            AttributeDefinition objNext = locationTypeAttributes[destIndex];
 
             int currentOrder = objAttribute.ViewOrder;
             int nextOrder = objNext.ViewOrder;
@@ -238,12 +238,12 @@ namespace Engage.Dnn.Locator
         {
             FillLocTypeName();
 
-            LocationTypeAttributeDefinitionCollection attributes = GetAttributes();
+            AttributeDefinitionCollection attributes = GetAttributes();
             bool allRequired = true;
             bool allVisible = true;
 
             //Check whether the checkbox column headers are true or false
-            foreach (LocationTypeAttributeDefinition loctypeAttribute in attributes)
+            foreach (AttributeDefinition loctypeAttribute in attributes)
             {
                 if (loctypeAttribute.Required == false)
                 {
@@ -299,12 +299,12 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void Updateattributes()
         {
-            LocationTypeAttributeDefinitionCollection locationTypeAttributes = GetAttributes();
-            foreach (LocationTypeAttributeDefinition objAttribute in locationTypeAttributes)
+            AttributeDefinitionCollection locationTypeAttributes = GetAttributes();
+            foreach (AttributeDefinition objAttribute in locationTypeAttributes)
             {
                 if (objAttribute.IsDirty)
                 {
-                    LocationTypeController.UpdateAttributeDefinition(objAttribute);
+                    LocationType.UpdateAttributeDefinition(objAttribute);
                 }
             }
         }
@@ -319,9 +319,9 @@ namespace Engage.Dnn.Locator
         {
             try
             {
-                LocationTypeAttributeDefinitionCollection objAttributes = GetAttributes();
+                AttributeDefinitionCollection objAttributes = GetAttributes();
                 string[] aryNewOrder = DotNetNuke.UI.Utilities.ClientAPI.GetClientSideReorder(this.grdLocationTypeAttributes.ClientID, this.Page);
-                LocationTypeAttributeDefinition objAttribute;
+                AttributeDefinition objAttribute;
                 DataGridItem objItem;
                 CheckBox chk;
                 for (int i = 0; i <= this.grdLocationTypeAttributes.Items.Count - 1; i++)
@@ -351,7 +351,7 @@ namespace Engage.Dnn.Locator
 
         #region "Public Methods"
 
-        public string DisplayDataType(LocationTypeAttributeDefinition definition)
+        public string DisplayDataType(AttributeDefinition definition)
         {
             string retValue = Null.NullString;
             ListController objListController = new ListController();
@@ -483,13 +483,13 @@ namespace Engage.Dnn.Locator
             bool isAll = e.IsAll;
             int index = e.Item.ItemIndex;
 
-            LocationTypeAttributeDefinitionCollection attributes = GetAttributes();
-            LocationTypeAttributeDefinition loctypeAttribute;
+            AttributeDefinitionCollection attributes = GetAttributes();
+            AttributeDefinition loctypeAttribute;
 
             if (isAll)
             {
                 //Update All the attributes
-                foreach (LocationTypeAttributeDefinition loctypeAttributeX in attributes)
+                foreach (AttributeDefinition loctypeAttributeX in attributes)
                 {
                     switch (propertyName)
                     {
@@ -590,7 +590,7 @@ namespace Engage.Dnn.Locator
                 if (imgColumnControl is ImageButton)
                 {
                     ImageButton delImage = (ImageButton)imgColumnControl;
-                    LocationTypeAttributeDefinition loctypeAttribute = (LocationTypeAttributeDefinition)item.DataItem;
+                    AttributeDefinition loctypeAttribute = (AttributeDefinition)item.DataItem;
 
                     switch (loctypeAttribute.AttributeName.ToLower())
                     {

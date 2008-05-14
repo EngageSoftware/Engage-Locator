@@ -77,9 +77,9 @@
     <Compile Include="DataImport.ascx.designer.cs">
       <DependentUpon>DataImport.ascx</DependentUpon>
     </Compile>
-    <Compile Include="FeaturesController.cs" />
+    <Compile Include="Components\FeaturesController.cs" />
     <Compile Include="LocationAttribute.cs" />
-    <Compile Include="LocationComment.cs" />
+    <Compile Include="Comment.cs" />
     <Compile Include="LocationDetails.ascx.cs">
       <DependentUpon>LocationDetails.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -91,19 +91,16 @@
       <DependentUpon>ManageComment.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AttributesDataProvider.cs" />
-    <Compile Include="AttributesSqlDataProvider.cs" />
     <Compile Include="AttributeDefinitions.ascx.cs">
       <DependentUpon>AttributeDefinitions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="LocationTypeAttributeDefinition.cs">
+    <Compile Include="AttributeDefinition.cs">
     </Compile>
-    <Compile Include="LocationTypeAttributeDefinitionCollection.cs">
+    <Compile Include="AttributeDefinitionCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LocationTypeAttributeDefinitionComparer.cs" />
-    <Compile Include="LocationTypeController.cs" />
+    <Compile Include="AttributeDefinitionComparer.cs" />
     <Compile Include="ManageComment.ascx.designer.cs">
       <DependentUpon>ManageComment.ascx</DependentUpon>
     </Compile>

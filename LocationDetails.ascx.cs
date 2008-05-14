@@ -66,7 +66,7 @@ namespace Engage.Dnn.Locator
                 lblLocationsAddress3.Text = location.City + ", " + region.Value + " " + location.PostalCode;
                 lblPhoneNumber.Text = location.Phone;
 
-                DataTable comments = location.GetLocationComments(true).Tables[0];
+                DataTable comments = location.GetComments(true).Tables[0];
                 if(comments.Rows.Count > 0)
                 {
                     rptComments.DataSource = comments;
@@ -89,11 +89,11 @@ namespace Engage.Dnn.Locator
             bool approved = false;
             if(Settings["ModerateComments"].ToString() == "False")
                 approved = true;
-            Location.InsertLocationComment(Convert.ToInt32(lblLocationId.Text), txtComment.Text, txtSubmittedBy.Text, approved);
+            Location.InsertComment(Convert.ToInt32(lblLocationId.Text), txtComment.Text, txtSubmittedBy.Text, approved);
             txtComment.Text = string.Empty;
             txtSubmittedBy.Text = string.Empty;
             Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text));
-            rptComments.DataSource = location.GetLocationComments(true);
+            rptComments.DataSource = location.GetComments(true);
             rptComments.DataBind();
             lblCommentSubmitted.Visible = true;
         }

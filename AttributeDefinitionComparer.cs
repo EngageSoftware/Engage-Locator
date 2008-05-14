@@ -11,7 +11,7 @@ using System.Collections;
 
 namespace Engage.Dnn.Locator
 {
-    public class LocationTypeAttributeDefinitionComparer : IComparer
+    public class AttributeDefinitionComparer : IComparer
     {
         #region "IComparer Interface"
 
@@ -28,7 +28,7 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         int System.Collections.IComparer.Compare(object x, object y)
         {
-            return ((LocationTypeAttributeDefinition)x).ViewOrder.CompareTo(((LocationTypeAttributeDefinition)y).ViewOrder);
+            return ((AttributeDefinition)x).ViewOrder.CompareTo(((AttributeDefinition)y).ViewOrder);
         }
 
         #endregion

@@ -43,7 +43,7 @@ namespace Engage.Dnn.Locator
         #region "Private Members"
 
         private bool _IsAddMode = Null.NullBoolean;
-        private LocationTypeAttributeDefinition _AttributeDefinition;
+        private AttributeDefinition _AttributeDefinition;
         //private string ResourceFile = "~/Admin/Users/App_LocalResources/LocationType.ascx";
 
         #endregion
@@ -93,7 +93,7 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        protected LocationTypeAttributeDefinition AttributeDefinition
+        protected AttributeDefinition AttributeDefinition
         {
             get
             {
@@ -102,14 +102,14 @@ namespace Engage.Dnn.Locator
                     if ((bool)IsAddMode)
                     {
                         //Create New Attribute Definition
-                        _AttributeDefinition = new LocationTypeAttributeDefinition();
+                        _AttributeDefinition = new AttributeDefinition();
                         _AttributeDefinition.PortalId = UsersPortalId;
                         _AttributeDefinition.LocationTypeId = LocationTypeId;
                     }
                     else
                     {
                         //Get Attribute Definition from Data Store
-                        _AttributeDefinition = LocationTypeController.GetAttributeDefinition(AttributeDefinitionID, PortalId);
+                        _AttributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionID, PortalId);
                     }
                 }
                 return _AttributeDefinition;
@@ -221,18 +221,18 @@ namespace Engage.Dnn.Locator
         /// cmdUpdate_Click runs when the Delete button is clicked
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void cmdUpdate_Click(object sender, EventArgs e)
+        protected void cmdUpdate_Click(object sender, EventArgs e)
         {
             try
             {
                 if ((bool)IsAddMode)
                 {
-                    LocationTypeController.AddAttributeDefinition(AttributeDefinition);
+                    LocationType.AddAttributeDefinition(AttributeDefinition);
                     Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + LocationTypeId));
                 }
                 else
                 {
-                    LocationTypeController.UpdateAttributeDefinition(AttributeDefinition);
+                    LocationType.UpdateAttributeDefinition(AttributeDefinition);
                     Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + LocationTypeId));
                 }
             }
@@ -248,7 +248,7 @@ namespace Engage.Dnn.Locator
         /// cmdCancel_Click runs when the Delete button is clicked
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void cmdCancel_Click(object sender, EventArgs e)
+        protected void cmdCancel_Click(object sender, EventArgs e)
         {
             try
             {
@@ -266,18 +266,18 @@ namespace Engage.Dnn.Locator
         /// cmdDelete_Click runs when the Delete button is clicked
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void cmdDelete_Click(object sender, System.EventArgs e)
+        protected void cmdDelete_Click(object sender, System.EventArgs e)
         {
             try
             {
                 if (AttributeDefinitionID != Null.NullInteger)
                 {
                     //Declare Definition and "retrieve" it from the Attribute Editor
-                    LocationTypeAttributeDefinition attributeDefinition;
-                    attributeDefinition = (LocationTypeAttributeDefinition)Attributes.DataSource;
+                    AttributeDefinition attributeDefinition;
+                    attributeDefinition = (AttributeDefinition)Attributes.DataSource;
 
                     //Delete the Attribute Definition
-                    LocationTypeController.DeleteAttributeDefinition(attributeDefinition);
+                    LocationType.DeleteAttributeDefinition(attributeDefinition);
                 }
 
                 //Redirect to Definitions page

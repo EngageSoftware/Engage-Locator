@@ -8,8 +8,17 @@ namespace Engage.Dnn.Locator
 {
     public class YahooProvider:MapProvider
     {
-
         #region MapProvider Members
+
+        public static string SearchUrl
+        {
+            get { return "http://api.local.yahoo.com/MapsService/V1/geocode?output=xml"; }
+        }
+
+        public override string Url
+        {
+            get{ return SearchUrl;}
+        }
 
         public override string MapProviderUrl
         {
@@ -212,5 +221,44 @@ namespace Engage.Dnn.Locator
         }
 
         #endregion
+    }
+
+    public enum YahooStatusCode
+    {
+        Success = 200,
+        /// <summary>
+        /// The parameters passed to the service did not match as expected. The Message should tell you what was missing or incorrect.
+        /// </summary>
+        BadRequest = 400,
+        /// <summary>
+        /// You do not have permission to access this resource, or are over your rate limit.
+        /// </summary>
+        Forbidden = 403,
+        /// <summary>
+        /// An internal problem prevented us from returning data to you.
+        /// </summary>
+        ServiceUnavailable = 503
+    }
+
+    public enum YahooAccuracyCode
+    {
+        Unknown = 0,
+        Country = 1,
+        State = 2,
+        City = 4,
+        Zip = 5,
+        ZipPlus2 = -1,
+        ZipPlus4 = -2,
+        Street = 6,
+        Address = 8
+    }
+
+    public struct YahooGeocodeResult
+    {
+        public double latitude;
+        public double longitude;
+
+        public YahooAccuracyCode accuracyCode;
+        public YahooStatusCode statusCode;
     }
 }

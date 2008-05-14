@@ -6,82 +6,9 @@ using System.Net;
 
 namespace Engage.Dnn.Locator
 {
-    public enum GoogleStatusCode
-    {
-        /// <summary>
-        /// No errors occurred; the address was successfully parsed and its geocode has been returned.
-        /// </summary>
-        Success = 200,
-        /// <summary>
-        /// A geocoding request could not be successfully processed, yet the exact reason for the failure is not known.
-        /// </summary>
-        ServerError = 500,
-        /// <summary>
-        /// The HTTP q parameter was either missing or had no value.
-        /// </summary>
-        MissingAddress = 601,
-        /// <summary>
-        /// No corresponding geographic location could be found for the specified address. This may be due to the fact that the address is relatively new, or it may be incorrect.
-        /// </summary>
-        UnknownAddress = 602,
-        /// <summary>
-        /// The geocode for the given address cannot be returned due to legal or contractual reasons.
-        /// </summary>
-        UnavailableAddress = 603,
-        /// <summary>
-        /// The given key is either invalid or does not match the domain for which it was given.
-        /// </summary>
-        BadKey = 610
-    }
-
-    public enum YahooStatusCode
-    {
-        Success = 200,
-        /// <summary>
-        /// The parameters passed to the service did not match as expected. The Message should tell you what was missing or incorrect.
-        /// </summary>
-        BadRequest = 400,
-        /// <summary>
-        /// You do not have permission to access this resource, or are over your rate limit.
-        /// </summary>
-        Forbidden = 403,
-        /// <summary>
-        /// An internal problem prevented us from returning data to you.
-        /// </summary>
-        ServiceUnavailable = 503
-    }
-
-    public enum GoogleAccuracyCode
-    {
-        Unknown = 0,
-        Country = 1,
-        Region = 2,
-        Subregion = 3,
-        Town = 4,
-        PostalCode = 5,
-        Street = 6,
-        Intersection = 7,
-        Address = 8
-    }
-
-    public enum YahooAccuracyCode
-    {
-        Unknown = 0,
-        Country = 1,
-        State = 2,
-        City = 4,
-        Zip = 5,
-        ZipPlus2 = -1,
-        ZipPlus4 = -2,
-        Street = 6,
-        Address = 8
-    }
-
+    //NUKE THIS CLASS - behavior should be on mapprovider class(es).hk!
     public static class SearchUtility
     {
-        private const string yahooSearchUrl = "http://api.local.yahoo.com/MapsService/V1/geocode?output=xml";
-        private const string googleSearchUrl = "http://maps.google.com/maps/geo?output=csv";
-
         public static bool IsYahooMoreAccurateThanGoogle(YahooAccuracyCode yahoo, GoogleAccuracyCode google)
         {
             if ((int)yahoo > -1) //if yahoo is positive, then they can just be compared based on number
@@ -135,7 +62,7 @@ namespace Engage.Dnn.Locator
         {
             YahooGeocodeResult result = new YahooGeocodeResult();
 
-            Uri searchUrl = new Uri(yahooSearchUrl + queryParams + "&appid=" + apiKey);
+            Uri searchUrl = new Uri(YahooProvider.SearchUrl + queryParams + "&appid=" + apiKey);
             try
             {
                 using (XmlReader resultsReader = XmlReader.Create(searchUrl.ToString()))
@@ -194,7 +121,7 @@ namespace Engage.Dnn.Locator
                 try
                 {
                     WebClient client = new WebClient();
-                    string[] csvResults = client.DownloadString(googleSearchUrl + "&q=" + HttpUtility.UrlEncode(location) + "&key=" + apiKey).Split(',');
+                    string[] csvResults = client.DownloadString(GoogleProvider.SearchUrl + "&q=" + HttpUtility.UrlEncode(location) + "&key=" + apiKey).Split(',');
 
                     result.statusCode = (GoogleStatusCode)int.Parse(csvResults[0]);
                     result.accuracyCode = (GoogleAccuracyCode)int.Parse(csvResults[1]);
@@ -273,22 +200,5 @@ namespace Engage.Dnn.Locator
             return accuracyCode;
         }
     }
-
-    public struct YahooGeocodeResult
-    {
-        public double latitude;
-        public double longitude;
-
-        public YahooAccuracyCode accuracyCode;
-        public YahooStatusCode statusCode;
-    }
-
-    public struct GoogleGeocodeResult
-    {
-        public double latitude;
-        public double longitude;
-
-        public GoogleAccuracyCode accuracyCode;
-        public GoogleStatusCode statusCode;
-    }
+   
 }

@@ -22,6 +22,8 @@ namespace Engage.Dnn.Locator.Data
     {
         #region Constants
         private const string providerType = "data";
+        public const string CacheKey = "AttributeDefinitions{0}";
+        public const int CacheTimeOut = 20;
 
         #endregion
 
@@ -566,37 +568,37 @@ namespace Engage.Dnn.Locator.Data
             return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetEngageLocatorTabModules", CreateIntegerParam("@portalId", portalId)).Tables[0];
         }
 
-        public override DataTable GetLocationAttributeDefinitions(int locationTypeId)
+        public override DataTable GetAttributeDefinitions(int locationTypeId)
         {
             return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationAttributeDefinitions", CreateIntegerParam("@locationTypeId", locationTypeId)).Tables[0];
         }
 
-        public override void UpdateLocationAttribute(int locationAttributeId, int locationId, string attributeValue)
+        public override void UpdateAttribute(int locationAttributeId, int locationId, string attributeValue)
         {
             SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spUpdateLocationAttribute", CreateIntegerParam("@locationAttributeId", locationAttributeId), CreateIntegerParam("@locationId", locationId), CreateVarcharParam("@attributeValue", attributeValue, 255));
         }
 
-        public override DataTable GetLocationAttributeValues(int locationId)
+        public override DataTable GetAttributeValues(int locationId)
         {
             return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationAttributeValues", CreateIntegerParam("@locationId", locationId)).Tables[0];
         }
 
-        public override void InsertLocationComment(int locationId, string comment, string submittteBy, bool approved)
+        public override void InsertComment(int locationId, string text, string submittteBy, bool approved)
         {
-            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spInsertLocationComment",
-                CreateIntegerParam("@locationId", locationId), CreateVarcharParam("@comment", comment, 200), CreateVarcharParam("@submittedBy", submittteBy, 50),
+            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spInsertComment",
+                CreateIntegerParam("@locationId", locationId), CreateVarcharParam("@text", text, 200), CreateVarcharParam("@submittedBy", submittteBy, 50),
                 CreateIntegerParam("@approved", Convert.ToInt32(approved)));
         }
 
-        public override void UpdateLocationComment(int locationId, string comment, string submittedBy, bool approved, int userId)
+        public override void UpdateComment(int locationId, string comment, string submittedBy, bool approved, int userId)
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override DataSet GetLocationComments(int locationId, bool approved)
+        public override DataSet GetComments(int locationId, bool approved)
         {
             return
-                SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationComments",
+                SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetComments",
                     CreateIntegerParam("@locationId", locationId), CreateIntegerParam("@approved", Convert.ToInt32(approved)));
         }
 
@@ -608,34 +610,68 @@ namespace Engage.Dnn.Locator.Data
             return comments.Tables[0];
         }
 
-        public override LocationComment GetLocationComment(int commentId)
+        public override Comment GetComment(int commentId)
         {
             DataTable comment =
-                SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationComment",
+                SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetComment",
                     CreateIntegerParam("@commentId", commentId)).Tables[0];
-            LocationComment locationComment = new LocationComment();
-            locationComment.CommentId = Convert.ToInt32(comment.Rows[0]["LocationCommentId"]);
-            locationComment.Comment = comment.Rows[0]["Comment"].ToString();
-            locationComment.Approved = Convert.ToBoolean(comment.Rows[0]["Approved"].ToString());
-            locationComment.SubmittedBy = comment.Rows[0]["CommentAuthor"].ToString();
-            locationComment.LocationName = comment.Rows[0]["LocationName"].ToString();
+            Comment c = new Comment();
+            c.CommentId = Convert.ToInt32(comment.Rows[0]["CommentId"]);
+            c.Text = comment.Rows[0]["Comment"].ToString();
+            c.Approved = Convert.ToBoolean(comment.Rows[0]["Approved"].ToString());
+            c.SubmittedBy = comment.Rows[0]["Author"].ToString();
+            c.LocationName = comment.Rows[0]["LocationName"].ToString();
 
-            return locationComment;
+            return c;
         }
 
-        public override void SaveLocationComment(LocationComment myComment)
+        public override void SaveComment(Comment myComment)
         {
-            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spSaveLocationComment", CreateIntegerParam("@commentId", myComment.CommentId), CreateVarcharParam("@comment", myComment.Comment, 255), CreateVarcharParam("@submittedBy", myComment.SubmittedBy, 50), CreateIntegerParam("@approved", Convert.ToInt32(myComment.Approved)));
+            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spSaveComment", CreateIntegerParam("@commentId", myComment.CommentId), CreateVarcharParam("@comment", myComment.Text, 255), CreateVarcharParam("@submittedBy", myComment.SubmittedBy, 50), CreateIntegerParam("@approved", Convert.ToInt32(myComment.Approved)));
         }
 
-        public override void DeleteLocatinComment(int commentId)
+        public override void DeleteComment(int commentId)
         {
-            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spDeleteLocationComment", CreateIntegerParam("@commentId", commentId));
+            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spDeleteComment", CreateIntegerParam("@commentId", commentId));
         }
 
-        public override void AddLocationAttribute(int attributeDefinitionId, int locationId, string attributeValue)
+        public override void AddAttribute(int attributeDefinitionId, int locationId, string attributeValue)
         {
             SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spAddLocationAttribute", CreateIntegerParam("@attributeDefinitionId", attributeDefinitionId), CreateIntegerParam("@locationId", locationId), CreateVarcharParam("@attributeValue", attributeValue, 255));
         }
+
+        #region Custom Attributes Methods
+
+        public override IDataReader GetAttributeDefinitionsById(int locationTypeId)
+        {
+            return SqlHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetAttributeDefinitionsById", new SqlParameter("@LocationTypeId", locationTypeId));
+        }
+
+        public override int AddAttributeDefinition(int portalId, int LocationTypeId, int dataType, string defaultValue, string attributeName, bool required, string validationExpression, int viewOrder, bool visible, int length)
+        {
+            return SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spAddAttributeDefinition", new SqlParameter("@PortalId", portalId), new SqlParameter("@LocationTypeId", LocationTypeId), new SqlParameter("@DataType", dataType), new SqlParameter("@DefaultValue", defaultValue), new SqlParameter("@AttributeName", attributeName), new SqlParameter("@Required", required), new SqlParameter("@ValidationExpression", validationExpression), new SqlParameter("@ViewOrder", viewOrder), new SqlParameter("@Visible", visible), new SqlParameter("@Length", length));
+        }
+
+        public override void DeleteAttributeDefinition(int attributeDefinitionId)
+        {
+            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spDeleteAttributeDefinition", new SqlParameter("@AttributeDefinitionId", attributeDefinitionId));
+        }
+
+        public override IDataReader GetAttributeDefinition(int attributeDefinitionId)
+        {
+            return SqlHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetAttributeDefinition", new SqlParameter("@AttributeDefinitionId", attributeDefinitionId));
+        }
+
+        public override IDataReader GetAttributeDefinitionByName(int portalId, string name)
+        {
+            return SqlHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetAttributeDefinitionByName", new SqlParameter("@PortalID", portalId), new SqlParameter("@Name", name));
+        }
+
+        public override int UpdateAttributeDefinition(int attributeDefinitionId, int dataType, string defaultValue, string attributeName, bool required, string validationExpression, int viewOrder, bool visible, int length)
+        {
+            return SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spUpdateAttributeDefinition", new SqlParameter("@AttributeDefinitionId", attributeDefinitionId), new SqlParameter("@DataType", dataType), new SqlParameter("@DefaultValue", defaultValue), new SqlParameter("@AttributeName", attributeName), new SqlParameter("@Required", required), new SqlParameter("@ValidationExpression", validationExpression), new SqlParameter("@ViewOrder", viewOrder), new SqlParameter("@Visible", visible), new SqlParameter("@Length", length));
+        }
+
+        #endregion
     }
 }

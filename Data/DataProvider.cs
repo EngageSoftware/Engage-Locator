@@ -96,16 +96,29 @@ namespace Engage.Dnn.Locator.Data
         public abstract DataTable GetAllLocationsByType(int portalId, string[] types);
         public abstract DataTable GetImportedLocationStatistics(int portalId);
         public abstract DataTable GetEngageLocatorTabModules(int portalId);
-        public abstract void InsertLocationComment(int locationId, string comment, string submittteBy, bool approved);
-        public abstract void UpdateLocationComment(int locationId, string comment, string submittedBy, bool approved, int userId);
-        public abstract DataSet GetLocationComments(int locationId, bool approved);
+        public abstract void InsertComment(int locationId, string comment, string submittteBy, bool approved);
+        public abstract void UpdateComment(int locationId, string comment, string submittedBy, bool approved, int userId);
+        public abstract DataSet GetComments(int locationId, bool approved);
         public abstract DataTable GetNewSubmittedComments(int portalId, bool approved);
-        public abstract LocationComment GetLocationComment(int commentId);
-        public abstract void SaveLocationComment(LocationComment comment);
-        public abstract void DeleteLocatinComment(int commentId);
-        public abstract DataTable GetLocationAttributeDefinitions(int locationTypeId);
-        public abstract DataTable GetLocationAttributeValues(int locationId);
-        public abstract void AddLocationAttribute(int attributeDefinitionId, int locationId, string attributeValue);
-        public abstract void UpdateLocationAttribute(int attributeDefinitionId, int locationId, string attributeValue);
+        public abstract Comment GetComment(int commentId);
+        public abstract void SaveComment(Comment comment);
+        public abstract void DeleteComment(int commentId);
+
+        public abstract DataTable GetAttributeDefinitions(int locationTypeId);
+        public abstract DataTable GetAttributeValues(int locationId);
+        public abstract void AddAttribute(int attributeDefinitionId, int locationId, string attributeValue);
+        public abstract void UpdateAttribute(int attributeDefinitionId, int locationId, string attributeValue);
+
+        #region Custom Attributes Methods
+
+        public abstract IDataReader GetAttributeDefinitionsById(int locationTypeId);
+        public abstract int AddAttributeDefinition(int portalId, int LocationTypeId, int dataType, string defaultValue, string attributeName, bool required, string validationExpression, int viewOrder, bool visible, int length);
+        public abstract void DeleteAttributeDefinition(int definitionId);
+        public abstract IDataReader GetAttributeDefinition(int definitionId);
+        public abstract IDataReader GetAttributeDefinitionByName(int portalId, string name);
+        public abstract int UpdateAttributeDefinition(int definitionId, int dataType, string defaultValue, string attributeName, bool required, string validationExpression, int viewOrder, bool visible, int length);
+
+        #endregion
+
     }
 }

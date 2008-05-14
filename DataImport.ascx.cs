@@ -164,7 +164,7 @@ namespace Engage.Dnn.Locator
                         else
                             lblLocationComments.Text = Localization.GetString("lblLocationComments_new", LocalResourceFile);
                         Localization.LocalizeDataGrid(ref dgSubmittedComments, LocalResourceFile);
-                        dgSubmittedComments.DataSource = location.GetLocationComments(approved);
+                        dgSubmittedComments.DataSource = location.GetComments(approved);
                         dgSubmittedComments.DataBind();
                     }
                     else
@@ -385,7 +385,7 @@ namespace Engage.Dnn.Locator
             Label lblCommentId = (Label)e.Item.FindControl("lblCommentId");
             if (lblCommentId.Text != "")
             {
-                LocationComment.DeleteComment(Convert.ToInt32(lblCommentId.Text));
+                Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text));
             }
             DataTable comments = Location.GetNewSubmittedComments(PortalId, false);
             if (comments.Rows.Count > 0)
@@ -402,7 +402,7 @@ namespace Engage.Dnn.Locator
                 if (cbApproved.Checked)
                 {
                     Label lblCommentId = (Label)row.FindControl("lblCommentId");
-                    LocationComment.DeleteComment(Convert.ToInt32(lblCommentId.Text));
+                    Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text));
                 }
             }
             DataTable comments = Location.GetNewSubmittedComments(PortalId, false);
@@ -420,7 +420,7 @@ namespace Engage.Dnn.Locator
                 if (cbApproved.Checked)
                 {
                     Label lblCommentId = (Label)row.FindControl("lblCommentId");
-                    LocationComment comment = LocationComment.GetComment(Convert.ToInt32(lblCommentId.Text));
+                    Comment comment = Comment.GetComment(Convert.ToInt32(lblCommentId.Text));
                     comment.Approved = true;
                     comment.Update();
                 }
@@ -464,8 +464,8 @@ namespace Engage.Dnn.Locator
                 TableCell commentsCell = e.Item.Cells[0];
                 Label id = (Label)commentsCell.FindControl("lblLocationId");
                 Location location = Location.GetLocation(Convert.ToInt32(id.Text));
-                DataSet approved = location.GetLocationComments(true);
-                DataSet waiting = location.GetLocationComments(false);
+                DataSet approved = location.GetComments(true);
+                DataSet waiting = location.GetComments(false);
                 LinkButton approvedComments = (LinkButton)commentsCell.FindControl("btnApprovedComments");
                 if(approved.Tables[0].Rows.Count > 0)
                 {

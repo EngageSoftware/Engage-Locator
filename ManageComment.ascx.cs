@@ -15,11 +15,11 @@ namespace Engage.Dnn.Locator
                 if (!Page.IsPostBack)
                 {
                     int commentId = Convert.ToInt32(Request.QueryString["cid"]);
-                    LocationComment comment = LocationComment.GetComment(commentId);
+                    Comment comment = Comment.GetComment(commentId);
 
                     lblLocationCommentId.Text = comment.CommentId.ToString();
                     lblLocationTitle.Text = comment.LocationName;
-                    txtComment.Text = comment.Comment;
+                    txtComment.Text = comment.Text;
                     txtSubmittedBy.Text = comment.SubmittedBy;
                     if (comment.Approved)
                         rbApproved.Checked = true;
@@ -41,9 +41,9 @@ namespace Engage.Dnn.Locator
 
         protected void btnSaveComment_Click(object sender, EventArgs e)
         {
-            LocationComment comment = new LocationComment();
+            Comment comment = new Comment();
             comment.CommentId = Convert.ToInt32(lblLocationCommentId.Text);
-            comment.Comment = txtComment.Text;
+            comment.Text = txtComment.Text;
             comment.SubmittedBy = txtSubmittedBy.Text;
             comment.Approved = rbApproved.Checked;
 
@@ -54,7 +54,7 @@ namespace Engage.Dnn.Locator
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            LocationComment.DeleteComment(Convert.ToInt32(lblLocationCommentId.Text));
+            Comment.DeleteComment(Convert.ToInt32(lblLocationCommentId.Text));
             Response.Redirect(Globals.NavigateURL(TabId, "Import", "mid=" + ModuleId + "&tmid=" + TabModuleId));
         }
     }

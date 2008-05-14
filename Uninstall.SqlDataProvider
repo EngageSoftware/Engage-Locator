@@ -1,4 +1,12 @@
-﻿IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
+﻿IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_AttributeDefinition_{objectQualifier}EngageLocator_LocationType]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_Location]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]
 GO
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_State]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
@@ -123,4 +131,122 @@ GO
 IF  EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetImportedLocationStatistics]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetImportedLocationStatistics]
 GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsById]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsById]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocation]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Comments]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comments]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spSaveComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spSaveComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetComments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetComments]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetNewSubmittedComments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetNewSubmittedComments]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spAddAttributeDefinition]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteAttributeDefinition]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinition]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionByName]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByPortal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByPortal]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
+GO
+
 

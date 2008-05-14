@@ -70,8 +70,8 @@ namespace Engage.Dnn.Locator
 
         public static List<LocationAttribute> GetLocationAttributes(int locationTypeId, int locationId)
         {
-            DataTable dtLocationAttributeDefinitions = DataProvider.Instance().GetLocationAttributeDefinitions(locationTypeId);
-            DataTable dtLocationAttributeValues = DataProvider.Instance().GetLocationAttributeValues(locationId);
+            DataTable dtLocationAttributeDefinitions = DataProvider.Instance().GetAttributeDefinitions(locationTypeId);
+            DataTable dtLocationAttributeValues = DataProvider.Instance().GetAttributeValues(locationId);
             List<LocationAttribute> locationAttributes = new List<LocationAttribute>();
             foreach (DataRow row in dtLocationAttributeDefinitions.Rows)
             {
@@ -104,12 +104,12 @@ namespace Engage.Dnn.Locator
 
         public static void AddLocationAttribute(int attributeDefinitionId, int locationId, string attributeValue)
         {
-            DataProvider.Instance().AddLocationAttribute(attributeDefinitionId, locationId, attributeValue);
+            DataProvider.Instance().AddAttribute(attributeDefinitionId, locationId, attributeValue);
         }
 
         public static void UpdateLocationAttribute(int locationAttributeId, int locationId, string attributeValue)
         {
-            DataProvider.Instance().UpdateLocationAttribute(locationAttributeId, locationId, attributeValue);
+            DataProvider.Instance().UpdateAttribute(locationAttributeId, locationId, attributeValue);
         }
     }
 }

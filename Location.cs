@@ -51,9 +51,9 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        public DataSet GetLocationComments(bool approved)
+        public DataSet GetComments(bool approved)
         {
-            return DataProvider.Instance().GetLocationComments(locationId, approved);
+            return DataProvider.Instance().GetComments(locationId, approved);
         }
 
         public static DataTable GetCountriesList(int portalId)
@@ -99,9 +99,9 @@ namespace Engage.Dnn.Locator
             return locations;
         }
 
-        public static void InsertLocationComment(int locationId, string comment, string submittedBy, bool approved)
+        public static void InsertComment(int locationId, string comment, string submittedBy, bool approved)
         {
-            DataProvider.Instance().InsertLocationComment(locationId, comment, submittedBy, approved);
+            DataProvider.Instance().InsertComment(locationId, comment, submittedBy, approved);
         }
 
         public static DataTable GetNewSubmittedComments(int portalId, bool approved)

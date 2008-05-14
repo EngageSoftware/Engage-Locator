@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search;
 
-namespace Engage.Dnn.Locator
+namespace Engage.Dnn.Locator.Components
 {
     public class FeaturesController: ISearchable
 

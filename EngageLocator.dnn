@@ -9,8 +9,8 @@
         The DotNetNuke Locator module by Engage Software (www.engagemodules.com)
       </description>
       <version>01.03.00</version>
-      <businesscontrollerclass>Engage.Dnn.Locator.FeaturesController</businesscontrollerclass>
-	  <dependencies>AjaxControlToolkit.TabPanel; AjaxControlToolkit.ToolkitScriptManager</dependencies>
+      <businesscontrollerclass>Engage.Dnn.Locator.Components.FeaturesController</businesscontrollerclass>
+      <dependencies>AjaxControlToolkit.TabPanel; AjaxControlToolkit.ToolkitScriptManager</dependencies>
       <resourcefile>Resources.zip</resourcefile>
       <modules>
         <module>
@@ -44,18 +44,18 @@
               <src>DesktopModules/EngageLocator/EditAttributeDefinition.ascx</src>
               <type>Edit</type>
             </control>
-			  <control>
-				  <key>ManageComments</key>
-				  <title>Manage Comments</title>
-				  <src>DesktopModules/EngageLocator/ManageComment.ascx</src>
-				  <type>Edit</type>
-			  </control>
-			  <control>
-				  <key>LocationDetails</key>
-				  <title>Location Details</title>
-				  <src>DesktopModules/EngageLocator/LocationDetails.ascx</src>
-				  <type>View</type>
-			  </control>
+            <control>
+              <key>ManageComments</key>
+              <title>Manage Comments</title>
+              <src>DesktopModules/EngageLocator/ManageComment.ascx</src>
+              <type>Edit</type>
+            </control>
+            <control>
+              <key>LocationDetails</key>
+              <title>Location Details</title>
+              <src>DesktopModules/EngageLocator/LocationDetails.ascx</src>
+              <type>View</type>
+            </control>
             <control>
               <key>Settings</key>
               <title>Locator Settings</title>
@@ -66,18 +66,18 @@
         </module>
       </modules>
       <files>
-		<file>
+        <file>
           <path>Providers\DataProviders\SqlDataProvider</path>
           <name>01.00.00.SqlDataProvider</name>
         </file>
-		<file>
-			<path>Providers\DataProviders\SqlDataProvider</path>
-			<name>01.02.00.SqlDataProvider</name>
-		</file>
-		<file>
-			<path>Providers\DataProviders\SqlDataProvider</path>
-			<name>01.03.00.SqlDataProvider</name>
-		</file>
+        <file>
+          <path>Providers\DataProviders\SqlDataProvider</path>
+          <name>01.02.00.SqlDataProvider</name>
+        </file>
+        <file>
+          <path>Providers\DataProviders\SqlDataProvider</path>
+          <name>01.03.00.SqlDataProvider</name>
+        </file>
         <file>
           <name>Uninstall.SqlDataProvider</name>
         </file>

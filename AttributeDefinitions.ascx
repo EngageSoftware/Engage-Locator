@@ -32,7 +32,7 @@
 		<asp:TemplateColumn HeaderText="DataType">
 			<ItemStyle Width="100px"></ItemStyle>
 			<ItemTemplate>
-				<asp:label id="lblDataType" runat="server" Text='<%# DisplayDataType((Engage.Dnn.Locator.LocationTypeAttributeDefinition)Container.DataItem) %>'></asp:label>
+				<asp:label id="lblDataType" runat="server" Text='<%# DisplayDataType((Engage.Dnn.Locator.AttributeDefinition)Container.DataItem) %>'></asp:label>
 			</ItemTemplate>
 		</asp:TemplateColumn>
 		<dnn:textcolumn DataField="Length" HeaderText="Length" />

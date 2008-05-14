@@ -19,6 +19,16 @@ namespace Engage.Dnn.Locator
 
         #region MapProvider Members
 
+        public static string SearchUrl
+        {
+            get {return  "http://maps.google.com/maps/geo?output=csv";}
+        }
+
+        public override string Url
+        {
+            get { return SearchUrl; }
+        }
+
         public override string MapProviderUrl
         {
             get { return "http://maps.google.com/maps?f=q&hl=en&geocode=&q="; }
@@ -335,5 +345,55 @@ namespace Engage.Dnn.Locator
         }
 
         #endregion
+    }
+
+    public struct GoogleGeocodeResult
+    {
+        public double latitude;
+        public double longitude;
+
+        public GoogleAccuracyCode accuracyCode;
+        public GoogleStatusCode statusCode;
+    }
+
+    public enum GoogleStatusCode
+    {
+        /// <summary>
+        /// No errors occurred; the address was successfully parsed and its geocode has been returned.
+        /// </summary>
+        Success = 200,
+        /// <summary>
+        /// A geocoding request could not be successfully processed, yet the exact reason for the failure is not known.
+        /// </summary>
+        ServerError = 500,
+        /// <summary>
+        /// The HTTP q parameter was either missing or had no value.
+        /// </summary>
+        MissingAddress = 601,
+        /// <summary>
+        /// No corresponding geographic location could be found for the specified address. This may be due to the fact that the address is relatively new, or it may be incorrect.
+        /// </summary>
+        UnknownAddress = 602,
+        /// <summary>
+        /// The geocode for the given address cannot be returned due to legal or contractual reasons.
+        /// </summary>
+        UnavailableAddress = 603,
+        /// <summary>
+        /// The given key is either invalid or does not match the domain for which it was given.
+        /// </summary>
+        BadKey = 610
+    }
+
+    public enum GoogleAccuracyCode
+    {
+        Unknown = 0,
+        Country = 1,
+        Region = 2,
+        Subregion = 3,
+        Town = 4,
+        PostalCode = 5,
+        Street = 6,
+        Intersection = 7,
+        Address = 8
     }
 }

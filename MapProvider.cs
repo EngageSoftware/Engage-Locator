@@ -20,6 +20,7 @@ namespace Engage.Dnn.Locator
         private string _searchCriteria;
         private Pair _latLong;
 
+        public abstract string Url { get; }
         public abstract string GetMapUrl(string apiKey);
         public abstract bool IsKeyValid(string apiKey);
         public abstract string GenerateMapScriptCore(string mapType);
