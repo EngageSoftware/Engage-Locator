@@ -338,13 +338,7 @@ namespace Engage.Dnn.Locator
 
         protected void lbEditLocationType_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Globals.NavigateURL(TabId, "AttributeDefinitions", "mid=" + ModuleId + "&ltid" + lbLocationType.SelectedValue));
-            //Response.Redirect(EditUrl("ltid", lbLocationType.SelectedValue, "AttributeDefinitions"));
-            //txtEditLocationType.Text = lbLocationType.SelectedItem.Text;
-            //dvLocationType.Visible = false;
-            //dvLocationTypeEdit.Visible = true;
-            //lbUpdateLocationType.Text = "Update";
-            //txtEditLocationType.Focus();
+            Response.Redirect(Globals.NavigateURL(TabId, "AttributeDefinitions", "mid=" + ModuleId + "&ltid=" + lbLocationType.SelectedValue));
         }
 
         protected void lbUpdateLocationType_Click(object sender, EventArgs e)

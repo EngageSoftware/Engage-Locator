@@ -15,6 +15,9 @@ namespace Engage.Dnn.Locator
 {
     public class LocationTypeController
     {
+        public const string CacheKey = "AttributeDefinitions{0}";
+        public const int CacheTimeOut = 20;
+
 
         #region "Private Shared Members"
 
@@ -177,9 +180,9 @@ namespace Engage.Dnn.Locator
             return arr;
         }
 
-        private static List<LocationTypeAttributeDefinition> GetAttributeDefinitions(int ltid)
+        private static List<LocationTypeAttributeDefinition> GetAttributeDefinitions(int locationTypeId)
         {
-            List<LocationTypeAttributeDefinition> definitions = FillAttributeDefinitionInfoCollection(provider.GetAttributeDefinitionsByLTID(ltid));
+            List<LocationTypeAttributeDefinition> definitions = FillAttributeDefinitionInfoCollection(provider.GetAttributeDefinitionsByLTID(locationTypeId));
             return definitions;
         }
 
@@ -405,33 +408,10 @@ namespace Engage.Dnn.Locator
             return definition;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a collection of Property Defintions from the Data Store by category
-        /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
-        /// <param name="category">The category of the Property Defintions to retrieve</param>
-        /// <returns>A LocationTypeAttributeDefinitionCollection object</returns>
-        /// -----------------------------------------------------------------------------
-        public static LocationTypeAttributeDefinitionCollection GetAttributeDefinitionsByCategory(int portalId, string category)
+
+        public static LocationTypeAttributeDefinitionCollection GetAttributeDefinitionsById(int portalId)
         {
-
-            LocationTypeAttributeDefinitionCollection definitions = new LocationTypeAttributeDefinitionCollection();
-
-            //foreach (LocationTypeAttributeDefinition definition in GetAttributeDefinitions(portalId))
-            //{
-            //    if (definition.AttributeCategory == category)
-            //    {
-            //        definitions.Add(definition);
-            //    }
-            //}
-
-            return definitions;
-        }
-
-        public static LocationTypeAttributeDefinitionCollection GetAttributeDefinitionsByLTID(int portalId)
-        {
-            return GetAttributeDefinitionsByLTID(portalId, true);
+            return GetAttributeDefinitionsById(portalId, true);
         }
 
         /// -----------------------------------------------------------------------------
@@ -441,23 +421,34 @@ namespace Engage.Dnn.Locator
         /// <param name="portalId">The id of the Portal</param>
         /// <returns>A LocationTypeAttributeDefinitionCollection object</returns>
         /// -----------------------------------------------------------------------------
-            public static LocationTypeAttributeDefinitionCollection GetAttributeDefinitionsByLTID(int ltid, bool clone)
+        public static LocationTypeAttributeDefinitionCollection GetAttributeDefinitionsById(int locationTypeId, bool clone)
         {
+            string key = String.Format(CacheKey, locationTypeId);
 
-            LocationTypeAttributeDefinitionCollection definitions = new LocationTypeAttributeDefinitionCollection();
-
-            foreach (LocationTypeAttributeDefinition definition in GetAttributeDefinitions(ltid))
+            //Try fetching the List from the Cache
+            LocationTypeAttributeDefinitionCollection attributes = (LocationTypeAttributeDefinitionCollection)DataCache.GetCache(key);
+                       
+            if (attributes == null)
             {
-                if (clone)
+                foreach (LocationTypeAttributeDefinition definition in GetAttributeDefinitions(locationTypeId))
                 {
-                    definitions.Add(definition.Clone());
+                    if (clone)
+                    {
+                        attributes.Add(definition.Clone());
+                    }
+                    else
+                    {
+                        attributes.Add(definition);
+                    }
                 }
-                else
-                {
-                    definitions.Add(definition);
-                }
+
+                if (CacheTimeOut > 0)
+               {
+                   DataCache.SetCache(key, attributes, TimeSpan.FromMinutes(CacheTimeOut));
+               }
             }
-            return definitions;
+
+            return attributes;
         }
 
         /// -----------------------------------------------------------------------------

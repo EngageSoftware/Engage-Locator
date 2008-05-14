@@ -2,22 +2,27 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 
 <div style="text-align:left;">
-    <asp:Label id="lblLocationTypeHelp" runat="Server" class="normal" resourcekey="LocationTypeAttributesHelp" />
+    <asp:Label id="lblLocationTypeHelp" runat="Server" class="Normal" resourcekey="LocationTypeAttributesHelp" />
 </div>
 <br />
 <div style="text-align:center;">
-    <p></p><asp:Label id="lblLocTypeName" runat="server" class="normal" resourcekey="LocTypeName" /><asp:TextBox id="txtLocationTypeName" runat="server" /></p>
+    <p></p><asp:Label id="lblLocTypeName" runat="server" Class="Normal" resourcekey="LocTypeName" />
+    <asp:TextBox id="txtLocationTypeName" runat="server" CssClass="NormalTextBox" /></p>
 </div>
-<asp:datagrid id="grdLocationTypeAttributes" AutoGenerateColumns="false" width="100%" CellPadding="4"
-	GridLines="None" cssclass="DataGrid_Container" Runat="server">
-	<headerstyle cssclass="NormalBold" verticalalign="Top" horizontalalign="Center" />
-	<itemstyle cssclass="DataGrid_Item" horizontalalign="Left" />
-	<alternatingitemstyle cssclass="DataGrid_AlternatingItem" />
-	<edititemstyle cssclass="NormalTextBox" />
-	<selecteditemstyle cssclass="NormalRed" />
-	<footerstyle cssclass="DataGrid_Footer" />
-	<pagerstyle cssclass="DataGrid_Pager" />
-	<columns>
+<asp:datagrid id="grdLocationTypeAttributes" AutoGenerateColumns="false" runat="server"
+    width="100%" CellPadding="4"
+	GridLines="None" CssClass="DataGrid_Container" Runat="server" 
+    OnItemCommand="grdLocationTypeAttributes_ItemCommand" 
+    OnItemCreated="grdLocationTypeAttributes_ItemCreated" 
+    OnItemDataBound="grdLocationTypeAttributes_ItemDataBound">
+	<HeaderStyle CssClass="NormalBold" verticalalign="Top" horizontalalign="Center" />
+	<ItemStyle CssClass="DataGrid_Item" horizontalalign="Left" />
+	<AlternatingItemStyle CssClass="DataGrid_AlternatingItem" />
+	<EditItemStyle CssClass="NormalTextBox" />
+	<SelectedItemStyle CssClass="NormalRed" />
+	<FooterStyle CssClass="DataGrid_Footer" />
+	<PagerStyle CssClass="DataGrid_Pager" />
+	<Columns>
 		<dnn:imagecommandcolumn CommandName="Edit" Text="Edit" ImageUrl="~/images/edit.gif" HeaderText="Edit" KeyField="AttributeDefinitionID" EditMode="URL" />
 		<dnn:imagecommandcolumn CommandName="Delete" Text="Delete" ImageUrl="~/images/delete.gif" HeaderText="Del" KeyField="AttributeDefinitionID" />
 		<dnn:imagecommandcolumn CommandName="MoveDown" ImageUrl="~/images/dn.gif" HeaderText="Dn" KeyField="AttributeDefinitionID" />
@@ -35,10 +40,10 @@
 		<dnn:textcolumn DataField="ValidationExpression" HeaderText="ValidationExpression" Width="100px" />
 		<dnn:checkboxcolumn DataField="Required" HeaderText="Required" AutoPostBack="True" />
 		<dnn:checkboxcolumn DataField="Visible" HeaderText="Visible" AutoPostBack="True" />
-	</columns>
+	</Columns>
 </asp:datagrid>
-<br>
-<br>
+<br />
+<br />
 <p style="text-align:center">
 	<dnn:commandbutton class="CommandButton" id="cmdUpdate" imageUrl="~/images/save.gif" resourcekey="cmdApply"
 		runat="server" text="Apply Changes" />&nbsp;

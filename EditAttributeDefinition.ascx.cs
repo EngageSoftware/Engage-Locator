@@ -35,9 +35,9 @@ namespace Engage.Dnn.Locator
         private void InitializeComponent()
         {
             this.Load += new EventHandler(this.Page_Load);
-            cmdUpdate.Click += new EventHandler(cmdUpdate_Click);
-            cmdCancel.Click += new EventHandler(cmdCancel_Click);
-            cmdDelete.Click += new EventHandler(cmdDelete_Click);
+            //cmdUpdate.Click += new EventHandler(cmdUpdate_Click);
+            //cmdCancel.Click += new EventHandler(cmdCancel_Click);
+            //cmdDelete.Click += new EventHandler(cmdDelete_Click);
         }
 
         #region "Private Members"
@@ -104,7 +104,7 @@ namespace Engage.Dnn.Locator
                         //Create New Attribute Definition
                         _AttributeDefinition = new LocationTypeAttributeDefinition();
                         _AttributeDefinition.PortalId = UsersPortalId;
-                        _AttributeDefinition.LocationTypeId = ltid;
+                        _AttributeDefinition.LocationTypeId = LocationTypeId;
                     }
                     else
                     {
@@ -130,18 +130,17 @@ namespace Engage.Dnn.Locator
             set { ViewState["AttributeDefinitionID"] = value; }
         }
 
-        protected int ltid
+        protected int LocationTypeId
         {
             get
             {
-                int _LocTypeID = Null.NullInteger;
-                if ((ViewState["ltid"] != null))
+                int id = Null.NullInteger;
+                if ((Request.QueryString["ltid"] != null))
                 {
-                    _LocTypeID = Int32.Parse(ViewState["ltid"].ToString());
+                    id = Int32.Parse(Request.QueryString["ltid"].ToString());
                 }
-                return _LocTypeID;
+                return id;
             }
-            set { ViewState["ltid"] = value; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -168,28 +167,12 @@ namespace Engage.Dnn.Locator
 
         private void Page_Init(object sender, System.EventArgs e)
         {
-            if (ltid == Null.NullInteger)
-            {
-                if ((Request.QueryString["ltid"] != null))
-                {
-                    ltid = Int32.Parse(Request.QueryString["ltid"]);
-                }
-            }
         }
 
         private void Page_Load(object sender, System.EventArgs e)
         {
             try
             {
-                //Get Location Type ID from Querystring (unless its been stored in the Viewstate)
-                if (ltid == Null.NullInteger)
-                {
-                    if ((Request.QueryString["ltid"] != null))
-                    {
-                        ltid = Int32.Parse(Request.QueryString["ltid"]);
-                    }
-                }
-
                 //Get Attribute Definition Id from Querystring (unless its been stored in the Viewstate)
                 if (AttributeDefinitionID == Null.NullInteger)
                 {
@@ -245,12 +228,12 @@ namespace Engage.Dnn.Locator
                 if ((bool)IsAddMode)
                 {
                     LocationTypeController.AddAttributeDefinition(AttributeDefinition);
-                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + ltid));
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + LocationTypeId));
                 }
                 else
                 {
                     LocationTypeController.UpdateAttributeDefinition(AttributeDefinition);
-                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + ltid));
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + LocationTypeId));
                 }
             }
             catch (ModuleLoadException exc)
@@ -269,7 +252,7 @@ namespace Engage.Dnn.Locator
         {
             try
             {
-                Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + ltid));
+                Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + LocationTypeId));
             }
             catch (ModuleLoadException exc)
             {

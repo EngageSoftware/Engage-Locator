@@ -34,13 +34,13 @@
             </control>
             <control>
               <key>AttributeDefinitions</key>
-              <title>Location Type Attributes</title>
+              <title>Custom Attributes</title>
               <src>DesktopModules/EngageLocator/AttributeDefinitions.ascx</src>
               <type>Edit</type>
             </control>
             <control>
-              <key>EditAttributeDefiniton</key>
-              <title>Edit Attribute Definition</title>
+              <key>EditAttributeDefinition</key>
+              <title>Edit Custom Attributes</title>
               <src>DesktopModules/EngageLocator/EditAttributeDefinition.ascx</src>
               <type>Edit</type>
             </control>

@@ -39,9 +39,6 @@ namespace Engage.Dnn.Locator
             this.Load += new EventHandler(this.Page_Load);
             this.cmdUpdate.Click += new EventHandler(cmdUpdate_Click);
             this.cmdRefresh.Click += new EventHandler(cmdRefresh_Click);
-            this.grdLocationTypeAttributes.ItemDataBound += new DataGridItemEventHandler(grdLocationTypeAttributes_ItemDataBound);
-            this.grdLocationTypeAttributes.ItemCommand += new DataGridCommandEventHandler(grdLocationTypeAttributes_ItemCommand);
-            this.grdLocationTypeAttributes.ItemCreated += new DataGridItemEventHandler(grdLocationTypeAttributes_ItemCreated);
         }
 
         #region "Constants"
@@ -119,25 +116,24 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        protected int ltid
+        protected int LocationTypeId
         {
             get
             {
-                int _LocTypeID = Null.NullInteger;
-                if ((ViewState["ltid"] != null))
+                int id = Null.NullInteger;
+                if ((Request.QueryString["ltid"] != null))
                 {
-                    _LocTypeID = Int32.Parse(ViewState["ltid"].ToString());
+                    id = Int32.Parse(Request.QueryString["ltid"].ToString());
                 }
-                return _LocTypeID;
+                return id;
             }
-            set { ViewState["ltid"] = value; }
         }
 
         #endregion
 
         #region "Private Members"
         //private LocationTypeAttributeDefinitionCollection m_objAttributes;
-        private DataTable m_objAttributes;
+        private DataTable _objAttributes;
         #endregion
 
         #region "Private Methods"
@@ -149,7 +145,7 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private LocationTypeAttributeDefinitionCollection GetAttributes()
         {
-            return LocationTypeController.GetAttributeDefinitionsByLTID(ltid, false);
+            return LocationTypeController.GetAttributeDefinitionsById(LocationTypeId, false);
         }
 
         /// -----------------------------------------------------------------------------
@@ -229,7 +225,7 @@ namespace Engage.Dnn.Locator
         {
             ////Fill textbox with LocType name here.
             DataTable dt = LocationType.GetLocationTypes();
-            dt.Select("LocationTypeId = " + ltid);
+            dt.Select("LocationTypeId = " + LocationTypeId);
             txtLocationTypeName.Text = dt.Rows[0][1].ToString();
         }
 
@@ -292,7 +288,7 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void RefreshGrid()
         {
-            m_objAttributes = null;
+            _objAttributes = null;
             BindGrid();
         }
 
@@ -379,15 +375,6 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void Page_Init(object sender, System.EventArgs e)
         {
-            //Get Location Type ID from Querystring (unless its been stored in the Viewstate)
-            if (ltid == Null.NullInteger)
-            {
-                if ((Request.QueryString["ltid"] != null))
-                {
-                    ltid = Int32.Parse(Request.QueryString["ltid"]);
-                }
-            }
-
             foreach (DataGridColumn column in grdLocationTypeAttributes.Columns)
             {
                 if (object.ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
@@ -412,7 +399,7 @@ namespace Engage.Dnn.Locator
                             //The Friendly URL parser does not like non-alphanumeric characters
                             //so first create the format string with a dummy value and then
                             //replace the dummy value with the FormatString place holder
-                            string formatString = EditUrl("AttributeDefinitionID", "KEYFIELD", "EditAttributeDefinition", "ltid=" + ltid);
+                            string formatString = EditUrl("AttributeDefinitionID", "KEYFIELD", "EditAttributeDefinition", "ltid=" + LocationTypeId);
                             formatString = formatString.Replace("KEYFIELD", "{0}");
                             imageColumn.NavigateURLFormatString = formatString;
                             break;
@@ -489,16 +476,16 @@ namespace Engage.Dnn.Locator
         /// is clicked
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void grdLocationTypeAttributes_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
+        protected void grdLocationTypeAttributes_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
             string propertyName = e.Field;
             bool propertyValue = e.Checked;
             bool isAll = e.IsAll;
             int index = e.Item.ItemIndex;
-            
+
             LocationTypeAttributeDefinitionCollection attributes = GetAttributes();
             LocationTypeAttributeDefinition loctypeAttribute;
-            
+
             if (isAll)
             {
                 //Update All the attributes
@@ -529,7 +516,7 @@ namespace Engage.Dnn.Locator
                         break;
                 }
             }
-            
+
             BindGrid();
         }
 
@@ -539,25 +526,25 @@ namespace Engage.Dnn.Locator
         /// Grid
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void grdLocationTypeAttributes_ItemCommand(object source, System.Web.UI.WebControls.DataGridCommandEventArgs e)
-        {
-            string commandName = e.CommandName;
-            //int commandArgument = (int)e.CommandArgument;
-            int index = e.Item.ItemIndex;
+        //protected void grdLocationTypeAttributes_ItemCommand(object source, DataGridCommandEventArgs e)
+        //{
+        //    string commandName = e.CommandName;
+        //    //int commandArgument = (int)e.CommandArgument;
+        //    int index = e.Item.ItemIndex;
 
-            switch (commandName)
-            {
-                case "Delete":
-                    DeleteAttribute(index);
-                    break;
-                case "MoveUp":
-                    MoveAttributeUp(index);
-                    break;
-                case "MoveDown":
-                    MoveAttributeDown(index);
-                    break;
-            }
-        }
+        //    switch (commandName)
+        //    {
+        //        case "Delete":
+        //            DeleteAttribute(index);
+        //            break;
+        //        case "MoveUp":
+        //            MoveAttributeUp(index);
+        //            break;
+        //        case "MoveDown":
+        //            MoveAttributeDown(index);
+        //            break;
+        //    }
+        //}
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -566,7 +553,7 @@ namespace Engage.Dnn.Locator
         ///	client-side script for each event handler
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void grdLocationTypeAttributes_ItemCreated(object sender, System.Web.UI.WebControls.DataGridItemEventArgs e)
+        protected void grdLocationTypeAttributes_ItemCreated(object sender, DataGridItemEventArgs e)
         {
             if (SupportsRichClient())
             {
@@ -591,13 +578,8 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdLocationTypeAttributes_ItemDataBound runs when a row in the grid is bound to its data source
-        /// Grid
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected void grdLocationTypeAttributes_ItemDataBound(object sender, System.Web.UI.WebControls.DataGridItemEventArgs e)
+
+        protected void grdLocationTypeAttributes_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             DataGridItem item = e.Item;
 
@@ -629,20 +611,40 @@ namespace Engage.Dnn.Locator
         #endregion
 
         #region "Optional Interfaces"
+
         ModuleActionCollection IActionable.ModuleActions
         {
             get
             {
                 ModuleActionCollection Actions = new ModuleActionCollection();
-                Actions.Add(GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), ModuleActionType.AddContent, "", "add.gif", EditUrl("ltid", ltid.ToString(), "EditAttributeDefinition"), false, DotNetNuke.Security.SecurityAccessLevel.Admin, true, false
-                );
+                Actions.Add(GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), ModuleActionType.AddContent, "", "add.gif", EditUrl("ltid", LocationTypeId.ToString(), "EditAttributeDefinition"), false, DotNetNuke.Security.SecurityAccessLevel.Admin, true, false);
 
-                Actions.Add(GetNextActionID(), Localization.GetString("Cancel.Action", LocalResourceFile), ModuleActionType.AddContent, "", "lt.gif", ReturnUrl, false, DotNetNuke.Security.SecurityAccessLevel.Admin, true, false
-                );
+                Actions.Add(GetNextActionID(), Localization.GetString("Cancel.Action", LocalResourceFile), ModuleActionType.AddContent, "", "lt.gif", ReturnUrl, false, DotNetNuke.Security.SecurityAccessLevel.Admin, true, false );
                 return Actions;
             }
         }
+        
         #endregion
+
+        protected void grdLocationTypeAttributes_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+            string commandName = e.CommandName;
+            //int commandArgument = (int)e.CommandArgument;
+            int index = e.Item.ItemIndex;
+
+            switch (commandName)
+            {
+                case "Delete":
+                    DeleteAttribute(index);
+                    break;
+                case "MoveUp":
+                    MoveAttributeUp(index);
+                    break;
+                case "MoveDown":
+                    MoveAttributeDown(index);
+                    break;
+            }
+        }
 
     }
 

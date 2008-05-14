@@ -583,3 +583,34 @@ AS
 	Values (@locationId, @attributeDefinitionId, @attributeValue, getdate(), getdate())
 GO
 
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
+
+                @AttributeDefinitionId [int],
+                @DataType [int],
+                @DefaultValue [nvarchar] (255),
+                @AttributeName [nvarchar] (255),
+                @Required [bit],
+                @ValidationExpression [nvarchar] (255),
+                @ViewOrder [int],
+                @Visible [bit],
+                @Length [int]
+
+AS
+
+	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_LocTypeAttributes] 
+
+	SET DataType = @DataType,
+	DefaultValue = @DefaultValue,
+	AttributeName = @AttributeName,
+	Required = @Required,
+	ValidationExpression = @ValidationExpression,
+	ViewOrder = @ViewOrder,
+	Visible = @Visible,
+	Length = @Length
+
+	WHERE AttributeDefinitionId = @AttributeDefinitionId
+GO

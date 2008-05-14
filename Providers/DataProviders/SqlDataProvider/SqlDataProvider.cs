@@ -528,7 +528,7 @@ namespace Engage.Dnn.Locator.Data
             sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, vl.LocationTypeId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "lt.LocationTypeName, PostalCode FROM {0}vLocations vl join {0}LocationType lt on (vl.LocationTypeId = lt.LocationTypeId) ", NamePrefix);
-            sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE PortalId = @PortalId ");
+            sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE vl.PortalId = @PortalId ");
 
             int i = 0;
             if (types[0] != String.Empty)
