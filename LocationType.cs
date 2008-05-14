@@ -181,11 +181,11 @@ namespace Engage.Dnn.Locator
                 definition.Visible = true;
             }
 
-            int intDefinition = DataProvider.Instance().AddAttributeDefinition(definition.PortalId, definition.LocationTypeId, definition.DataType, definition.DefaultValue, definition.AttributeName, definition.Required, definition.ValidationExpression, definition.ViewOrder, definition.Visible, definition.Length);
+            int id = DataProvider.Instance().AddAttributeDefinition(definition.PortalId, definition.LocationTypeId, definition.DataType, definition.DefaultValue, definition.AttributeName, definition.Required, definition.ValidationExpression, definition.ViewOrder, definition.Visible, definition.Length);
 
-            ClearLocationTypeDefinitionCache(definition.PortalId);
+            ClearCache(definition.LocationTypeId);
 
-            return intDefinition;
+            return id;
         }
 
         /// -----------------------------------------------------------------------------
@@ -194,9 +194,11 @@ namespace Engage.Dnn.Locator
         /// </summary>
         /// <param name="PortalId">Id of the Portal</param>
         /// -----------------------------------------------------------------------------
-        public static void ClearLocationTypeDefinitionCache(int PortalId)
+        public static void ClearCache(int locationTypeId)
         {
-            DataCache.ClearDefinitionsCache(PortalId);
+            string key = String.Format(CacheKey, locationTypeId);
+            DataCache.RemoveCache(key);
+            
         }
 
         /// -----------------------------------------------------------------------------
@@ -208,7 +210,7 @@ namespace Engage.Dnn.Locator
         public static void DeleteAttributeDefinition(AttributeDefinition definition)
         {
             DataProvider.Instance().DeleteAttributeDefinition(definition.AttributeDefinitionId);
-            ClearLocationTypeDefinitionCache(definition.PortalId);
+            ClearCache(definition.LocationTypeId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -328,7 +330,7 @@ namespace Engage.Dnn.Locator
             }
             DataProvider.Instance().UpdateAttributeDefinition(definition.AttributeDefinitionId, definition.DataType, definition.DefaultValue, definition.AttributeName, definition.Required, definition.ValidationExpression, definition.ViewOrder, definition.Visible, definition.Length);
 
-            ClearLocationTypeDefinitionCache(definition.PortalId);
+            ClearCache(definition.LocationTypeId);
         }
 
         #endregion

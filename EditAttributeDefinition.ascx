@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="EditAttributeDefinition.ascx.cs" Inherits="Engage.Dnn.Locator.EditAttributeDefinition" %>
+<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="EditAttributeDefinition.ascx.cs" Inherits="Engage.Dnn.Locator.EditAttributeDefinition" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <dnn:propertyeditorcontrol id="Attributes" runat="server" SortMode="SortOrderAttribute" ErrorStyle-cssclass="NormalRed" labelstyle-cssclass="SubHead" helpstyle-cssclass="Help" editcontrolstyle-cssclass="NormalTextBox" labelwidth="180px" editcontrolwidth="170px" width="350px" />
 <p>

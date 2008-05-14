@@ -121,7 +121,7 @@
     <value>Attribute Name</value>
   </data>
   <data name="ControlTitle_editattributedefinition.Text" xml:space="preserve">
-    <value>Edit LocationType Attribute Definition</value>
+    <value>Edit Custom Attributes</value>
   </data>
   <data name="DataType.Text" xml:space="preserve">
     <value>Data Type</value>

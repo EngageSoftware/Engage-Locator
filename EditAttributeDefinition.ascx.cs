@@ -35,24 +35,27 @@ namespace Engage.Dnn.Locator
         private void InitializeComponent()
         {
             this.Load += new EventHandler(this.Page_Load);
-            //cmdUpdate.Click += new EventHandler(cmdUpdate_Click);
-            //cmdCancel.Click += new EventHandler(cmdCancel_Click);
-            //cmdDelete.Click += new EventHandler(cmdDelete_Click);
+            cmdUpdate.Click += new EventHandler(cmdUpdate_Click);
+            cmdCancel.Click += new EventHandler(cmdCancel_Click);
+            cmdDelete.Click += new EventHandler(cmdDelete_Click);
         }
 
         #region Private Members
 
-        private bool _IsAddMode = Null.NullBoolean;
-        private AttributeDefinition _AttributeDefinition;
+        
         //private string ResourceFile = "~/Admin/Users/App_LocalResources/LocationType.ascx";
 
         #endregion
 
         #region Protected Members
 
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private bool _IsAddMode = Null.NullBoolean;
         protected object IsAddMode
         {
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
             get { return _IsAddMode; }
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
             set { _IsAddMode = (bool)value; }
         }
 
@@ -73,11 +76,6 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets whether we are dealing with SuperUsers
-        /// </summary>
-        /// -----------------------------------------------------------------------------
         protected bool IsSuperUser
         {
             get
@@ -92,7 +90,8 @@ namespace Engage.Dnn.Locator
                 }
             }
         }
-
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private AttributeDefinition _AttributeDefinition;
         protected AttributeDefinition AttributeDefinition
         {
             get
@@ -109,23 +108,23 @@ namespace Engage.Dnn.Locator
                     else
                     {
                         //Get Attribute Definition from Data Store
-                        _AttributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionID, PortalId);
+                        _AttributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionId, PortalId);
                     }
                 }
                 return _AttributeDefinition;
             }
         }
 
-        protected int AttributeDefinitionID
+        protected int AttributeDefinitionId
         {
             get
             {
-                int _DefinitionID = Null.NullInteger;
+                int id = Null.NullInteger;
                 if ((ViewState["AttributeDefinitionID"] != null))
                 {
-                    _DefinitionID = Int32.Parse(ViewState["AttributeDefinitionID"].ToString());
+                    id = Int32.Parse(ViewState["AttributeDefinitionID"].ToString());
                 }
-                return _DefinitionID;
+                return id;
             }
             set { ViewState["AttributeDefinitionID"] = value; }
         }
@@ -143,21 +142,16 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Portal Id whose Users we are managing
-        /// </summary>
-        /// -----------------------------------------------------------------------------
         protected int UsersPortalId
         {
             get
             {
-                int intPortalId = PortalId;
+                int id = PortalId;
                 if (IsSuperUser)
                 {
-                    intPortalId = Null.NullInteger;
+                    id = Null.NullInteger;
                 }
-                return intPortalId;
+                return id;
             }
         }
 
@@ -165,20 +159,16 @@ namespace Engage.Dnn.Locator
 
         #region Event Handlers
 
-        private void Page_Init(object sender, System.EventArgs e)
-        {
-        }
-
         private void Page_Load(object sender, System.EventArgs e)
         {
             try
             {
                 //Get Attribute Definition Id from Querystring (unless its been stored in the Viewstate)
-                if (AttributeDefinitionID == Null.NullInteger)
+                if (AttributeDefinitionId == Null.NullInteger)
                 {
                     if ((Request.QueryString["AttributeDefinitionId"] != null))
                     {
-                        AttributeDefinitionID = Int32.Parse(Request.QueryString["AttributeDefinitionId"]);
+                        AttributeDefinitionId = Int32.Parse(Request.QueryString["AttributeDefinitionId"]);
                     }
                     else
                     {
@@ -216,11 +206,6 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdUpdate_Click runs when the Delete button is clicked
-        /// </summary>
-        /// -----------------------------------------------------------------------------
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {
             try
@@ -243,11 +228,6 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdCancel_Click runs when the Delete button is clicked
-        /// </summary>
-        /// -----------------------------------------------------------------------------
         protected void cmdCancel_Click(object sender, EventArgs e)
         {
             try
@@ -261,16 +241,11 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdDelete_Click runs when the Delete button is clicked
-        /// </summary>
-        /// -----------------------------------------------------------------------------
         protected void cmdDelete_Click(object sender, System.EventArgs e)
         {
             try
             {
-                if (AttributeDefinitionID != Null.NullInteger)
+                if (AttributeDefinitionId != Null.NullInteger)
                 {
                     //Declare Definition and "retrieve" it from the Attribute Editor
                     AttributeDefinition attributeDefinition;
