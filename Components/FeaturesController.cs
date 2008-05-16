@@ -20,7 +20,7 @@ namespace Engage.Dnn.Locator.Components
         public SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
         {
             SearchItemInfoCollection searchItemCollection = new SearchItemInfoCollection();
-            List<Location> colLocations = Location.GetSearchLocations(ModInfo.PortalID, 1);
+            List<Location> colLocations = Location.GetSearchLocations(ModInfo.PortalID, true);
             foreach (Location location in colLocations)
             {
                 SearchItemInfo searchItem =

@@ -208,11 +208,11 @@ namespace Engage.Dnn.Locator.Data
             return SqlHelper.ExecuteDataset(connectionString, CommandType.Text, sql.ToString(), CreateIntegerParam("@CountryId", countryId), CreateIntegerParam("@PortalId", portalId)).Tables[0];
         }
 
-        public override DataTable GetAllLocations(int portalId, int approved, string sortColumn, int index, int pageSize)
+        public override DataTable GetAllLocations(int portalId, bool approved, string sortColumn, int index, int pageSize)
         {
             return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetAllLocations", 
                 CreateIntegerParam("@PortalId", portalId), 
-                CreateIntegerParam("@approved", approved),
+                CreateBitParam("@approved", approved),
                 CreateVarcharParam("@sortColumn", sortColumn, 200),
                 CreateIntegerParam("@index", index),
                 CreateIntegerParam("@pagesize", pageSize)).Tables[0];
@@ -317,6 +317,28 @@ namespace Engage.Dnn.Locator.Data
             }
             return param;
         }
+
+        /// <summary>
+        /// Creates a Bit SQL param, setting the value to DBNull if <paramref name="value"/> is <see cref="Nullable<bool>"/> without a value.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter in the SQL Stored Procedure.</param>
+        /// <param name="value">The value of the parameter.</param>
+        /// <returns>A SqlParameter with the correct value and type.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledpublicCode")]
+        public static SqlParameter CreateBitParam(string parameterName, bool? value)
+        {
+            SqlParameter param = new SqlParameter(parameterName, SqlDbType.Bit);
+            if (!value.HasValue)
+            {
+                param.Value = DBNull.Value;
+            }
+            else
+            {
+                param.Value = value.Value;
+            }
+            return param;
+        }
+
     
         // <summary>
         // Creates a DateTime SQL param, setting the value to DBNull if the DateTime is its initial value, <see cref="Null.NullDate"/>,

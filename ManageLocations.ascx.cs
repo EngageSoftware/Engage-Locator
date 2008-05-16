@@ -22,8 +22,8 @@ using DotNetNuke.UI.Utilities;
 using Engage.Dnn.Locator.Data;
 using Engage.Dnn.Locator;
 using Engage.Dnn.Locator.Maps;
-using FileInfo=DotNetNuke.Services.FileSystem.FileInfo;
-using Globals=DotNetNuke.Common.Globals;
+using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+using Globals = DotNetNuke.Common.Globals;
 
 namespace Engage.Dnn.Locator
 {
@@ -39,6 +39,8 @@ namespace Engage.Dnn.Locator
             {
                 DotNetNuke.Framework.AJAX.RegisterScriptManager();
             }
+            this.rbWaitingForApproval.CheckedChanged += new EventHandler(rbApproved_CheckChanged);
+            this.rbApproved.CheckedChanged += new EventHandler(rbApproved_CheckChanged);
         }
 
 
@@ -50,50 +52,52 @@ namespace Engage.Dnn.Locator
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
             string error = String.Empty;
 
             if (MainDisplay.IsConfigured(TabModuleId, ref error))
             {
-
                 if (!Page.IsPostBack)
                 {
-                    if (Request.QueryString["lid"] != null && Request.QueryString["approved"] != null)
-                    {
-                        bool approved = Convert.ToBoolean(Request.QueryString["approved"]);
-                        Location location = Location.GetLocation(Convert.ToInt32(Request.QueryString["lid"]));
-                    }
-                    else
-                    {
-                        Localization.LocalizeDataGrid(ref dgLocations, LocalResourceFile);
-                        lblConfigured.Visible = false;
-                        divPanelTab.Visible = true;
-
-                        if (Settings["ModerateSubmissions"] != null && Settings["ModerateSubmissions"].ToString() == "True")
-                        {
-                            int approved = 0;
-                            if (rbApproved.Checked) approved = 1;
-                            BindData(approved, "Name");
-                        }
-                        else
-                        {
-                            rbLocations.Visible = false;
-                            BindData(1, "Name");
-                        }
-                        ClientAPI.AddButtonConfirm(btnDelete, Localization.GetString("confirmDeleteLocation"));
-                    }
+                    Bind();
                 }
             }
             else
             {
-                
                 lblConfigured.Visible = true;
                 lblConfigured.Text = lblConfigured.Text + " " + error;
             }
         }
 
+        private void Bind()
+        {
+            Localization.LocalizeDataGrid(ref dgLocations, LocalResourceFile);
+            lblConfigured.Visible = false;
+            divPanelTab.Visible = true;
 
-        private void BindData(int approved, string sortColumn)
+            if (Settings["ModerateSubmissions"] != null && Settings["ModerateSubmissions"].ToString() == "True")
+            {
+                if (Approved)
+                {
+                    rbApproved.Checked = true;
+                }
+                else
+                {
+                    rbWaitingForApproval.Checked = true;
+                    btnDelete.Visible = true;
+                    btnAccept.Visible = true;
+                }
+
+                BindData(Approved, "Name");
+            }
+            else
+            {
+                divApproval.Visible = false;
+                BindData(true, "Name");
+            }
+            ClientAPI.AddButtonConfirm(btnDelete, Localization.GetString("confirmDeleteLocation"));
+        }
+
+        private void BindData(bool approved, string sortColumn)
         {
             DataTable locations = Location.GetLocations(PortalId, approved, sortColumn, CurrentPageIndex - 1, dgLocations.PageSize);
             dgLocations.DataSource = locations;
@@ -112,7 +116,7 @@ namespace Engage.Dnn.Locator
             }
 
         }
-        
+
         protected void dgLocations_PageChange(Object sender, DataGridPageChangedEventArgs e)
         {
             //dgLocations.CurrentPageIndex = e.NewPageIndex;
@@ -124,17 +128,15 @@ namespace Engage.Dnn.Locator
 
         protected void dgLocations_EditCommand(object source, DataGridCommandEventArgs e)
         {
-            Label locationId = (Label) e.Item.FindControl("lblLocationId");
+            Label locationId = (Label)e.Item.FindControl("lblLocationId");
             Response.Redirect(Globals.NavigateURL(TabId, "ManageLocation", "mid=" + ModuleId + "&lid=" + locationId.Text));
         }
 
         protected void dgLocations_CancelCommand(object source, DataGridCommandEventArgs e)
         {
             dgLocations.EditItemIndex = -1;
-            int approved = 0;
-            if (rbApproved.Checked)
-                approved = 1;
-            BindData(approved, "Name");  
+            bool approved = rbApproved.Checked;
+            BindData(approved, "Name");
         }
 
         protected void dgLocations_DeleteCommand(object source, DataGridCommandEventArgs e)
@@ -145,32 +147,21 @@ namespace Engage.Dnn.Locator
             {
                 provider.DeleteLocation(Convert.ToInt32(lbl.Text));
             }
-            int approved = 0;
-            if (rbApproved.Checked)
-                approved = 1;
-            BindData(approved, "Name");  
+            bool approved = rbApproved.Checked;
+            BindData(approved, "Name");
         }
-       
+
         protected void btnAddLocation_Click(object sender, EventArgs e)
         {
             Response.Redirect(Globals.NavigateURL(TabId, "ManageLocation", "mid=" + ModuleId + "&tmid=" + TabModuleId));
         }
 
-        protected void rbLocations_CheckChanged(object sender, EventArgs e)
+        protected void rbApproved_CheckChanged(object sender, EventArgs e)
         {
-            if (dgLocations.CurrentPageIndex != 0)
-                dgLocations.CurrentPageIndex = 0;
-            int approved = 0;
-            if (rbApproved.Checked)
-                approved = 1;
-            
-            BindData(approved, "Name");
-
-            if (approved == 0)
-            {
-                btnDelete.Visible = dgLocations.Items.Count > 0;
-                btnAccept.Visible = dgLocations.Items.Count > 0;
-            }
+            bool approved = rbApproved.Checked;
+            string href = EditUrl("Approved", approved.ToString(), "ManageLocations");
+            //have to redirect to get the currentpage off the querystring
+            Response.Redirect(href, true);
         }
 
         protected void dgLocations_DataBind(object sender, EventArgs e)
@@ -201,7 +192,7 @@ namespace Engage.Dnn.Locator
                 }
             }
 
-            BindData(0, "Name");
+            BindData(false, "Name");
         }
 
         protected void btnAccept_Click(object sender, EventArgs e)
@@ -209,7 +200,7 @@ namespace Engage.Dnn.Locator
             foreach (DataGridItem row in dgLocations.Items)
             {
                 CheckBox cbApproved = (CheckBox)row.FindControl("cbApproved");
-                if(cbApproved.Checked)
+                if (cbApproved.Checked)
                 {
                     Label lblLocationId = (Label)row.FindControl("lblLocationId");
                     Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text));
@@ -217,7 +208,7 @@ namespace Engage.Dnn.Locator
                     location.Update();
                 }
             }
-            BindData(0, "Name");
+            BindData(false, "Name");
         }
 
         protected void dgLocations_ItemCreated(object sender, DataGridItemEventArgs e)
@@ -267,7 +258,7 @@ namespace Engage.Dnn.Locator
                 newSort = e.SortExpression + " ASC";
             }
 
-            BindData(1, newSort);
+            BindData(true, newSort);
 
             dgLocations.Attributes.Add("SortColumn", e.SortExpression);
         }
@@ -284,6 +275,21 @@ namespace Engage.Dnn.Locator
                 }
 
                 return index;
+            }
+        }
+
+        private bool Approved
+        {
+            get
+            {
+                bool approved = true;
+                //Get the currentpage index from the url parameter
+                if (Request.QueryString["Approved"] != null)
+                {
+                    approved = Convert.ToBoolean(Request.QueryString["Approved"]);
+                }
+
+                return approved;
             }
         }
 

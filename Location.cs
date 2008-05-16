@@ -282,9 +282,9 @@ namespace Engage.Dnn.Locator
             return location;
         }
 
-        public static DataTable GetLocations(int portalId, int approved, string sortColumn, int index, int pageSize)
+        public static DataTable GetLocations(int portalId, bool approved, string sortColumn, int index, int pageSize)
         {
-            return DataProvider.Instance().GetAllLocations(portalId, Convert.ToInt32(approved), sortColumn, index, pageSize);
+            return DataProvider.Instance().GetAllLocations(portalId, approved, sortColumn, index, pageSize);
         }
 
         public static void DeleteLocation(int locationId)
@@ -292,9 +292,9 @@ namespace Engage.Dnn.Locator
             DataProvider.Instance().DeleteLocation(locationId);
         }
 
-        public static List<Location> GetSearchLocations(int portalId, int approved)
+        public static List<Location> GetSearchLocations(int portalId, bool approved)
         {
-            DataTable dtLocations = DataProvider.Instance().GetAllLocations(portalId, Convert.ToInt32(approved), "Name", 0, 0);
+            DataTable dtLocations = DataProvider.Instance().GetAllLocations(portalId, approved, "Name", 0, 0);
             List<Location> locations = new List<Location>();
             foreach (DataRow row in dtLocations.Rows)
             {

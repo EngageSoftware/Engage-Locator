@@ -13,12 +13,12 @@
     <asp:UpdatePanel ID="upDataImport" runat="server">
         <ContentTemplate>
             <div id="editDiv" runat="server">
-                <div id="rbLocations" runat="server" class="rbLocations">
-                    <asp:RadioButton ID="rbApproved" runat="server" GroupName="rbLocations" Checked="true"
-                        resourcekey="rbApproved" CssClass="Normal" OnCheckedChanged="rbLocations_CheckChanged"
+                <div id="divApproval" runat="server" class="div_approval">
+                    <asp:RadioButton ID="rbApproved" runat="server" GroupName="approval"
+                        resourcekey="rbApproved" CssClass="Normal" OnCheckedChanged="rbApproved_CheckChanged"
                         AutoPostBack="true" />
-                    <asp:RadioButton ID="rbWaitingForApproval" runat="server" GroupName="rbLocations"
-                        resourcekey="rbWaitingForApproval" CssClass="Normal" OnCheckedChanged="rbLocations_CheckChanged"
+                    <asp:RadioButton ID="rbWaitingForApproval" runat="server" GroupName="approval"
+                        resourcekey="rbWaitingForApproval" CssClass="Normal" OnCheckedChanged="rbApproved_CheckChanged"
                         AutoPostBack="true" />
                 </div>
                 <dnn:PagingControl ID="pager" runat="server"></dnn:PagingControl>
@@ -157,7 +157,7 @@
                         </asp:TemplateColumn>
                         <asp:TemplateColumn>
                             <ItemTemplate>
-                                <asp:CheckBox ID="cbApproved" runat="server" />
+                                <asp:CheckBox ID="chkApproved" runat="server" />
                             </ItemTemplate>
                             <ItemStyle CssClass="typeDataGridFooter" />
                             <FooterStyle CssClass="typeDataGridFooter" />
