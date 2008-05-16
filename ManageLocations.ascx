@@ -174,11 +174,11 @@
             <br />
             <div>
                 <asp:Button ID="btnAccept" runat="server" Text="Accept" resourcekey="btnAccept" CssClass="CommandButton"
-                    OnClick="btnAccept_Click" />
+                    OnClick="btnAccept_Click" Visible="False" />
                 <asp:Button ID="btnCancelLocation" runat="server" CssClass="CommandButton" Text="Cancel"
                     resourcekey="btnCancelLocation" OnClick="btnCancel_Click" />
                 <asp:Button ID="btnDelete" runat="server" Text="Reject" resourcekey="btnDelete" CssClass="CommandButton"
-                    OnClick="btnReject_Click" />
+                    OnClick="btnReject_Click" Visible="False" />
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>

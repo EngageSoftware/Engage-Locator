@@ -73,51 +73,6 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Return Url for the page
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string ReturnUrl
-        {
-            get
-            {
-                string[] FilterParams = new string[(Request.QueryString["filterproperty"] == "" ? 2 : 3) + 1];
-
-                if ((Request.QueryString["filterProperty"] == ""))
-                {
-                    FilterParams.SetValue("filter=" + Request.QueryString["filter"], 0);
-                    FilterParams.SetValue("currentpage=" + Request.QueryString["currentpage"], 1);
-                }
-                else
-                {
-                    FilterParams.SetValue("filter=" + Request.QueryString["filter"], 0);
-                    FilterParams.SetValue("filterProperty=" + Request.QueryString["filterProperty"], 1);
-                    FilterParams.SetValue("currentpage=" + Request.QueryString["currentpage"], 2);
-                }
-
-                return DotNetNuke.Common.Globals.NavigateURL(TabId, "", FilterParams);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Portal Id whose Users we are managing
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected int UsersPortalId
-        {
-            get
-            {
-                int intPortalId = PortalId;
-                if (IsSuperUser)
-                {
-                    intPortalId = Null.NullInteger;
-                }
-                return intPortalId;
-            }
-        }
-
         protected int LocationTypeId
         {
             get
@@ -620,7 +575,7 @@ namespace Engage.Dnn.Locator
                 ModuleActionCollection Actions = new ModuleActionCollection();
                 Actions.Add(GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), ModuleActionType.AddContent, "", "add.gif", EditUrl("ltid", LocationTypeId.ToString(), "EditAttributeDefinition"), false, DotNetNuke.Security.SecurityAccessLevel.Admin, true, false);
 
-                Actions.Add(GetNextActionID(), Localization.GetString("Cancel.Action", LocalResourceFile), ModuleActionType.AddContent, "", "lt.gif", ReturnUrl, false, DotNetNuke.Security.SecurityAccessLevel.Admin, true, false );
+                Actions.Add(GetNextActionID(), Localization.GetString("Cancel.Action", LocalResourceFile), ModuleActionType.AddContent, "", "lt.gif", EditUrl("ModuleId", ModuleId.ToString(), "Module"), false, DotNetNuke.Security.SecurityAccessLevel.Admin, true, false );
                 return Actions;
             }
         }

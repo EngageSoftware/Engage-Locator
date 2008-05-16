@@ -52,10 +52,10 @@
     </div>
     <div>
         <asp:Button ID="btnAcceptComment" runat="server" CssClass="CommandButton" Text="Accept"
-            resourcekey="btnAccept" OnClick="btnAcceptComment_Click" />
+            resourcekey="btnAccept" OnClick="btnAcceptComment_Click" Visible="False" />
         <asp:Button ID="btnCancelComment" runat="server" CssClass="CommandButton" Text="Cancel"
             resourcekey="btnCancelComment" OnClick="btnCancel_Click" />
         <asp:Button ID="btnDeleteComment" runat="server" CssClass="CommandButton" Text="Reject"
-            resourcekey="btnDelete" OnClick="btnDeleteComment_Click" />
+            resourcekey="btnDelete" OnClick="btnDeleteComment_Click" Visible="False" />
     </div>
 </div>

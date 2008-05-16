@@ -74,26 +74,18 @@ namespace Engage.Dnn.Locator
             lblConfigured.Visible = false;
             divPanelTab.Visible = true;
 
-            if (Settings["ModerateSubmissions"] != null && Settings["ModerateSubmissions"].ToString() == "True")
+            if (Approved)
             {
-                if (Approved)
-                {
-                    rbApproved.Checked = true;
-                }
-                else
-                {
-                    rbWaitingForApproval.Checked = true;
-                    btnDelete.Visible = true;
-                    btnAccept.Visible = true;
-                }
-
-                BindData(Approved, "Name");
+                rbApproved.Checked = true;
             }
             else
             {
-                divApproval.Visible = false;
-                BindData(true, "Name");
+                rbWaitingForApproval.Checked = true;
+                btnDelete.Visible = true;
+                btnAccept.Visible = true;
             }
+
+            BindData(Approved, "Name");
             ClientAPI.AddButtonConfirm(btnDelete, Localization.GetString("confirmDeleteLocation"));
         }
 
@@ -199,7 +191,7 @@ namespace Engage.Dnn.Locator
         {
             foreach (DataGridItem row in dgLocations.Items)
             {
-                CheckBox cbApproved = (CheckBox)row.FindControl("cbApproved");
+                CheckBox cbApproved = (CheckBox)row.FindControl("chkApproved");
                 if (cbApproved.Checked)
                 {
                     Label lblLocationId = (Label)row.FindControl("lblLocationId");
