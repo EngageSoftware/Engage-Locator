@@ -22,10 +22,12 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Locator.Data;
+using Engage.Dnn.Locator.Providers.MapProviders;
+using Engage.Dnn.Locator.Maps;
 
 namespace Engage.Dnn.Locator
 {
-    partial class ZipLocator : ModuleBase, IActionable
+    partial class MainDisplay : ModuleBase
     {
         #region Properties
 
@@ -106,6 +108,11 @@ namespace Engage.Dnn.Locator
         {
             try
             {
+                lbSettings.Visible = IsEditable;
+                lblImportFile.Visible = IsEditable;
+                lblManageComments.Visible = IsEditable;
+                lblManageLocations.Visible = IsEditable;
+
                 string error = String.Empty;
                 lnkViewMap.OnClientClick = "showAllLocations(); return false;";
                 if (!IsConfigured(TabModuleId, ref error))
@@ -229,7 +236,7 @@ namespace Engage.Dnn.Locator
                     ShowMaps();
                 }
             }
-            else Response.Redirect(Globals.NavigateURL(DisplayTabId, "", "?search=" + txtLocationPostalCode.Text));
+            else Response.Redirect(Globals.NavigateURL(DisplayTabId,  "", "search=" + txtLocationPostalCode.Text));
 
         }
 
@@ -583,24 +590,7 @@ namespace Engage.Dnn.Locator
             {
                 FillCountry();
             }
-         }
-
-        #region Optional Interfaces
-
-        ModuleActionCollection IActionable.ModuleActions
-        {
-            get
-            {
-                ModuleActionCollection mActions = new ModuleActionCollection();
-
-                mActions.Add(GetNextActionID(), Localization.GetString("Manage", LocalResourceFile),
-                             ModuleActionType.AddContent, "", "", EditUrl("Import"), false, SecurityAccessLevel.Edit,
-                             true, false);
-                return mActions;
-            }
         }
-
-        #endregion
 
         private void FillCountry()
         {
@@ -632,7 +622,7 @@ namespace Engage.Dnn.Locator
 
         }
 
-        public bool IsConfigured(int tabModuleId, ref string error)
+        public static bool IsConfigured(int tabModuleId, ref string error)
         {
             Hashtable settings = DotNetNuke.Entities.Portals.PortalSettings.GetTabModuleSettings(tabModuleId);
             string mapProvider = Convert.ToString(settings["DisplayProvider"]);
@@ -643,7 +633,7 @@ namespace Engage.Dnn.Locator
             }
             else
             {
-                
+
                 string className = MapProviderType.GetMapProviderClassByName(mapProvider);
                 string apiKey = Convert.ToString(settings[className + ".ApiKey"]);
                 if (apiKey == String.Empty)
@@ -657,34 +647,33 @@ namespace Engage.Dnn.Locator
                     if (mp.IsKeyValid(apiKey))
                     {
                         error = "Success";
-                        return true;    
+                        return true;
                     }
                     else
                     {
                         error = "API Key is not in the correct format.";
-                        return false;   
+                        return false;
                     }
                 }
-            }
 
-            if (Convert.ToString(settings["DisplayProvider"]) == String.Empty)
-            {
-                error = "Search Setting \"Results Display Module\" not set.";
-                return false;
-            }
+                if (Convert.ToString(settings["DisplayProvider"]) == String.Empty)
+                {
+                    error = "Search Setting \"Results Display Module\" not set.";
+                    return false;
+                }
 
-            if (Convert.ToString(settings["ShowLocationDetails"]) == String.Empty)
-            {
-                error = "Display Setting \"Show Location Details\" not set.";
-                return false;
-            }
+                if (Convert.ToString(settings["ShowLocationDetails"]) == String.Empty)
+                {
+                    error = "Display Setting \"Show Location Details\" not set.";
+                    return false;
+                }
 
-            if (settings["DisplayResultsTabId"] == null)
-            {
-                error = "Display Results not set.";
-                return false;
+                if (settings["DisplayResultsTabId"] == null)
+                {
+                    error = "Display Results not set.";
+                    return false;
+                }
             }
-
         }
 
         protected void rptLocations_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -767,7 +756,31 @@ namespace Engage.Dnn.Locator
 
         protected void lnkSubmitLocations_Click(object sender, EventArgs e)
         {
-             Response.Redirect(Globals.NavigateURL(TabId, "ManageLocations", "mid=" + ModuleId));
+             Response.Redirect(Globals.NavigateURL(TabId, "ManageLocation", "mid=" + ModuleId));
+        }
+
+        protected void lbSettings_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblManageLocations_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("ManageLocations");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblImportFile_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("Import");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblManageComments_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("ManageComments");
+            Response.Redirect(href, true);
         }
     }
 }

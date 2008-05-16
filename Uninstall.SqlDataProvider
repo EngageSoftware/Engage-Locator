@@ -249,4 +249,8 @@ if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{
 drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
 GO
 
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
+GO
+
 

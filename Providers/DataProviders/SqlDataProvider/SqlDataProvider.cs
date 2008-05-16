@@ -239,8 +239,8 @@ namespace Engage.Dnn.Locator.Data
         public override void ClearLocations(int portalId)
         {
             StringBuilder sql = new StringBuilder(250);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "DELETE FROM {0}Location ", NamePrefix);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "WHERE PortalId = @PortalId");
+            sql.AppendFormat(CultureInfo.InvariantCulture, "EXEC {0}spDeleteLocations ", NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, "@PortalId");
 
             SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.Text, sql.ToString(), CreateIntegerParam("@PortalId", portalId));
         }
@@ -662,9 +662,9 @@ namespace Engage.Dnn.Locator.Data
             return SqlHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetAttributeDefinition", new SqlParameter("@AttributeDefinitionId", attributeDefinitionId));
         }
 
-        public override IDataReader GetAttributeDefinitionByName(int portalId, string name)
+        public override IDataReader GetAttributeDefinitionByName(int locationTypeId, string name)
         {
-            return SqlHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetAttributeDefinitionByName", new SqlParameter("@PortalID", portalId), new SqlParameter("@Name", name));
+            return SqlHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetAttributeDefinitionByName", new SqlParameter("@locationTypeId", locationTypeId), new SqlParameter("@Name", name));
         }
 
         public override int UpdateAttributeDefinition(int attributeDefinitionId, int dataType, string defaultValue, string attributeName, bool required, string validationExpression, int viewOrder, bool visible, int length)

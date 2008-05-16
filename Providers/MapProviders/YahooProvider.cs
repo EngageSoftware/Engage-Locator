@@ -12,8 +12,11 @@ using System.Data;
 using System.Globalization;
 using System.Text;
 using DotNetNuke.Common;
+using Engage.Dnn.Locator.Maps;
 
-namespace Engage.Dnn.Locator
+//Because someone is storing the full class name in the TabModuleSettings we can exceed 50 char for the fully
+//qualified name. So we can't use Engage.Dnn.Locator.Providers.MapProviders as it should be. hk!
+namespace Engage.Dnn.Locator.Providers.MapProviders
 {
     public class YahooProvider:MapProvider
     {

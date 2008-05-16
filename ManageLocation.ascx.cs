@@ -11,6 +11,8 @@ using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.Utilities;
 using Globals=DotNetNuke.Common.Globals;
 using System.Globalization;
+using Engage.Dnn.Locator.Providers.MapProviders;
+using Engage.Dnn.Locator.Maps;
 
 namespace Engage.Dnn.Locator
 {
@@ -293,7 +295,7 @@ namespace Engage.Dnn.Locator
                             }
                         }
                         currentLocation.Update();
-                        Response.Redirect(EditUrl("Import"));
+                        Response.Redirect(EditUrl("ManageLocations"));
                     }
                     else
                     {
@@ -369,7 +371,7 @@ namespace Engage.Dnn.Locator
                             Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), newLocation.LocationId, txtLocationAttributeValue.Text);
                         }
                         if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
-                            Response.Redirect(EditUrl("Import"));
+                            Response.Redirect(EditUrl("ManageLocations"));
                         else
                             Response.Redirect(Globals.NavigateURL());
                     }
@@ -428,7 +430,7 @@ namespace Engage.Dnn.Locator
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Globals.NavigateURL(TabId, "Import", "mid=" + ModuleId));
+            Response.Redirect(Globals.NavigateURL(TabId, "ManageLocations", "mid=" + ModuleId));
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)

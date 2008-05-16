@@ -11,60 +11,69 @@
 namespace Engage.Dnn.Locator {
     
     
-    public partial class AttributeDefinitions {
+    public partial class Import {
         
         /// <summary>
-        /// lblLocationTypeHelp control.
+        /// lblConfigured control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationTypeHelp;
+        protected global::System.Web.UI.WebControls.Label lblConfigured;
         
         /// <summary>
-        /// lblLocTypeName control.
+        /// divPanelTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocTypeName;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPanelTab;
         
         /// <summary>
-        /// lblLocationTypeName control.
+        /// fileDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationTypeName;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl fileDiv;
         
         /// <summary>
-        /// grdLocationTypeAttributes control.
+        /// fileImport control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid grdLocationTypeAttributes;
+        protected global::System.Web.UI.WebControls.FileUpload fileImport;
         
         /// <summary>
-        /// cmdUpdate control.
+        /// lblMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.WebControls.CommandButton cmdUpdate;
+        protected global::System.Web.UI.WebControls.Label lblMessage;
         
         /// <summary>
-        /// cmdRefresh control.
+        /// btnSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.WebControls.CommandButton cmdRefresh;
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
+        
+        /// <summary>
+        /// btnBack control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBack;
     }
 }

@@ -11,60 +11,78 @@
 namespace Engage.Dnn.Locator {
     
     
-    public partial class AttributeDefinitions {
+    public partial class ManageComments {
         
         /// <summary>
-        /// lblLocationTypeHelp control.
+        /// lblConfigured control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationTypeHelp;
+        protected global::System.Web.UI.WebControls.Label lblConfigured;
         
         /// <summary>
-        /// lblLocTypeName control.
+        /// lblNoPending control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocTypeName;
+        protected global::System.Web.UI.WebControls.Label lblNoPending;
         
         /// <summary>
-        /// lblLocationTypeName control.
+        /// divPanelTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationTypeName;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPanelTab;
         
         /// <summary>
-        /// grdLocationTypeAttributes control.
+        /// lblSuccess control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid grdLocationTypeAttributes;
+        protected global::System.Web.UI.WebControls.Label lblSuccess;
         
         /// <summary>
-        /// cmdUpdate control.
+        /// dgSubmittedComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.WebControls.CommandButton cmdUpdate;
+        protected global::System.Web.UI.WebControls.DataGrid dgSubmittedComments;
         
         /// <summary>
-        /// cmdRefresh control.
+        /// btnAcceptComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.WebControls.CommandButton cmdRefresh;
+        protected global::System.Web.UI.WebControls.Button btnAcceptComment;
+        
+        /// <summary>
+        /// btnCancelComment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelComment;
+        
+        /// <summary>
+        /// btnDeleteComment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDeleteComment;
     }
 }

@@ -6,12 +6,12 @@
 </div>
 <br />
 <div style="text-align:center;">
-    <p></p><asp:Label id="lblLocTypeName" runat="server" Class="Normal" resourcekey="LocTypeName" />
-    <asp:TextBox id="txtLocationTypeName" runat="server" CssClass="NormalTextBox" /></p>
+    <p></p><asp:Label id="lblLocTypeName" runat="server" Class="NormalBold" resourcekey="LocTypeName" />
+    <asp:Label id="lblLocationTypeName" runat="server" CssClass="Normal" /></p>
 </div>
 <asp:datagrid id="grdLocationTypeAttributes" AutoGenerateColumns="false" runat="server"
     width="100%" CellPadding="4"
-	GridLines="None" CssClass="DataGrid_Container" Runat="server" 
+	GridLines="None" CssClass="DataGrid_Container" runat="server" 
     OnItemCommand="grdLocationTypeAttributes_ItemCommand" 
     OnItemCreated="grdLocationTypeAttributes_ItemCreated" 
     OnItemDataBound="grdLocationTypeAttributes_ItemDataBound">
@@ -21,8 +21,13 @@
 	<EditItemStyle CssClass="NormalTextBox" />
 	<SelectedItemStyle CssClass="NormalRed" />
 	<FooterStyle CssClass="DataGrid_Footer" />
-	<PagerStyle CssClass="DataGrid_Pager" />
+	<PagerStyle CssClass="DataGrid_Pager"  />
 	<Columns>
+	    <asp:TemplateColumn>
+	        <ItemTemplate>
+	          	    <asp:Label id="lblId" runAt="server" visible="false" Text='<%# DataBinder.Eval(Container.DataItem, "AttributeDefinitionId").ToString() %>' ></asp:Label>	    
+	        </ItemTemplate>
+	    </asp:TemplateColumn>
 		<dnn:imagecommandcolumn CommandName="Edit" Text="Edit" ImageUrl="~/images/edit.gif" HeaderText="Edit" KeyField="AttributeDefinitionID" EditMode="URL" />
 		<dnn:imagecommandcolumn CommandName="Delete" Text="Delete" ImageUrl="~/images/delete.gif" HeaderText="Del" KeyField="AttributeDefinitionID" />
 		<dnn:imagecommandcolumn CommandName="MoveDown" ImageUrl="~/images/dn.gif" HeaderText="Dn" KeyField="AttributeDefinitionID" />

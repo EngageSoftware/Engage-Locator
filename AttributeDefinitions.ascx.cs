@@ -45,10 +45,10 @@ namespace Engage.Dnn.Locator
 
         #region Constants
 
-        const int COLUMN_REQUIRED = 9;
-        const int COLUMN_VISIBLE = 10;
-        const int COLUMN_MOVE_DOWN = 2;
-        const int COLUMN_MOVE_UP = 3;
+        const int COLUMN_REQUIRED = 10;
+        const int COLUMN_VISIBLE = 11;
+        const int COLUMN_MOVE_DOWN = 3;
+        const int COLUMN_MOVE_UP = 4;
 
         #endregion
 
@@ -166,12 +166,17 @@ namespace Engage.Dnn.Locator
         /// </summary>
         /// <param name="index">The index of the Property to delete</param>
         /// -----------------------------------------------------------------------------
-        private void DeleteAttribute(int index)
+        private void DeleteAttribute(int attributeDefinitionId)
         {
             AttributeDefinitionCollection locationTypeAttributes = GetAttributes();
-            AttributeDefinition objAttribute = locationTypeAttributes[index];
-
-            LocationType.DeleteAttributeDefinition(objAttribute);
+            foreach (AttributeDefinition objAttribute in locationTypeAttributes)
+            {
+                if (objAttribute.AttributeDefinitionId == attributeDefinitionId)
+                {
+                    LocationType.DeleteAttributeDefinition(objAttribute);
+                    break;
+                }
+            }
 
             RefreshGrid();
         }
@@ -227,8 +232,8 @@ namespace Engage.Dnn.Locator
         {
             ////Fill textbox with LocType name here.
             DataTable dt = LocationType.GetLocationTypes();
-            dt.Select("LocationTypeId = " + LocationTypeId);
-            txtLocationTypeName.Text = dt.Rows[0][1].ToString();
+            DataRow[] rows = dt.Select("LocationTypeId = " + LocationTypeId);
+            lblLocationTypeName.Text = rows[0][1].ToString();
         }
 
         /// -----------------------------------------------------------------------------
@@ -637,7 +642,9 @@ namespace Engage.Dnn.Locator
             switch (commandName)
             {
                 case "Delete":
-                    DeleteAttribute(index);
+                    Label l = ((Label)grdLocationTypeAttributes.Items[e.Item.ItemIndex].Cells[0].Controls[1]);
+                    int attributeDefinitionId = Convert.ToInt32(l.Text);
+                    DeleteAttribute(attributeDefinitionId);
                     break;
                 case "MoveUp":
                     MoveAttributeUp(index);

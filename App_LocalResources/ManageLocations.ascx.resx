@@ -133,7 +133,7 @@
     <value>Choose One...</value>
   </data>
   <data name="Delete.Text" xml:space="preserve">
-    <value>Reject</value>
+    <value>Delete</value>
   </data>
   <data name="Edit.EditText" xml:space="preserve">
     <value>Edit</value>
@@ -214,10 +214,10 @@
     <value>Website</value>
   </data>
   <data name="lblZip.Text" xml:space="preserve">
-    <value>PostalCode</value>
+    <value>Zipcode</value>
   </data>
   <data name="Location Type.Header" xml:space="preserve">
-    <value>Location Type</value>
+    <value>Type</value>
   </data>
   <data name="LocationDd.Help" xml:space="preserve">
     <value>Specify the ID you want to be displayed for administrator when viewing the location(s).</value>
@@ -232,10 +232,10 @@
     <value>Please select a CSV or  file to import from.</value>
   </data>
   <data name="PostalCode.Header" xml:space="preserve">
-    <value>PostalCode</value>
+    <value>Zipcode</value>
   </data>
   <data name="Region.Header" xml:space="preserve">
-    <value>Region</value>
+    <value>State</value>
   </data>
   <data name="rfvCity.Text" xml:space="preserve">
     <value>Please Enter City</value>
@@ -301,10 +301,10 @@
     <value>Location Details</value>
   </data>
   <data name="Name.Header" xml:space="preserve">
-    <value>Location Name</value>
+    <value>Name</value>
   </data>
   <data name="Phone.Header" xml:space="preserve">
-    <value>Phone Number</value>
+    <value>Phone</value>
   </data>
   <data name="Website.Header" xml:space="preserve">
     <value>Webste</value>
@@ -315,11 +315,11 @@
   <data name="deleteText.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="btnApprovedComments.Text" xml:space="preserve">
-    <value> Approved&amp;nbsp;Comments</value>
+  <data name="lblApprovedComments.Text" xml:space="preserve">
+    <value> Approved</value>
   </data>
-  <data name="btnNewComments.Text" xml:space="preserve">
-    <value> New Comments</value>
+  <data name="lblWaitingComments.Text" xml:space="preserve">
+    <value> Waiting</value>
   </data>
   <data name="cbApproved.Header" xml:space="preserve">
     <value />

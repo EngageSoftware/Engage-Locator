@@ -18,18 +18,25 @@
           <cachetime>0</cachetime>
           <controls>
             <control>
-              <src>DesktopModules/EngageLocator/ZipLocator.ascx</src>
+              <src>DesktopModules/EngageLocator/MainDisplay.ascx</src>
               <type>View</type>
             </control>
             <control>
               <key>Import</key>
-              <src>DesktopModules/EngageLocator/DataImport.ascx</src>
+              <title>Import Locations</title>
+              <src>DesktopModules/EngageLocator/Import.ascx</src>
+              <type>Edit</type>
+            </control>
+            <control>
+              <key>ManageLocation</key>
+              <title>Manage Location</title>
+              <src>DesktopModules/EngageLocator/ManageLocation.ascx</src>
               <type>Edit</type>
             </control>
             <control>
               <key>ManageLocations</key>
               <title>Manage Locations</title>
-              <src>DesktopModules/EngageLocator/ManageLocation.ascx</src>
+              <src>DesktopModules/EngageLocator/ManageLocations.ascx</src>
               <type>Edit</type>
             </control>
             <control>
@@ -45,9 +52,15 @@
               <type>Edit</type>
             </control>
             <control>
+              <key>ManageComment</key>
+              <title>Manage Comment</title>
+              <src>DesktopModules/EngageLocator/ManageComment.ascx</src>
+              <type>Edit</type>
+            </control>
+            <control>
               <key>ManageComments</key>
               <title>Manage Comments</title>
-              <src>DesktopModules/EngageLocator/ManageComment.ascx</src>
+              <src>DesktopModules/EngageLocator/ManageComments.ascx</src>
               <type>Edit</type>
             </control>
             <control>

@@ -21,11 +21,14 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using Engage.Dnn.Locator.Data;
+using Engage.Dnn.Locator.Providers.MapProviders;
+using Engage.Dnn.Locator.Maps;
 using LumenWorks.Framework.IO.Csv;
 
-namespace Engage.Dnn.Locator
+namespace Engage.Dnn.Locator.Components
 {
     public class DataImportScheduler
+    //public class DataImportScheduler: DotNetNuke.Services.Scheduling.SchedulerClient
     {
         private const string ImportFolderName = "Location Import";
         private const string WorkingFolderName = "Location Import/Working/";
@@ -38,51 +41,53 @@ namespace Engage.Dnn.Locator
             ThreadPool.QueueUserWorkItem(DoWork);
         }
 
+        //public DataImportScheduler(DotNetNuke.Services.Scheduling.ScheduleHistoryItem scheduleHistoryItem)
+        //{
+        //    ScheduleHistoryItem = scheduleHistoryItem;
+        //}
+
         public void DoWork(Object threadContext)
         {
-            if (HasFilesToImport)
+            while (HasFilesToImport)
             {
-                while (HasFilesToImport)
+                DataTable files = Location.GetFilesToImport();
+
+                try
                 {
-                    DataTable files = Location.GetFilesToImport();
-
-                    try
+                    foreach (DataRow file in files.Rows)
                     {
-                        foreach (DataRow file in files.Rows)
+                        _portalId = Convert.ToInt32(file["PortalId"].ToString());
+
+                        FolderInfo fiLocation = FileSystemUtils.GetFolder(_portalId, ImportFolderName);
+                        ArrayList filesLocation = FileSystemUtils.GetFilesByFolder(_portalId, fiLocation.FolderID);
+
+                        FolderInfo fiLocationWorking = FileSystemUtils.GetFolder(_portalId, WorkingFolderName);
+                        ArrayList filesLocationWorking = FileSystemUtils.GetFilesByFolder(_portalId, fiLocationWorking.FolderID);
+
+                        int index = DataProvider.Instance().GetLastImportIndex();
+
+                        if (filesLocation.Count > 0)
                         {
-                            _portalId = Convert.ToInt32(file["PortalId"].ToString());
-
-                            FolderInfo fiLocation = FileSystemUtils.GetFolder(_portalId, ImportFolderName);
-                            ArrayList filesLocation = FileSystemUtils.GetFilesByFolder(_portalId, fiLocation.FolderID);
-
-                            FolderInfo fiLocationWorking = FileSystemUtils.GetFolder(_portalId, WorkingFolderName);
-                            ArrayList filesLocationWorking = FileSystemUtils.GetFilesByFolder(_portalId, fiLocationWorking.FolderID);
-
-                            int index = DataProvider.Instance().GetLastImportIndex();
-
-                            if (filesLocation.Count > 0)
+                            foreach (DotNetNuke.Services.FileSystem.FileInfo fileInfo in filesLocationWorking)
                             {
-                                foreach (DotNetNuke.Services.FileSystem.FileInfo fileInfo in filesLocationWorking)
-                                {
-                                    File.Delete(fileInfo.PhysicalPath);
-                                }
-                                StageData(filesLocation, fiLocationWorking);
-                                CollectData(fiLocationWorking, index, _portalId);
+                                File.Delete(fileInfo.PhysicalPath);
                             }
-                            else if (filesLocationWorking.Count > 0)
-                            {
-                                CollectData(fiLocationWorking, index, _portalId);
-                            }
-                            int id = Convert.ToInt32(file["FileId"].ToString());
-                            UpdateImportedLocationRow(id);
+                            StageData(filesLocation, fiLocationWorking);
+                            CollectData(fiLocationWorking, index, _portalId);
                         }
+                        else if (filesLocationWorking.Count > 0)
+                        {
+                            CollectData(fiLocationWorking, index, _portalId);
+                        }
+                        int id = Convert.ToInt32(file["FileId"].ToString());
+                        UpdateImportedLocationRow(id);
+                    }
 
-                    }
-                    catch (Exception ex)
-                    {
-                        Exceptions.LogException(ex);
-                        FileMove(false);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Exceptions.LogException(ex);
+                    FileMove(false);
                 }
             }
         }

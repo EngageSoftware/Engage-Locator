@@ -14,8 +14,10 @@ using System.Collections;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.ComponentModel;
+using Engage.Dnn.Locator.Providers.MapProviders;
+using Engage.Dnn.Locator.Maps;
 
-namespace Engage.Dnn.Locator
+namespace Engage.Dnn.Locator.Services
 {
     /// <summary>
     /// Summary description for Services

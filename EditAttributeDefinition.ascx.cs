@@ -108,7 +108,7 @@ namespace Engage.Dnn.Locator
                     else
                     {
                         //Get Attribute Definition from Data Store
-                        _AttributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionId, PortalId);
+                        _AttributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionId, LocationTypeId);
                     }
                 }
                 return _AttributeDefinition;
@@ -123,6 +123,10 @@ namespace Engage.Dnn.Locator
                 if ((ViewState["AttributeDefinitionID"] != null))
                 {
                     id = Int32.Parse(ViewState["AttributeDefinitionID"].ToString());
+                }
+                if (Request.QueryString["AttributeDefinitionId"] != null)
+                {
+                    id = Convert.ToInt32(Request.QueryString["AttributeDefinitionId"]);
                 }
                 return id;
             }

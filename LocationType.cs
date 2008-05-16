@@ -220,12 +220,12 @@ namespace Engage.Dnn.Locator
         /// <param name="definitionId">The id of the LocationTypeAttributeDefinition object to retrieve</param>
         /// <returns>The LocationTypeAttributeDefinition object</returns>
         /// -----------------------------------------------------------------------------
-        public static AttributeDefinition GetAttributeDefinition(int definitionId, int portalId)
+        public static AttributeDefinition GetAttributeDefinition(int definitionId, int locationTypeId)
         {
             AttributeDefinition definition = null;
             bool bFound = Null.NullBoolean;
 
-            foreach (AttributeDefinition singleDefinition in GetAttributeDefinitions(portalId))
+            foreach (AttributeDefinition singleDefinition in GetAttributeDefinitions(locationTypeId))
             {
                 if (singleDefinition.AttributeDefinitionId == definitionId)
                 {
@@ -252,12 +252,12 @@ namespace Engage.Dnn.Locator
         /// <param name="name">The name of the LocationTypeAttributeDefinition object to retrieve</param>
         /// <returns>The LocationTypeAttributeDefinition object</returns>
         /// -----------------------------------------------------------------------------
-        public static AttributeDefinition GetAttributeDefinitionByName(int portalId, string name)
+        public static AttributeDefinition GetAttributeDefinitionByName(int locationTypeId, string name)
         {
             AttributeDefinition definition = null;
             bool bFound = Null.NullBoolean;
 
-            foreach (AttributeDefinition singleDefinition in GetAttributeDefinitions(portalId))
+            foreach (AttributeDefinition singleDefinition in GetAttributeDefinitions(locationTypeId))
             {
                 if (singleDefinition.AttributeName == name)
                 {
@@ -270,7 +270,7 @@ namespace Engage.Dnn.Locator
             if (!bFound)
             {
                 //Try Database
-                definition = FillAttributeDefinitionInfo(DataProvider.Instance().GetAttributeDefinitionByName(portalId, name));
+                definition = FillAttributeDefinitionInfo(DataProvider.Instance().GetAttributeDefinitionByName(locationTypeId, name));
             }
 
             return definition;

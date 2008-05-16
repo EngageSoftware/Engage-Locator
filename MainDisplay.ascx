@@ -1,7 +1,12 @@
-﻿<%@ Import namespace="DotNetNuke"%>
-<%@ Import namespace="DotNetNuke.Services.Localization"%>
-<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.ZipLocator" AutoEventWireup="True" Codebehind="ZipLocator.ascx.cs" %>
+﻿<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.MainDisplay" AutoEventWireup="True" Codebehind="MainDisplay.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/sectionheadcontrol.ascx" %>
+
+<div class="div_ManagementButtons">
+    <asp:LinkButton ID="lbSettings" runat="server" CssClass="CommandButton" ResourceKey="lbSettings" OnClick="lbSettings_OnClick">Settings</asp:LinkButton>
+    <asp:LinkButton ID="lblManageLocations" runat="server" CssClass="CommandButton" ResourceKey="lblManageLocations" OnClick="lblManageLocations_OnClick">Manage Locations</asp:LinkButton>
+    <asp:LinkButton ID="lblImportFile" runat="server" CssClass="CommandButton"  ResourceKey="lblImportFile" OnClick="lblImportFile_OnClick">Import File</asp:LinkButton>
+    <asp:LinkButton ID="lblManageComments" runat="server" CssClass="CommandButton" ResourceKey="lblManageComments" OnClick="lblManageComments_OnClick">Manage Comments</asp:LinkButton>
+</div>
 
 <div class="locatorHeader">
     <h1 class="locatorHeaderText">

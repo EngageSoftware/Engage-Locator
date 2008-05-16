@@ -108,6 +108,7 @@ namespace Engage.Dnn.Locator
                 attribute.AttributeDefinitionId = Convert.ToInt32(row["AttributeDefinitionId"]);
                 attribute.AttributeName = row["AttributeName"].ToString();
                 attribute.LocationId = locationId;
+                attribute.AttributeValue = row["DefaultValue"].ToString(); //default this and change later if needed.hkh
                 foreach (DataRow valueRow in dtLocationAttributeValues.Rows)
                 {
                     if(attribute.LocationId == Convert.ToInt32(valueRow["LocationId"]) && attribute.AttributeDefinitionId == Convert.ToInt32(valueRow["AttributeDefinitionId"]))

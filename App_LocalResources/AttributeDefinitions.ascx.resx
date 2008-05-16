@@ -172,6 +172,6 @@
     <value>Visible</value>
   </data>
   <data name="LocTypeName.Text" xml:space="preserve">
-    <value>Location Type name: </value>
+    <value>Name: </value>
   </data>
 </root>

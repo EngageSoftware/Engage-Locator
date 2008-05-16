@@ -11,7 +11,43 @@
 namespace Engage.Dnn.Locator {
     
     
-    public partial class ZipLocator {
+    public partial class MainDisplay {
+        
+        /// <summary>
+        /// lbSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbSettings;
+        
+        /// <summary>
+        /// lblManageLocations control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lblManageLocations;
+        
+        /// <summary>
+        /// lblImportFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lblImportFile;
+        
+        /// <summary>
+        /// lblManageComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lblManageComments;
         
         /// <summary>
         /// lblHeader control.

@@ -9,10 +9,10 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Locator.Data;
 using DotNetNuke.Common;
+using Engage.Dnn.Locator.Maps;
 
 namespace Engage.Dnn.Locator
 {
-
     partial class Settings : ModuleSettingsBase
     {
         protected override void OnInit(EventArgs e)

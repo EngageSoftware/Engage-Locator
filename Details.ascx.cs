@@ -78,18 +78,35 @@ namespace Engage.Dnn.Locator
 
             foreach (Attribute a in location.GetAttributes())
             {
+                
+
+                Literal lit = new Literal();
+                lit.Text = "<div class=div_CustomAttribute" + a.AttributeId.ToString() + ">";
+                plhCustomAttributes.Controls.Add(lit);
+
                 Label l = new Label();
                 string text = Localization.GetString(a.AttributeName, LocalResourceFile);
+                if (text == null) text = a.AttributeName;
                 l.Text = text;
                 plhCustomAttributes.Controls.Add(l);
 
-                TextBox t = new TextBox();
-                t.Text = a.AttributeValue;
-                plhCustomAttributes.Controls.Add(t);
+                lit = new Literal();
+                lit.Text = "&nbsp;";
+                plhCustomAttributes.Controls.Add(lit);
 
-                Literal lit = new Literal();
+
+                l = new Label();
+                l.Text = a.AttributeValue;
+                plhCustomAttributes.Controls.Add(l);
+
+                lit = new Literal();
                 lit.Text = "<br />";
                 plhCustomAttributes.Controls.Add(lit);
+
+                lit = new Literal();
+                lit.Text = "</div>";
+                plhCustomAttributes.Controls.Add(lit);
+
 
             }
         }

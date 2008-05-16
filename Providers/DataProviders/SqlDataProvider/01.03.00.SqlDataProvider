@@ -546,12 +546,12 @@ drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefi
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionByName]
-	@PortalID [int],
+	@LocationTypeId [int],
 	@Name [nvarchar] (255)
 AS
 	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] lta
 	INNER JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] lt ON lt.LocationTypeId = lta.LocationTypeId
-	WHERE lt.PortalID = @PortalID
+	WHERE lt.LocationTypeId = @LocationTypeId
 	AND lta.AttributeName = @Name
 GO
 
@@ -597,7 +597,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]
 	@locationTypeId int
 AS
-	SELECT AttributeDefinitionId, AttributeName FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
+	SELECT AttributeDefinitionId, AttributeName,DefaultValue, DataType, Length, Required, ViewOrder, Visible FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
 	WHERE LocationTypeId = @locationTypeId
 GO
 
@@ -669,3 +669,24 @@ AS
 
 	WHERE AttributeDefinitionId = @AttributeDefinitionId
 GO
+
+delete from {databaseOwner}[{objectQualifier}schedule] Where TypeFullName = 'Engage.Dnn.Locator.DataImportScheduler,EngageLocator'
+go
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
+GO
+
+CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
+@portalId int
+AS
+
+	Delete From EngageLocator_LocationAttribute
+	where LocationId in (Select LocationId FROM dbo.EngageLocator_Location WHERE PortalId = @portalId)
+
+	Delete From EngageLocator_Comment
+	where LocationId in (Select LocationId FROM dbo.EngageLocator_Location WHERE PortalId = @portalId)
+
+	DELETE FROM dbo.EngageLocator_Location WHERE PortalId = @portalId
+
+go
