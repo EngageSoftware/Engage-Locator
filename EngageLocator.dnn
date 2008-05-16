@@ -31,7 +31,7 @@
               <key>ManageLocation</key>
               <title>Manage Location</title>
               <src>DesktopModules/EngageLocator/ManageLocation.ascx</src>
-              <type>Edit</type>
+              <type>View</type>
             </control>
             <control>
               <key>ManageLocations</key>

@@ -133,11 +133,6 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region Private Members
-        //private LocationTypeAttributeDefinitionCollection m_objAttributes;
-        private DataTable _objAttributes;
-        #endregion
-
         #region Private Methods
 
         /// -----------------------------------------------------------------------------
@@ -295,7 +290,6 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void RefreshGrid()
         {
-            _objAttributes = null;
             BindGrid();
         }
 

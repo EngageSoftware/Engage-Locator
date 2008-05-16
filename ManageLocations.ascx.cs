@@ -72,14 +72,13 @@ namespace Engage.Dnn.Locator
                         if (Settings["ModerateSubmissions"] != null && Settings["ModerateSubmissions"].ToString() == "True")
                         {
                             int approved = 0;
-                            if (rbApproved.Checked)
-                                approved = 1;
-                            BindDataGrid(approved);
+                            if (rbApproved.Checked) approved = 1;
+                            BindData(approved, "Name");
                         }
                         else
                         {
                             rbLocations.Visible = false;
-                            BindDataGrid(1);
+                            BindData(1, "Name");
                         }
                         ClientAPI.AddButtonConfirm(btnDelete, Localization.GetString("confirmDeleteLocation"));
                     }
@@ -93,21 +92,34 @@ namespace Engage.Dnn.Locator
             }
         }
 
-       
-        private void BindDataGrid(int approved)
+
+        private void BindData(int approved, string sortColumn)
         {
-            DataTable locations = Location.GetLocations(PortalId, approved);
+            DataTable locations = Location.GetLocations(PortalId, approved, sortColumn, CurrentPageIndex - 1, dgLocations.PageSize);
             dgLocations.DataSource = locations;
             dgLocations.DataBind();
+
+            if (locations.Rows.Count > 0)
+            {
+                pager.TotalRecords = Convert.ToInt32(locations.Rows[0]["TotalRecords"]);
+                pager.PageSize = dgLocations.PageSize;
+                pager.CurrentPage = CurrentPageIndex;
+                pager.TabID = TabId;
+                pager.QuerystringParams = "&mid=" + ModuleId.ToString() + "&ctl=ManageLocations";
+
+
+                dgLocations.Attributes.Add("SortColumn", sortColumn);
+            }
+
         }
         
         protected void dgLocations_PageChange(Object sender, DataGridPageChangedEventArgs e)
         {
-            dgLocations.CurrentPageIndex = e.NewPageIndex;
-            int approved = 0;
-            if (rbApproved.Checked)
-                approved = 1;
-            BindDataGrid(approved);  
+            //dgLocations.CurrentPageIndex = e.NewPageIndex;
+            //int approved = 0;
+            //if (rbApproved.Checked)
+            //    approved = 1;
+            //BindDataGrid(approved);  
         }
 
         protected void dgLocations_EditCommand(object source, DataGridCommandEventArgs e)
@@ -122,7 +134,7 @@ namespace Engage.Dnn.Locator
             int approved = 0;
             if (rbApproved.Checked)
                 approved = 1;
-            BindDataGrid(approved);  
+            BindData(approved, "Name");  
         }
 
         protected void dgLocations_DeleteCommand(object source, DataGridCommandEventArgs e)
@@ -136,7 +148,7 @@ namespace Engage.Dnn.Locator
             int approved = 0;
             if (rbApproved.Checked)
                 approved = 1;
-            BindDataGrid(approved);  
+            BindData(approved, "Name");  
         }
        
         protected void btnAddLocation_Click(object sender, EventArgs e)
@@ -151,7 +163,9 @@ namespace Engage.Dnn.Locator
             int approved = 0;
             if (rbApproved.Checked)
                 approved = 1;
-            BindDataGrid(approved);
+            
+            BindData(approved, "Name");
+
             if (approved == 0)
             {
                 btnDelete.Visible = dgLocations.Items.Count > 0;
@@ -186,10 +200,8 @@ namespace Engage.Dnn.Locator
                     Location.DeleteLocation(Convert.ToInt32(lbl.Text));
                 }
             }
-            //int approved = 0;
-            //if (rbApproved.Checked)
-            //    approved = 1;
-            BindDataGrid(0);
+
+            BindData(0, "Name");
         }
 
         protected void btnAccept_Click(object sender, EventArgs e)
@@ -205,7 +217,7 @@ namespace Engage.Dnn.Locator
                     location.Update();
                 }
             }
-            BindDataGrid(0);
+            BindData(0, "Name");
         }
 
         protected void dgLocations_ItemCreated(object sender, DataGridItemEventArgs e)
@@ -239,5 +251,41 @@ namespace Engage.Dnn.Locator
                 lbl.Text = waiting.Tables[0].Rows.Count + Localization.GetString("lblWaitingComments", LocalResourceFile);
             }
         }
+
+        protected void dgLocations_SortCommand(object source, DataGridSortCommandEventArgs e)
+        {
+            string sort = dgLocations.Attributes["SortColumn"];
+            string newSort;
+            string direction = dgLocations.Attributes["SortDirection"];
+
+            if (sort != null && sort == e.SortExpression)
+            {
+                newSort = e.SortExpression + " DESC";
+            }
+            else
+            {
+                newSort = e.SortExpression + " ASC";
+            }
+
+            BindData(1, newSort);
+
+            dgLocations.Attributes.Add("SortColumn", e.SortExpression);
+        }
+
+        private int CurrentPageIndex
+        {
+            get
+            {
+                int index = 1;
+                //Get the currentpage index from the url parameter
+                if (Request.QueryString["currentpage"] != null)
+                {
+                    index = Convert.ToInt32(Request.QueryString["currentpage"]);
+                }
+
+                return index;
+            }
+        }
+
     }
 }

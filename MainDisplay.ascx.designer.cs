@@ -20,7 +20,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbSettings;
+        protected global::System.Web.UI.WebControls.ImageButton lbSettings;
         
         /// <summary>
         /// lblManageLocations control.
@@ -29,7 +29,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lblManageLocations;
+        protected global::System.Web.UI.WebControls.ImageButton lblManageLocations;
         
         /// <summary>
         /// lblImportFile control.
@@ -38,7 +38,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lblImportFile;
+        protected global::System.Web.UI.WebControls.ImageButton lblImportFile;
         
         /// <summary>
         /// lblManageComments control.
@@ -47,7 +47,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lblManageComments;
+        protected global::System.Web.UI.WebControls.ImageButton lblManageComments;
         
         /// <summary>
         /// lblHeader control.

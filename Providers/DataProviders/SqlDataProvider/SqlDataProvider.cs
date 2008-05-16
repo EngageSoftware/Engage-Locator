@@ -208,9 +208,14 @@ namespace Engage.Dnn.Locator.Data
             return SqlHelper.ExecuteDataset(connectionString, CommandType.Text, sql.ToString(), CreateIntegerParam("@CountryId", countryId), CreateIntegerParam("@PortalId", portalId)).Tables[0];
         }
 
-        public override DataTable GetAllLocations(int portalId, int approved)
+        public override DataTable GetAllLocations(int portalId, int approved, string sortColumn, int index, int pageSize)
         {
-            return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetAllLocations", CreateIntegerParam("@PortalId", portalId), CreateIntegerParam("@approved", approved)).Tables[0];
+            return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetAllLocations", 
+                CreateIntegerParam("@PortalId", portalId), 
+                CreateIntegerParam("@approved", approved),
+                CreateVarcharParam("@sortColumn", sortColumn, 200),
+                CreateIntegerParam("@index", index),
+                CreateIntegerParam("@pagesize", pageSize)).Tables[0];
         }
 
         public override void DeleteLocation(int locationId)
@@ -441,7 +446,7 @@ namespace Engage.Dnn.Locator.Data
 
         public override int SaveLocation(Location loc)
         {
-            return SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateVarcharParam("@LocationDetails", loc.LocationDetails, 100), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@CsvLineNumber", 0), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved)));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateVarcharParam("@LocationDetails", loc.LocationDetails, 100), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@CsvLineNumber", 0), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved))));
         }
 
         public override int SaveTempLocation(Location loc, bool successful)
@@ -530,7 +535,7 @@ namespace Engage.Dnn.Locator.Data
             sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, vl.LocationTypeId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "lt.LocationTypeName, PostalCode FROM {0}vLocations vl join {0}LocationType lt on (vl.LocationTypeId = lt.LocationTypeId) ", NamePrefix);
-            sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE vl.PortalId = @PortalId ");
+            sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE vl.PortalId = @PortalId and Approved = 1");
 
             int i = 0;
             if (types[0] != String.Empty)

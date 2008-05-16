@@ -62,10 +62,6 @@ namespace Engage.Dnn.Locator
                     {
                         bool approved = Convert.ToBoolean(Request.QueryString["approved"]);
                         Location location = Location.GetLocation(Convert.ToInt32(Request.QueryString["lid"]));
-                        //if (approved)
-                        //    lblLocationComments.Text = Localization.GetString("lblLocationComments_approved", LocalResourceFile);
-                        //else
-                        //    lblLocationComments.Text = Localization.GetString("lblLocationComments_new", LocalResourceFile);
                         Localization.LocalizeDataGrid(ref dgSubmittedComments, LocalResourceFile);
                         dgSubmittedComments.DataSource = location.GetComments(approved);
                         dgSubmittedComments.DataBind();
@@ -76,19 +72,7 @@ namespace Engage.Dnn.Locator
                         lblConfigured.Visible = false;
                         divPanelTab.Visible = true;
 
-                        //if (Settings["ModerateSubmissions"] != null && Settings["ModerateSubmissions"].ToString() == "True")
-                        //{
-                        //    int approved = 0;
-                        //    if (rbApproved.Checked)
-                        //        approved = 1;
-                        //    BindDataGrid(approved);
-                        //}
-                        //else
-                        //{
-                        //    rbLocations.Visible = false;
-                        //    BindDataGrid(1);
-                        //}
-                        BindComments();
+                        BindData();
                         ClientAPI.AddButtonConfirm(btnDeleteComment, Localization.GetString("confirmDeleteComment", LocalResourceFile));
                     }
                 }
@@ -101,13 +85,16 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        private void BindComments()
+        private void BindData()
         {
             DataTable comments = Location.GetNewSubmittedComments(PortalId, false);
             dgSubmittedComments.DataSource = comments;
             dgSubmittedComments.DataBind();
 
             lblNoPending.Visible = (comments.Rows.Count == 0);
+            btnAcceptComment.Visible = (comments.Rows.Count > 0);
+            btnDeleteComment.Visible = (comments.Rows.Count > 0);
+            dgSubmittedComments.PagerStyle.Visible = (comments.Rows.Count > 0);
         }
         
       
@@ -118,11 +105,14 @@ namespace Engage.Dnn.Locator
             {
                 Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text));
             }
-            DataTable comments = Location.GetNewSubmittedComments(PortalId, false);
-            if (comments.Rows.Count > 0)
-                BindComments();
+            if (dgSubmittedComments.Items.Count > 0)
+            {
+                BindData();
+            }
             else
-                Response.Redirect(Globals.NavigateURL(TabId, "Import", "mid=" + ModuleId + "&tmid=" + TabModuleId));
+            {
+                Response.Redirect(Globals.NavigateURL());
+            }
         }
 
         protected void btnDeleteComment_Click(object sender, EventArgs e)
@@ -136,7 +126,7 @@ namespace Engage.Dnn.Locator
                     Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text));
                 }
             }
-            BindComments();
+            BindData();
         }
 
         protected void btnAcceptComment_Click(object sender, EventArgs e)
@@ -152,7 +142,7 @@ namespace Engage.Dnn.Locator
                     comment.Update();
                 }
             }
-            BindComments();
+            BindData();
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)

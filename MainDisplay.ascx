@@ -2,10 +2,10 @@
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/sectionheadcontrol.ascx" %>
 
 <div class="div_ManagementButtons">
-    <asp:LinkButton ID="lbSettings" runat="server" CssClass="CommandButton" ResourceKey="lbSettings" OnClick="lbSettings_OnClick">Settings</asp:LinkButton>
-    <asp:LinkButton ID="lblManageLocations" runat="server" CssClass="CommandButton" ResourceKey="lblManageLocations" OnClick="lblManageLocations_OnClick">Manage Locations</asp:LinkButton>
-    <asp:LinkButton ID="lblImportFile" runat="server" CssClass="CommandButton"  ResourceKey="lblImportFile" OnClick="lblImportFile_OnClick">Import File</asp:LinkButton>
-    <asp:LinkButton ID="lblManageComments" runat="server" CssClass="CommandButton" ResourceKey="lblManageComments" OnClick="lblManageComments_OnClick">Manage Comments</asp:LinkButton>
+    <asp:ImageButton ID="lbSettings" CssClass="CommandButton" runat="server" AlternateText="Settings" ImageUrl="~/desktopmodules/EngageLocator/images/settings_bt.gif" OnClick="lbSettings_OnClick" />
+    <asp:ImageButton ID="lblManageLocations" CssClass="CommandButton" runat="server" AlternateText="Manage Locations" ImageUrl="~/desktopmodules/EngageLocator/images/manage_location_bt.gif" OnClick="lblManageLocations_OnClick" />
+    <asp:ImageButton ID="lblImportFile" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/import_bt.gif" OnClick="lblImportFile_OnClick" />
+    <asp:ImageButton ID="lblManageComments" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/manage_comments_bt.gif" OnClick="lblManageComments_OnClick" />
 </div>
 
 <div class="locatorHeader">

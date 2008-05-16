@@ -654,24 +654,24 @@ namespace Engage.Dnn.Locator
                         error = "API Key is not in the correct format.";
                         return false;
                     }
-                }
 
-                if (Convert.ToString(settings["DisplayProvider"]) == String.Empty)
-                {
-                    error = "Search Setting \"Results Display Module\" not set.";
-                    return false;
-                }
+                    if (Convert.ToString(settings["DisplayProvider"]) == String.Empty)
+                    {
+                        error = "Search Setting \"Results Display Module\" not set.";
+                        return false;
+                    }
 
-                if (Convert.ToString(settings["ShowLocationDetails"]) == String.Empty)
-                {
-                    error = "Display Setting \"Show Location Details\" not set.";
-                    return false;
-                }
+                    if (Convert.ToString(settings["ShowLocationDetails"]) == String.Empty)
+                    {
+                        error = "Display Setting \"Show Location Details\" not set.";
+                        return false;
+                    }
 
-                if (settings["DisplayResultsTabId"] == null)
-                {
-                    error = "Display Results not set.";
-                    return false;
+                    if (settings["DisplayResultsTabId"] == null)
+                    {
+                        error = "Display Results not set.";
+                        return false;
+                    }
                 }
             }
         }

@@ -220,7 +220,7 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
     <value>Please select a default country.</value>
   </data>
   <data name="dshSubmissionSettings.Text" xml:space="preserve">
-    <value>Location Submission Settings</value>
+    <value>Submission Settings</value>
   </data>
   <data name="lblAllowSubmissions.Help" xml:space="preserve">
     <value>Check if you want locations to be submitted.</value>
@@ -239,9 +239,6 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
   </data>
   <data name="lblSubmissionModeration.Text" xml:space="preserve">
     <value>Moderate Submissions</value>
-  </data>
-  <data name="ControlTitle_settings.Text1" xml:space="preserve">
-    <value>Engage: Locator Mini Search</value>
   </data>
   <data name="lblLocatorModules.Help" xml:space="preserve">
     <value>Choose which Engage:Locator module you want to display your search results on.</value>
@@ -277,7 +274,7 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
     <value>Moderate Comments</value>
   </data>
   <data name="dshDisplaySetting.Text" xml:space="preserve">
-    <value>Locator Display Settings</value>
+    <value>Display Settings</value>
   </data>
   <data name="chkAddress.Text" xml:space="preserve">
     <value>Address</value>

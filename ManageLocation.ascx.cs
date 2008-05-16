@@ -355,10 +355,18 @@ namespace Engage.Dnn.Locator
                         newLocation.Latitude = Convert.ToDouble(latitude);
                         newLocation.Longitude = Convert.ToDouble(longitude);
                     }
+                    //settings are set to moderate and the user is logged in as admin
                     if (Settings["ModerateSubmissions"].ToString() == "True")
-                        newLocation.Approved = rbApprove.Checked;
+                    {
+                        newLocation.Approved = false;
+                    }
                     else
+                    {
                         newLocation.Approved = true;
+                    }
+
+                    if (rbApprove.Visible) newLocation.Approved = rbApprove.Checked;
+
 
                     if (error == "Success")
                     {
@@ -370,7 +378,7 @@ namespace Engage.Dnn.Locator
                             TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
                             Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), newLocation.LocationId, txtLocationAttributeValue.Text);
                         }
-                        if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
+                        if (IsEditable)
                             Response.Redirect(EditUrl("ManageLocations"));
                         else
                             Response.Redirect(Globals.NavigateURL());

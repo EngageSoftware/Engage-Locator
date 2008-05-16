@@ -59,6 +59,8 @@ AS
 
 	INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_Location] (ExternalIdentifier, Name, Website, Latitude, Longitude, CountryId, RegionId, City, Address, PostalCode, Phone, LocationDetails, LocationTypeId, PortalId, LastUpdatedDate, CsvLineNumber, Approved)
 	VALUES (@ExternalIdentifier, @Name, @Website, @Latitude, @Longitude, @CountryId, @RegionId, @City, @Address, @PostalCode, @Phone, @LocationDetails, @LocationTypeId, @PortalId, getdate(), 0, @approved)
+	
+	select @@Identity
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -208,13 +210,52 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]
 	@PortalId int,
-	@approved bit
+	@approved bit,
+	@sortColumn nvarchar(200), 
+	@index int, 
+	@pageSize int
 AS
 
-	SELECT LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved
-	FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
-	WHERE PortalId = @PortalId
-	and Approved = @approved
+	Create table #results 
+	(
+		[Id] int not null IDENTITY(1,1),
+		[LocationId] [int],
+		[TotalRecords] int
+	)
+
+	declare @sql varchar(8000)
+
+
+	set @sql = 'insert into #results ([LocationId]) '
+	set @sql = @sql + 'Select LocationId '
+	set @sql = @sql + 'from '
+	set @sql = @sql + 'EngageLocator_vLocations '
+	set @sql = @sql + 'where PortalId = ' + STR(@portalId)
+	set @sql = @sql + ' and Approved =  ' + str(@approved)
+	set @sql = @sql + ' Order by ' + @sortColumn
+
+	print (@sql)
+	exec (@sql)
+
+	DECLARE @rows int
+	set @rows = @@RowCount
+
+	update #results set TotalRecords = @rows
+
+	if (@PageSize = 0)
+		BEGIN
+	 		select r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
+			from #results r
+			join EngageLocator_vLocations e on (r.LocationId = e.LocationId)
+	 	END
+	ELSE
+	 	BEGIN
+	 		select r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
+			from #results r
+			join EngageLocator_vLocations e on (r.LocationId = e.LocationId)
+	 		where (id >= @index * @PageSize + 1) and id < (@index * @PageSize) + @PageSize + 1
+	 	END
+
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -317,32 +358,7 @@ IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttributes]
 GO
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
-GO
 
-CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute](
-	[LocationAttributeId] [int] IDENTITY(1,1) NOT NULL,	
-	[LocationId] [int] NOT NULL,
-	[AttributeDefinitionId] [int] NOT NULL,
-	[AttributeValue] [nvarchar](255),
-	[CreateDate] [datetime] NOT NULL,
-	[RevisionDate] [datetime],
-	CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationAttribute] PRIMARY KEY CLUSTERED 
-	(
-		[LocationAttributeId]
-	)  ON [PRIMARY] 
-)
-GO
-
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] ADD 
-	CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_Location] FOREIGN KEY 
-	(
-		[LocationId]
-	) REFERENCES {databaseOwner}[{objectQualifier}EngageLocator_Location] (
-		[LocationId]
-	)
-GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}EngageLocator_Comments_{objectQualifier}EngageLocator_Location') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comments] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_Comments_{objectQualifier}EngageLocator_Location
@@ -634,8 +650,12 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAtt
 	@locationId int,
 	@attributeValue nvarchar(255)
 AS
-	Insert into {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] (LocationId, AttributeDefinitionId, AttributeValue, CreateDate, RevisionDate)
-	Values (@locationId, @attributeDefinitionId, @attributeValue, getdate(), getdate())
+	if not exists (select * from {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] 
+		where LocationID = @LocationId and AttributeDefinitionId= @AttributeDefinitionId)
+	begin
+		Insert into {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] (LocationId, AttributeDefinitionId, AttributeValue, CreateDate, RevisionDate)
+		Values (@locationId, @attributeDefinitionId, @attributeValue, getdate(), getdate())
+	end
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -690,3 +710,46 @@ AS
 	DELETE FROM dbo.EngageLocator_Location WHERE PortalId = @portalId
 
 go
+
+delete from moduleControls where controlSrc = 'Desktopmodules/EnageLocator/ZipLocator.ascx'
+go
+
+delete from moduleControls where controlSrc = 'Desktopmodules/EnageLocator/DataImport.ascx'
+go
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute](
+	[LocationAttributeId] [int] IDENTITY(1,1) NOT NULL,	
+	[LocationId] [int] NOT NULL,
+	[AttributeDefinitionId] [int] NOT NULL,
+	[AttributeValue] [nvarchar](255),
+	[CreateDate] [datetime] NOT NULL,
+	[RevisionDate] [datetime],
+	CONSTRAINT [PK_{objectQualifier}EngageLocator_LocationAttribute] PRIMARY KEY CLUSTERED 
+	(
+		[LocationAttributeId]
+	)  ON [PRIMARY] 
+)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] ADD 
+	CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_Location] FOREIGN KEY 
+	(
+		[LocationId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageLocator_Location] (
+		[LocationId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] ADD 
+	CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_AttributeDefinition] FOREIGN KEY 
+	(
+		[AttributeDefinitionId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] (
+		[AttributeDefinitionId]
+	)
+GO

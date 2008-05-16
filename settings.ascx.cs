@@ -293,8 +293,6 @@ namespace Engage.Dnn.Locator
                         objModules.UpdateTabModuleSetting(TabModuleId, "DisplayResultsTabId", lblTabId.Text);
                     }
                 }
-                //refresh cache
-                SynchronizeModule();
             }
             catch (Exception exc) //Module failed to load
             {

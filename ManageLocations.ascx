@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.ManageLocations" AutoEventWireup="True" CodeBehind="ManageLocations.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 
 <asp:Label ID="lblConfigured" runat="server" CssClass="Normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations." Visible="False" resourcekey="lblConfigured"></asp:Label>
 
@@ -20,11 +21,13 @@
                         resourcekey="rbWaitingForApproval" CssClass="Normal" OnCheckedChanged="rbLocations_CheckChanged"
                         AutoPostBack="true" />
                 </div>
-                <asp:DataGrid ID="dgLocations" runat="server" CssClass="importData" GridLines="Vertical"
-                    AllowPaging="True" OnDataBinding="dgLocations_DataBind" OnPageIndexChanged="dgLocations_PageChange"
+                <dnn:PagingControl ID="pager" runat="server"></dnn:PagingControl>
+                <asp:DataGrid ID="dgLocations" runat="server" CssClass="importData" 
+                    GridLines="Vertical" OnDataBinding="dgLocations_DataBind" OnPageIndexChanged="dgLocations_PageChange"
                     AutoGenerateColumns="False" OnEditCommand="dgLocations_EditCommand" OnCancelCommand="dgLocations_CancelCommand"
                     OnDeleteCommand="dgLocations_DeleteCommand" OnItemDataBound="dgLocations_ItemDataBound"
-                    OnItemCreated="dgLocations_ItemCreated">
+                    OnItemCreated="dgLocations_ItemCreated" AllowSorting="True" 
+                    DataKeyField="LocationId" onsortcommand="dgLocations_SortCommand">
                     <FooterStyle BackColor="#ccc" ForeColor="Black" />
                     <PagerStyle CssClass="dataImportPage" HorizontalAlign="Center" Mode="NumericPages" />
                     <HeaderStyle CssClass="dataImportHeader" />
@@ -44,7 +47,7 @@
                             <FooterStyle CssClass="idDataGridFooter" />
                             <HeaderStyle CssClass="idDataGridFooter" />
                         </asp:TemplateColumn>--%>
-                        <asp:TemplateColumn HeaderText="Name">
+                        <asp:TemplateColumn HeaderText="Name" SortExpression="Name">
                             <ItemTemplate>
                                 <asp:Label ID="lblName" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Name", "{0:d}") %>'>
                                 </asp:Label>
@@ -53,7 +56,7 @@
                             <FooterStyle CssClass="nameDataGridFooter" />
                             <HeaderStyle CssClass="nameDataGridFooter" />
                         </asp:TemplateColumn>
-                        <asp:TemplateColumn HeaderText="Address">
+                        <asp:TemplateColumn HeaderText="Address" SortExpression="Address">
                             <ItemTemplate>
                                 <asp:Label ID="lblAddress" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Address", "{0:d}") %>'>
                                 </asp:Label>
@@ -62,7 +65,7 @@
                             <FooterStyle CssClass="addressDataGridFooter" />
                             <HeaderStyle CssClass="addressDataGridFooter" />
                         </asp:TemplateColumn>
-                        <asp:TemplateColumn HeaderText="City">
+                        <asp:TemplateColumn HeaderText="City" SortExpression="City">
                             <ItemTemplate>
                                 <asp:Label ID="lblCity" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.City", "{0:d}") %>'>
                                 </asp:Label>
@@ -71,7 +74,7 @@
                             <FooterStyle CssClass="cityDataGridFooter" />
                             <HeaderStyle CssClass="cityDataGridFooter" />
                         </asp:TemplateColumn>
-                        <asp:TemplateColumn HeaderText="Region">
+                        <asp:TemplateColumn HeaderText="Region" SortExpression="StateName">
                             <ItemTemplate>
                                 <asp:Label ID="lblState" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.StateName", "{0:d}") %>'>
                                 </asp:Label>
@@ -98,7 +101,7 @@
                             <FooterStyle CssClass="countryDataGridFooter" />
                             <HeaderStyle CssClass="countryDataGridFooter" />
                         </asp:TemplateColumn>
---%>                        <asp:TemplateColumn HeaderText="Latitude">
+--%>                        <asp:TemplateColumn HeaderText="Latitude" SortExpression="Latitude">
                             <ItemTemplate>
                                 <asp:Label ID="lblLatitude" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Latitude") %>'>
                                 </asp:Label>
@@ -107,7 +110,7 @@
                             <FooterStyle CssClass="latitudeDataGridFooter" />
                             <HeaderStyle CssClass="latitudeDataGridFooter" />
                         </asp:TemplateColumn>
-                        <asp:TemplateColumn HeaderText="Longitude">
+                        <asp:TemplateColumn HeaderText="Longitude" SortExpression="Longitude">
                             <ItemTemplate>
                                 <asp:Label ID="lblLongitude" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Longitude") %>'>
                                 </asp:Label>
@@ -140,7 +143,7 @@
                                 </asp:Label>
                             </ItemTemplate>
                         </asp:TemplateColumn>
---%>                        <asp:TemplateColumn HeaderText="Location Type">
+--%>                        <asp:TemplateColumn HeaderText="Location Type" SortExpression="Type">
                             <ItemTemplate>
                                 <asp:Label ID="lblType" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Type", "{0:d}") %>'>
                                 </asp:Label>

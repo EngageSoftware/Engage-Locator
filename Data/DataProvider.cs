@@ -70,7 +70,7 @@ namespace Engage.Dnn.Locator.Data
         public abstract DataTable GetClosestLocationsByRadius(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds);
         public abstract DataTable GetLocation(int locationId);
         public abstract DataTable GetLocationsByCountry(int countryId, int portalId);
-        public abstract DataTable GetAllLocations(int portalId, int approved);
+        public abstract DataTable GetAllLocations(int portalId, int approved, string sortColumn, int index, int pageSize);
         public abstract void DeleteLocation(int locationId);
         public abstract string CopyData();
         public abstract void ClearLocations(int portalId);
