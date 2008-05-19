@@ -257,4 +257,12 @@ if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{
 drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
 GO
 
-
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Comment]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comment]
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location]
+GO
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationType]
+GO
