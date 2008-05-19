@@ -223,19 +223,11 @@ AS
 		[TotalRecords] int
 	)
 
-	declare @sql varchar(8000)
-
-
-	set @sql = 'insert into #results ([LocationId]) '
-	set @sql = @sql + 'Select LocationId '
-	set @sql = @sql + 'from '
-	set @sql = @sql + '{databaseOwner}[{objectQualifier}EngageLocator_vLocations] '
-	set @sql = @sql + 'where PortalId = ' + str(@portalId)
-	set @sql = @sql + ' and Approved =  ' + str(@approved)
-	set @sql = @sql + ' Order by ' + @sortColumn
-
-	print (@sql)
-	exec (@sql)
+    INSERT INTO #results ([LocationId])
+    SELECT LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
+    WHERE PortalId = @portalId
+		AND Approved =  @approved
+		ORDER BY @sortColumn
 
 	DECLARE @rows int
 	set @rows = @@RowCount
