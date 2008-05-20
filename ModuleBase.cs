@@ -9,7 +9,9 @@
 
 
 using System;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
+
 
 namespace Engage.Dnn.Locator
 {
