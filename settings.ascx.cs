@@ -85,22 +85,16 @@ namespace Engage.Dnn.Locator
                         {
                             rbNoDetails.Checked = true;
                         }
-                        //set Allow Comments
-                        if (TabModuleSettings["LocationComments"] != null)
-                            cbLocationComments.Checked = Convert.ToBoolean(TabModuleSettings["LocationComments"].ToString());
-                        else
-                            cbLocationComments.Checked = false;
 
-                        //set Moderate Comments
+                        //set Comments Settings
+                        if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId)))
+                            cbLocationComments.Checked = false;
+                        else
+                            cbLocationComments.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId).ToString());
                         if (Null.IsNull(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId)))
                             cbModerateComments.Checked = false;
                         else
                             cbModerateComments.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId).ToString());
-                        //if (TabModuleSettings["ModerateComments"] != null)
-                        //    cbModerateComments.Checked = Convert.ToBoolean(TabModuleSettings["ModerateComments"].ToString());
-                        //else
-                        //    cbModerateComments.Checked = false;
-                        //set Default Display
 
                         if (TabModuleSettings["ShowDefaultDisplay"] != null && TabModuleSettings["ShowDefaultDisplay"].ToString() == "True")
                         {
@@ -136,18 +130,11 @@ namespace Engage.Dnn.Locator
                         {
                             ddlMapType.SelectedValue = TabModuleSettings["MapType"].ToString();
                         }
-                        //set SubmisionSettings
-                        if(TabModuleSettings["AllowSubmissions"] != null)
-                        {
-                            cbAllowSubmissions.Checked= Convert.ToBoolean(TabModuleSettings["AllowSubmissions"]);
-                        }
-
+                        //set Submission Settings
+                        if (!Null.IsNull(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId)))
+                            cbAllowSubmissions.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId));
                         if (!Null.IsNull(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId)))
                             cbSubmissionModeration.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId).ToString());
-                        //if (TabModuleSettings["ModerateSubmissions"] != null)
-                        //{
-                        //    cbSubmissionModeration.Checked = Convert.ToBoolean(TabModuleSettings["ModerateSubmissions"]);
-                        //}
 
                         //fill gridview with existing locator modules
                         DataTable modules = DataProvider.Instance().GetEngageLocatorTabModules(PortalId);
@@ -210,8 +197,6 @@ namespace Engage.Dnn.Locator
             string displayProvider = Convert.ToString(TabModuleSettings["DisplayProvider"]);
             ListItem li = this.rblProviderType.Items.FindByText(displayProvider);
             if (li != null) { this.rblProviderType.SelectedValue = li.Value; }
-
-
         }
 
         private void DisplayAPI()
@@ -272,13 +257,11 @@ namespace Engage.Dnn.Locator
                 objModules.UpdateTabModuleSetting(TabModuleId, this.rblProviderType.SelectedValue + ".ApiKey", txtApiKey.Text);
                 objModules.UpdateTabModuleSetting(TabModuleId, "DefaultCountry", ddlLocatorCountry.SelectedValue);
                 objModules.UpdateTabModuleSetting(TabModuleId, "MapType", this.ddlMapType.SelectedValue);
-                objModules.UpdateTabModuleSetting(TabModuleId, "AllowSubmissions", this.cbAllowSubmissions.Checked.ToString());
 
+                hsc.UpdateHostSetting("LocatorAllowSubmissions" + PortalId, this.cbAllowSubmissions.Checked.ToString());
                 hsc.UpdateHostSetting("LocatorSubmissionModeration" + PortalId, this.cbSubmissionModeration.Checked.ToString());
-                //objModules.UpdateTabModuleSetting(TabModuleId, "ModerateSubmissions", this.cbSubmissionModeration.Checked.ToString());
-
+                
                 string locationTypeList = GetLocationTypeList();
-
 
                 objModules.UpdateTabModuleSetting(TabModuleId, "DisplayTypes", locationTypeList);
 
@@ -288,14 +271,12 @@ namespace Engage.Dnn.Locator
                     objModules.UpdateTabModuleSetting(TabModuleId, "ShowLocationDetails", "SamePage");
                 else if(rbDetailsPage.Checked)
                     objModules.UpdateTabModuleSetting(TabModuleId, "ShowLocationDetails", "DetailsPage");
-                objModules.UpdateTabModuleSetting(TabModuleId, "LocationComments", cbLocationComments.Checked.ToString());
 
+                hsc.UpdateHostSetting("LocatorAllowComments" + PortalId, cbLocationComments.Checked.ToString());
                 hsc.UpdateHostSetting("LocatorCommentModeration" + PortalId, cbModerateComments.Checked.ToString());
-                //objModules.UpdateTabModuleSetting(TabModuleId, "ModerateComments", cbModerateComments.Checked.ToString());
 
                 objModules.UpdateTabModuleSetting(TabModuleId, "ShowDefaultDisplay", rbDisplayAll.Checked.ToString());
                 objModules.UpdateTabModuleSetting(TabModuleId, "ShowMapDefaultDisplay", rbShowMap.Checked.ToString());
-
                 objModules.UpdateTabModuleSetting(TabModuleId, "SearchAddress", chkAddress.Checked.ToString());
                 objModules.UpdateTabModuleSetting(TabModuleId, "SearchCityRegion", chkCityRegion.Checked.ToString());
                 objModules.UpdateTabModuleSetting(TabModuleId, "SearchPostalCode", chkPostalCode.Checked.ToString());

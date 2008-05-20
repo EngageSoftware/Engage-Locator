@@ -152,12 +152,9 @@ namespace Engage.Dnn.Locator
                             Settings["Radius"].ToString() == "False")
                             btn_ShowAll.Visible = false;
 
-                        if(Settings["AllowSubmissions"] != null)
+                        if (SubmissionsEnabled)
                         {
-                            if (Settings["AllowSubmissions"].ToString() == "True")
-                            {                                
-                                lnkSubmitLocation.Visible = true;
-                            }
+                            lnkSubmitLocation.Visible = true;
                         }
                     }
                 }
@@ -644,34 +641,29 @@ namespace Engage.Dnn.Locator
                 else
                 {
                     MapProvider mp = MapProvider.CreateInstance(className);
-                    if (mp.IsKeyValid(apiKey))
-                    {
-                        error = "Success";
-                        return true;
-                    }
-                    else
+                    if (!mp.IsKeyValid(apiKey))
                     {
                         error = "API Key is not in the correct format.";
                         return false;
                     }
-
-                    if (Convert.ToString(settings["DisplayProvider"]) == String.Empty)
+                    else if (Convert.ToString(settings["DisplayProvider"]) == String.Empty)
                     {
                         error = "Search Setting \"Results Display Module\" not set.";
                         return false;
                     }
 
-                    if (Convert.ToString(settings["ShowLocationDetails"]) == String.Empty)
+                    else if (Convert.ToString(settings["ShowLocationDetails"]) == String.Empty)
                     {
                         error = "Display Setting \"Show Location Details\" not set.";
                         return false;
                     }
-
-                    if (settings["DisplayResultsTabId"] == null)
+                    else if (settings["DisplayResultsTabId"] == null)
                     {
                         error = "Display Results not set.";
                         return false;
                     }
+                    else
+                        return true;
                 }
             }
         }

@@ -19,6 +19,8 @@ namespace Engage.Dnn.Locator
                 BindData();
             }
 
+            if (!CommentsEnabled)
+                lblAddComment.Visible = false;
         }
 
         protected void btnBack_Click(object sender, EventArgs e)

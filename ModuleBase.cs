@@ -9,6 +9,7 @@
 
 
 using System;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 
@@ -20,16 +21,50 @@ namespace Engage.Dnn.Locator
 
         #region Properties
 
+        public bool CommentsEnabled
+        {
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get
+            {
+                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId)))
+                    return false;
+                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId));
+            }
+        }
+
         public bool CommentModerationEnabled
         {
             [System.Diagnostics.DebuggerStepThroughAttribute()]
-            get { return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId)); }
+            get
+            {
+                if (Null.IsNull(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId)))
+                    return false;   
+                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId));
+            }
+        }
+
+        public bool SubmissionsEnabled
+        {
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get
+            {
+                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId)))
+                    return false;
+                else
+                    return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId));
+            }
         }
 
         public bool SubmissionModerationEnabled
         {
             [System.Diagnostics.DebuggerStepThroughAttribute()]
-            get { return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId)); }
+            get
+            {
+                if (Null.IsNull(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId)))
+                    return false;
+                else
+                    return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId));
+            }
         }
 
         #endregion

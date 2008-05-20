@@ -10,7 +10,6 @@
 
 namespace Engage.Dnn.Locator {
     
-    
     public partial class Settings {
         
         /// <summary>

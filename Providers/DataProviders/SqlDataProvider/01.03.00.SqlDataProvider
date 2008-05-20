@@ -1,4 +1,3 @@
-
 if not exists (select * from dbo.syscolumns where name = 'Approved' and id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location]
  ADD Approved bit
@@ -135,8 +134,7 @@ SELECT
 	LastUpdatedDate,
 	CSVLineNumber,
 	Approved
-FROM 
-	{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
+FROM {databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') and OBJECTPROPERTY(id, N'IsView') = 1)
@@ -151,8 +149,8 @@ AS
 		l.CountryId
 	FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] l WITH (NOLOCK) 
 	JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] AS p ON (l.LocationTypeId = p.LocationTypeId)
-	left JOIN {databaseOwner}[{objectQualifier}lists] country on (country.EntryId = l.CountryId)
-	left JOIN {databaseOwner}[{objectQualifier}lists] region on (region.EntryId = l.RegionId)
+	left JOIN {databaseOwner}[{objectQualifier}Lists] country on (country.EntryId = l.CountryId)
+	left JOIN {databaseOwner}[{objectQualifier}Lists] region on (region.EntryId = l.RegionId)
 
 GO
 
@@ -164,12 +162,10 @@ CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]
 	@locationId int
 AS
 	SELECT 
-			LocationId, ExternalIdentifier, l.[Name], Latitude, Longitude, City, (select [Text] from Lists where EntryId = l.RegionId) as StateName, l.RegionId, Address, Phone, 
+			LocationId, ExternalIdentifier, l.[Name], Latitude, Longitude, City, (select [Text] from {databaseOwner}[{objectQualifier}Lists] where EntryId = l.RegionId) as StateName, l.RegionId, Address, Phone, 
 			LocationDetails, LocationTypeId, PostalCode, Website, LocationDetails, Approved
-		FROM 
-			{databaseOwner}[{objectQualifier}EngageLocator_Location] l  
-		WHERE 
-			LocationId = @locationId 
+		FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] l  
+		WHERE LocationId = @locationId 
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') and OBJECTPROPERTY(id, N'IsView') = 1)
@@ -184,8 +180,8 @@ AS
 		l.CountryId, l.Approved, l.RegionId
 	FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] l WITH (NOLOCK) 
 	JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] AS p ON (l.LocationTypeId = p.LocationTypeId)
-	left JOIN {databaseOwner}[{objectQualifier}lists] country on (country.EntryId = l.CountryId)
-	left JOIN {databaseOwner}[{objectQualifier}lists] region on (region.EntryId = l.RegionId)
+	left JOIN {databaseOwner}[{objectQualifier}Lists] country on (country.EntryId = l.CountryId)
+	left JOIN {databaseOwner}[{objectQualifier}Lists] region on (region.EntryId = l.RegionId)
 
 GO
 
@@ -223,33 +219,44 @@ AS
 		[TotalRecords] int
 	)
 
-    INSERT INTO #results ([LocationId])
+	DECLARE @sql varchar(8000)
+
+	SET @sql = 'INSERT INTO #results ([LocationId]) '
+	SET @sql = @sql + 'SELECT LocationId '
+	SET @sql = @sql + 'FROM '
+	SET @sql = @sql + '{databaseOwner}[{objectQualifier}EngageLocator_vLocations] '
+	SET @sql = @sql + 'where PortalId = ' + str(@portalId)
+	SET @sql = @sql + ' AND Approved =  ' + str(@approved)
+	SET @sql = @sql + ' ORDER BY ' + @sortColumn
+
+	EXEC (@sql)
+
+    /* INSERT INTO #results ([LocationId])
     SELECT LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
     WHERE PortalId = @portalId
 		AND Approved =  @approved
 		ORDER BY
 		CASE @sortColumn
-			WHEN 'LocationId' THEN LocationId
-			WHEN 'LocationTypeId' THEN LocationTypeId
-			WHEN 'ExternalIdentifier' THEN ExternalIdentifier
-			WHEN 'Name' THEN Name
-			WHEN 'Website' THEN Website
-			WHEN 'Latitude' THEN LAtitude
-			WHEN 'Longitude' THEN Longitude
-			WHEN 'RegionId' THEN RegionId
-			WHEN 'CountryName' THEN CountryName
-			WHEN 'City' THEN City
-			WHEN 'Address' THEN Address
-			WHEN 'PostalCode' THEN PostalCode
-			WHEN 'Phone' THEN Phone
-			WHEN 'LocationDetails' THEN LocationDetails
-			WHEN 'PortalId' THEN PortalId
-			WHEN 'LastUpdatedDate' THEN LastUpdatedDate
-			WHEN 'Type' THEN [Type]
-			WHEN 'StateName' THEN StateName
-			WHEN 'Abbreviation' THEN Abbreviation
-			WHEN 'CountryId' THEN CountryId
-		END
+			CASE @sortColumn WHEN 'LocationId' THEN LocationId ELSE NULL END,
+			CASE @sortColumn WHEN 'LocationTypeId' THEN LocationTypeId ELSE NULL END,
+			CASE @sortColumn WHEN 'ExternalIdentifier' THEN ExternalIdentifier ELSE NULL END,
+			CASE @sortColumn WHEN 'Name' THEN [Name] ELSE NULL END,
+			CASE @sortColumn WHEN 'Website' THEN Website ELSE NULL END,
+			CASE @sortColumn WHEN 'Latitude' THEN Latitude ELSE NULL END,
+			CASE @sortColumn WHEN 'Longitude' THEN Longitude ELSE NULL END,
+			CASE @sortColumn WHEN 'RegionId' THEN RegionId ELSE NULL END,
+			CASE @sortColumn WHEN 'CountryName' THEN CountryName ELSE NULL END,
+			CASE @sortColumn WHEN 'City' THEN City ELSE NULL END,
+			CASE @sortColumn WHEN 'Address' THEN Address ELSE NULL END,
+			CASE @sortColumn WHEN 'PostalCode' THEN PostalCode ELSE NULL END,
+			CASE @sortColumn WHEN 'Phone' THEN Phone ELSE NULL END,
+			CASE @sortColumn WHEN 'LocationDetails' THEN LocationDetails ELSE NULL END,
+			CASE @sortColumn WHEN 'PortalId' THEN PortalId ELSE NULL END,
+			CASE @sortColumn WHEN WHEN 'LastUpdatedDate' THEN LastUpdatedDate ELSE NULL END,
+			CASE @sortColumn WHEN WHEN 'Type' THEN [Type] ELSE NULL END,
+			CASE @sortColumn WHEN WHEN 'StateName' THEN StateName ELSE NULL END,
+			CASE @sortColumn WHEN WHEN 'Abbreviation' THEN Abbreviation ELSE NULL END,
+			CASE @sortColumn WHEN WHEN 'CountryId' THEN CountryId ELSE NULL END */
 
 	DECLARE @rows int
 	set @rows = @@RowCount
@@ -260,13 +267,13 @@ AS
 		BEGIN
 	 		select r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
 			from #results r
-			join EngageLocator_vLocations e on (r.LocationId = e.LocationId)
+			join {databaseOwner}[{objectQualifier}EngageLocator_vLocations] e on (r.LocationId = e.LocationId)
 	 	END
 	ELSE
 	 	BEGIN
 	 		select r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
 			from #results r
-			join EngageLocator_vLocations e on (r.LocationId = e.LocationId)
+			join {databaseOwner}[{objectQualifier}EngageLocator_vLocations] e on (r.LocationId = e.LocationId)
 	 		where (id >= @index * @PageSize + 1) and id < (@index * @PageSize) + @PageSize + 1
 	 	END
 
@@ -490,8 +497,7 @@ CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetNewSubmitte
 	@approved bit
 AS
 	SELECT lc.CommentId, lc.LocationId, lc.Text, lc.Author, lc.Approved, l.[Name], lc.CreateDate
-	FROM 
-		{databaseOwner}[{objectQualifier}EngageLocator_Location] l
+	FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] l
 		join {databaseOwner}[{objectQualifier}EngageLocator_Comment] lc on (l.LocationId = lc.LocationId)
 	WHERE 
 		PortalId = @portalId
@@ -522,8 +528,7 @@ CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetComment]
 	@commentId int
 AS
 	SELECT lc.CommentId, lc.LocationId, lc.[Text], lc.Author, lc.Approved, l.[Name], lc.CreateDate
-	FROM 
-		{databaseOwner}[{objectQualifier}EngageLocator_Location] l
+	FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] l
 		join {databaseOwner}[{objectQualifier}EngageLocator_Comment] lc on (l.LocationId = lc.LocationId)
 	WHERE 
 		CommentId = @commentId
