@@ -121,7 +121,7 @@
     <value>Back</value>
   </data>
   <data name="btnSubmit.Text" xml:space="preserve">
-    <value>Submitt</value>
+    <value>Submit</value>
   </data>
   <data name="ControlTitle_locationdetails.Text" xml:space="preserve">
     <value>Location Details</value>
