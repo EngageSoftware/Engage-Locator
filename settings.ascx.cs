@@ -88,12 +88,21 @@ namespace Engage.Dnn.Locator
                             cbLocationComments.Checked = Convert.ToBoolean(TabModuleSettings["LocationComments"].ToString());
                         else
                             cbLocationComments.Checked = false;
+
                         //set Moderate Comments
-                        if (TabModuleSettings["ModerateComments"] != null)
-                            cbModerateComments.Checked = Convert.ToBoolean(TabModuleSettings["ModerateComments"].ToString());
-                        else
-                            cbModerateComments.Checked = false;
+                        using (DotNetNuke.Entities.Host)
+                        {
+                            if (Null.IsNull(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId)
+                                cbModerateComments.Checked = false;
+                            else
+                                cbModerateComments.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId).ToString());
+                        }
+                        //if (TabModuleSettings["ModerateComments"] != null)
+                        //    cbModerateComments.Checked = Convert.ToBoolean(TabModuleSettings["ModerateComments"].ToString());
+                        //else
+                        //    cbModerateComments.Checked = false;
                         //set Default Display
+
                         if (TabModuleSettings["ShowDefaultDisplay"] != null && TabModuleSettings["ShowDefaultDisplay"].ToString() == "True")
                         {
                             rbDisplayAll.Checked = true;
@@ -135,7 +144,7 @@ namespace Engage.Dnn.Locator
                         }
                         if (TabModuleSettings["ModerateSubmissions"] != null)
                         {
-                            cbSubmissinModeration.Checked = Convert.ToBoolean(TabModuleSettings["ModerateSubmissions"]);
+                            cbSubmissionModeration.Checked = Convert.ToBoolean(TabModuleSettings["ModerateSubmissions"]);
                         }
                         //fill gridview with existing locator modules
                         DataTable modules = DataProvider.Instance().GetEngageLocatorTabModules(PortalId);
@@ -260,7 +269,12 @@ namespace Engage.Dnn.Locator
                 objModules.UpdateTabModuleSetting(TabModuleId, "DefaultCountry", ddlLocatorCountry.SelectedValue);
                 objModules.UpdateTabModuleSetting(TabModuleId, "MapType", this.ddlMapType.SelectedValue);
                 objModules.UpdateTabModuleSetting(TabModuleId, "AllowSubmissions", this.cbAllowSubmissions.Checked.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "ModerateSubmissions", this.cbSubmissinModeration.Checked.ToString());
+                using (DotNetNuke.Entities.Host)
+                {
+                    DotNetNuke.Entities.Host.HostSettingsController hsc = new DotNetNuke.Entities.Host.HostSettingsController();
+                    hsc.UpdateHostSetting("LocatorSubmissionModeration" + PortalId, cbModerateComments.Checked.ToString());
+                }
+                //objModules.UpdateTabModuleSetting(TabModuleId, "ModerateSubmissions", this.cbSubmissionModeration.Checked.ToString());
 
                 string locationTypeList = GetLocationTypeList();
 
@@ -274,7 +288,12 @@ namespace Engage.Dnn.Locator
                 else if(rbDetailsPage.Checked)
                     objModules.UpdateTabModuleSetting(TabModuleId, "ShowLocationDetails", "DetailsPage");
                 objModules.UpdateTabModuleSetting(TabModuleId, "LocationComments", cbLocationComments.Checked.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "ModerateComments", cbModerateComments.Checked.ToString());
+                using (DotNetNuke.Entities.Host)
+                {
+                    DotNetNuke.Entities.Host.HostSettingsController hsc = new DotNetNuke.Entities.Host.HostSettingsController();
+                    hsc.UpdateHostSetting("LocatorCommentModeration" + PortalId, cbModerateComments.Checked.ToString());
+                }
+                //objModules.UpdateTabModuleSetting(TabModuleId, "ModerateComments", cbModerateComments.Checked.ToString());
 
                 objModules.UpdateTabModuleSetting(TabModuleId, "ShowDefaultDisplay", rbDisplayAll.Checked.ToString());
                 objModules.UpdateTabModuleSetting(TabModuleId, "ShowMapDefaultDisplay", rbShowMap.Checked.ToString());

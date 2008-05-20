@@ -244,7 +244,7 @@
                         <dnn:Label ID="lblSubmissionModeration" runat="server" ResourceKey="lblSubmissionModeration" />
                     </td>
                     <td width="350">
-                        <asp:CheckBox ID="cbSubmissinModeration" runat="server" />
+                        <asp:CheckBox ID="cbSubmissionModeration" runat="server" />
                     </td>
                 </tr>
             </table>

@@ -20,7 +20,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.SectionHeadControl dshMapProvider;
+        protected global::System.Web.UI.UserControl dshMapProvider;
         
         /// <summary>
         /// tblMapProvider control.
@@ -38,7 +38,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblMapProviders;
+        protected global::System.Web.UI.UserControl lblMapProviders;
         
         /// <summary>
         /// rblProviderType control.
@@ -74,7 +74,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblAPIKey;
+        protected global::System.Web.UI.UserControl lblAPIKey;
         
         /// <summary>
         /// txtApiKey control.
@@ -110,7 +110,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblLocatorCountry;
+        protected global::System.Web.UI.UserControl lblLocatorCountry;
         
         /// <summary>
         /// ddlLocatorCountry control.
@@ -137,7 +137,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.SectionHeadControl dshDisplaySetting;
+        protected global::System.Web.UI.UserControl dshDisplaySetting;
         
         /// <summary>
         /// tblDisplaySettings control.
@@ -155,7 +155,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblSearchTitle;
+        protected global::System.Web.UI.UserControl lblSearchTitle;
         
         /// <summary>
         /// txtSearchTitle control.
@@ -182,7 +182,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblDefaultDisplay;
+        protected global::System.Web.UI.UserControl lblDefaultDisplay;
         
         /// <summary>
         /// rbSearch control.
@@ -218,7 +218,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblShowLocationDetails;
+        protected global::System.Web.UI.UserControl lblShowLocationDetails;
         
         /// <summary>
         /// rbSamePage control.
@@ -254,7 +254,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblLocationComments;
+        protected global::System.Web.UI.UserControl lblLocationComments;
         
         /// <summary>
         /// cbLocationComments control.
@@ -272,7 +272,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblModerateComments;
+        protected global::System.Web.UI.UserControl lblModerateComments;
         
         /// <summary>
         /// cbModerateComments control.
@@ -290,7 +290,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblMapType;
+        protected global::System.Web.UI.UserControl lblMapType;
         
         /// <summary>
         /// ddlMapType control.
@@ -308,7 +308,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblLocationType;
+        protected global::System.Web.UI.UserControl lblLocationType;
         
         /// <summary>
         /// dvLocationType control.
@@ -416,7 +416,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.SectionHeadControl dshSearchSettings;
+        protected global::System.Web.UI.UserControl dshSearchSettings;
         
         /// <summary>
         /// tblSearchSettings control.
@@ -434,7 +434,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblLocatorModules;
+        protected global::System.Web.UI.UserControl lblLocatorModules;
         
         /// <summary>
         /// gvTabModules control.
@@ -461,7 +461,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblSearchOptions;
+        protected global::System.Web.UI.UserControl lblSearchOptions;
         
         /// <summary>
         /// chkAddress control.
@@ -515,7 +515,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblOptional;
+        protected global::System.Web.UI.UserControl lblOptional;
         
         /// <summary>
         /// rblRestrictions control.
@@ -542,7 +542,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.SectionHeadControl dshSubmissionSettings;
+        protected global::System.Web.UI.UserControl dshSubmissionSettings;
         
         /// <summary>
         /// tblSubmissionSettings control.
@@ -560,7 +560,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblAllowSubmissions;
+        protected global::System.Web.UI.UserControl lblAllowSubmissions;
         
         /// <summary>
         /// cbAllowSubmissions control.
@@ -578,15 +578,15 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblSubmissionModeration;
+        protected global::System.Web.UI.UserControl lblSubmissionModeration;
         
         /// <summary>
-        /// cbSubmissinModeration control.
+        /// cbSubmissionModeration control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbSubmissinModeration;
+        protected global::System.Web.UI.WebControls.CheckBox cbSubmissionModeration;
     }
 }
