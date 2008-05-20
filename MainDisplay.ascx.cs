@@ -108,6 +108,8 @@ namespace Engage.Dnn.Locator
         {
             try
             {
+                if (!SubmissionsEnabled)
+                    lnkSubmitLocation.Visible = false;
                 lbSettings.Visible = IsEditable;
                 lblImportFile.Visible = IsEditable;
                 lblManageComments.Visible = IsEditable;
