@@ -15,8 +15,8 @@ namespace Engage.Dnn.Locator
 {
     public class ModuleBase : PortalModuleBase
     {
-        string CommentModeration = "LocatorCommentModeration";
-        string LocationModeration = "LocatorLocationModeration";
+        public static readonly string CommentModeration = "LocatorCommentModeration";
+        public static readonly string LocationModeration = "LocatorLocationModeration";
 
         protected override void OnInit(EventArgs e)
         {
