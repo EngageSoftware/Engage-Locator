@@ -227,7 +227,29 @@ AS
     SELECT LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
     WHERE PortalId = @portalId
 		AND Approved =  @approved
-		ORDER BY @sortColumn
+		ORDER BY
+		CASE @sortColumn
+			WHEN 'LocationId' THEN LocationId
+			WHEN 'LocationTypeId' THEN LocationTypeId
+			WHEN 'ExternalIdentifier' THEN ExternalIdentifier
+			WHEN 'Name' THEN Name
+			WHEN 'Website' THEN Website
+			WHEN 'Latitude' THEN LAtitude
+			WHEN 'Longitude' THEN Longitude
+			WHEN 'RegionId' THEN RegionId
+			WHEN 'CountryName' THEN CountryName
+			WHEN 'City' THEN City
+			WHEN 'Address' THEN Address
+			WHEN 'PostalCode' THEN PostalCode
+			WHEN 'Phone' THEN Phone
+			WHEN 'LocationDetails' THEN LocationDetails
+			WHEN 'PortalId' THEN PortalId
+			WHEN 'LastUpdatedDate' THEN LastUpdatedDate
+			WHEN 'Type' THEN [Type]
+			WHEN 'StateName' THEN StateName
+			WHEN 'Abbreviation' THEN Abbreviation
+			WHEN 'CountryId' THEN CountryId
+		END
 
 	DECLARE @rows int
 	set @rows = @@RowCount

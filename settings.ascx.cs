@@ -274,7 +274,7 @@ namespace Engage.Dnn.Locator
                 objModules.UpdateTabModuleSetting(TabModuleId, "MapType", this.ddlMapType.SelectedValue);
                 objModules.UpdateTabModuleSetting(TabModuleId, "AllowSubmissions", this.cbAllowSubmissions.Checked.ToString());
 
-                hsc.UpdateHostSetting("LocatorSubmissionModeration" + PortalId, cbModerateComments.Checked.ToString());
+                hsc.UpdateHostSetting("LocatorSubmissionModeration" + PortalId, this.cbSubmissionModeration.Checked.ToString());
                 //objModules.UpdateTabModuleSetting(TabModuleId, "ModerateSubmissions", this.cbSubmissionModeration.Checked.ToString());
 
                 string locationTypeList = GetLocationTypeList();
