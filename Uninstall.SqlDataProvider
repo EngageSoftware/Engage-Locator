@@ -265,4 +265,3 @@ DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location]
 GO
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationType]
-GO
