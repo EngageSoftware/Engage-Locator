@@ -30,7 +30,7 @@ namespace Engage.Dnn.Locator
         {
             if(!Page.IsValid) return;
             bool approved = false;
-            if(Settings["ModerateComments"].ToString() == "False")
+            if(!CommentModerationEnabled)
                 approved = true;
             Location.InsertComment(Convert.ToInt32(lblLocationId.Text), txtComment.Text, txtSubmittedBy.Text, approved);
             txtComment.Text = string.Empty;
