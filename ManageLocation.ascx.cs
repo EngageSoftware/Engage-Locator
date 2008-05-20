@@ -50,7 +50,7 @@ namespace Engage.Dnn.Locator
                     rbWaitingForApproval.Visible = false;
                     this.lblStatus.Visible = false;
                     btnDelete.Visible = false;
-                    if (Settings["ModerateSubmissions"] != null && Settings["ModerateSubmissions"].ToString() == "True")
+                    if (SubmissionModerationEnabled)
                     {
                         this.lblStatus.Visible = true;
                         rbApprove.Visible = true;
@@ -106,7 +106,7 @@ namespace Engage.Dnn.Locator
             {
                 ClientAPI.AddButtonConfirm(btnDelete, Localization.GetString("confirmDelete", LocalResourceFile));
                 btnDelete.Visible = true;
-                if (Settings["ModerateSubmissions"].ToString() == "True")
+                if (SubmissionModerationEnabled)
                 {
                     this.lblStatus.Visible = true;
                     rbApprove.Visible = true;
@@ -274,7 +274,7 @@ namespace Engage.Dnn.Locator
                         currentLocation.Latitude = Convert.ToDouble(latitude);
                         currentLocation.Longitude = Convert.ToDouble(longitude);
                     }
-                    if (Settings["ModerateSubmissions"].ToString() == "True")
+                    if (SubmissionModerationEnabled)
                         currentLocation.Approved = rbApprove.Checked;
                     else
                         currentLocation.Approved = true;
@@ -320,7 +320,7 @@ namespace Engage.Dnn.Locator
                         address = address + ", " + txtAddress2.Text;
                     }
 
-                    if (Settings["ModerateSubmissions"].ToString() == "True")
+                    if (SubmissionModerationEnabled)
                     {
                         if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
                             newLocation.Approved = rbApprove.Checked;
@@ -356,7 +356,7 @@ namespace Engage.Dnn.Locator
                         newLocation.Longitude = Convert.ToDouble(longitude);
                     }
                     //settings are set to moderate and the user is logged in as admin
-                    if (Settings["ModerateSubmissions"].ToString() == "True")
+                    if (SubmissionModerationEnabled)
                     {
                         newLocation.Approved = false;
                     }
