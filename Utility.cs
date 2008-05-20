@@ -190,5 +190,32 @@ namespace Engage.Dnn.Locator.Util
                 }
             }
         }
+
+        /// <summary>
+        /// Finds the first <see cref="Control"/> with the given <paramref name="id"/>.
+        /// Searches through all levels of the 
+        /// </summary>
+        /// <remarks>from http://www.codinghorror.com/blog/archives/000307.html</remarks>
+        /// <param name="root">The outermost containing <see cref="Control"/> in which to search.</param>
+        /// <param name="id">The ID of the <see cref="Control"/> being sought, set in <see cref="Control.ID"/></param>
+        /// <returns>The first <see cref="Control"/> with the given <paramref name="id"/> that is contained by <paramref name="root"/>.</returns>
+        public static Control FindControlRecursive(Control root, string id)
+        {
+            if (root.ID == id)
+            {
+                return root;
+            }
+
+            foreach (Control c in root.Controls)
+            {
+                Control t = FindControlRecursive(c, id);
+                if (t != null)
+                {
+                    return t;
+                }
+            }
+
+            return null;
+        }
     }
 }

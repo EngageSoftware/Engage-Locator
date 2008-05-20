@@ -1,6 +1,11 @@
 <%@ Control Language="C#" AutoEventWireup="True" CodeBehind="EditAttributeDefinition.ascx.cs" Inherits="Engage.Dnn.Locator.EditAttributeDefinition" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
-<dnn:propertyeditorcontrol id="Attributes" runat="server" SortMode="SortOrderAttribute" ErrorStyle-cssclass="NormalRed" labelstyle-cssclass="SubHead" helpstyle-cssclass="Help" editcontrolstyle-cssclass="NormalTextBox" labelwidth="180px" editcontrolwidth="170px" width="350px" />
+<dnn:propertyeditorcontrol id="Attributes" runat="server" 
+    SortMode="SortOrderAttribute" ShowRequired = "false" ShowVisibility="false" 
+    ErrorStyle-cssclass="NormalRed" labelstyle-cssclass="SubHead" 
+    helpstyle-cssclass="Help" editcontrolstyle-cssclass="NormalTextBox" 
+    labelwidth="180px" editcontrolwidth="170px" width="350px" 
+    onitemcreated="Attributes_ItemCreated" />
 <p>
     <dnn:commandbutton class="CommandButton" id="cmdUpdate" onclick="cmdUpdate_Click" imageUrl="~/images/save.gif" resourcekey="cmdUpdate" runat="server" text="Update" />
     <dnn:commandbutton class="CommandButton" id="cmdCancel" onclick="cmdCancel_Click" imageUrl="~/images/lt.gif" resourcekey="cmdCancel" runat="server" text="Cancel" causesvalidation="False" />

@@ -23,22 +23,112 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Label lblLocationTypeHelp;
         
         /// <summary>
-        /// lblLocTypeName control.
+        /// lbLocType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocTypeName;
+        protected global::System.Web.UI.WebControls.ListBox lbLocType;
         
         /// <summary>
-        /// lblLocationTypeName control.
+        /// btnEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationTypeName;
+        protected global::System.Web.UI.WebControls.ImageButton btnEdit;
+        
+        /// <summary>
+        /// btnDelete control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnDelete;
+        
+        /// <summary>
+        /// btnCreateNew control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnCreateNew;
+        
+        /// <summary>
+        /// lblLocationTypeNotInUse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLocationTypeNotInUse;
+        
+        /// <summary>
+        /// dvLocationType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvLocationType;
+        
+        /// <summary>
+        /// dvLocationTypeEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvLocationTypeEdit;
+        
+        /// <summary>
+        /// txtEditLocationType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEditLocationType;
+        
+        /// <summary>
+        /// lbUpdateLocationType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbUpdateLocationType;
+        
+        /// <summary>
+        /// lbCancelLocationType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbCancelLocationType;
+        
+        /// <summary>
+        /// lblLocationTypeInst control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLocationTypeInst;
+        
+        /// <summary>
+        /// upDataImport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upDataImport;
         
         /// <summary>
         /// grdLocationTypeAttributes control.
@@ -50,21 +140,30 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.DataGrid grdLocationTypeAttributes;
         
         /// <summary>
+        /// btnCAAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnCAAdd;
+        
+        /// <summary>
         /// cmdUpdate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.WebControls.CommandButton cmdUpdate;
+        protected global::System.Web.UI.WebControls.ImageButton cmdUpdate;
         
         /// <summary>
-        /// cmdRefresh control.
+        /// cmdCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.WebControls.CommandButton cmdRefresh;
+        protected global::System.Web.UI.WebControls.ImageButton cmdCancel;
     }
 }

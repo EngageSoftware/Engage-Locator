@@ -776,5 +776,11 @@ namespace Engage.Dnn.Locator
             string href = EditUrl("ManageComments");
             Response.Redirect(href, true);
         }
+
+        protected void lblManageTypes_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("AttributeDefinitions");
+            Response.Redirect(href, true);
+        }
     }
 }

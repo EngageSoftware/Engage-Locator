@@ -170,14 +170,14 @@
             <div id="dvLocationType" runat="server" visible="true">
                 <asp:ListBox ID="lbLocationType" runat="server" SelectionMode="Multiple" Width="150px"
                     CssClass="Normal"></asp:ListBox>
-                <asp:LinkButton ID="lbEditLocationType" runat="server" OnClick="lbEditLocationType_Click"
+              <%--  <asp:LinkButton ID="lbEditLocationType" runat="server" OnClick="lbEditLocationType_Click"
                     CssClass="CommandButton" resourcekey="lbEditLocationType">Edit</asp:LinkButton>
                 <asp:LinkButton ID="lbAddLocationType" runat="server" OnClick="lbAddLocationType_Click"
                     CssClass="CommandButton" resourcekey="lbAddLocationType">Add</asp:LinkButton>
                 <asp:LinkButton ID="lbDeleteLocationType" runat="server" OnClick="lbDeleteLocationType_Click"
-                    CssClass="CommandButton" resourcekey="lblDeleteLocatinType">Delete</asp:LinkButton>
+                    CssClass="CommandButton" resourcekey="lblDeleteLocatinType">Delete</asp:LinkButton>--%>
             </div>
-            <div>
+            <%--<div>
                 <asp:Label ID="lblLocationTypeNotInUse" runat="server" Visible="false" CssClass="Normal"
                     resourcekey="lblLocationTypeNotInUse"></asp:Label>
             </div>
@@ -187,10 +187,10 @@
                     CssClass="CommandButton">Update</asp:LinkButton>
                 <asp:LinkButton ID="lbCancelLocationType" runat="server" OnClick="lbCancelLocationType_Click"
                     CssClass="CommandButton">Cancel</asp:LinkButton>
-            </div>
-            <div>
+            </div>--%>
+<%--            <div>
                 <asp:Label ID="lblLocationTypeInst" CssClass="Normal" runat="server" resourceKey="lblLocationTypeInst" /></div>
-        </td>
+--%>        </td>
     </tr>
 </table>
 <dnn:sectionhead ID="dshSearchSettings" runat="Server" text="Search Settings" CSSClass="Head"

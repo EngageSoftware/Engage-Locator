@@ -24,10 +24,11 @@ using System.Data;
 using Microsoft.ApplicationBlocks.Data;
 using System.Text;
 using DotNetNuke.Framework.Providers;
+using Engage.Dnn.Locator.Data;
 
 namespace Engage.Dnn.Locator
 {
-    partial class AttributeDefinitions : PortalModuleBase, IActionable
+    partial class AttributeDefinitions : PortalModuleBase
     {
         protected override void OnInit(EventArgs e)
         {
@@ -37,16 +38,13 @@ namespace Engage.Dnn.Locator
 
         private void InitializeComponent()
         {
-            this.Init += new EventHandler(this.Page_Init);
-            //this.Load += new EventHandler(this.Page_Load);
-            this.cmdUpdate.Click += new EventHandler(cmdUpdate_Click);
-            this.cmdRefresh.Click += new EventHandler(cmdRefresh_Click);
         }
+
 
         #region Constants
 
-        const int COLUMN_REQUIRED = 10;
-        const int COLUMN_VISIBLE = 11;
+        //const int COLUMN_REQUIRED = 7;
+        //const int COLUMN_VISIBLE = 8;
         const int COLUMN_MOVE_DOWN = 3;
         const int COLUMN_MOVE_UP = 4;
 
@@ -77,12 +75,7 @@ namespace Engage.Dnn.Locator
         {
             get
             {
-                int id = Null.NullInteger;
-                if ((Request.QueryString["ltid"] != null))
-                {
-                    id = Int32.Parse(Request.QueryString["ltid"].ToString());
-                }
-                return id;
+                return Convert.ToInt32(lbLocType.SelectedValue);
             }
         }
 
@@ -128,7 +121,7 @@ namespace Engage.Dnn.Locator
                 }
             }
 
-            RefreshGrid();
+            BindGrid();
         }
 
         /// -----------------------------------------------------------------------------
@@ -178,23 +171,21 @@ namespace Engage.Dnn.Locator
             MoveAttribute(index, index - 1);
         }
 
-        private void FillLocTypeName()
+        private void BindTypes()
         {
-            ////Fill textbox with LocType name here.
-            DataTable dt = LocationType.GetLocationTypes();
-            DataRow[] rows = dt.Select("LocationTypeId = " + LocationTypeId);
-            lblLocationTypeName.Text = rows[0][1].ToString();
+            DataTable dt= LocationType.GetLocationTypes();
+
+            lbLocType.DataTextField = "LocationTypeName";
+            lbLocType.DataValueField = "LocationTypeId";
+            lbLocType.DataSource = dt;
+            lbLocType.DataBind();
+
+            if (dt.Rows.Count > 0) lbLocType.SelectedIndex = 0;
+
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Binds the Property Collection to the Grid
-        /// </summary>
-        /// -----------------------------------------------------------------------------
         private void BindGrid()
         {
-            FillLocTypeName();
-
             AttributeDefinitionCollection attributes = GetAttributes();
             bool allRequired = true;
             bool allVisible = true;
@@ -240,16 +231,6 @@ namespace Engage.Dnn.Locator
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Refresh the Property Collection to the Grid
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void RefreshGrid()
-        {
-            BindGrid();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Updates any "dirty" attributes
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -284,10 +265,10 @@ namespace Engage.Dnn.Locator
                 {
                     objItem = this.grdLocationTypeAttributes.Items[i];
                     objAttribute = objAttributes[i];
-                    chk = (CheckBox)objItem.Cells[COLUMN_REQUIRED].Controls[0];
-                    objAttribute.Required = chk.Checked;
-                    chk = (CheckBox)objItem.Cells[COLUMN_VISIBLE].Controls[0];
-                    objAttribute.Visible = chk.Checked;
+                    //chk = (CheckBox)objItem.Cells[COLUMN_REQUIRED].Controls[0];
+                    //objAttribute.Required = chk.Checked;
+                    //chk = (CheckBox)objItem.Cells[COLUMN_VISIBLE].Controls[0];
+                    //objAttribute.Visible = chk.Checked;
                 }
                 //assign vieworder
                 for (int i = 0; i <= aryNewOrder.Length - 1; i++)
@@ -331,43 +312,46 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void Page_Init(object sender, System.EventArgs e)
         {
-            foreach (DataGridColumn column in grdLocationTypeAttributes.Columns)
-            {
-                if (object.ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
-                {
-                    if (SupportsRichClient() == false)
-                    {
-                        CheckBoxColumn cbColumn = (CheckBoxColumn)column;
-                        cbColumn.CheckedChanged += grdLocationTypeAttributes_ItemCheckedChanged;
-                    }
-                }
-                else if (object.ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
-                {
-                    //Manage Delete Confirm JS
-                    ImageCommandColumn imageColumn = (ImageCommandColumn)column;
-                    switch (imageColumn.CommandName)
-                    {
-                        case "Delete":
-                            imageColumn.OnClickJS = Localization.GetString("DeleteItem");
-                            imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
-                            break;
-                        case "Edit":
-                            //The Friendly URL parser does not like non-alphanumeric characters
-                            //so first create the format string with a dummy value and then
-                            //replace the dummy value with the FormatString place holder
-                            string formatString = EditUrl("AttributeDefinitionID", "KEYFIELD", "EditAttributeDefinition", "ltid=" + LocationTypeId);
-                            formatString = formatString.Replace("KEYFIELD", "{0}");
-                            imageColumn.NavigateURLFormatString = formatString;
-                            break;
-                        case "MoveUp":
-                            imageColumn.Text = Localization.GetString("MoveUp", this.LocalResourceFile);
-                            break;
-                        case "MoveDown":
-                            imageColumn.Text = Localization.GetString("MoveDown", this.LocalResourceFile);
-                            break;
-                    }
-                }
-            }
+           Localization.LocalizeDataGrid(ref grdLocationTypeAttributes, this.LocalResourceFile);
+           BindTypes();
+
+           // foreach (DataGridColumn column in grdLocationTypeAttributes.Columns)
+           // {
+           //     if (object.ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
+           //     {
+           //         if (SupportsRichClient() == false)
+           //         {
+           //             CheckBoxColumn cbColumn = (CheckBoxColumn)column;
+           //             cbColumn.CheckedChanged += grdLocationTypeAttributes_ItemCheckedChanged;
+           //         }
+           //     }
+           //     else if (object.ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
+           //     {
+           //         //Manage Delete Confirm JS
+           //         ImageCommandColumn imageColumn = (ImageCommandColumn)column;
+           //         switch (imageColumn.CommandName)
+           //         {
+           //             case "Delete":
+           //                 imageColumn.OnClickJS = Localization.GetString("DeleteItem");
+           //                 imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
+           //                 break;
+           //             case "Edit":
+           //                 //The Friendly URL parser does not like non-alphanumeric characters
+           //                 //so first create the format string with a dummy value and then
+           //                 //replace the dummy value with the FormatString place holder
+           //                 string formatString = EditUrl("AttributeDefinitionID", "KEYFIELD", "EditAttributeDefinition", "ltid=" + LocationTypeId);
+           //                 formatString = formatString.Replace("KEYFIELD", "{0}");
+           //                 imageColumn.NavigateURLFormatString = formatString;
+           //                 break;
+           //             case "MoveUp":
+           //                 imageColumn.Text = Localization.GetString("MoveUp", this.LocalResourceFile);
+           //                 break;
+           //             case "MoveDown":
+           //                 imageColumn.Text = Localization.GetString("MoveDown", this.LocalResourceFile);
+           //                 break;
+           //         }
+           //     }
+           // }
         }
 
         /// -----------------------------------------------------------------------------
@@ -377,61 +361,17 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, System.EventArgs e)
         {
-            try
-            {
-                if (!Page.IsPostBack)
-                {
-                    Localization.LocalizeDataGrid(ref grdLocationTypeAttributes, this.LocalResourceFile);
-                    BindGrid();
-                }
-                else
-                {
-                    ProcessPostBack();
-                }
-            }
-            catch (Exception exc)
-            {
-                //Module failed to load
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+            //try
+            //{
+                BindData();
+            //}
+            //catch (Exception exc)
+            //{
+            //    //Module failed to load
+            //    Exceptions.ProcessModuleLoadException(this, exc);
+            //}
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdRefresh_Click runs when the refresh button is clciked
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void cmdRefresh_Click(object sender, System.EventArgs e)
-        {
-            RefreshGrid();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdUpdate_Click runs when the update button is clciked
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void cmdUpdate_Click(object sender, System.EventArgs e)
-        {
-            try
-            {
-                Updateattributes();
-
-                RefreshGrid();
-            }
-            catch (Exception exc)
-            {
-                //Module failed to load
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdLocationTypeAttributes_ItemCheckedChanged runs when a checkbox in the grid
-        /// is clicked
-        /// </summary>
-        /// -----------------------------------------------------------------------------
         protected void grdLocationTypeAttributes_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
             string propertyName = e.Field;
@@ -517,15 +457,15 @@ namespace Engage.Dnn.Locator
                 {
                     case ListItemType.Header:
                         //we combined the header label and checkbox in same place, so it is control 1 instead of 0
-                        ((WebControl)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMN_REQUIRED + ");");
-                        ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).AutoPostBack = false;
-                        ((WebControl)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMN_VISIBLE + ");");
-                        ((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).AutoPostBack = false;
+                        //((WebControl)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMN_REQUIRED + ");");
+                        //((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).AutoPostBack = false;
+                        //((WebControl)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMN_VISIBLE + ");");
+                        //((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).AutoPostBack = false;
                         break;
                     case ListItemType.AlternatingItem:
                     case ListItemType.Item:
-                        ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[0]).AutoPostBack = false;
-                        ((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[0]).AutoPostBack = false;
+                        //((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[0]).AutoPostBack = false;
+                        //((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[0]).AutoPostBack = false;
 
                         DotNetNuke.UI.Utilities.ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_DOWN].Controls[0], this.Page, false, this.grdLocationTypeAttributes.ClientID);
                         DotNetNuke.UI.Utilities.ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_UP].Controls[0], this.Page, true, this.grdLocationTypeAttributes.ClientID);
@@ -566,22 +506,6 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region Optional Interfaces
-
-        ModuleActionCollection IActionable.ModuleActions
-        {
-            get
-            {
-                ModuleActionCollection Actions = new ModuleActionCollection();
-                Actions.Add(GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), ModuleActionType.AddContent, "", "add.gif", EditUrl("ltid", LocationTypeId.ToString(), "EditAttributeDefinition"), false, DotNetNuke.Security.SecurityAccessLevel.Admin, true, false);
-
-                Actions.Add(GetNextActionID(), Localization.GetString("Cancel.Action", LocalResourceFile), ModuleActionType.AddContent, "", "lt.gif", EditUrl("ModuleId", ModuleId.ToString(), "Module"), false, DotNetNuke.Security.SecurityAccessLevel.Admin, true, false );
-                return Actions;
-            }
-        }
-        
-        #endregion
-
         protected void grdLocationTypeAttributes_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             string commandName = e.CommandName;
@@ -604,6 +528,143 @@ namespace Engage.Dnn.Locator
             }
         }
 
+        protected void lbLocType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindGrid();
+        }
+
+        private void BindData()
+        {
+            BindGrid();
+            foreach (DataGridColumn column in grdLocationTypeAttributes.Columns)
+            {
+                if (object.ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
+                {
+                    if (SupportsRichClient() == false)
+                    {
+                        CheckBoxColumn cbColumn = (CheckBoxColumn)column;
+                        cbColumn.CheckedChanged += grdLocationTypeAttributes_ItemCheckedChanged;
+                    }
+                }
+                else if (object.ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
+                {
+                    //Manage Delete Confirm JS
+                    ImageCommandColumn imageColumn = (ImageCommandColumn)column;
+                    switch (imageColumn.CommandName)
+                    {
+                        case "Delete":
+                            imageColumn.OnClickJS = Localization.GetString("DeleteItem");
+                            imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
+                            break;
+                        case "Edit":
+                            //The Friendly URL parser does not like non-alphanumeric characters
+                            //so first create the format string with a dummy value and then
+                            //replace the dummy value with the FormatString place holder
+                            string formatString = EditUrl("AttributeDefinitionID", "KEYFIELD", "EditAttributeDefinition", "ltid=" + LocationTypeId);
+                            formatString = formatString.Replace("KEYFIELD", "{0}");
+                            imageColumn.NavigateURLFormatString = formatString;
+                            break;
+                        case "MoveUp":
+                            imageColumn.Text = Localization.GetString("MoveUp", this.LocalResourceFile);
+                            break;
+                        case "MoveDown":
+                            imageColumn.Text = Localization.GetString("MoveDown", this.LocalResourceFile);
+                            break;
+                    }
+                }
+            }
+        }
+
+        protected void btnCAAdd_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            string href = EditUrl("ltid", LocationTypeId.ToString(), "EditAttributeDefinition");
+            Response.Redirect(href, true);
+        }
+
+        protected void btnCreateNew_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            string href = EditUrl("EditAttributeDefinition");
+            Response.Redirect(href, true);
+        }
+
+        protected void cmdUpdate_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            ProcessPostBack();
+            try
+            {
+                Updateattributes();
+
+                BindGrid();
+            }
+            catch (Exception exc)
+            {
+                //Module failed to load
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+
+        }
+
+        protected void cmdCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId), true);
+        }
+
+        protected void btnEdit_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            Response.Redirect(Globals.NavigateURL(TabId, "AttributeDefinitions", "mid=" + ModuleId + "&ltid=" + LocationTypeId));
+        }
+
+        protected void lbAddLocationType_Click(object sender, EventArgs e)
+        {
+            dvLocationType.Visible = false;
+            dvLocationTypeEdit.Visible = true;
+            lblLocationTypeNotInUse.Visible = false;
+            lblLocationTypeInst.Visible = false;
+            lbUpdateLocationType.Text = "Save";
+            txtEditLocationType.Text = String.Empty;
+            txtEditLocationType.Focus();
+        }
+
+        protected void lbDeleteLocationType_Click(object sender, EventArgs e)
+        {
+            if (LocationType.GetLocationTypeInUse(lbLocType.SelectedItem.Text))
+            {
+                lblLocationTypeNotInUse.Visible = true;
+                lblLocationTypeNotInUse.Text = Localization.GetString("lblLocationTypeNotInUse", LocalResourceFile);
+            }
+            else
+            {
+                DataProvider.Instance().DeleteLocationType(Convert.ToInt32(lbLocType.SelectedItem.Value));
+                BindTypes();
+                lblLocationTypeNotInUse.Visible = false;
+            }
+        }
+
+        protected void lbUpdateLocationType_Click(object sender, EventArgs e)
+        {
+            if (lbUpdateLocationType.Text == "Update")
+            {
+                DataProvider.Instance().UpdateLocationType(Convert.ToInt32(lbLocType.SelectedItem.Value), txtEditLocationType.Text);
+            }
+            else if (lbUpdateLocationType.Text == "Save")
+            {
+                DataProvider.Instance().InsertLocationType(txtEditLocationType.Text);
+            }
+            dvLocationType.Visible = true;
+            dvLocationTypeEdit.Visible = false;
+            lblLocationTypeNotInUse.Visible = false;
+            lblLocationTypeInst.Visible = true;
+            BindTypes();
+        }
+
+        protected void lbCancelLocationType_Click(object sender, EventArgs e)
+        {
+            dvLocationType.Visible = true;
+            dvLocationTypeEdit.Visible = false;
+            lblLocationTypeNotInUse.Visible = false;
+            lblLocationTypeInst.Visible = true;
+
+        }
     }
 
 }

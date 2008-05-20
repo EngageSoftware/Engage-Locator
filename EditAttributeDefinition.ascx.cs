@@ -34,7 +34,7 @@ namespace Engage.Dnn.Locator
 
         private void InitializeComponent()
         {
-            this.Load += new EventHandler(this.Page_Load);
+            //this.Load += new EventHandler(this.Page_Load);
             cmdUpdate.Click += new EventHandler(cmdUpdate_Click);
             cmdCancel.Click += new EventHandler(cmdCancel_Click);
             cmdDelete.Click += new EventHandler(cmdDelete_Click);
@@ -270,6 +270,20 @@ namespace Engage.Dnn.Locator
         }
 
         #endregion
+
+        protected void Attributes_ItemCreated(object sender, PropertyEditorItemEventArgs e)
+        {
+            
+            if (e.Editor.Name == "ValidationExpression" || e.Editor.Name == "Required" || e.Editor.Name == "Visible" || e.Editor.Name == "ViewOrder")
+            {
+                e.Editor.Visible = false;
+            }
+            if (e.Editor.Name == "DataType")
+            {
+                //DotNetNuke.UI.WebControls.DNNListEditControl list = (DotNetNuke.UI.WebControls.DNNListEditControl)e.Editor.Editor;
+                System.Diagnostics.Debug.WriteLine(e.Editor);    
+            }
+        }
 
     }
 }

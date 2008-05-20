@@ -42,9 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=4.8.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=4.5.1.28, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Bin\DotNetNuke.dll</HintPath>
+      <HintPath>..\..\..\Assemblies\DNN 4.5.1\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -59,7 +59,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\WINDOWS\assembly\GAC_MSIL\System.Web.Extensions\1.0.61025.0__31bf3856ad364e35\System.Web.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -136,10 +139,6 @@
       <DependentUpon>Services.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Settings.ascx.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Import.ascx.cs">
       <DependentUpon>Import.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -147,6 +146,10 @@
     <Compile Include="Components\DataImportScheduler.cs" />
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="SearchUtility.cs" />
+    <Compile Include="Settings.ascx.cs">
+      <DependentUpon>Settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
     </Compile>
@@ -197,7 +200,6 @@
     <Content Include="App_LocalResources\Import.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Settings.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Settings.ascx.resx">
@@ -259,10 +261,19 @@
     <Content Include="App_LocalResources\ManageComments.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Images\import_bt.gif" />
-    <Content Include="Images\manage_comments_bt.gif" />
-    <Content Include="Images\manage_location_bt.gif" />
-    <Content Include="Images\settings_bt.gif" />
+    <Content Include="Images\back.gif" />
+    <Content Include="Images\caAddNew.gif" />
+    <Content Include="Images\caCreateNew.gif" />
+    <Content Include="Images\caDelete.gif" />
+    <Content Include="Images\caEdit.gif" />
+    <Content Include="Images\cancel.gif" />
+    <Content Include="Images\commentsBt.gif" />
+    <Content Include="Images\importBt.gif" />
+    <Content Include="Images\locationBt.gif" />
+    <Content Include="Images\locationTypesBt.gif" />
+    <Content Include="Images\settingsBt.gif" />
+    <Content Include="Images\update.gif" />
+    <Content Include="Settings.ascx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />
