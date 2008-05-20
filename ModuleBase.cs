@@ -18,13 +18,13 @@ namespace Engage.Dnn.Locator
 
         #region Properties
 
-        public bool CommentModeration
+        public bool CommentModerationEnabled
         {
             [System.Diagnostics.DebuggerStepThroughAttribute()]
             get { return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId)); }
         }
 
-        public bool SubmissionModeration
+        public bool SubmissionModerationEnabled
         {
             [System.Diagnostics.DebuggerStepThroughAttribute()]
             get { return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId)); }
