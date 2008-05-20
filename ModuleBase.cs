@@ -15,8 +15,22 @@ namespace Engage.Dnn.Locator
 {
     public class ModuleBase : PortalModuleBase
     {
-        public static readonly string CommentModeration = "LocatorCommentModeration";
-        public static readonly string SubmissionModeration = "LocatorSubmissionModeration";
+
+        #region Properties
+
+        public bool CommentModeration
+        {
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId)); }
+        }
+
+        public bool SubmissionModeration
+        {
+            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            get { return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId)); }
+        }
+
+        #endregion
 
         protected override void OnInit(EventArgs e)
         {
