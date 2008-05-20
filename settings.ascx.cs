@@ -189,10 +189,10 @@ namespace Engage.Dnn.Locator
                         DisplayLocationTypes();
 
                         //todo: put logic in to determine IsExpanded
-                        //dshMapProvider.IsExpanded = false;
-                        //dshSubmissionSettings.IsExpanded = false;
-                        //this.dshDisplaySetting.IsExpanded = false;
-                        //dshSearchSettings.IsExpanded = false;
+                        dshMapProvider.IsExpanded = false;
+                        dshSubmissionSettings.IsExpanded = false;
+                        this.dshDisplaySetting.IsExpanded = false;
+                        dshSearchSettings.IsExpanded = false;
                     }
             }
             catch (Exception exc) //Module failed to load
@@ -419,7 +419,7 @@ namespace Engage.Dnn.Locator
             else
             {
                 args.IsValid = false;
-                //dshMapProvider.IsExpanded = true;
+                dshMapProvider.IsExpanded = true;
             }
         }
 
@@ -439,7 +439,7 @@ namespace Engage.Dnn.Locator
             else
             {
                 args.IsValid = false;
-                //dshMapProvider.IsExpanded = true;
+                dshMapProvider.IsExpanded = true;
             }
         }
 
@@ -451,7 +451,7 @@ namespace Engage.Dnn.Locator
             else
             {
                 args.IsValid = false;
-                //dshSearchSettings.IsExpanded = true;
+                dshSearchSettings.IsExpanded = true;
             }
         }
 
@@ -460,7 +460,7 @@ namespace Engage.Dnn.Locator
             if (rblProviderType.SelectedItem == null)
             {
                 args.IsValid = false;
-                //dshMapProvider.IsExpanded = true;
+                dshMapProvider.IsExpanded = true;
             }
         }
 
@@ -503,7 +503,7 @@ namespace Engage.Dnn.Locator
             else
             {
                 args.IsValid = false;
-                //dshSearchSettings.IsExpanded = true;
+                dshSearchSettings.IsExpanded = true;
             }
         }
 

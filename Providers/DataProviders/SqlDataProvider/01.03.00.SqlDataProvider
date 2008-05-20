@@ -245,7 +245,7 @@ AS
 	 		select r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
 			from #results r
 			join EngageLocator_vLocations e on (r.LocationId = e.LocationId)
-	 		where (id >= @index * @PageSize + 1) and (id < (@index * @PageSize) + @PageSize + 1)
+	 		where (id >= @index * @PageSize + 1) and id < (@index * @PageSize) + @PageSize + 1
 	 	END
 
 GO
@@ -693,20 +693,20 @@ CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocation
 @portalId int
 AS
 
-	Delete From EngageLocator_LocationAttribute
-	where LocationId in (Select LocationId FROM dbo.EngageLocator_Location WHERE PortalId = @portalId)
+	Delete From {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
+	where LocationId in (Select LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] WHERE PortalId = @portalId)
 
-	Delete From EngageLocator_Comment
-	where LocationId in (Select LocationId FROM dbo.EngageLocator_Location WHERE PortalId = @portalId)
+	Delete From {databaseOwner}[{objectQualifier}EngageLocator_Comment]
+	where LocationId in (Select LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] WHERE PortalId = @portalId)
 
-	DELETE FROM dbo.EngageLocator_Location WHERE PortalId = @portalId
+	DELETE FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] WHERE PortalId = @portalId
 
 go
 
-delete from moduleControls where controlSrc = 'Desktopmodules/EnageLocator/ZipLocator.ascx'
+delete from {databaseOwner}[{objectQualifier}ModuleControls] where ControlSrc = 'Desktopmodules/EnageLocator/ZipLocator.ascx'
 go
 
-delete from moduleControls where controlSrc = 'Desktopmodules/EnageLocator/DataImport.ascx'
+delete from {databaseOwner}[{objectQualifier}ModuleControls] where ControlSrc = 'Desktopmodules/EnageLocator/DataImport.ascx'
 go
 
 
