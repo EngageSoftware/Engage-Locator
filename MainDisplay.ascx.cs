@@ -111,9 +111,10 @@ namespace Engage.Dnn.Locator
                 if (!SubmissionsEnabled)
                     lnkSubmitLocation.Visible = false;
                 lbSettings.Visible = IsEditable;
-                lblImportFile.Visible = IsEditable;
-                lblManageComments.Visible = IsEditable;
-                lblManageLocations.Visible = IsEditable;
+                lbImportFile.Visible = IsEditable;
+                lbManageComments.Visible = IsEditable;
+                lbManageLocations.Visible = IsEditable;
+                lbLocationTypes.Visible = IsEditable;
 
                 string error = String.Empty;
                 lnkViewMap.OnClientClick = "showAllLocations(); return false;";

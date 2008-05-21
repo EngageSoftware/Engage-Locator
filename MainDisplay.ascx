@@ -3,9 +3,9 @@
 
 <div class="div_ManagementButtons">
     <asp:ImageButton ID="lbSettings" CssClass="CommandButton" runat="server" AlternateText="Settings" ImageUrl="~/desktopmodules/EngageLocator/images/settingsbt.gif" OnClick="lbSettings_OnClick" />
-    <asp:ImageButton ID="lblManageLocations" CssClass="CommandButton" runat="server" AlternateText="Manage Locations" ImageUrl="~/desktopmodules/EngageLocator/images/locationbt.gif" OnClick="lblManageLocations_OnClick" />
-    <asp:ImageButton ID="lblImportFile" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/importbt.gif" OnClick="lblImportFile_OnClick" />
-    <asp:ImageButton ID="lblManageComments" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/commentsbt.gif" OnClick="lblManageComments_OnClick" />
+    <asp:ImageButton ID="lbManageLocations" CssClass="CommandButton" runat="server" AlternateText="Manage Locations" ImageUrl="~/desktopmodules/EngageLocator/images/locationbt.gif" OnClick="lblManageLocations_OnClick" />
+    <asp:ImageButton ID="lbImportFile" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/importbt.gif" OnClick="lblImportFile_OnClick" />
+    <asp:ImageButton ID="lbManageComments" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/commentsbt.gif" OnClick="lblManageComments_OnClick" />
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lblManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" />
     
 </div>
@@ -117,7 +117,7 @@
         <asp:Button ID="lnkViewMap" Text="View All Locations" runat="server" Visible="false" resourcekey="lnkViewMap" />
         <asp:Button ID="btnBack2" runat="server" Text="Start Over" OnClick="btnBack_Click" CssClass="LocatorMapItButton" resourcekey="btnBack2" />
         <asp:Button ID="btn_ShowAll" runat="server" OnClick="btnShowAll_Click" CssClass="LocatorMapItbutton" resourcekey="btnShowAll" />
-
+        <asp:Button ID="lnkSubmitLocation" runat="server" Text="Submit a location" Visible="false" resourcekey="lnkSubmitLocations" OnClick="lnkSubmitLocations_Click" />
         <div class="locationMapHeading">
             <div class="closestsLocations">
 	            <asp:Label ID="lblNumClosest" runat="server" CssClass="Normal" resourcekey="lblNumClosest" />
@@ -183,9 +183,6 @@
                     </ItemTemplate>
                 </asp:Repeater>
             </table>
-        </div>
-        <div>
-            <asp:LinkButton ID="lnkSubmitLocation" runat="server" Text="Submit a location" Visible="false" resourcekey="lnkSubmitLocations" OnClick="lnkSubmitLocations_Click" />
         </div>
     </asp:View>
 </asp:MultiView>

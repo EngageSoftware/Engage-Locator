@@ -23,31 +23,31 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.ImageButton lbSettings;
         
         /// <summary>
-        /// lblManageLocations control.
+        /// lbManageLocations control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton lblManageLocations;
+        protected global::System.Web.UI.WebControls.ImageButton lbManageLocations;
         
         /// <summary>
-        /// lblImportFile control.
+        /// lbImportFile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton lblImportFile;
+        protected global::System.Web.UI.WebControls.ImageButton lbImportFile;
         
         /// <summary>
-        /// lblManageComments control.
+        /// lbManageComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton lblManageComments;
+        protected global::System.Web.UI.WebControls.ImageButton lbManageComments;
         
         /// <summary>
         /// lbLocationTypes control.
@@ -410,6 +410,15 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Button btn_ShowAll;
         
         /// <summary>
+        /// lnkSubmitLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button lnkSubmitLocation;
+        
+        /// <summary>
         /// lblNumClosest control.
         /// </summary>
         /// <remarks>
@@ -471,14 +480,5 @@ namespace Engage.Dnn.Locator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptLocations;
-        
-        /// <summary>
-        /// lnkSubmitLocation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkSubmitLocation;
     }
 }
