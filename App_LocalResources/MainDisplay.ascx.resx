@@ -226,7 +226,7 @@
     <value>&lt;b&gt;Search by Radius&lt;/b&gt;</value>
   </data>
   <data name="SetupText_Admin.Text" xml:space="preserve">
-    <value>Please setup module through the Module Settings page.&lt;br&gt;Required Items: &lt;br/&gt;&lt;br/&gt;</value>
+    <value>Please set up the module through the Module Settings page.&lt;br&gt;Required Items: &lt;br/&gt;&lt;br/&gt;</value>
   </data>
   <data name="SetupText_NonAdmin.Text" xml:space="preserve">
     <value>This page is not configured. Please contact an Administrator.</value>

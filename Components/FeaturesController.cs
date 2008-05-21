@@ -15,7 +15,7 @@ using DotNetNuke.Services.Search;
 
 namespace Engage.Dnn.Locator.Components
 {
-    public class FeaturesController: ISearchable, IUpgradeable
+    public class FeaturesController: ISearchable
     {
         public SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
         {
@@ -31,22 +31,5 @@ namespace Engage.Dnn.Locator.Components
             }
             return searchItemCollection;
         }
-
-        #region IUpgradeable Members
-
-        public string UpgradeModule(string Version)
-        {
-            switch (Version)
-            {
-                case "1.0.3.0":
-                    File.Delete("ZipLocator.ascx");
-                    File.Delete("DataImport.ascx");
-                    break;
-            }
-
-            return "Success";
-        }
-
-        #endregion
     }
 }

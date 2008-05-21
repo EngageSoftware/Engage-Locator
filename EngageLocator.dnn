@@ -91,6 +91,9 @@
           <path>Providers\DataProviders\SqlDataProvider</path>
           <name>01.03.00.SqlDataProvider</name>
         </file>
+	    <file>
+		  <name>01.03.00.txt</name>
+	    </file>
         <file>
           <name>Uninstall.SqlDataProvider</name>
         </file>

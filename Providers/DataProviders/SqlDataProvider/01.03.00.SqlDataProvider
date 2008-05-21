@@ -1,4 +1,4 @@
-if not exists (select * from dbo.syscolumns where name = 'Approved' and id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
+﻿if not exists (select * from dbo.syscolumns where name = 'Approved' and id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location]
  ADD Approved bit
 GO
@@ -168,6 +168,33 @@ AS
 		WHERE LocationId = @locationId 
 GO
 
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeName]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationType]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationType]
+      @LocationTypeId int
+AS
+      SELECT * FROM {objectQualifier}EngageLocator_LocationType WHERE LocationTypeId = @LocationTypeId
+GO
+
+
+if exsists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]
+      @LocationType nvarchar(50)
+AS
+      
+      SELECT Count(*) FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations] 
+      WHERE LocationTypeId = @LocationType
+GO
+
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') and OBJECTPROPERTY(id, N'IsView') = 1)
 drop view {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
 GO
@@ -210,73 +237,37 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocation
 	@sortColumn nvarchar(200), 
 	@index int, 
 	@pageSize int
+	
 AS
 
-	Create table #results 
+	CREATE TABLE #results 
 	(
-		[Id] int not null IDENTITY(1,1),
-		[LocationId] [int],
-		[TotalRecords] int
+		Id int NOT NULL IDENTITY(1,1),
+		LocationId int,
+		TotalRecords int
 	)
 
-	DECLARE @sql varchar(8000)
-
-	SET @sql = 'INSERT INTO #results ([LocationId]) '
-	SET @sql = @sql + 'SELECT LocationId '
-	SET @sql = @sql + 'FROM '
-	SET @sql = @sql + '{databaseOwner}[{objectQualifier}EngageLocator_vLocations] '
-	SET @sql = @sql + 'where PortalId = ' + str(@portalId)
-	SET @sql = @sql + ' AND Approved =  ' + str(@approved)
-	SET @sql = @sql + ' ORDER BY ' + @sortColumn
-
-	EXEC (@sql)
-
-    /* INSERT INTO #results ([LocationId])
-    SELECT LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
-    WHERE PortalId = @portalId
-		AND Approved =  @approved
-		ORDER BY
-		CASE @sortColumn
-			CASE @sortColumn WHEN 'LocationId' THEN LocationId ELSE NULL END,
-			CASE @sortColumn WHEN 'LocationTypeId' THEN LocationTypeId ELSE NULL END,
-			CASE @sortColumn WHEN 'ExternalIdentifier' THEN ExternalIdentifier ELSE NULL END,
-			CASE @sortColumn WHEN 'Name' THEN [Name] ELSE NULL END,
-			CASE @sortColumn WHEN 'Website' THEN Website ELSE NULL END,
-			CASE @sortColumn WHEN 'Latitude' THEN Latitude ELSE NULL END,
-			CASE @sortColumn WHEN 'Longitude' THEN Longitude ELSE NULL END,
-			CASE @sortColumn WHEN 'RegionId' THEN RegionId ELSE NULL END,
-			CASE @sortColumn WHEN 'CountryName' THEN CountryName ELSE NULL END,
-			CASE @sortColumn WHEN 'City' THEN City ELSE NULL END,
-			CASE @sortColumn WHEN 'Address' THEN Address ELSE NULL END,
-			CASE @sortColumn WHEN 'PostalCode' THEN PostalCode ELSE NULL END,
-			CASE @sortColumn WHEN 'Phone' THEN Phone ELSE NULL END,
-			CASE @sortColumn WHEN 'LocationDetails' THEN LocationDetails ELSE NULL END,
-			CASE @sortColumn WHEN 'PortalId' THEN PortalId ELSE NULL END,
-			CASE @sortColumn WHEN WHEN 'LastUpdatedDate' THEN LastUpdatedDate ELSE NULL END,
-			CASE @sortColumn WHEN WHEN 'Type' THEN [Type] ELSE NULL END,
-			CASE @sortColumn WHEN WHEN 'StateName' THEN StateName ELSE NULL END,
-			CASE @sortColumn WHEN WHEN 'Abbreviation' THEN Abbreviation ELSE NULL END,
-			CASE @sortColumn WHEN WHEN 'CountryId' THEN CountryId ELSE NULL END */
+	EXEC('INSERT INTO #results ([LocationId]) SELECT LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations] WHERE PortalId = ' + @PortalID + ' AND Approved = ' + @approved + ' ORDER BY ' + @sortColumn)
 
 	DECLARE @rows int
 	set @rows = @@RowCount
 
-	update #results set TotalRecords = @rows
+	UPDATE #results SET TotalRecords = @rows
 
-	if (@PageSize = 0)
+	IF (@PageSize = 0)
 		BEGIN
-	 		select r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
-			from #results r
-			join {databaseOwner}[{objectQualifier}EngageLocator_vLocations] e on (r.LocationId = e.LocationId)
+	 		SELECT r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName AS Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
+			FROM #results r
+			JOIN {databaseOwner}[{objectQualifier}EngageLocator_vLocations] e ON (r.LocationId = e.LocationId)
 	 	END
 	ELSE
 	 	BEGIN
-	 		select r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
-			from #results r
-			join {databaseOwner}[{objectQualifier}EngageLocator_vLocations] e on (r.LocationId = e.LocationId)
-	 		where (id >= @index * @PageSize + 1) and id < (@index * @PageSize) + @PageSize + 1
+	 		SELECT r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName AS Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
+			FROM #results r
+			JOIN {databaseOwner}[{objectQualifier}EngageLocator_vLocations] e ON (r.LocationId = e.LocationId)
+	 		WHERE id >= @index * @PageSize + 1
+	 			AND id < @index * @PageSize + @PageSize + 1
 	 	END
-
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -636,19 +627,20 @@ AS
 	WHERE LocationTypeId = @locationTypeId
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]
+
 	@locationId int
 AS
-SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
-WHERE LocationId = @locationId
+	SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
+	WHERE LocationId = @locationId
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]
@@ -660,8 +652,8 @@ AS
 	WHERE LocationAttributeId = @locationAttributeId and LocationId = @locationId
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]
@@ -669,16 +661,16 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAtt
 	@locationId int,
 	@attributeValue nvarchar(255)
 AS
-	if not exists (select * from {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] 
-		where LocationID = @LocationId and AttributeDefinitionId= @AttributeDefinitionId)
-	begin
-		Insert into {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] (LocationId, AttributeDefinitionId, AttributeValue, CreateDate, RevisionDate)
-		Values (@locationId, @attributeDefinitionId, @attributeValue, getdate(), getdate())
-	end
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] 
+		WHERE LocationID = @LocationId AND AttributeDefinitionId= @AttributeDefinitionId)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] (LocationId, AttributeDefinitionId, AttributeValue, CreateDate, RevisionDate)
+		VALUES (@locationId, @attributeDefinitionId, @attributeValue, getdate(), getdate())
+	END
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
@@ -709,33 +701,33 @@ AS
 	WHERE AttributeDefinitionId = @AttributeDefinitionId
 GO
 
-delete from {databaseOwner}[{objectQualifier}schedule] Where TypeFullName = 'Engage.Dnn.Locator.DataImportScheduler,EngageLocator'
-go
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
+DELETE FROM {databaseOwner}[{objectQualifier}schedule] WHERE TypeFullName = 'Engage.Dnn.Locator.DataImportScheduler,EngageLocator'
 GO
 
-CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
-@portalId int
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
+
+	@portalId int
+
 AS
 
-	Delete From {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
-	where LocationId in (Select LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] WHERE PortalId = @portalId)
+	DELETE FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
+	WHERE LocationId in (SELECT LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] WHERE PortalId = @portalId)
 
-	Delete From {databaseOwner}[{objectQualifier}EngageLocator_Comment]
-	where LocationId in (Select LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] WHERE PortalId = @portalId)
+	DELETE FROM {databaseOwner}[{objectQualifier}EngageLocator_Comment]
+	WHERE LocationId IN (SELECT LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] WHERE PortalId = @portalId)
 
 	DELETE FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] WHERE PortalId = @portalId
+GO
 
-go
+DELETE FROM {databaseOwner}[{objectQualifier}ModuleControls] WHERE ControlSrc = 'DesktopModules/EngageLocator/ZipLocator.ascx'
+GO
 
-delete from {databaseOwner}[{objectQualifier}ModuleControls] where ControlSrc = 'Desktopmodules/EnageLocator/ZipLocator.ascx'
-go
-
-delete from {databaseOwner}[{objectQualifier}ModuleControls] where ControlSrc = 'Desktopmodules/EnageLocator/DataImport.ascx'
-go
-
+DELETE FROM {databaseOwner}[{objectQualifier}ModuleControls] WHERE ControlSrc = 'DesktopModules/EngageLocator/DataImport.ascx'
+GO
 
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]

@@ -192,6 +192,7 @@
         <include name="**/*.sqldataprovider" />
         <include name="**/Licenses/EULA-Standard.txt" />
         <include name="**/*.dnn" />
+		<include name="**/*.txt" />
 
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/Engage.${ModuleName}.dnn" />
@@ -225,6 +226,7 @@
         <include name="**/*.sqldataprovider" />
         <include name="**/Licenses/EULA-Professional.txt" />
         <include name="**/*.dnn" />
+		<include name="**/*.txt" />
 
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/Engage.${ModuleName}.dnn" />
@@ -258,6 +260,7 @@
         <include name="**/*.sqldataprovider" />
         <include name="**/Licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
+		<include name="**/*.txt" />
 
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/Engage.${ModuleName}.dnn" />
@@ -291,6 +294,7 @@
         <include name="**/*.sqldataprovider" />
         <include name="**/Licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
+		<include name="**/*.txt" />
 
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/Engage.${ModuleName}.dnn" />
