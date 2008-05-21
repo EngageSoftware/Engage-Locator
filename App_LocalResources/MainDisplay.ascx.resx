@@ -214,7 +214,7 @@
     <value>View Map</value>
   </data>
   <data name="lnkViewMap.Text" xml:space="preserve">
-    <value>View Search Results</value>
+    <value>View Map</value>
   </data>
   <data name="pnlCountry.Text" xml:space="preserve">
     <value>&lt;b&gt;Search by Country&lt;/b&gt;</value>
@@ -263,5 +263,8 @@
   </data>
   <data name="lblSearchTitle.Text" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="lnkHideMap.Text" xml:space="preserve">
+    <value>Hide Map</value>
   </data>
 </root>
