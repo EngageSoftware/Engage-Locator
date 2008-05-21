@@ -1,13 +1,24 @@
-<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="EditAttributeDefinition.ascx.cs" Inherits="Engage.Dnn.Locator.EditAttributeDefinition" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
-<dnn:propertyeditorcontrol id="Attributes" runat="server" 
-    SortMode="SortOrderAttribute" ShowRequired = "false" ShowVisibility="false" 
-    ErrorStyle-cssclass="NormalRed" labelstyle-cssclass="SubHead" 
-    helpstyle-cssclass="Help" editcontrolstyle-cssclass="NormalTextBox" 
-    labelwidth="180px" editcontrolwidth="170px" width="350px" 
-    onitemcreated="Attributes_ItemCreated" />
+<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="EditAttributeDefinition.ascx.cs"
+    Inherits="Engage.Dnn.Locator.EditAttributeDefinition" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
+<fieldset>
+    <legend class="Head">Attribute Definition</legend>
+        <div id="div_Name">
+            <asp:Label ID="lblName" runat="server" resourceKey="lblName" CssClass="Normal" ></asp:Label>
+            <asp:TextBox ID="txtName" runat="server" CssClass="NormalTextBox"></asp:TextBox><asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate ="txtName" Display="Dynamic" ErrorMessage="Name is required"></asp:RequiredFieldValidator>
+        </div>
+        <div id="div_DefaultValue">
+            <asp:Label ID="lblDefaultValue" runat="server" resourceKey="lblDefaultValue" CssClass="Normal"></asp:Label>
+            <asp:TextBox ID="txtDefaultValue" runat="server" CssClass="NormalTextBox"></asp:TextBox>
+        </div>
+</fieldset>
 <p>
-    <dnn:commandbutton class="CommandButton" id="cmdUpdate" onclick="cmdUpdate_Click" imageUrl="~/images/save.gif" resourcekey="cmdUpdate" runat="server" text="Update" />
-    <dnn:commandbutton class="CommandButton" id="cmdCancel" onclick="cmdCancel_Click" imageUrl="~/images/lt.gif" resourcekey="cmdCancel" runat="server" text="Cancel" causesvalidation="False" />
-    <dnn:commandbutton class="CommandButton" id="cmdDelete" onclick="cmdDelete_Click" imageUrl="~/images/delete.gif" resourcekey="cmdDelete" runat="server" text="Delete" causesvalidation="False" />
+    <asp:ImageButton class="CommandButton" ID="cmdUpdate" OnClick="cmdUpdate_Click"
+        ImageUrl="~/desktopmodules/EngageLocator/images/Update.gif" ResourceKey="cmdUpdate" runat="server" Text="Update" />
+    <asp:ImageButton class="CommandButton" ID="cmdCancel" OnClick="cmdCancel_Click"
+        ImageUrl="~/desktopmodules/EngageLocator/images/Cancel.gif" ResourceKey="cmdCancel" runat="server" Text="Cancel"
+        CausesValidation="False" />
+    <asp:ImageButton class="CommandButton" ID="cmdDelete" OnClick="cmdDelete_Click"
+        ImageUrl="~/desktopmodules/EngageLocator/images/caDelete.gif" ResourceKey="cmdDelete" runat="server" Text="Delete"
+        CausesValidation="False" />
 </p>

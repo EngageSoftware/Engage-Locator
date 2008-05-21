@@ -88,6 +88,7 @@ namespace Engage.Dnn.Locator.Data
         public abstract int SaveTempLocation(Location loc, bool successful);
         public abstract int UpdateLocation(Location loc);
         public abstract DataTable GetLocationTypeName(int id);
+        public abstract DataTable GetLocationType(int id);
         public abstract DataTable GetCountriesList(int portalId);
         public abstract int GetTabModuleIdByFileId(int fileId);
         public abstract DataTable GetFilesToImport();

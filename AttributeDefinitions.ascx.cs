@@ -30,17 +30,6 @@ namespace Engage.Dnn.Locator
 {
     partial class AttributeDefinitions : PortalModuleBase
     {
-        protected override void OnInit(EventArgs e)
-        {
-            InitializeComponent();
-            base.OnInit(e);
-        }
-
-        private void InitializeComponent()
-        {
-        }
-
-
         #region Constants
 
         //const int COLUMN_REQUIRED = 7;
@@ -82,6 +71,63 @@ namespace Engage.Dnn.Locator
         #endregion
 
         #region Private Methods
+
+        private bool IsInEdit
+        {
+            get 
+            {
+                bool b = false;
+                if ((ViewState["editMode"] != null))
+                {
+                    b = Convert.ToBoolean(ViewState["editMode"]);
+                }
+                return b;
+            }
+            set { ViewState["editMode"] = value; }
+
+        }
+        private void BindData()
+        {
+            foreach (DataGridColumn column in grdLocationTypeAttributes.Columns)
+            {
+                if (object.ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
+                {
+                    if (SupportsRichClient() == false)
+                    {
+                        CheckBoxColumn cbColumn = (CheckBoxColumn)column;
+                        cbColumn.CheckedChanged += grdLocationTypeAttributes_ItemCheckedChanged;
+                    }
+                }
+                else if (object.ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
+                {
+                    //Manage Delete Confirm JS
+                    ImageCommandColumn imageColumn = (ImageCommandColumn)column;
+                    switch (imageColumn.CommandName)
+                    {
+                        case "Delete":
+                            imageColumn.OnClickJS = Localization.GetString("DeleteItem");
+                            imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
+                            break;
+                        case "Edit":
+                            //The Friendly URL parser does not like non-alphanumeric characters
+                            //so first create the format string with a dummy value and then
+                            //replace the dummy value with the FormatString place holder
+                            string formatString = EditUrl("AttributeDefinitionID", "KEYFIELD", "EditAttributeDefinition", "ltid=" + LocationTypeId);
+                            formatString = formatString.Replace("KEYFIELD", "{0}");
+                            imageColumn.NavigateURLFormatString = formatString;
+                            break;
+                        case "MoveUp":
+                            imageColumn.Text = Localization.GetString("MoveUp", this.LocalResourceFile);
+                            break;
+                        case "MoveDown":
+                            imageColumn.Text = Localization.GetString("MoveDown", this.LocalResourceFile);
+                            break;
+                    }
+                }
+
+                BindGrid();
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -182,48 +228,48 @@ namespace Engage.Dnn.Locator
 
             if (dt.Rows.Count > 0) lbLocType.SelectedIndex = 0;
 
+            SetButtons();
+        }
+
+        private void SetButtons()
+        {
+
+            bool inUse = LocationType.GetLocationTypeInUse(LocationTypeId.ToString());
+            if (inUse)
+            {
+                btnDeleteLocationType.Enabled = false;
+                btnDeleteLocationType.ImageUrl = "~/desktopmodules/EngageLocator/images/delete_disabled_bt.gif";
+            }
+            else
+            {
+                btnDeleteLocationType.Enabled = true;
+                btnDeleteLocationType.ImageUrl = "~/desktopmodules/EngageLocator/images/cadelete.gif";
+            }
+
+            if (LocationType.GetLocationTypeName(LocationTypeId) == "Default")
+            {
+                btnDeleteLocationType.Enabled = false;
+                btnDeleteLocationType.ImageUrl = "~/desktopmodules/EngageLocator/images/delete_disabled_bt.gif";
+                btnEditLocationType.Enabled = false;
+                btnEditLocationType.ImageUrl = "~/desktopmodules/EngageLocator/images/edit_disabled_bt.gif";
+            }
+            else if (inUse == false)
+            {
+                btnDeleteLocationType.Enabled = true;
+                btnDeleteLocationType.ImageUrl = "~/desktopmodules/EngageLocator/images/cadelete.gif";
+                btnEditLocationType.Enabled = true;
+                btnEditLocationType.ImageUrl = "~/desktopmodules/EngageLocator/images/caedit.gif";
+            }
+            else
+            {
+                btnEditLocationType.Enabled = true;
+                btnEditLocationType.ImageUrl = "~/desktopmodules/EngageLocator/images/caedit.gif";
+            }
         }
 
         private void BindGrid()
         {
             AttributeDefinitionCollection attributes = GetAttributes();
-            bool allRequired = true;
-            bool allVisible = true;
-
-            //Check whether the checkbox column headers are true or false
-            foreach (AttributeDefinition loctypeAttribute in attributes)
-            {
-                if (loctypeAttribute.Required == false)
-                {
-                    allRequired = false;
-                }
-                if (loctypeAttribute.Visible == false)
-                {
-                    allVisible = false;
-                }
-
-                if (!allRequired & !allVisible)
-                {
-                    break; // TODO: might not be correct. Was : Exit For
-                }
-            }
-
-            foreach (DataGridColumn column in grdLocationTypeAttributes.Columns)
-            {
-                if (object.ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
-                {
-                    //Manage CheckBox column events
-                    CheckBoxColumn cbColumn = (CheckBoxColumn)column;
-                    if (cbColumn.DataField == "Required")
-                    {
-                        cbColumn.Checked = allRequired;
-                    }
-                    if (cbColumn.DataField == "Visible")
-                    {
-                        cbColumn.Checked = allVisible;
-                    }
-                }
-            }
             grdLocationTypeAttributes.DataSource = attributes;
             grdLocationTypeAttributes.DataBind();
 
@@ -314,44 +360,6 @@ namespace Engage.Dnn.Locator
         {
            Localization.LocalizeDataGrid(ref grdLocationTypeAttributes, this.LocalResourceFile);
            BindTypes();
-
-           // foreach (DataGridColumn column in grdLocationTypeAttributes.Columns)
-           // {
-           //     if (object.ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
-           //     {
-           //         if (SupportsRichClient() == false)
-           //         {
-           //             CheckBoxColumn cbColumn = (CheckBoxColumn)column;
-           //             cbColumn.CheckedChanged += grdLocationTypeAttributes_ItemCheckedChanged;
-           //         }
-           //     }
-           //     else if (object.ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
-           //     {
-           //         //Manage Delete Confirm JS
-           //         ImageCommandColumn imageColumn = (ImageCommandColumn)column;
-           //         switch (imageColumn.CommandName)
-           //         {
-           //             case "Delete":
-           //                 imageColumn.OnClickJS = Localization.GetString("DeleteItem");
-           //                 imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
-           //                 break;
-           //             case "Edit":
-           //                 //The Friendly URL parser does not like non-alphanumeric characters
-           //                 //so first create the format string with a dummy value and then
-           //                 //replace the dummy value with the FormatString place holder
-           //                 string formatString = EditUrl("AttributeDefinitionID", "KEYFIELD", "EditAttributeDefinition", "ltid=" + LocationTypeId);
-           //                 formatString = formatString.Replace("KEYFIELD", "{0}");
-           //                 imageColumn.NavigateURLFormatString = formatString;
-           //                 break;
-           //             case "MoveUp":
-           //                 imageColumn.Text = Localization.GetString("MoveUp", this.LocalResourceFile);
-           //                 break;
-           //             case "MoveDown":
-           //                 imageColumn.Text = Localization.GetString("MoveDown", this.LocalResourceFile);
-           //                 break;
-           //         }
-           //     }
-           // }
         }
 
         /// -----------------------------------------------------------------------------
@@ -361,15 +369,16 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, System.EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 BindData();
-            //}
-            //catch (Exception exc)
-            //{
-            //    //Module failed to load
-            //    Exceptions.ProcessModuleLoadException(this, exc);
-            //}
+                ClientAPI.AddButtonConfirm(btnDeleteLocationType, Localization.GetString("confirmDelete", LocalResourceFile));
+            }
+            catch (Exception exc)
+            {
+                //Module failed to load
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
         }
 
         protected void grdLocationTypeAttributes_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
@@ -474,7 +483,6 @@ namespace Engage.Dnn.Locator
             }
         }
 
-
         protected void grdLocationTypeAttributes_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             DataGridItem item = e.Item;
@@ -504,8 +512,6 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        #endregion
-
         protected void grdLocationTypeAttributes_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             string commandName = e.CommandName;
@@ -531,48 +537,7 @@ namespace Engage.Dnn.Locator
         protected void lbLocType_SelectedIndexChanged(object sender, EventArgs e)
         {
             BindGrid();
-        }
-
-        private void BindData()
-        {
-            BindGrid();
-            foreach (DataGridColumn column in grdLocationTypeAttributes.Columns)
-            {
-                if (object.ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
-                {
-                    if (SupportsRichClient() == false)
-                    {
-                        CheckBoxColumn cbColumn = (CheckBoxColumn)column;
-                        cbColumn.CheckedChanged += grdLocationTypeAttributes_ItemCheckedChanged;
-                    }
-                }
-                else if (object.ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
-                {
-                    //Manage Delete Confirm JS
-                    ImageCommandColumn imageColumn = (ImageCommandColumn)column;
-                    switch (imageColumn.CommandName)
-                    {
-                        case "Delete":
-                            imageColumn.OnClickJS = Localization.GetString("DeleteItem");
-                            imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
-                            break;
-                        case "Edit":
-                            //The Friendly URL parser does not like non-alphanumeric characters
-                            //so first create the format string with a dummy value and then
-                            //replace the dummy value with the FormatString place holder
-                            string formatString = EditUrl("AttributeDefinitionID", "KEYFIELD", "EditAttributeDefinition", "ltid=" + LocationTypeId);
-                            formatString = formatString.Replace("KEYFIELD", "{0}");
-                            imageColumn.NavigateURLFormatString = formatString;
-                            break;
-                        case "MoveUp":
-                            imageColumn.Text = Localization.GetString("MoveUp", this.LocalResourceFile);
-                            break;
-                        case "MoveDown":
-                            imageColumn.Text = Localization.GetString("MoveDown", this.LocalResourceFile);
-                            break;
-                    }
-                }
-            }
+            SetButtons();
         }
 
         protected void btnCAAdd_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -581,11 +546,6 @@ namespace Engage.Dnn.Locator
             Response.Redirect(href, true);
         }
 
-        protected void btnCreateNew_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            string href = EditUrl("EditAttributeDefinition");
-            Response.Redirect(href, true);
-        }
 
         protected void cmdUpdate_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
@@ -609,62 +569,58 @@ namespace Engage.Dnn.Locator
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId), true);
         }
 
-        protected void btnEdit_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        protected void btnCreateLocationType_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            Response.Redirect(Globals.NavigateURL(TabId, "AttributeDefinitions", "mid=" + ModuleId + "&ltid=" + LocationTypeId));
-        }
-
-        protected void lbAddLocationType_Click(object sender, EventArgs e)
-        {
-            dvLocationType.Visible = false;
-            dvLocationTypeEdit.Visible = true;
-            lblLocationTypeNotInUse.Visible = false;
-            lblLocationTypeInst.Visible = false;
-            lbUpdateLocationType.Text = "Save";
+            lbLocType.Enabled = false;
+            btnCreateLocationType.Visible = false;
+            dvLocationType.Visible = true;
             txtEditLocationType.Text = String.Empty;
             txtEditLocationType.Focus();
         }
 
-        protected void lbDeleteLocationType_Click(object sender, EventArgs e)
+        protected void btnEditLocationType_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            if (LocationType.GetLocationTypeInUse(lbLocType.SelectedItem.Text))
-            {
-                lblLocationTypeNotInUse.Visible = true;
-                lblLocationTypeNotInUse.Text = Localization.GetString("lblLocationTypeNotInUse", LocalResourceFile);
-            }
-            else
-            {
-                DataProvider.Instance().DeleteLocationType(Convert.ToInt32(lbLocType.SelectedItem.Value));
-                BindTypes();
-                lblLocationTypeNotInUse.Visible = false;
-            }
+            dvLocationType.Visible = true;
+            txtEditLocationType.Text = LocationType.GetLocationTypeName(LocationTypeId);
+            txtEditLocationType.Focus();
+            lbLocType.Enabled = false;
+            IsInEdit = true;
         }
 
-        protected void lbUpdateLocationType_Click(object sender, EventArgs e)
+        protected void btnDeleteLocationType_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            if (lbUpdateLocationType.Text == "Update")
+            DataProvider.Instance().DeleteLocationType(Convert.ToInt32(lbLocType.SelectedItem.Value));
+            BindTypes();
+            BindData();
+        }
+
+        protected void btnUpdateLocationType_Click(object sender, EventArgs e)
+        {
+            if (IsInEdit)
             {
                 DataProvider.Instance().UpdateLocationType(Convert.ToInt32(lbLocType.SelectedItem.Value), txtEditLocationType.Text);
             }
-            else if (lbUpdateLocationType.Text == "Save")
+            else
             {
                 DataProvider.Instance().InsertLocationType(txtEditLocationType.Text);
             }
-            dvLocationType.Visible = true;
-            dvLocationTypeEdit.Visible = false;
-            lblLocationTypeNotInUse.Visible = false;
-            lblLocationTypeInst.Visible = true;
+            dvLocationType.Visible = false;
             BindTypes();
+            btnCreateLocationType.Visible = true;
+            lbLocType.Enabled = true;
+            IsInEdit = false;
         }
 
-        protected void lbCancelLocationType_Click(object sender, EventArgs e)
+        protected void btnCancelLocationType_Click(object sender, EventArgs e)
         {
-            dvLocationType.Visible = true;
-            dvLocationTypeEdit.Visible = false;
-            lblLocationTypeNotInUse.Visible = false;
-            lblLocationTypeInst.Visible = true;
-
+            btnCreateLocationType.Visible = true;
+            dvLocationType.Visible = false;
+            lbLocType.Enabled = true;
+            IsInEdit = false;
         }
+
+
+        #endregion
     }
 
 }

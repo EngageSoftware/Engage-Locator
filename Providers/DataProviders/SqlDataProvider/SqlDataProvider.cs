@@ -438,8 +438,17 @@ namespace Engage.Dnn.Locator.Data
             param.ParameterName = "@LocationTypeId";
             param.Value = id;
 
-            return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationTypeName", param).Tables[0];
-        }            
+            return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationType", param).Tables[0];
+        }
+
+        public override DataTable GetLocationType(int id)
+        {
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@LocationTypeId";
+            param.Value = id;
+
+            return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocationType", param).Tables[0];
+        }      
 
         public override void UpdateLocationType(int locationTypeId, string locationTypeName)
         {

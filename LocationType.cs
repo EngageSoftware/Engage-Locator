@@ -157,7 +157,7 @@ namespace Engage.Dnn.Locator
             return arr;
         }
 
-        private static List<AttributeDefinition> GetAttributeDefinitions(int locationTypeId)
+        public static List<AttributeDefinition> GetAttributeDefinitions(int locationTypeId)
         {
             List<AttributeDefinition> definitions = FillAttributeDefinitionInfoCollection(DataProvider.Instance().GetAttributeDefinitionsById(locationTypeId));
             return definitions;
@@ -340,6 +340,20 @@ namespace Engage.Dnn.Locator
             return DataProvider.Instance().GetLocationTypes();
         }
 
+        public static LocationType GetLocationType(int id)
+        {
+            DataTable dt = DataProvider.Instance().GetLocationType(id);
+            LocationType lt = null;
+            if (dt.Rows.Count == 1)
+            {
+                lt = new LocationType();
+                lt._locationId = Convert.ToInt32(dt.Rows[0]["LocationTypeName"]);
+                lt._locationTypeName = dt.Rows[0]["LocationTypeName"].ToString();
+            }
+
+            return lt;
+        }
+
         public static bool GetLocationTypeInUse(string location)
         {
             bool inuse = false;
@@ -363,6 +377,8 @@ namespace Engage.Dnn.Locator
 
             return name;
         }
+
+
 
     }
 }

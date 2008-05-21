@@ -35,10 +35,11 @@ namespace Engage.Dnn.Locator
         private void InitializeComponent()
         {
             //this.Load += new EventHandler(this.Page_Load);
-            cmdUpdate.Click += new EventHandler(cmdUpdate_Click);
-            cmdCancel.Click += new EventHandler(cmdCancel_Click);
-            cmdDelete.Click += new EventHandler(cmdDelete_Click);
+            cmdUpdate.Click += new System.Web.UI.ImageClickEventHandler(cmdUpdate_Click);
+            cmdCancel.Click += new System.Web.UI.ImageClickEventHandler(cmdCancel_Click);
+            cmdDelete.Click += new System.Web.UI.ImageClickEventHandler(cmdDelete_Click);
         }
+
 
         #region Private Members
 
@@ -91,27 +92,38 @@ namespace Engage.Dnn.Locator
             }
         }
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-        private AttributeDefinition _AttributeDefinition;
+        private AttributeDefinition _attributeDefinition;
         protected AttributeDefinition AttributeDefinition
         {
             get
             {
-                if (_AttributeDefinition == null)
+                if (_attributeDefinition == null)
                 {
                     if ((bool)IsAddMode)
                     {
                         //Create New Attribute Definition
-                        _AttributeDefinition = new AttributeDefinition();
-                        _AttributeDefinition.PortalId = UsersPortalId;
-                        _AttributeDefinition.LocationTypeId = LocationTypeId;
+                        _attributeDefinition = new AttributeDefinition();
+                        _attributeDefinition.PortalId = UsersPortalId;
+                        _attributeDefinition.LocationTypeId = LocationTypeId;
+                        ListController controller = new ListController();
+                        ListEntryInfo info = controller.GetListEntryInfo("DataType", "Text");
+                        _attributeDefinition.DataType = info.EntryID;
+                        _attributeDefinition.AttributeName = txtName.Text;
+                        _attributeDefinition.DefaultValue = txtDefaultValue.Text;
+                        _attributeDefinition.ViewOrder = LocationType.GetAttributeDefinitions(LocationTypeId).Count;
                     }
                     else
                     {
                         //Get Attribute Definition from Data Store
-                        _AttributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionId, LocationTypeId);
+                        _attributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionId, LocationTypeId);
                     }
                 }
-                return _AttributeDefinition;
+                else
+                {
+                    _attributeDefinition.AttributeName = txtName.Text;
+                    _attributeDefinition.DefaultValue = txtDefaultValue.Text;
+                }
+                return _attributeDefinition;
             }
         }
 
@@ -177,30 +189,20 @@ namespace Engage.Dnn.Locator
                     else
                     {
                         IsAddMode = true;
+                        cmdDelete.Visible = false;
                     }
                 }
 
-                if ((Request.QueryString["ltid"] != null))
-                {
-                    cmdUpdate.Text = "Save";
-                }
 
                 if (!Page.IsPostBack)
                 {
-                    //Localization.LoadCultureDropDownList(cboLocales, CultureDropDownTypes.NativeName, ((DotNetNuke.Framework.PageBase)Page).PageCulture.Name);
-                    //lblLocales.Text = cboLocales.SelectedItem.Text;
-                    //cboLocales.Visible = !(cboLocales.Items.Count == 1);
-                    //lblLocales.Visible = (cboLocales.Items.Count == 1);
+                    //Add Delete Confirmation
+                    cmdDelete.Visible = true;
+                    ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteAttribute"));
+
+                    BindData();
                 }
 
-                //Add Delete Confirmation
-                cmdDelete.Visible = true;
-                ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteAttribute"));
-
-                //Bind Attribute Definition to Data Store
-                Attributes.LocalResourceFile = this.LocalResourceFile;
-                Attributes.DataSource = AttributeDefinition;
-                Attributes.DataBind();
             }
 
             catch (Exception exc)
@@ -210,7 +212,7 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        protected void cmdUpdate_Click(object sender, EventArgs e)
+        protected void cmdUpdate_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             try
             {
@@ -232,7 +234,7 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        protected void cmdCancel_Click(object sender, EventArgs e)
+        protected void cmdCancel_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             try
             {
@@ -245,18 +247,14 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        protected void cmdDelete_Click(object sender, System.EventArgs e)
+        protected void cmdDelete_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             try
             {
                 if (AttributeDefinitionId != Null.NullInteger)
                 {
-                    //Declare Definition and "retrieve" it from the Attribute Editor
-                    AttributeDefinition attributeDefinition;
-                    attributeDefinition = (AttributeDefinition)Attributes.DataSource;
-
                     //Delete the Attribute Definition
-                    LocationType.DeleteAttributeDefinition(attributeDefinition);
+                    LocationType.DeleteAttributeDefinition(AttributeDefinition);
                 }
 
                 //Redirect to Definitions page
@@ -271,18 +269,10 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        protected void Attributes_ItemCreated(object sender, PropertyEditorItemEventArgs e)
+        private void BindData()
         {
-            
-            if (e.Editor.Name == "ValidationExpression" || e.Editor.Name == "Required" || e.Editor.Name == "Visible" || e.Editor.Name == "ViewOrder")
-            {
-                e.Editor.Visible = false;
-            }
-            if (e.Editor.Name == "DataType")
-            {
-                //DotNetNuke.UI.WebControls.DNNListEditControl list = (DotNetNuke.UI.WebControls.DNNListEditControl)e.Editor.Editor;
-                System.Diagnostics.Debug.WriteLine(e.Editor);    
-            }
+            txtName.Text = AttributeDefinition.AttributeName;
+            txtDefaultValue.Text = AttributeDefinition.DefaultValue;
         }
 
     }

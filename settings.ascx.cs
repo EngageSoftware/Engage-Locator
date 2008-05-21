@@ -332,54 +332,7 @@ namespace Engage.Dnn.Locator
             txtApiKey.Text = Convert.ToString(TabModuleSettings[ddl.SelectedValue + ".ApiKey"]);
         }
 
-        protected void lbEditLocationType_Click(object sender, EventArgs e)
-        {
-            Response.Redirect(Globals.NavigateURL(TabId, "AttributeDefinitions", "mid=" + ModuleId + "&ltid=" + lbLocationType.SelectedValue));
-        }
-
-        protected void lbUpdateLocationType_Click(object sender, EventArgs e)
-        {
-            if (lbUpdateLocationType.Text == "Update")
-            {
-                DataProvider.Instance().UpdateLocationType(Convert.ToInt32(lbLocationType.SelectedItem.Value), txtEditLocationType.Text);
-            }
-            else if (lbUpdateLocationType.Text == "Save")
-            {
-                DataProvider.Instance().InsertLocationType(txtEditLocationType.Text);
-            }
-            dvLocationType.Visible = true;
-            dvLocationTypeEdit.Visible = false;
-            lblLocationTypeNotInUse.Visible = false;
-            lblLocationTypeInst.Visible = true;
-            DisplayLocationTypes();
-        }
-
-        protected void lbAddLocationType_Click(object sender, EventArgs e)
-        {
-            dvLocationType.Visible = false;
-            dvLocationTypeEdit.Visible = true;
-            lblLocationTypeNotInUse.Visible = false;
-            lblLocationTypeInst.Visible = false;
-            lbUpdateLocationType.Text = "Save";
-            txtEditLocationType.Text = String.Empty;
-            txtEditLocationType.Focus();
-        }
-
-        protected void lbDeleteLocationType_Click(object sender, EventArgs e)
-        {
-            if(LocationType.GetLocationTypeInUse(lbLocationType.SelectedItem.Text))
-            {
-                lblLocationTypeNotInUse.Visible = true;
-                lblLocationTypeNotInUse.Text = Localization.GetString("lblLocationTypeNotInUse", LocalResourceFile);
-            }
-            else
-            {
-                DataProvider.Instance().DeleteLocationType(Convert.ToInt32(lbLocationType.SelectedItem.Value));
-                DisplayLocationTypes();
-                lblLocationTypeNotInUse.Visible = false;                
-            }
-        }
-
+   
         protected void rblProviderType_SelectedIndexChanged(object sender, EventArgs e)
         {
             DisplayAPI();
@@ -402,15 +355,6 @@ namespace Engage.Dnn.Locator
                 args.IsValid = false;
                 dshMapProvider.IsExpanded = true;
             }
-        }
-
-        protected void lbCancelLocationType_Click(object sender, EventArgs e)
-        {
-            dvLocationType.Visible = true;
-            dvLocationTypeEdit.Visible = false;
-            lblLocationTypeNotInUse.Visible = false;
-            lblLocationTypeInst.Visible = true;
-
         }
 
         protected void cvLocatorCountry_OnServerValidate(object source, ServerValidateEventArgs args)

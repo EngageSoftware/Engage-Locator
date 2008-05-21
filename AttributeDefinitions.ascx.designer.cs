@@ -32,40 +32,31 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.ListBox lbLocType;
         
         /// <summary>
-        /// btnEdit control.
+        /// btnEditLocationType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnEdit;
+        protected global::System.Web.UI.WebControls.ImageButton btnEditLocationType;
         
         /// <summary>
-        /// btnDelete control.
+        /// btnDeleteLocationType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnDelete;
+        protected global::System.Web.UI.WebControls.ImageButton btnDeleteLocationType;
         
         /// <summary>
-        /// btnCreateNew control.
+        /// btnCreateLocationType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnCreateNew;
-        
-        /// <summary>
-        /// lblLocationTypeNotInUse control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationTypeNotInUse;
+        protected global::System.Web.UI.WebControls.ImageButton btnCreateLocationType;
         
         /// <summary>
         /// dvLocationType control.
@@ -95,31 +86,31 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.TextBox txtEditLocationType;
         
         /// <summary>
-        /// lbUpdateLocationType control.
+        /// rfvName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbUpdateLocationType;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvName;
         
         /// <summary>
-        /// lbCancelLocationType control.
+        /// btnUpdateLocationType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbCancelLocationType;
+        protected global::System.Web.UI.WebControls.ImageButton btnUpdateLocationType;
         
         /// <summary>
-        /// lblLocationTypeInst control.
+        /// btnCancelLocationType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationTypeInst;
+        protected global::System.Web.UI.WebControls.ImageButton btnCancelLocationType;
         
         /// <summary>
         /// upDataImport control.
@@ -129,6 +120,15 @@ namespace Engage.Dnn.Locator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upDataImport;
+        
+        /// <summary>
+        /// divCustomAttributes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCustomAttributes;
         
         /// <summary>
         /// grdLocationTypeAttributes control.

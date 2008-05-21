@@ -132,6 +132,12 @@
   <data name="Introduction_Add.Help" xml:space="preserve">
     <value>The first step in setting up a LocationType Attribute Definition is to define the attribute's details. Enter the details in this page and click "Next" to create the Attribute Definition. Note: The fields with the inverse red arrow are required.</value>
   </data>
+  <data name="lblDefaultValue.Text" xml:space="preserve">
+    <value>Default Value:</value>
+  </data>
+  <data name="lblName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
   <data name="Length.Text" xml:space="preserve">
     <value>Length</value>
   </data>
@@ -146,5 +152,8 @@
   </data>
   <data name="Visible.Text" xml:space="preserve">
     <value>Visible</value>
+  </data>
+  <data name="DeleteAttribute.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this attribute?</value>
   </data>
 </root>

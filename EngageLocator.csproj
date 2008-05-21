@@ -269,10 +269,13 @@
     <Content Include="Images\caEdit.gif" />
     <Content Include="Images\cancel.gif" />
     <Content Include="Images\commentsBt.gif" />
+    <Content Include="Images\delete_disabled_bt.gif" />
+    <Content Include="Images\edit_disabled_bt.gif" />
     <Content Include="Images\importBt.gif" />
     <Content Include="Images\locationBt.gif" />
     <Content Include="Images\locationTypesBt.gif" />
     <Content Include="Images\settingsBt.gif" />
+    <Content Include="Images\submit_bt.gif" />
     <Content Include="Images\update.gif" />
     <Content Include="Settings.ascx" />
   </ItemGroup>
