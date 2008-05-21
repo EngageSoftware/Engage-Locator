@@ -165,10 +165,4 @@
   <data name="lblRatingMessage.Text" xml:space="preserve">
     <value>Rate this location: </value>
   </data>
-  <data name="lblLocationRating.Help" xml:space="preserve">
-    <value>Select this option if you want to allow users to submit ratings for a location from the Location Details page.</value>
-  </data>
-  <data name="lblLocationRating.Text" xml:space="preserve">
-    <value>Allow Location Ratings</value>
-  </data>
 </root>
