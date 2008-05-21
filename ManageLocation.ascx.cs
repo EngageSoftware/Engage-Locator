@@ -438,7 +438,14 @@ namespace Engage.Dnn.Locator
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Globals.NavigateURL(TabId, "ManageLocations", "mid=" + ModuleId));
+            if (IsEditable)
+            {
+                Response.Redirect(EditUrl("ManageLocations"));
+            }
+            else
+            {
+                Response.Redirect(Globals.NavigateURL());
+            }
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
