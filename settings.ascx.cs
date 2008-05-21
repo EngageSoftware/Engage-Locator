@@ -77,6 +77,7 @@ namespace Engage.Dnn.Locator
                                 rbDetailsPage.Checked = true;
                                 cbLocationComments.Enabled = true;
                                 cbModerateComments.Enabled = true;
+                                cbLocationRating.Enabled = true;
                             }
                             else if (TabModuleSettings["ShowLocationDetails"].ToString() == "SamePage" || TabModuleSettings["ShowLocationDetails"].ToString() == "True")
                                 rbSamePage.Checked = true;

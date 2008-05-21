@@ -60,13 +60,6 @@ function show(d)
     </tr>
     <tr>
         <td>
-            <div>
-                <asp:Label ID="lblLocationComments" runat="server" CssClass="SubHead" Text="Comments"
-                    resourcekey="lblLocationComments" />
-            </div>
-            <div>
-                <asp:Label ID="lblCommentSubmitted" runat="server" CssClass="Normal" Text="" Visible="false" />
-            </div>	
             <asp:UpdatePanel ID="upnlRating" runat="server" UpdateMode="conditional" Visible="false">
 	            <ContentTemplate>
                     <div id="divRating" class="divRatingBefore">
@@ -75,7 +68,17 @@ function show(d)
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>
+                <asp:Label ID="lblLocationComments" runat="server" CssClass="SubHead" Text="Comments"
+                    resourcekey="lblLocationComments" />
+            </div>
+            <div>
+                <asp:Label ID="lblCommentSubmitted" runat="server" CssClass="Normal" Text="" Visible="false" />
+            </div>	
             <div class="SubHead">
                 <a id="lnkAddComment" href="javascript:show('divAddComment')" visible="true">
                     <asp:Label ID="lblAddComment" runat="server" Text="Add a Comment" resourcekey="lblAddComment" /></a>

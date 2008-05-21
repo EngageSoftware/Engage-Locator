@@ -767,6 +767,120 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] 
 	)
 GO
 
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Rating]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageLocator_Rating](
+	[RatingId] [int] IDENTITY(1,1) NOT NULL,
+	[ItemVersionId] [int] NOT NULL,
+	[UserId] [int] NULL,
+	[Rating] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[LastUpdated] [datetime] NOT NULL,
+ CONSTRAINT [{objectQualifier}PK_EngageLocator_Rating] PRIMARY KEY CLUSTERED 
+(
+	[RatingId] ASC
+) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Rating]') AND name = N'{objectQualifier}IX_EngageLocator_Rating_CreatedDate')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_EngageLocator_Rating_CreatedDate] ON {databaseOwner}[{objectQualifier}EngageLocator_Rating] 
+(
+	[CreatedDate] ASC
+) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Rating]') AND name = N'{objectQualifier}IX_EngageLocator_Rating_ItemVersionId')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_EngageLocator_Rating_ItemVersionId] ON {databaseOwner}[{objectQualifier}EngageLocator_Rating] 
+(
+	[ItemVersionId] ASC
+) ON [PRIMARY]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_FK_Rating_Users]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Rating]  WITH CHECK ADD  CONSTRAINT [{objectQualifier}EngageLocator_FK_Rating_Users] FOREIGN KEY([UserId])
+REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Rating] CHECK CONSTRAINT [{objectQualifier}EngageLocator_FK_Rating_Users]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddRating]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddRating]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddRating]
+	@itemVersionId int, 
+	@userId int, 
+	@rating int = 0
+AS
+BEGIN
+	INSERT INTO [{objectQualifier}EngageLocator_Rating] (ItemVersionId, UserId, Rating, CreatedDate, LastUpdated)
+	VALUES (@itemVersionId, @userId, @rating, getdate(), getdate())
+
+	SELECT @@IDENTITY
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetRatingByUserForItemVersion]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetRatingByUserForItemVersion]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetRatingByUserForItemVersion]
+	@itemVersionId int, 
+	@userId int
+AS
+BEGIN
+	SELECT r.RatingId, r.Rating, r.UserId, r.ItemVersionId, r.LastUpdated, r.CreatedDate
+	FROM [{objectQualifier}EngageLocator_Rating] r
+	WHERE r.userId = @userId
+	 AND r.ItemVersionId = @itemVersionId
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateRatingByUserForItemVersion]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateRatingByUserForItemVersion]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateRatingByUserForItemVersion]
+	@itemVersionId int, 
+	@userId int,
+	@rating int
+AS
+BEGIN
+	UPDATE [{objectQualifier}EngageLocator_Rating]
+	SET Rating = @rating,
+		LastUpdated = getdate()
+	WHERE RatingId = (SELECT top 1 RatingId 
+						from [{objectQualifier}EngageLocator_Rating] r 
+						where r.UserId = @userId
+						and r.ItemVersionId = @itemVersionId)
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateRating]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateRating]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateRating]
+	@ratingId int, 
+	@rating int
+AS
+BEGIN
+	UPDATE [{objectQualifier}EngageLocator_Rating]
+	SET Rating = @rating,
+		LastUpdated = getdate()
+	WHERE RatingId = @ratingId
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteRatings]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteRatings]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteRatings]
+	@itemVersionId int
+AS
+BEGIN
+	DELETE [{objectQualifier}EngageLocator_Rating]
+	WHERE itemVersionId = @itemVersionId
+END
+GO
   
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') and OBJECTPROPERTY(id, N'IsView') = 1)
 drop view {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
@@ -786,3 +900,17 @@ AS
 
 GO
   
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]
+GO
+
+CREATE Procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]
+	@locationId int
+AS
+	SELECT 
+			LocationId, ExternalIdentifier, l.[Name], Latitude, Longitude, City, (select [Text] from {databaseOwner}[{objectQualifier}Lists] where EntryId = l.RegionId) as StateName, l.RegionId, Address, Phone, 
+			LocationDetails, LocationTypeId, PostalCode, Website, LocationDetails, Approved, AverageRating
+		FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations] l  
+		WHERE LocationId = @locationId 
+GO

@@ -104,24 +104,6 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.PlaceHolder plhCustomAttributes;
         
         /// <summary>
-        /// lblLocationComments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationComments;
-        
-        /// <summary>
-        /// lblCommentSubmitted control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCommentSubmitted;
-        
-        /// <summary>
         /// upnlRating control.
         /// </summary>
         /// <remarks>
@@ -147,6 +129,24 @@ namespace Engage.Dnn.Locator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.Rating ajaxRating;
+        
+        /// <summary>
+        /// lblLocationComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLocationComments;
+        
+        /// <summary>
+        /// lblCommentSubmitted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCommentSubmitted;
         
         /// <summary>
         /// lblAddComment control.
