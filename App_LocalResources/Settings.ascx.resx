@@ -297,4 +297,22 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
   <data name="cvSearchOptions.Text" xml:space="preserve">
     <value>You must select at least one search option.</value>
   </data>
+  <data name="liSearchRestrictionCountry.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="liSearchRestrictionNone.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="liSearchRestrictionRadius.Text" xml:space="preserve">
+    <value>Radius</value>
+  </data>
+  <data name="Module Title.Header" xml:space="preserve">
+    <value>Module Title</value>
+  </data>
+  <data name="Page Title.Header" xml:space="preserve">
+    <value>Page Title</value>
+  </data>
+  <data name="TabId.Header" xml:space="preserve">
+    <value>TabId</value>
+  </data>
 </root>

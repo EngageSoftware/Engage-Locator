@@ -552,6 +552,8 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteAttributeDefinition]
 	@AttributeDefinitionId [int]
 AS
+	DELETE FROM {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
+	WHERE AttributeDefinitionId = @AttributeDefinitionId
 	DELETE FROM {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
 	WHERE AttributeDefinitionId = @AttributeDefinitionId
 GO
