@@ -268,9 +268,9 @@
         <td width="350">
             <div id="dvAddress">
                 <asp:RadioButtonList ID="rblRestrictions" runat="server" CssClass="Normal" RepeatDirection="horizontal">
-                    <asp:ListItem Text="Country" Value="Country" />
-                    <asp:ListItem Text="Radius" Value="Radius" />
-                    <asp:ListItem Text="None" Value="None" />
+                    <asp:ListItem Text="Country" Value="Country" resourcekey="liSearchRestrictionCountry" />
+                    <asp:ListItem Text="Radius" Value="Radius" resourcekey="liSearchRestrictionRadius" />
+                    <asp:ListItem Text="None" Value="None" resourcekey="liSearchRestrictionNone" />
                 </asp:RadioButtonList>
             </div>
             <div>

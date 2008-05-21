@@ -133,6 +133,7 @@
         <div id="divMap" runat="server" class="locatorMap" style="display:none;"></div>
         
         <div class="locatorMapLabelWrapper">
+            <asp:Label ID="lblScrollToViewMore" runat="server" resourcekey="lblScrollToViewMore" style="display:none;" />
             <div id="lblMapLink" style="display:none;">
 	            <a id="lnkDrivingDirections" target="_blank" ><asp:Label ID="lblMapLinkMapName" runat="server" resourcekey="lblMapLinkMapName" /></a>
 	            <asp:Label ID="lblMapLinkDrivingDirections" runat="server" resourcekey="lblMapLinkDrivingDirections"/>

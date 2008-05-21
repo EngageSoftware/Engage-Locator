@@ -267,4 +267,7 @@
   <data name="lnkHideMap.Text" xml:space="preserve">
     <value>Hide Map</value>
   </data>
+  <data name="lblScrollToViewMore.Text" xml:space="preserve">
+    <value>&lt;img src="/images/dn.gif" /&gt;Scroll down to select another location to display</value>
+  </data>
 </root>
