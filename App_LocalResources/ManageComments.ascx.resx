@@ -268,7 +268,7 @@
     <value>Waiting for approval</value>
   </data>
   <data name="btnAccept.Text" xml:space="preserve">
-    <value>Accept</value>
+    <value>Approve</value>
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
     <value>Reject</value>

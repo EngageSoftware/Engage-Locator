@@ -12,6 +12,7 @@ using System;
 using System.Collections;
 using System.Data;
 using System.IO;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
@@ -40,6 +41,11 @@ namespace Engage.Dnn.Locator
             {
                 DotNetNuke.Framework.AJAX.RegisterScriptManager();
             }
+            lbSettings.Visible = IsEditable;
+            lbImportFile.Visible = IsEditable;
+            lbManageLocations.Visible = IsEditable;
+            lbLocationTypes.Visible = IsEditable;
+
         }
 
 
@@ -152,12 +158,47 @@ namespace Engage.Dnn.Locator
 
         protected void dgComments_ItemCreated(object sender, DataGridItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
-            {
-                TableCell cell = e.Item.Cells[e.Item.Cells.Count - 1];
-                LinkButton button = (LinkButton)cell.Controls[0];
-                ClientAPI.AddButtonConfirm(button, Localization.GetString("confirmDeleteComment", LocalResourceFile));
-            }
+            //if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
+            //{
+            //    TableCell cell = e.Item.Cells[e.Item.Cells.Count - 1];
+            //    LinkButton button = (LinkButton)cell.Controls[0];
+            //    ClientAPI.AddButtonConfirm(button, Localization.GetString("confirmDeleteComment", LocalResourceFile));
+            //}
         }
+
+        //This should be in ModuleBase and used by all.
+        #region Global Admin Event Handlers
+
+        protected void lbSettings_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblManageLocations_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("ManageLocations");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblImportFile_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("Import");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblManageComments_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("ManageComments");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblManageTypes_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("AttributeDefinitions");
+            Response.Redirect(href, true);
+        }
+
+        #endregion
     }
 }

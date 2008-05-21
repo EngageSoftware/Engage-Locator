@@ -1,6 +1,12 @@
 ﻿<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.ManageComments" AutoEventWireup="True"  CodeBehind="ManageComments.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
-
+<div class="div_ManagementButtons">
+    <asp:ImageButton ID="lbSettings" CssClass="CommandButton" runat="server" AlternateText="Settings" ImageUrl="~/desktopmodules/EngageLocator/images/settingsbt.gif" OnClick="lbSettings_OnClick" />
+    <asp:ImageButton ID="lbManageLocations" CssClass="CommandButton" runat="server" AlternateText="Manage Locations" ImageUrl="~/desktopmodules/EngageLocator/images/locationbt.gif" OnClick="lblManageLocations_OnClick" />
+    <asp:ImageButton ID="lbImportFile" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/importbt.gif" OnClick="lblImportFile_OnClick" />
+    <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lblManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" />
+    
+</div>
 <asp:Label ID="lblConfigured" runat="server" CssClass="Normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations."  Visible="False" resourcekey="lblConfigured"></asp:Label>
 <asp:Label ID="lblNoPending" runat="server" Text="No Pending Comments" CssClass="Normal" resourceKey="lblNoPending"></asp:Label>
 <div class="divPanelTab" id="divPanelTab" runat="server">
@@ -34,7 +40,7 @@
                         <asp:Label ID="lblCommentAuthor" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Author", "{0:d}") %>' />
                     </ItemTemplate>
                 </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="Approved">
+                <asp:TemplateColumn >
                     <ItemTemplate>
                         <asp:CheckBox ID="cbCommentApproved" runat="server" />
                     </ItemTemplate>
@@ -42,8 +48,7 @@
                     <FooterStyle CssClass="typeDataGridFooter" />
                     <HeaderStyle CssClass="typeDataGridFooter" />
                 </asp:TemplateColumn>
-<%--                <asp:EditCommandColumn CancelText="Cancel" EditText="Edit" UpdateText="Update"></asp:EditCommandColumn>--%>
-                <asp:ButtonColumn CommandName="Delete" Text="Reject"></asp:ButtonColumn>
+<%--                <asp:ButtonColumn CommandName="Delete" Text="Reject"></asp:ButtonColumn>--%>
             </Columns>
             <SelectedItemStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
             <AlternatingItemStyle BackColor="#eeeeee" />

@@ -14,6 +14,42 @@ namespace Engage.Dnn.Locator {
     public partial class ManageLocations {
         
         /// <summary>
+        /// lbSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton lbSettings;
+        
+        /// <summary>
+        /// lbManageComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton lbManageComments;
+        
+        /// <summary>
+        /// lbImportFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton lbImportFile;
+        
+        /// <summary>
+        /// lbLocationTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton lbLocationTypes;
+        
+        /// <summary>
         /// lblConfigured control.
         /// </summary>
         /// <remarks>

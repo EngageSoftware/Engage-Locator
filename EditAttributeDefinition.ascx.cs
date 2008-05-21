@@ -244,7 +244,7 @@ namespace Engage.Dnn.Locator
                 }
 
                 //Redirect to Definitions page
-                Response.Redirect(Globals.NavigateURL(TabId, "ManageLocationType", "mid=" + ModuleId), true);
+                Response.Redirect(EditUrl("AttributeDefinitions"), true);
             }
             catch (ModuleLoadException exc)
             {

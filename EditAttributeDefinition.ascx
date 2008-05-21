@@ -4,7 +4,7 @@
     <legend class="Head">Attribute Definition</legend>
         <div id="div_Name">
             <asp:Label ID="lblName" runat="server" resourceKey="lblName" CssClass="Normal" ></asp:Label>
-            <asp:TextBox ID="txtName" runat="server" CssClass="NormalTextBox"></asp:TextBox><asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate ="txtName" Display="Dynamic" ErrorMessage="Name is required"></asp:RequiredFieldValidator>
+            <asp:TextBox ID="txtName" runat="server" CssClass="NormalTextBox"></asp:TextBox><asp:RequiredFieldValidator ID="rfvName" CssClass ="Normal" runat="server" ControlToValidate ="txtName" Display="Dynamic" ErrorMessage="Name is required"></asp:RequiredFieldValidator>
         </div>
         <div id="div_DefaultValue">
             <asp:Label ID="lblDefaultValue" runat="server" resourceKey="lblDefaultValue" CssClass="Normal"></asp:Label>
