@@ -203,7 +203,6 @@ namespace Engage.Dnn.Locator
                 mp.MapDiv = divMap;
                 mp.LocatorMapLabel = lblLocatorMapLabel;
                 mp.RptLocations = rptLocations;
-                mp.ScrollToViewMore = lblScrollToViewMore;
                 string apiKey = Convert.ToString(Settings[mp.GetType().FullName + ".ApiKey"]);
                 RegisterMapScripts(mp, apiKey);
                 ShowMaps();
@@ -230,7 +229,6 @@ namespace Engage.Dnn.Locator
                     mp.MapDiv = divMap;
                     mp.LocatorMapLabel = lblLocatorMapLabel;
                     mp.RptLocations = rptLocations;
-                    mp.ScrollToViewMore = lblScrollToViewMore;
                     string apiKey = Convert.ToString(Settings[mp.GetType().FullName + ".ApiKey"]);
                     RegisterMapScripts(mp, apiKey);
                     ShowMaps();

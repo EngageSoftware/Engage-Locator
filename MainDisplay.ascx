@@ -123,11 +123,16 @@
 	            <asp:Label ID="lblNumClosest" runat="server" CssClass="Normal" resourcekey="lblNumClosest" />
 	        </div>
 	        <div class="closestLocationTitle"><a name="map"></a><asp:Label ID="lblLocatorMapLabel" runat="server" /><span id="locatorMapLabel" class="SubHead"></span> </div>
+	        <div class="locatorMapLabelWrapper">
+                <div id="Div1" style="display:none;">
+	                <a id="A1" target="_blank" ><asp:Label ID="Label1" runat="server" resourcekey="lblMapLinkMapName" /></a>
+	                <asp:Label ID="Label2" runat="server" resourcekey="lblMapLinkDrivingDirections"/>
+                </div>
+            </div>
         </div>
         <div id="divMap" runat="server" class="locatorMap" style="display:none;"></div>
         
         <div class="locatorMapLabelWrapper">
-            <asp:Label ID="lblScrollToViewMore" runat="server" resourcekey="lblScrollToViewMore" style="display:none;" />
             <div id="lblMapLink" style="display:none;">
 	            <a id="lnkDrivingDirections" target="_blank" ><asp:Label ID="lblMapLinkMapName" runat="server" resourcekey="lblMapLinkMapName" /></a>
 	            <asp:Label ID="lblMapLinkDrivingDirections" runat="server" resourcekey="lblMapLinkDrivingDirections"/>
@@ -142,7 +147,7 @@
 					        <tr>
 					        <th class="locationTitleHead"><asp:Label id="lblLocationHeader" runat="server" resourcekey="lblLocationHeader" /></th>
 					        <th id="thDistance" class="distanceTitleHead"><asp:Label id="lblStoreDistance" runat="server" resourcekey="lblStoreDistance" /></th>
-					        <% if(ShowLocationDetails == "True" || ShowLocationDetails == "SamePage") { %><th><asp:Label id="lblLocationDetails" runat="server" resourcekey="lblLocationDetails" /></th><% } %>
+					        <% if(ShowLocationDetails == "True" || ShowLocationDetails == "SamePage") { %><th><br /><asp:Label id="lblLocationDetails" runat="server" resourcekey="lblLocationDetails" /></th><% } %>
 					        </tr>
                         
                     </HeaderTemplate>

@@ -437,6 +437,24 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Label lblLocatorMapLabel;
         
         /// <summary>
+        /// Label1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label1;
+        
+        /// <summary>
+        /// Label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
+        
+        /// <summary>
         /// divMap control.
         /// </summary>
         /// <remarks>
@@ -444,15 +462,6 @@ namespace Engage.Dnn.Locator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMap;
-        
-        /// <summary>
-        /// lblScrollToViewMore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblScrollToViewMore;
         
         /// <summary>
         /// lblMapLinkMapName control.

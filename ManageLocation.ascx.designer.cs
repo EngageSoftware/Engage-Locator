@@ -428,13 +428,13 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.TextBox txtId;
         
         /// <summary>
-        /// btnSave control.
+        /// btnSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSave;
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
         /// btnCancel control.

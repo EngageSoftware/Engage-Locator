@@ -138,8 +138,8 @@
   <data name="btnDelete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="btnSave.Text" xml:space="preserve">
-    <value>Save</value>
+  <data name="btnSubmit.Text" xml:space="preserve">
+    <value>Submit</value>
   </data>
   <data name="ChooseOne.Text" xml:space="preserve">
     <value>Choose One...</value>

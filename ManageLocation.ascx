@@ -186,8 +186,8 @@
         <div id="Buttons">
                 <asp:TextBox ID="txtId" runat="server" Visible="False" CssClass="SubHead"></asp:TextBox>
                 <br />
-                <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" ValidationGroup="addLocation"
-                    resourcekey="btnSave" CssClass="CommandButton" TabIndex="14" />&nbsp;
+                <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" ValidationGroup="addLocation"
+                    resourcekey="btnSubmit" CssClass="CommandButton" TabIndex="14" />&nbsp;
                 <asp:Button ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" resourcekey="btnCancelComment"
                     CssClass="CommandButton" TabIndex="15" />&nbsp;
                 <asp:Button ID="btnDelete" runat="server" Text="Delete" resourcekey="btnDelete" CssClass="CommandButton"

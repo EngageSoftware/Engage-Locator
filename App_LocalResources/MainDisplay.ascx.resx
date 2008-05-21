@@ -180,9 +180,6 @@
   <data name="lblMapLinkMapName.Text" xml:space="preserve">
     <value> Click here </value>
   </data>
-  <data name="lblScrollToViewMore.Text" xml:space="preserve">
-    <value>&lt;img src="/images/dn.gif" /&gt;Scroll down to select another location to display</value>
-  </data>
   <data name="Manage.Text" xml:space="preserve">
     <value>Manage Locations</value>
   </data>
