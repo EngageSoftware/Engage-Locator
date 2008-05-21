@@ -126,10 +126,11 @@ namespace Engage.Dnn.Locator
                             chkCountry.Checked = Convert.ToBoolean(TabModuleSettings["SearchCountry"].ToString());
                         }
                         //set MapType
-                        if(TabModuleSettings["MapType"] != null)
+                        if (!Null.IsNull(TabModuleSettings["MapType"]))
                         {
-                            ddlMapType.SelectedValue = TabModuleSettings["MapType"].ToString();
+                            rblMapDisplayType.SelectedValue = TabModuleSettings["MapType"].ToString();
                         }
+
                         //set Submission Settings
                         if (!Null.IsNull(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId)))
                             cbAllowSubmissions.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId));
@@ -256,7 +257,7 @@ namespace Engage.Dnn.Locator
                 objModules.UpdateTabModuleSetting(TabModuleId, "DisplayProvider", this.rblProviderType.SelectedItem.Text);
                 objModules.UpdateTabModuleSetting(TabModuleId, this.rblProviderType.SelectedValue + ".ApiKey", txtApiKey.Text);
                 objModules.UpdateTabModuleSetting(TabModuleId, "DefaultCountry", ddlLocatorCountry.SelectedValue);
-                objModules.UpdateTabModuleSetting(TabModuleId, "MapType", this.ddlMapType.SelectedValue);
+                objModules.UpdateTabModuleSetting(TabModuleId, "MapType", this.rblMapDisplayType.SelectedValue);
 
                 hsc.UpdateHostSetting("LocatorAllowSubmissions" + PortalId, this.cbAllowSubmissions.Checked.ToString());
                 hsc.UpdateHostSetting("LocatorSubmissionModeration" + PortalId, this.cbSubmissionModeration.Checked.ToString());

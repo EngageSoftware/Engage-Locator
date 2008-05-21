@@ -293,13 +293,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblMapType;
         
         /// <summary>
-        /// ddlMapType control.
+        /// rblMapDisplayType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMapType;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblMapDisplayType;
         
         /// <summary>
         /// lblLocationType control.

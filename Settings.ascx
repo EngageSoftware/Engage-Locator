@@ -14,10 +14,10 @@
         <td width="350">
             <asp:RadioButtonList ID="rblProviderType" CssClass="Normal" runat="server" AutoPostBack="true"
                 OnSelectedIndexChanged="rblProviderType_SelectedIndexChanged" RepeatDirection="horizontal"
-                Width="200px">
-            </asp:RadioButtonList>
+                Width="200px" />
             <div>
-                <asp:Label ID="lblApiMapProvider" CssClass="Normal" runat="server" resourceKey="lblApiMapProvider" /></div>
+                <asp:Label ID="lblApiMapProvider" CssClass="Normal" runat="server" resourceKey="lblApiMapProvider" />
+            </div>
         </td>
     </tr>
     <tr>
@@ -150,11 +150,11 @@
             <dnn:label ID="lblMapType" runat="server" ResourceKey="lblMapType" />
         </td>
         <td width="350">
-            <asp:DropDownList ID="ddlMapType" runat="server" CssClass="Normal">
-                <asp:ListItem Value="Normal" Text="Normal" Selected="true" />
-                <asp:ListItem Value="Satellite" Text="Satellite" />
-                <asp:ListItem Value="Hybrid" Text="Hybrid" />
-            </asp:DropDownList>
+            <asp:RadioButtonList ID="rblMapDisplayType" runat="server" CssClass="Normal" RepeatDirection="horizontal">
+                <asp:ListItem Text="Normal" Value="Normal" resourcekey="rbMapDisplayNormal" />
+                <asp:ListItem Text="Satellite" Value="Satellite" resourcekey="rbMapDisplaySatellite" />
+                <asp:ListItem Text="Hybrid" Value="Hybrid" resourcekey="rbMapDisplayHybrid" />
+            </asp:RadioButtonList>
         </td>
     </tr>
     <tr>
@@ -177,89 +177,95 @@
 <dnn:sectionhead ID="dshSearchSettings" runat="Server" text="Search Settings" CSSClass="Head"
     section="tblSearchSettings" resourcekey="tblSearchSettings" IsExpanded="true"
     IncludeRule="true" />
-                <table id="tblSearchSettings" runat="server" cellspacing="0" cellpadding="0" style="padding-bottom: 20px;" border="0" summary="Module Mode">
-                    <tr>
-                        <td class="SubHead" width="150" valign="top">
-                            <dnn:Label ID="lblLocatorModules" ResourceKey="lblLocatorModules" runat="server" />
-                        </td>
-                        <td width="350">
-                            <asp:GridView ID="gvTabModules" runat="server" GridLines="vertical" AllowPaging="false" 
-                                AutoGenerateColumns="false" EnableViewState="true" Width="450px" >
-                                <Columns>
-                                    <asp:TemplateField HeaderStyle-Width="10px" ControlStyle-Width="10px" >
-                                        <ItemTemplate>                                 
-                                            <asp:RadioButton id="rbLocatorModule" runat="server" AutoPostBack="true" GroupName="rbLocatorModules" OnCheckedChanged="rbLocatorModules_CheckChanged" CssClass="Normal" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Page Title"  ControlStyle-Width="60px">
-                                        <ItemTemplate>
-                                            <asp:Label id="lblPageTitle" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Title", "{0:d}") %>' />
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="Normal" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="TabId" HeaderStyle-Width="50px" ControlStyle-Width="50px" >
-                                        <ItemTemplate>
-                                            <asp:Label id="lblTabId" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.TabId", "{0:d}") %>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="Normal" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Module Title" ControlStyle-Width="150px" >
-                                        <ItemTemplate>
-                                            <asp:Label id="lblModuleTitle" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ModuleTitle", "{0:d}") %>'>
-                                            </asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="Normal" Width="200px" />
-                                    </asp:TemplateField>
-                                </Columns>
-                                <SelectedRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
-                                <AlternatingRowStyle BackColor="#eeeeee" />
-                                <RowStyle BackColor="#f8f8f8" ForeColor="Black" />
-                            </asp:GridView>
-                            <asp:CustomValidator ID="cvLocatorModules" runat="server" CssClass="Normal" ErrorMessage="Please select a results display module." OnServerValidate="cvLocatorModules_ServerValidate"></asp:CustomValidator>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="SubHead">
-                            <dnn:Label ID="lblSearchOptions" runat="server" Text="Search Options" ResourceKey="lblSearchOptions" />
-                        </td>
-                        <td>
-                            <table class="Normal">
-                                <tr>
-                                    <td>
-                                        <asp:CheckBox ID="chkAddress" runat="server" Text="Address" resourcekey="chkAddress" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:CheckBox ID="chkCityRegion" runat="server" Text="City & Region" resourcekey="chkCityState" />
-                                        <asp:CheckBox ID="chkPostalCode" runat="server" Text="Postal Code" resourcekey="chkPostalCode" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:CheckBox ID="chkCountry" runat="server" Text="Country" resourcekey="chkCountry" /></p>
-                                    </td>
-                                </tr>
-                            </table>
-                            <asp:CustomValidator ID="cvSearchOptions" runat="server" CssClass="Normal" ErrorMessage="You must select at least one search options." OnServerValidate="cvSearchOptions_ServerValidate" />
-                        </td>            
-                    </tr>
-                    <tr>
-                        <td class="SubHead" width="150" valign="top">
-                            <dnn:label id="lblOptional" resourcekey="lblOptional" runat="server" Text="Optional Settings" />
-                        </td>
-                        <td width="350">
-                            <div id="dvAddress">
-                                <asp:RadioButtonList ID="rblRestrictions" runat="server" cssclass="Normal" RepeatDirection="horizontal" >
-                                    <asp:ListItem Text="Country" Value="Country" />
-                                    <asp:ListItem Text="Radius"  Value="Radius" />
-                                    <asp:ListItem Text="None" Value="None" />
-                                </asp:RadioButtonList>
-                            </div>
-                            <div><asp:Label ID="lblOptionalInst" CssClass="Normal" runat="server" resourceKey="lblOptionalInst" /></div>
-                        </td>
-                    </tr>
-                </table>
+<table id="tblSearchSettings" runat="server" cellspacing="0" cellpadding="0" style="padding-bottom: 20px;"
+    border="0" summary="Module Mode">
+    <tr>
+        <td class="SubHead" width="150" valign="top">
+            <dnn:Label ID="lblLocatorModules" ResourceKey="lblLocatorModules" runat="server" />
+        </td>
+        <td width="350">
+            <asp:GridView ID="gvTabModules" runat="server" GridLines="vertical" AllowPaging="false"
+                AutoGenerateColumns="false" EnableViewState="true" Width="450px">
+                <Columns>
+                    <asp:TemplateField HeaderStyle-Width="10px" ControlStyle-Width="10px">
+                        <ItemTemplate>
+                            <asp:RadioButton ID="rbLocatorModule" runat="server" AutoPostBack="true" GroupName="rbLocatorModules"
+                                OnCheckedChanged="rbLocatorModules_CheckChanged" CssClass="Normal" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Page Title" ControlStyle-Width="60px">
+                        <ItemTemplate>
+                            <asp:Label ID="lblPageTitle" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Title", "{0:d}") %>' />
+                        </ItemTemplate>
+                        <ItemStyle CssClass="Normal" />
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="TabId" HeaderStyle-Width="50px" ControlStyle-Width="50px">
+                        <ItemTemplate>
+                            <asp:Label ID="lblTabId" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.TabId", "{0:d}") %>'></asp:Label>
+                        </ItemTemplate>
+                        <ItemStyle CssClass="Normal" />
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Module Title" ControlStyle-Width="150px">
+                        <ItemTemplate>
+                            <asp:Label ID="lblModuleTitle" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ModuleTitle", "{0:d}") %>'>
+                            </asp:Label>
+                        </ItemTemplate>
+                        <ItemStyle CssClass="Normal" Width="200px" />
+                    </asp:TemplateField>
+                </Columns>
+                <SelectedRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
+                <AlternatingRowStyle BackColor="#eeeeee" />
+                <RowStyle BackColor="#f8f8f8" ForeColor="Black" />
+            </asp:GridView>
+            <asp:CustomValidator ID="cvLocatorModules" runat="server" CssClass="Normal" ErrorMessage="Please select a results display module."
+                OnServerValidate="cvLocatorModules_ServerValidate"></asp:CustomValidator>
+        </td>
+    </tr>
+    <tr>
+        <td class="SubHead">
+            <dnn:Label ID="lblSearchOptions" runat="server" Text="Search Options" ResourceKey="lblSearchOptions" />
+        </td>
+        <td>
+            <table class="Normal">
+                <tr>
+                    <td>
+                        <asp:CheckBox ID="chkAddress" runat="server" Text="Address" resourcekey="chkAddress" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:CheckBox ID="chkCityRegion" runat="server" Text="City & Region" resourcekey="chkCityState" />
+                        <asp:CheckBox ID="chkPostalCode" runat="server" Text="Postal Code" resourcekey="chkPostalCode" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:CheckBox ID="chkCountry" runat="server" Text="Country" resourcekey="chkCountry" /></p>
+                    </td>
+                </tr>
+            </table>
+            <asp:CustomValidator ID="cvSearchOptions" runat="server" CssClass="Normal" ErrorMessage="You must select at least one search option."
+                OnServerValidate="cvSearchOptions_ServerValidate" resourcekey="cvSearchOptions" />
+        </td>
+    </tr>
+    <tr>
+        <td class="SubHead" width="150" valign="top">
+            <dnn:label id="lblOptional" resourcekey="lblOptional" runat="server" Text="Optional Settings" />
+        </td>
+        <td width="350">
+            <div id="dvAddress">
+                <asp:RadioButtonList ID="rblRestrictions" runat="server" CssClass="Normal" RepeatDirection="horizontal">
+                    <asp:ListItem Text="Country" Value="Country" />
+                    <asp:ListItem Text="Radius" Value="Radius" />
+                    <asp:ListItem Text="None" Value="None" />
+                </asp:RadioButtonList>
+            </div>
+            <div>
+                <asp:Label ID="lblOptionalInst" CssClass="Normal" runat="server" resourceKey="lblOptionalInst" />
+            </div>
+        </td>
+    </tr>
+</table>
 <dnn:sectionhead ID="dshSubmissionSettings" runat="Server" text="Location Submission Settings"
     CSSClass="Head" section="tblSubmissionSettings" resourcekey="dshSubmissionSettings"
     IsExpanded="true" IncludeRule="true" />

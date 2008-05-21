@@ -285,4 +285,16 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
   <data name="lblSearchOptions.Text" xml:space="preserve">
     <value>Search Options</value>
   </data>
+  <data name="rbMapDisplayHybrid.Text" xml:space="preserve">
+    <value>Hybrid</value>
+  </data>
+  <data name="rbMapDisplayNormal.Text" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="rbMapDisplaySatellite.Text" xml:space="preserve">
+    <value>Satellite</value>
+  </data>
+  <data name="cvSearchOptions.Text" xml:space="preserve">
+    <value>You must select at least one search option.</value>
+  </data>
 </root>
