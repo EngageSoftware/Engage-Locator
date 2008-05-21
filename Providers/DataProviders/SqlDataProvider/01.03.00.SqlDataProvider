@@ -766,3 +766,23 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] 
 		[AttributeDefinitionId]
 	)
 GO
+
+  
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
+AS
+	SELECT l.LocationId, l.LocationTypeId, l.ExternalIdentifier, l.Name, l.Website, l.Latitude, l.Longitude, 
+		country.Text AS CountryName, l.City, l.Address, l.PostalCode, l.Phone, l.LocationDetails, l.PortalId, l.LastUpdatedDate, 
+		p.LocationTypeName AS [Type], region.Text AS StateName, region.Value as Abbreviation,
+		l.CountryId, l.Approved, l.RegionId,
+		(select avg(convert(FLOAT, Rating)) from {databaseOwner}[{objectQualifier}EngageLocator_Rating] where itemVersionId = l.locationId) as AverageRating
+	FROM {databaseOwner}[{objectQualifier}EngageLocator_Location] l WITH (NOLOCK) 
+	JOIN {databaseOwner}[{objectQualifier}EngageLocator_LocationType] AS p ON (l.LocationTypeId = p.LocationTypeId)
+	left JOIN {databaseOwner}[{objectQualifier}Lists] country on (country.EntryId = l.CountryId)
+	left JOIN {databaseOwner}[{objectQualifier}Lists] region on (region.EntryId = l.RegionId)
+
+GO
+  

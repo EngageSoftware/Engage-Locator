@@ -118,6 +118,19 @@
             &nbsp;
         </td>
     </tr>
+        <tr>
+        <td class="SubHead">
+            <dnn:label ID="lblLocationRating" runat="server" ResourceKey="lblLocationRating" />
+        </td>
+        <td>
+            <asp:CheckBox ID="cbLocationRating" runat="server" Enabled="false" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            &nbsp;
+        </td>
+    </tr>
     <tr>
         <td class="SubHead">
             <dnn:label ID="lblLocationComments" runat="server" Text="Allow Location Comments"

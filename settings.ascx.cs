@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -9,7 +10,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Locator.Data;
-using DotNetNuke.Common;
 using Engage.Dnn.Locator.Maps;
 
 
@@ -86,15 +86,20 @@ namespace Engage.Dnn.Locator
                             rbNoDetails.Checked = true;
                         }
 
+                        if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowRatings" + PortalId.ToString(CultureInfo.InvariantCulture))))
+                            cbLocationRating.Checked = false;
+                        else
+                            cbLocationRating.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowRatings" + PortalId.ToString(CultureInfo.InvariantCulture)).ToString());
+
                         //set Comments Settings
-                        if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId)))
+                        if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId.ToString(CultureInfo.InvariantCulture))))
                             cbLocationComments.Checked = false;
                         else
-                            cbLocationComments.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId).ToString());
-                        if (Null.IsNull(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId)))
+                            cbLocationComments.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId.ToString(CultureInfo.InvariantCulture)).ToString());
+                        if (Null.IsNull(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId.ToString(CultureInfo.InvariantCulture))))
                             cbModerateComments.Checked = false;
                         else
-                            cbModerateComments.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId).ToString());
+                            cbModerateComments.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId.ToString(CultureInfo.InvariantCulture)).ToString());
 
                         if (TabModuleSettings["ShowDefaultDisplay"] != null && TabModuleSettings["ShowDefaultDisplay"].ToString() == "True")
                         {
@@ -132,10 +137,10 @@ namespace Engage.Dnn.Locator
                         }
 
                         //set Submission Settings
-                        if (!Null.IsNull(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId)))
-                            cbAllowSubmissions.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId));
-                        if (!Null.IsNull(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId)))
-                            cbSubmissionModeration.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId).ToString());
+                        if (!Null.IsNull(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId.ToString(CultureInfo.InvariantCulture))))
+                            cbAllowSubmissions.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId.ToString(CultureInfo.InvariantCulture)));
+                        if (!Null.IsNull(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId.ToString(CultureInfo.InvariantCulture))))
+                            cbSubmissionModeration.Checked = Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId.ToString(CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture));
 
                         //fill gridview with existing locator modules
                         DataTable modules = DataProvider.Instance().GetEngageLocatorTabModules(PortalId);
@@ -230,7 +235,7 @@ namespace Engage.Dnn.Locator
                 } 
             }
 
-            if (lbLocationType.SelectedValue == null || lbLocationType.SelectedValue == "")
+            if (string.IsNullOrEmpty(lbLocationType.SelectedValue))
             {
                 if (lbLocationType.Items[0].Text == "Default")
                 {
@@ -252,15 +257,15 @@ namespace Engage.Dnn.Locator
                 ModuleController objModules = new ModuleController();
                 HostSettingsController hsc = new HostSettingsController();
                 objModules.UpdateTabModuleSetting(TabModuleId, "SearchTitle", txtSearchTitle.Text);
-                objModules.UpdateTabModuleSetting(TabModuleId, "Country", this.rblRestrictions.Items.FindByValue("Country").Selected.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "Radius", this.rblRestrictions.Items.FindByValue("Radius").Selected.ToString());
+                objModules.UpdateTabModuleSetting(TabModuleId, "Country", this.rblRestrictions.Items.FindByValue("Country").Selected.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(TabModuleId, "Radius", this.rblRestrictions.Items.FindByValue("Radius").Selected.ToString(CultureInfo.InvariantCulture));
                 objModules.UpdateTabModuleSetting(TabModuleId, "DisplayProvider", this.rblProviderType.SelectedItem.Text);
                 objModules.UpdateTabModuleSetting(TabModuleId, this.rblProviderType.SelectedValue + ".ApiKey", txtApiKey.Text);
                 objModules.UpdateTabModuleSetting(TabModuleId, "DefaultCountry", ddlLocatorCountry.SelectedValue);
                 objModules.UpdateTabModuleSetting(TabModuleId, "MapType", this.rblMapDisplayType.SelectedValue);
 
-                hsc.UpdateHostSetting("LocatorAllowSubmissions" + PortalId, this.cbAllowSubmissions.Checked.ToString());
-                hsc.UpdateHostSetting("LocatorSubmissionModeration" + PortalId, this.cbSubmissionModeration.Checked.ToString());
+                hsc.UpdateHostSetting("LocatorAllowSubmissions" + PortalId, this.cbAllowSubmissions.Checked.ToString(CultureInfo.InvariantCulture));
+                hsc.UpdateHostSetting("LocatorSubmissionModeration" + PortalId, this.cbSubmissionModeration.Checked.ToString(CultureInfo.InvariantCulture));
                 
                 string locationTypeList = GetLocationTypeList();
 
@@ -273,15 +278,16 @@ namespace Engage.Dnn.Locator
                 else if(rbDetailsPage.Checked)
                     objModules.UpdateTabModuleSetting(TabModuleId, "ShowLocationDetails", "DetailsPage");
 
-                hsc.UpdateHostSetting("LocatorAllowComments" + PortalId, cbLocationComments.Checked.ToString());
-                hsc.UpdateHostSetting("LocatorCommentModeration" + PortalId, cbModerateComments.Checked.ToString());
+                hsc.UpdateHostSetting("LocatorAllowRatings" + PortalId.ToString(CultureInfo.InvariantCulture), cbLocationRating.Checked.ToString(CultureInfo.InvariantCulture));
+                hsc.UpdateHostSetting("LocatorAllowComments" + PortalId.ToString(CultureInfo.InvariantCulture), cbLocationComments.Checked.ToString(CultureInfo.InvariantCulture));
+                hsc.UpdateHostSetting("LocatorCommentModeration" + PortalId.ToString(CultureInfo.InvariantCulture), cbModerateComments.Checked.ToString(CultureInfo.InvariantCulture));
 
-                objModules.UpdateTabModuleSetting(TabModuleId, "ShowDefaultDisplay", rbDisplayAll.Checked.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "ShowMapDefaultDisplay", rbShowMap.Checked.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "SearchAddress", chkAddress.Checked.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "SearchCityRegion", chkCityRegion.Checked.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "SearchPostalCode", chkPostalCode.Checked.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "SearchCountry", chkCountry.Checked.ToString());
+                objModules.UpdateTabModuleSetting(TabModuleId, "ShowDefaultDisplay", rbDisplayAll.Checked.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(TabModuleId, "ShowMapDefaultDisplay", rbShowMap.Checked.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(TabModuleId, "SearchAddress", chkAddress.Checked.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(TabModuleId, "SearchCityRegion", chkCityRegion.Checked.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(TabModuleId, "SearchPostalCode", chkPostalCode.Checked.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(TabModuleId, "SearchCountry", chkCountry.Checked.ToString(CultureInfo.InvariantCulture));
 
                 foreach (GridViewRow dr in gvTabModules.Rows)
                 {
@@ -435,8 +441,7 @@ namespace Engage.Dnn.Locator
 
         protected void rbLoctionDetails_CheckChanged(object sender, EventArgs e)
         {
-            cbLocationComments.Enabled = rbDetailsPage.Checked;
-            cbModerateComments.Enabled = rbDetailsPage.Checked;
+            cbLocationComments.Enabled = cbModerateComments.Enabled = cbLocationRating.Enabled = rbDetailsPage.Checked;
         }
     }
 }

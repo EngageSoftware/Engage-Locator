@@ -162,4 +162,7 @@
   <data name="lblCommentSubmittedModerated.Text" xml:space="preserve">
     <value>Thank you. Your comment has been submitted for approval.</value>
   </data>
+  <data name="lblRatingMessage.Text" xml:space="preserve">
+    <value>Rate this location: </value>
+  </data>
 </root>

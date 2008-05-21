@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using Engage.Dnn.Locator.Data;
 
 namespace Engage.Dnn.Locator
@@ -19,167 +20,167 @@ namespace Engage.Dnn.Locator
 
         #region Properties
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _locationId = -1;
         public int LocationId
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _locationId; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _locationId = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _externalIdentifier;
         public string ExternalIdentifier
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _externalIdentifier; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _externalIdentifier = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _name;
         public string Name
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _name; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _name = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private double _latitude;
         public double Latitude
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _latitude; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _latitude = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private double _longitude;
         public double Longitude
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _longitude; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _longitude = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _countryId;
         public int CountryId
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _countryId; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _countryId = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _regionId;
         public int RegionId
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _regionId; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _regionId = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _stateName;
         public string StateName
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _stateName; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _stateName = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _city;
         public string City
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _city; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _city = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _address;
         public string Address
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _address; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _address = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _postalCode;
         public string PostalCode
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _postalCode; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _postalCode = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _phone;
         public string Phone
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _phone; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _phone = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _locationDetails;
         public string LocationDetails
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _locationDetails; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _locationDetails = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _locationTypeId;
         public int LocationTypeId
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _locationTypeId; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _locationTypeId = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _portalId;
         public int PortalId
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _portalId; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _portalId = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _website;
         public string Website
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _website; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _website = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private DateTime _lastUpdateDate;
         public DateTime LastUpdateDate
         {
@@ -195,28 +196,38 @@ namespace Engage.Dnn.Locator
                     return _lastUpdateDate;
                 }
             }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _lastUpdateDate = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int _csvLineNumber;
         public int CsvLineNumber
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _csvLineNumber; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _csvLineNumber = value; }
         }
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private bool _approved;
         public bool Approved
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get { return _approved; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set { _approved = value; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private float _averageRating;
+        public float AverageRating
+        {
+            [DebuggerStepThrough]
+            get { return _averageRating; }
+            [DebuggerStepThrough]
+            private set { _averageRating = value; }
         }
 
         #endregion
@@ -334,6 +345,7 @@ namespace Engage.Dnn.Locator
             loc.StateName = row["StateName"].ToString();
             loc.RegionId = Convert.ToInt32(row["RegionId"].ToString());
             loc.Approved = Convert.ToBoolean(row["Approved"].ToString());
+            loc.AverageRating = row["AverageRating"] is DBNull ? 0 : Convert.ToSingle(row["AverageRating"]);
 
             return loc;
         }

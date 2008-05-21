@@ -1,10 +1,13 @@
 using System;
 using System.Data;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
+using Engage.Dnn.UserFeedback;
+using DataProvider=Engage.Dnn.Locator.Data.DataProvider;
 
 namespace Engage.Dnn.Locator
 {
@@ -32,8 +35,8 @@ namespace Engage.Dnn.Locator
                 BindData();
             }
 
-            if (!CommentsEnabled)
-                lblAddComment.Visible = false;
+            lblAddComment.Visible = CommentsEnabled;
+            upnlRating.Visible = RatingsEnabled;
         }
 
         protected void btnBack_Click(object sender, EventArgs e)
@@ -63,46 +66,47 @@ namespace Engage.Dnn.Locator
 
         private void BindData()
         {
-                 lblLocationId.Text = Request.QueryString["lid"];
-                Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text));
+            lblLocationId.Text = Request.QueryString["lid"];
+            Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text));
 
-                lblLocationName.Text = location.Name;
-                lnkLocationName.Text = location.Website;
-                lnkLocationName.NavigateUrl = location.Website;
-                lblLocationDetails.Text = location.LocationDetails;
+            lblLocationName.Text = location.Name;
+            lnkLocationName.Text = location.Website;
+            lnkLocationName.NavigateUrl = location.Website;
+            lblLocationDetails.Text = location.LocationDetails;
 
-                if (location.Address != String.Empty && location.Address.Contains(","))
-                {
-                    int length = location.Address.IndexOf(',');
-                    lblLocationsAddress2.Text = location.Address.Remove(0, length);
-                }
-                lblLocationsAddress1.Text = location.Address;
+            if (location.Address != String.Empty && location.Address.Contains(","))
+            {
+                int length = location.Address.IndexOf(',');
+                lblLocationsAddress2.Text = location.Address.Remove(0, length);
+            }
+            lblLocationsAddress1.Text = location.Address;
 
-                ListController controller = new ListController();
-                ListEntryInfo region = controller.GetListEntryInfo(location.RegionId);
-                lblLocationsAddress3.Text = location.City + ", " + region.Value + " " + location.PostalCode;
-                lblPhoneNumber.Text = location.Phone;
+            ListController controller = new ListController();
+            ListEntryInfo region = controller.GetListEntryInfo(location.RegionId);
+            lblLocationsAddress3.Text = location.City + ", " + region.Value + " " + location.PostalCode;
+            lblPhoneNumber.Text = location.Phone;
 
-                DataTable comments = location.GetComments(true).Tables[0];
-                if(comments.Rows.Count > 0)
-                {
-                    rptComments.DataSource = comments;
-                    rptComments.DataBind();
-                }
-                else
-                    rptComments.Visible = false;
+            DataTable comments = location.GetComments(true).Tables[0];
+            if (comments.Rows.Count > 0)
+            {
+                rptComments.DataSource = comments;
+                rptComments.DataBind();
+            }
+            else
+                rptComments.Visible = false;
+
+            ajaxRating.CurrentRating = (int)Math.Round(location.AverageRating);
 
             foreach (Attribute a in location.GetAttributes())
             {
-                
-
                 Literal lit = new Literal();
                 lit.Text = "<div class=div_CustomAttribute" + a.AttributeId.ToString() + ">";
                 plhCustomAttributes.Controls.Add(lit);
 
                 Label l = new Label();
                 string text = Localization.GetString(a.AttributeName, LocalResourceFile);
-                if (text == null) text = a.AttributeName;
+                if (text == null)
+                    text = a.AttributeName;
                 l.Text = text;
                 plhCustomAttributes.Controls.Add(l);
 
@@ -122,8 +126,6 @@ namespace Engage.Dnn.Locator
                 lit = new Literal();
                 lit.Text = "</div>";
                 plhCustomAttributes.Controls.Add(lit);
-
-
             }
         }
 
@@ -147,6 +149,12 @@ namespace Engage.Dnn.Locator
         }
 
         #endregion
-         
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void ajaxRating_Changed(object sender, AjaxControlToolkit.RatingEventArgs e)
+        {
+            Rating.AddRating(Convert.ToInt32(Request.QueryString["lid"], CultureInfo.InvariantCulture), UserId == -1 ? null : (int?)UserId, int.Parse(e.Value, CultureInfo.InvariantCulture), DataProvider.ModuleQualifier);
+            ajaxRating.ReadOnly = true;
+        }
     }
 }

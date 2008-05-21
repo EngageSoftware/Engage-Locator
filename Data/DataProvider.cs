@@ -23,6 +23,7 @@ namespace Engage.Dnn.Locator.Data
         //private static DataProvider provider = ((DataProvider)DotNetNuke.Framework.Reflection.CreateObject("data", "Engage.Dnn.Publish.Data", ""));
 
         private static DataProvider provider;
+        public const string ModuleQualifier = "EngageLocator_";
 
         // return the provider
     [DebuggerStepThroughAttribute]
@@ -30,7 +31,7 @@ namespace Engage.Dnn.Locator.Data
         {
             if (provider == null)
             {
-                string assembly = "Engage.Dnn.Locator.Data.SqlDataprovider,EngageLocator";
+                const string assembly = "Engage.Dnn.Locator.Data.SqlDataprovider,EngageLocator";
                 Type objectType = Type.GetType(assembly, true, true);
 
                 provider = (DataProvider)Activator.CreateInstance(objectType);

@@ -9,13 +9,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search;
+using Engage.Dnn.Locator.Data;
 
 namespace Engage.Dnn.Locator.Components
 {
-    public class FeaturesController: ISearchable
+    public class FeaturesController: ISearchable, IUpgradeable
     {
         public SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
         {
@@ -31,5 +31,20 @@ namespace Engage.Dnn.Locator.Components
             }
             return searchItemCollection;
         }
+
+        #region IUpgradeable Members
+
+        public string UpgradeModule(string Version)
+        {
+            switch (Version)
+            {
+                case "01.03.00":
+                    UserFeedback.DataProvider.Instance().InstallCommentsAndRating(DataProvider.ModuleQualifier);
+                    break;
+            }
+            return "No action taken for upgrade to " + Version;
+        }
+
+        #endregion
     }
 }

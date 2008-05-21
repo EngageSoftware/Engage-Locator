@@ -51,6 +51,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Assemblies\DNN 4.5.1\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
+    <Reference Include="Engage.Dnn.UserFeedback, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
@@ -271,9 +272,12 @@
     <Content Include="Images\commentsBt.gif" />
     <Content Include="Images\delete_disabled_bt.gif" />
     <Content Include="Images\edit_disabled_bt.gif" />
+    <Content Include="Images\EmptyStar.png" />
+    <Content Include="Images\FilledStar.png" />
     <Content Include="Images\importBt.gif" />
     <Content Include="Images\locationBt.gif" />
     <Content Include="Images\locationTypesBt.gif" />
+    <Content Include="Images\SavedStar.png" />
     <Content Include="Images\settingsBt.gif" />
     <Content Include="Images\submit_bt.gif" />
     <Content Include="Images\update.gif" />

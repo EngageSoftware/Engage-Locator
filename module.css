@@ -316,5 +316,38 @@ td.distanceTitleTD
 /**********************Mini Search Settings***************************/
 .cvMiniSearch { clear: both;}
 
-/************************Comments************************************/
+/*************************Comments************************************/
 .locationComment { width: 250px;}
+
+
+/**************************Ratings************************************/
+.ratingStar {
+    font-size: 0pt;
+    width: 13px;
+    height: 12px;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+    display: block;
+    background-repeat: no-repeat;
+}
+
+.filledRatingStar {
+    background-image: url(Images/FilledStar.png);
+
+}
+
+.emptyRatingStar {
+    background-image: url(Images/EmptyStar.png);
+}
+
+.savedRatingStar {
+    background-image: url(Images/SavedStar.png);
+}
+
+.divRatingBefore
+{
+}
+.divRatingAfter
+{
+}

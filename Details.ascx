@@ -1,4 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="True"  CodeBehind="Details.ascx.cs"  Inherits="Engage.Dnn.Locator.Details" %>
+<%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 
 <script type="text/javascript">
@@ -65,7 +66,16 @@ function show(d)
             </div>
             <div>
                 <asp:Label ID="lblCommentSubmitted" runat="server" CssClass="Normal" Text="" Visible="false" />
-            </div>
+            </div>	
+            <asp:UpdatePanel ID="upnlRating" runat="server" UpdateMode="conditional" Visible="false">
+	            <ContentTemplate>
+                    <div id="divRating" class="divRatingBefore">
+                        <asp:Label ID="lblRatingMessage" runat="server" resourcekey="lblRatingMessage"></asp:Label>
+                        <ajaxToolkit:Rating ID="ajaxRating" runat="server" MaxRating="5" StarCssClass="ratingStar" WaitingStarCssClass="savedRatingStar" FilledStarCssClass="filledRatingStar" EmptyStarCssClass="emptyRatingStar" OnChanged="ajaxRating_Changed" Visible="true" />
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+
             <div class="SubHead">
                 <a id="lnkAddComment" href="javascript:show('divAddComment')" visible="true">
                     <asp:Label ID="lblAddComment" runat="server" Text="Add a Comment" resourcekey="lblAddComment" /></a>
@@ -119,3 +129,17 @@ function show(d)
 <div>
     <asp:Button ID="btnBack" runat="server" CssClass="CommandButton" Text="Back" resourceKey="btnBack" OnClick="btnBack_Click" CausesValidation="false" />
 </div>
+
+<script type="text/javascript">
+    <% if (ajaxRating.Visible) { %>
+    // Method called when the Rating is changed
+    function changeCssClassMethod(eventElement) {
+       Sys.UI.DomElement.removeCssClass($get('divRating'), 'divRatingBefore'); 
+       Sys.UI.DomElement.addCssClass($get('divRating'), 'divRatingAfter'); 
+
+       //Sys.UI.DomElement.toggleCssClass($get('divRating'), "divRatingAfter");
+    }
+    // Add handler using the getElementById method
+    $addHandler(Sys.UI.DomElement.getElementById('<%= ajaxRating.ClientID %>'), 'click', changeCssClassMethod);
+    <% } %>
+</script>

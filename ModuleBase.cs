@@ -9,6 +9,7 @@
 
 
 using System;
+using System.Globalization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -18,17 +19,25 @@ namespace Engage.Dnn.Locator
 {
     public class ModuleBase : PortalModuleBase
     {
-
         #region Properties
+        public bool RatingsEnabled
+        {
+            get
+            {
+                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowRatings" + PortalId.ToString(CultureInfo.InvariantCulture))))
+                    return false;
+                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowRatings" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+            }
+        }
 
         public bool CommentsEnabled
         {
             [System.Diagnostics.DebuggerStepThroughAttribute()]
             get
             {
-                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId)))
+                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId.ToString(CultureInfo.InvariantCulture))))
                     return false;
-                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId));
+                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
             }
         }
 
@@ -37,9 +46,9 @@ namespace Engage.Dnn.Locator
             [System.Diagnostics.DebuggerStepThroughAttribute()]
             get
             {
-                if (Null.IsNull(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId)))
-                    return false;   
-                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId));
+                if (Null.IsNull(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId.ToString(CultureInfo.InvariantCulture))))
+                    return false;
+                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
             }
         }
 
@@ -48,10 +57,10 @@ namespace Engage.Dnn.Locator
             [System.Diagnostics.DebuggerStepThroughAttribute()]
             get
             {
-                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId)))
+                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId.ToString(CultureInfo.InvariantCulture))))
                     return false;
                 else
-                    return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId));
+                    return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
             }
         }
 
@@ -60,10 +69,10 @@ namespace Engage.Dnn.Locator
             [System.Diagnostics.DebuggerStepThroughAttribute()]
             get
             {
-                if (Null.IsNull(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId)))
+                if (Null.IsNull(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId.ToString(CultureInfo.InvariantCulture))))
                     return false;
                 else
-                    return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId));
+                    return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
             }
         }
 

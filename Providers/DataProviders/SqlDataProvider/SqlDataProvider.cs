@@ -34,7 +34,6 @@ namespace Engage.Dnn.Locator.Data
         private readonly string providerPath;
         private readonly string objectQualifier;
         private readonly string databaseOwner;
-        private const string moduleQualifier = "EngageLocator_";
 
         #endregion
 
@@ -53,13 +52,13 @@ namespace Engage.Dnn.Locator.Data
             providerPath = provider.Attributes["providerPath"];
 
             objectQualifier = provider.Attributes["objectQualifier"];
-            if (!String.IsNullOrEmpty(objectQualifier) & objectQualifier.EndsWith("_") == false)
+            if (!String.IsNullOrEmpty(objectQualifier) && objectQualifier.EndsWith("_") == false)
             {
                 objectQualifier += "_";
             }
 
             databaseOwner = provider.Attributes["databaseOwner"];
-            if (!String.IsNullOrEmpty(databaseOwner) & databaseOwner.EndsWith(".") == false)
+            if (!String.IsNullOrEmpty(databaseOwner) && databaseOwner.EndsWith(".") == false)
             {
                 databaseOwner += ".";
             }
@@ -103,7 +102,7 @@ namespace Engage.Dnn.Locator.Data
         {
             get
             {
-                return databaseOwner + objectQualifier + moduleQualifier;
+                return databaseOwner + objectQualifier + ModuleQualifier;
             }
         }
         #endregion
@@ -136,8 +135,8 @@ namespace Engage.Dnn.Locator.Data
         /// <param name="longitude">The longitude.</param>
         /// <param name="radius">The radius in miles.</param>
         /// <param name="portalId">The portal id.</param>
+        /// <param name="locationTypeIds">IDs of the types of locations available</param>
         /// <returns>A <see cref="DataTable"/> containing the location records as well as their distance from the given location.</returns>
-        /// <param name="types"></param>
         public override DataTable GetClosestLocationsByRadius(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds)
         {
             StringBuilder sql = new StringBuilder(500);
