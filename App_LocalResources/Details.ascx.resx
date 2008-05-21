@@ -159,4 +159,7 @@
   <data name="Dog.Text" xml:space="preserve">
     <value>Label is Here...</value>
   </data>
+  <data name="lblCommentSubmittedModerated.Text" xml:space="preserve">
+    <value>Thank you. Your comment has been submitted for approval.</value>
+  </data>
 </root>

@@ -64,8 +64,7 @@ function show(d)
                     resourcekey="lblLocationComments" />
             </div>
             <div>
-                <asp:Label ID="lblCommentSubmitted" runat="server" CssClass="Normal" Text="Your comment has been submitted"
-                    resourcekey="lblCommentSubmitted" Visible="false" />
+                <asp:Label ID="lblCommentSubmitted" runat="server" CssClass="Normal" Text="" Visible="false" />
             </div>
             <div class="SubHead">
                 <a id="lnkAddComment" href="javascript:show('divAddComment')" visible="true">

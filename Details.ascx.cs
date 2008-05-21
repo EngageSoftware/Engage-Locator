@@ -12,6 +12,19 @@ namespace Engage.Dnn.Locator
     {
         #region Events
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            if (CommentModerationEnabled)
+            {
+                lblCommentSubmitted.Text = Localization.GetString("lblCommentSubmittedModerated", LocalResourceFile);
+            }
+            else
+            {
+                lblCommentSubmitted.Text = Localization.GetString("lblCommentSubmitted", LocalResourceFile);
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if(!Page.IsPostBack)
@@ -31,9 +44,10 @@ namespace Engage.Dnn.Locator
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             if(!Page.IsValid) return;
+
             bool approved = false;
-            if(!CommentModerationEnabled)
-                approved = true;
+            if(!CommentModerationEnabled) approved = true;
+
             Location.InsertComment(Convert.ToInt32(lblLocationId.Text), txtComment.Text, txtSubmittedBy.Text, approved);
             txtComment.Text = string.Empty;
             txtSubmittedBy.Text = string.Empty;
