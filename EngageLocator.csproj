@@ -258,6 +258,7 @@
     <Content Include="ManageComments.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="01.03.00.txt" />
     <Content Include="App_LocalResources\ManageComments.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
