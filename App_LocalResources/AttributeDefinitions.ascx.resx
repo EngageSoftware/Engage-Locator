@@ -183,4 +183,13 @@
   <data name="DeleteItem.Text" xml:space="preserve">
     <value>Are you sure you want to delete this attribute?</value>
   </data>
+  <data name="hdSelect.Text" xml:space="preserve">
+    <value>Select a Location</value>
+  </data>
+  <data name="lgCustomAttributes.Text" xml:space="preserve">
+    <value>Custom Attributes</value>
+  </data>
+  <data name="lgTypes.Text" xml:space="preserve">
+    <value>Location Types</value>
+  </data>
 </root>

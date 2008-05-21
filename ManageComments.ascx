@@ -48,19 +48,16 @@
                     <FooterStyle CssClass="typeDataGridFooter" />
                     <HeaderStyle CssClass="typeDataGridFooter" />
                 </asp:TemplateColumn>
-<%--                <asp:ButtonColumn CommandName="Delete" Text="Reject"></asp:ButtonColumn>--%>
             </Columns>
             <SelectedItemStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
             <AlternatingItemStyle BackColor="#eeeeee" />
             <ItemStyle BackColor="#f8f8f8" ForeColor="Black" />
         </asp:DataGrid>
     </div>
-    <div>
-        <asp:Button ID="btnAcceptComment" runat="server" CssClass="CommandButton" Text="Accept"
-            resourcekey="btnAccept" OnClick="btnAcceptComment_Click" Visible="False" />
-        <asp:Button ID="btnCancelComment" runat="server" CssClass="CommandButton" Text="Cancel"
-            resourcekey="btnCancelComment" OnClick="btnCancel_Click" />
-        <asp:Button ID="btnDeleteComment" runat="server" CssClass="CommandButton" Text="Reject"
-            resourcekey="btnDelete" OnClick="btnDeleteComment_Click" Visible="False" />
+    <br />
+    <div id="div_navigation">
+        <asp:ImageButton ID="btnAcceptComment" runat="server" CssClass="CommandButton" AlternateText="Approve"  resourcekey="btnAccept" OnClick="btnApprove_Click" Visible="False" ToolTip="Click here to Approve the selected comments." ImageUrl="~/desktopmodules/EngageLocator/images/approve.gif"/>
+        <asp:ImageButton ID="btnDeleteComment" runat="server" CssClass="CommandButton" AlternateText="Reject"  resourcekey="btnDelete" OnClick="btnReject_Click" Visible="False" ToolTip="Click here to Reject the selected comments." ImageUrl="~/desktopmodules/EngageLocator/images/reject.gif"/>
+        <asp:ImageButton ID="btnCancelComment" runat="server" CssClass="CommandButton" AlternateText="Cancel"  resourcekey="btnCancel" OnClick="btnCancel_Click" ToolTip="Click here to go back to the previous screen." ImageUrl="~/desktopmodules/EngageLocator/images/back.gif" />        
     </div>
 </div>

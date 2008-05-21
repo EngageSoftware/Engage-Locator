@@ -12,11 +12,12 @@
     <asp:Label ID="lblLocationTypeHelp" runat="Server" class="Normal" resourcekey="LocationTypeAttributesHelp" />
 </div>
 <br />
+<asp:UpdatePanel ID="upDataImport" runat="server">
+    <ContentTemplate>
         <fieldset>
-            <legend class="Head">Location Type</legend>
+            <legend class="Head" runat="server" id="lgTypes">Location Types</legend>
             <div class="locType">
-                <h3 class="SubHead">
-                    Select a Location</h3>
+                <h3 class="SubHead" runat="server" id="hdSelect">Select a Location</h3>
                 <div class="">
                     <div class="locTypeListView">
                         <asp:ListBox ID="lbLocType" CssClass="Normal" runat="server" Rows="5" Width="50%"
@@ -53,10 +54,8 @@
             </div>
         </fieldset>
         <br />
-<asp:UpdatePanel ID="upDataImport" runat="server">
-    <ContentTemplate>
         <fieldset>
-            <legend class="Head">Custom Attributes</legend>
+            <legend class="Head" id="lgCustomAttributes" runat="server">Custom Attributes</legend>
             <div id="divCustomAttributes" runat="server" class="caData">
                 <asp:DataGrid ID="grdLocationTypeAttributes" AutoGenerateColumns="false" runat="server"
                     Width="100%" CellPadding="4" GridLines="None" CssClass="DataGrid_Container" runat="server"
@@ -78,12 +77,12 @@
                         <dnn:ImageCommandColumn CommandName="Edit" Text="Edit" ImageURL="~/images/edit.gif"
                             HeaderText="Edit" KeyField="AttributeDefinitionID" EditMode="URL" />
                         <dnn:ImageCommandColumn CommandName="Delete" Text="Delete" ImageURL="~/images/delete.gif"
-                            HeaderText="Del" KeyField="AttributeDefinitionID" />
+                            HeaderText="Del" KeyField="AttributeDefinitionID" Visible="false" />
                         <dnn:ImageCommandColumn CommandName="MoveDown" ImageURL="~/images/dn.gif" HeaderText="Dn"
                             KeyField="AttributeDefinitionID" />
                         <dnn:ImageCommandColumn CommandName="MoveUp" ImageURL="~/images/up.gif" HeaderText="Up"
                             KeyField="AttributeDefinitionID" />
-                        <dnn:TextColumn DataField="AttributeName" HeaderText="Name" Width="100px" />
+                        <dnn:TextColumn DataField="AttributeName" HeaderText="Name" Width="100px" HeaderStyle-HorizontalAlign="Left" />
                         <%--		<dnn:textcolumn DataField="AttributeCategory" HeaderText="Category" Width="100px" />--%>
                        <%-- <asp:TemplateColumn HeaderText="DataType">
                             <ItemStyle Width="100px"></ItemStyle>
@@ -92,7 +91,7 @@
                             </ItemTemplate>
                         </asp:TemplateColumn>--%>
                        <%-- <dnn:TextColumn DataField="Length" HeaderText="Length" />--%>
-                        <dnn:TextColumn DataField="DefaultValue" HeaderText="DefaultValue" Width="100px" />
+                        <dnn:TextColumn DataField="DefaultValue" HeaderText="DefaultValue" Width="100px" HeaderStyle-HorizontalAlign="Left"/>
                         <%--                        <dnn:TextColumn DataField="ValidationExpression" HeaderText="ValidationExpression"
                             Width="100px" />
                         <dnn:CheckBoxColumn DataField="Required" HeaderText="Required" AutoPostBack="True" />
@@ -118,5 +117,5 @@
         OnClick="cmdUpdate_Click" />
     <asp:ImageButton ID="cmdCancel" runat="server" ToolTip="Click here to go back to the previous screen"
         AlternateText="Cancel and return to previous screen" CssClass="CommandButton"
-        ImageUrl="~/desktopmodules/EngageLocator/images/cancel.gif" OnClick="cmdCancel_Click" />
+        ImageUrl="~/desktopmodules/EngageLocator/images/back.gif" OnClick="cmdCancel_Click" />
 </div>

@@ -156,4 +156,7 @@
   <data name="DeleteAttribute.Text" xml:space="preserve">
     <value>Are you sure you want to delete this attribute?</value>
   </data>
+  <data name="lgDefinitions.Text" xml:space="preserve">
+    <value>Attribute Definition</value>
+  </data>
 </root>

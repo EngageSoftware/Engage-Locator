@@ -86,6 +86,39 @@ namespace Engage.Dnn.Locator
                 DotNetNuke.Framework.AJAX.RegisterScriptManager();
             }
         }
-        
+
+        #region Global Naviagation
+
+        protected void lbSettings_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblManageLocations_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("ManageLocations");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblImportFile_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("Import");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblManageComments_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("ManageComments");
+            Response.Redirect(href, true);
+        }
+
+        protected void lblManageTypes_OnClick(object sender, EventArgs e)
+        {
+            string href = EditUrl("AttributeDefinitions");
+            Response.Redirect(href, true);
+        }
+
+        #endregion
     }
 }

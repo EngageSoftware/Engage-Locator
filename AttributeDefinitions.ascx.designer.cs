@@ -59,6 +59,33 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Label lblLocationTypeHelp;
         
         /// <summary>
+        /// upDataImport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upDataImport;
+        
+        /// <summary>
+        /// lgTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lgTypes;
+        
+        /// <summary>
+        /// hdSelect control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl hdSelect;
+        
+        /// <summary>
         /// lbLocType control.
         /// </summary>
         /// <remarks>
@@ -149,13 +176,13 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.ImageButton btnCancelLocationType;
         
         /// <summary>
-        /// upDataImport control.
+        /// lgCustomAttributes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upDataImport;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lgCustomAttributes;
         
         /// <summary>
         /// divCustomAttributes control.

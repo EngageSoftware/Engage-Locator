@@ -12,7 +12,7 @@
 <asp:Label ID="lblConfigured" runat="server" CssClass="Normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations." Visible="False" resourcekey="lblConfigured"></asp:Label>
 
 <div class="divPanelTab" id="divPanelTab" runat="server">
-    <asp:Button runat="server" ID="btnAddLocation" CssClass="CommandButton" Text="Add New Location" resourcekey="btnAddLocation" OnClick="btnAddLocation_Click" />
+    <asp:ImageButton runat="server" ID="btnAddLocation" CssClass="CommandButton" AlternateText="Add New Location" OnClick="btnAddLocation_Click" ImageUrl="~/desktopmodules/EngageLocator/images/caCreateNew.gif" />
     <br />
     <asp:Label ID="lblSuccess" runat="server" CssClass="Normal"></asp:Label>
     <br />
@@ -90,25 +90,7 @@
                             <FooterStyle CssClass="stateDataGridFooter" />
                             <HeaderStyle CssClass="stateDataGridFooter" />
                         </asp:TemplateColumn>
-                        <%--<asp:TemplateColumn HeaderText="PostalCode">
-                            <ItemTemplate>
-                                <asp:Label ID="lblZip" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.PostalCode", "{0:d}") %>'>
-                                </asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle CssClass="zipDataGridFooter" />
-                            <FooterStyle CssClass="zipDataGridFooter" />
-                            <HeaderStyle CssClass="zipDataGridFooter" />
-                        </asp:TemplateColumn>--%>
-<%--                        <asp:TemplateColumn HeaderText="Country">
-                            <ItemTemplate>
-                                <asp:Label ID="lblCountry" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Country", "{0:d}") %>'>
-                                </asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle CssClass="countryDataGridFooter" />
-                            <FooterStyle CssClass="countryDataGridFooter" />
-                            <HeaderStyle CssClass="countryDataGridFooter" />
-                        </asp:TemplateColumn>
---%>                        <asp:TemplateColumn HeaderText="Latitude" SortExpression="Latitude">
+                        <asp:TemplateColumn HeaderText="Latitude" SortExpression="Latitude">
                             <ItemTemplate>
                                 <asp:Label ID="lblLatitude" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Latitude") %>'>
                                 </asp:Label>
@@ -126,31 +108,7 @@
                             <FooterStyle CssClass="longitudeDataGridFooter" />
                             <HeaderStyle CssClass="longitudeDataGridFooter" />
                         </asp:TemplateColumn>
-                       <%-- <asp:TemplateColumn HeaderText="Phone">
-                            <ItemTemplate>
-                                <asp:Label ID="lblPhone" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Phone", "{0:d}") %>'>
-                                </asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle CssClass="phoneDataGridFooter" />
-                            <FooterStyle CssClass="phoneDataGridFooter" />
-                            <HeaderStyle CssClass="phoneDataGridFooter" />
-                        </asp:TemplateColumn>--%>
-                       <%-- <asp:TemplateColumn HeaderText="Location Details">
-                            <ItemTemplate>
-                                <asp:Label ID="lblLocationDetails" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.LocationDetails", "{0:d}") %>'>
-                                </asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle CssClass="locationDetailsGridFooter" />
-                            <FooterStyle CssClass="locationDetailsDataGridFooter" />
-                            <HeaderStyle CssClass="locationDetailsDataGridFooter" />
-                        </asp:TemplateColumn>--%>
-<%--                        <asp:TemplateColumn HeaderText="Website">
-                            <ItemTemplate>
-                                <asp:Label ID="lblWebsite" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Website", "{0:d}") %>'>
-                                </asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateColumn>
---%>                        <asp:TemplateColumn HeaderText="Location Type" SortExpression="Type">
+                        <asp:TemplateColumn HeaderText="Location Type" SortExpression="Type">
                             <ItemTemplate>
                                 <asp:Label ID="lblType" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Type", "{0:d}") %>'>
                                 </asp:Label>
@@ -171,7 +129,6 @@
                             <HeaderStyle CssClass="typeDataGridFooter" />
                         </asp:TemplateColumn>
                         <asp:EditCommandColumn CancelText="Cancel" EditText="Edit" UpdateText="Update"></asp:EditCommandColumn>
-<%--                        <asp:ButtonColumn CommandName="Delete" Text="Delete"></asp:ButtonColumn>--%>
                     </Columns>
                     <SelectedItemStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
                     <AlternatingItemStyle BackColor="#eeeeee" />
@@ -179,14 +136,13 @@
                 </asp:DataGrid>
             </div>
             <br />
-            <div>
-                <asp:Button ID="btnAccept" runat="server" Text="Accept" resourcekey="btnAccept" CssClass="CommandButton"
-                    OnClick="btnAccept_Click" Visible="False" />
-                <asp:Button ID="btnCancelLocation" runat="server" CssClass="CommandButton" Text="Cancel"
-                    resourcekey="btnCancelLocation" OnClick="btnCancel_Click" />
-                <asp:Button ID="btnDelete" runat="server" Text="Reject" resourcekey="btnDelete" CssClass="CommandButton"
-                    OnClick="btnReject_Click" Visible="False" />
-            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+    <br />
+    <div id="div_navigation">
+        <asp:ImageButton ID="btnAccept" runat="server" Text="Accept" CssClass="CommandButton" OnClick="btnAccept_Click" Visible="False" ToolTip="Click here to Approve the selected locations." ImageUrl="~/desktopmodules/EngageLocator/images/accept.gif" />
+        <asp:ImageButton ID="btnReject" runat="server" Text="Reject" CssClass="CommandButton" OnClick="btnReject_Click" Visible="False" ToolTip="Click here to Reject the selected locations." ImageUrl="~/desktopmodules/EngageLocator/images/reject.gif" />
+        <asp:ImageButton ID="btnCancel" runat="server" CssClass="CommandButton" Text="Cancel" OnClick="btnCancel_Click" ToolTip="Click here to go back to the previous screen." ImageUrl="~/desktopmodules/EngageLocator/images/back.gif"/>        
+    </div>
+    
 </div>

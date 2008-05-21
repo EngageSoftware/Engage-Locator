@@ -29,7 +29,7 @@ using System.Globalization;
 
 namespace Engage.Dnn.Locator
 {
-    partial class AttributeDefinitions : PortalModuleBase
+    partial class AttributeDefinitions : ModuleBase
     {
         #region Constants
 
@@ -117,12 +117,6 @@ namespace Engage.Dnn.Locator
             return DotNetNuke.UI.Utilities.ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Deletes a property
-        /// </summary>
-        /// <param name="index">The index of the Property to delete</param>
-        /// -----------------------------------------------------------------------------
         private void DeleteAttribute(int attributeDefinitionId)
         {
             AttributeDefinitionCollection locationTypeAttributes = GetAttributes();
@@ -218,12 +212,12 @@ namespace Engage.Dnn.Locator
 
         private void BindGrid()
         {
-            if (Page.IsPostBack == false)
-            {
+            //if (Page.IsPostBack == false)
+            //{
                 AttributeDefinitionCollection attributes = GetAttributes();
                 grdLocationTypeAttributes.DataSource = attributes;
                 grdLocationTypeAttributes.DataBind();
-            }
+            //}
         }
 
         private void UpdateAttributes()
@@ -301,6 +295,9 @@ namespace Engage.Dnn.Locator
             lbImportFile.Visible = IsEditable;
             lbManageComments.Visible = IsEditable;
             lbManageLocations.Visible = IsEditable;
+            hdSelect.InnerText = Localization.GetString("hdSelect", LocalResourceFile);
+            lgTypes.InnerText = Localization.GetString("lgTypes", LocalResourceFile);
+            lgCustomAttributes.InnerText = Localization.GetString("lgCustomAttributes", LocalResourceFile);
         }
 
         /// -----------------------------------------------------------------------------
@@ -436,9 +433,9 @@ namespace Engage.Dnn.Locator
             switch (commandName)
             {
                 case "Delete":
-                    Label l = ((Label)grdLocationTypeAttributes.Items[e.Item.ItemIndex].Cells[0].Controls[1]);
-                    int attributeDefinitionId = Convert.ToInt32(l.Text);
-                    DeleteAttribute(attributeDefinitionId);
+                    //Label l = ((Label)grdLocationTypeAttributes.Items[e.Item.ItemIndex].Cells[0].Controls[1]);
+                    //int attributeDefinitionId = Convert.ToInt32(l.Text);
+                    //DeleteAttribute(attributeDefinitionId);
                     break;
                 case "MoveUp":
                     MoveAttributeUp(index);
@@ -532,42 +529,6 @@ namespace Engage.Dnn.Locator
             dvLocationType.Visible = false;
             lbLocType.Enabled = true;
             IsInEdit = false;
-        }
-
-
-        #endregion
-
-        //This should be in ModuleBase and used by all.
-        #region Global Admin Event Handlers
-
-        protected void lbSettings_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageLocations_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ManageLocations");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblImportFile_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("Import");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageComments_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ManageComments");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageTypes_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("AttributeDefinitions");
-            Response.Redirect(href, true);
         }
 
 

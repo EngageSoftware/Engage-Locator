@@ -59,6 +59,24 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Label lblConfigured;
         
         /// <summary>
+        /// lgImport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lgImport;
+        
+        /// <summary>
+        /// lblInstructions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblInstructions;
+        
+        /// <summary>
         /// divPanelTab control.
         /// </summary>
         /// <remarks>
@@ -101,7 +119,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
+        protected global::System.Web.UI.WebControls.ImageButton btnSubmit;
         
         /// <summary>
         /// btnBack control.
@@ -110,6 +128,6 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBack;
+        protected global::System.Web.UI.WebControls.ImageButton btnBack;
     }
 }

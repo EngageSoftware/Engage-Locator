@@ -336,4 +336,10 @@
   <data name="Submitted By.Header" xml:space="preserve">
     <value>Submitted By</value>
   </data>
+  <data name="lblInstructions.Text" xml:space="preserve">
+    <value>Click the browse button to locate a .csv file to import your locations.</value>
+  </data>
+  <data name="lgImport.Text" xml:space="preserve">
+    <value>Import Fiile</value>
+  </data>
 </root>

@@ -74,7 +74,7 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddLocation;
+        protected global::System.Web.UI.WebControls.ImageButton btnAddLocation;
         
         /// <summary>
         /// lblSuccess control.
@@ -164,24 +164,24 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAccept;
+        protected global::System.Web.UI.WebControls.ImageButton btnAccept;
         
         /// <summary>
-        /// btnCancelLocation control.
+        /// btnReject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelLocation;
+        protected global::System.Web.UI.WebControls.ImageButton btnReject;
         
         /// <summary>
-        /// btnDelete control.
+        /// btnCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDelete;
+        protected global::System.Web.UI.WebControls.ImageButton btnCancel;
     }
 }

@@ -121,7 +121,7 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        protected void btnDeleteComment_Click(object sender, EventArgs e)
+        protected void btnReject_Click(object sender, EventArgs e)
         {
             foreach (DataGridItem row in dgSubmittedComments.Items)
             {
@@ -135,7 +135,7 @@ namespace Engage.Dnn.Locator
             BindData();
         }
 
-        protected void btnAcceptComment_Click(object sender, EventArgs e)
+        protected void btnApprove_Click(object sender, EventArgs e)
         {
             foreach (DataGridItem row in dgSubmittedComments.Items)
             {
@@ -165,40 +165,5 @@ namespace Engage.Dnn.Locator
             //    ClientAPI.AddButtonConfirm(button, Localization.GetString("confirmDeleteComment", LocalResourceFile));
             //}
         }
-
-        //This should be in ModuleBase and used by all.
-        #region Global Admin Event Handlers
-
-        protected void lbSettings_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageLocations_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ManageLocations");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblImportFile_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("Import");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageComments_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ManageComments");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageTypes_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("AttributeDefinitions");
-            Response.Redirect(href, true);
-        }
-
-        #endregion
     }
 }

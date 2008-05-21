@@ -16,20 +16,14 @@ using System;
 
 namespace Engage.Dnn.Locator
 {
-
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The EditLocationTypeDefinition PortalModuleBase is used to manage a LocationType Attribute
-    /// for a portal
-    /// </summary>
-    /// -----------------------------------------------------------------------------
-    partial class EditAttributeDefinition : DotNetNuke.Entities.Modules.PortalModuleBase
+    partial class EditAttributeDefinition : ModuleBase
     {
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             divDelete.Visible = ((bool)IsAddMode == false);
+            lgDefinitions.InnerText = Localization.GetString("lgDefinitions", LocalResourceFile);
         }
 
 

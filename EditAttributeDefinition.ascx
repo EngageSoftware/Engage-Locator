@@ -1,7 +1,7 @@
 <%@ Control Language="C#" CodeBehind="EditAttributeDefinition.ascx.cs" Inherits="Engage.Dnn.Locator.EditAttributeDefinition" AutoEventWireup="true" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <fieldset>
-    <legend class="Head">Attribute Definition</legend>
+    <legend class="Head" id="lgDefinitions" runat="server">Attribute Definition</legend>
         <div id="div_Name">
             <asp:Label ID="lblName" runat="server" resourceKey="lblName" CssClass="Normal" ></asp:Label>
             <asp:TextBox ID="txtName" runat="server" CssClass="NormalTextBox"></asp:TextBox><asp:RequiredFieldValidator ID="rfvName" CssClass ="Normal" runat="server" ControlToValidate ="txtName" Display="Dynamic" ErrorMessage="Name is required"></asp:RequiredFieldValidator>

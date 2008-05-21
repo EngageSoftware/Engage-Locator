@@ -42,6 +42,7 @@ namespace Engage.Dnn.Locator
             lbManageComments.Visible = IsEditable;
             lbManageLocations.Visible = IsEditable;
             lbLocationTypes.Visible = IsEditable;
+            lgImport.InnerText = Localization.GetString("lgImport", LocalResourceFile);
         }
 
 
@@ -160,40 +161,5 @@ namespace Engage.Dnn.Locator
         {
             Response.Redirect(Globals.NavigateURL(TabId));
         }
-
-        //This should be in ModuleBase and used by all.
-        #region Global Admin Event Handlers
-
-        protected void lbSettings_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageLocations_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ManageLocations");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblImportFile_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("Import");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageComments_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ManageComments");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageTypes_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("AttributeDefinitions");
-            Response.Redirect(href, true);
-        }
-
-        #endregion
     }
 }

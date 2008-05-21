@@ -88,12 +88,12 @@ namespace Engage.Dnn.Locator
             else
             {
                 rbWaitingForApproval.Checked = true;
-                btnDelete.Visible = true;
+                btnReject.Visible = true;
                 btnAccept.Visible = true;
             }
 
             BindData(Approved, "Name");
-            ClientAPI.AddButtonConfirm(btnDelete, Localization.GetString("confirmDeleteLocation"));
+            ClientAPI.AddButtonConfirm(btnReject, Localization.GetString("confirmDeleteLocation"));
         }
 
         private void BindData(bool approved, string sortColumn)
@@ -168,13 +168,13 @@ namespace Engage.Dnn.Locator
             if (rbApproved.Checked)
             {
                 dgLocations.Columns[checkboxColumn].Visible = false;
-                this.btnDelete.Visible = false;
+                this.btnReject.Visible = false;
                 btnAccept.Visible = false;
             }
             else if (rbWaitingForApproval.Checked)
             {
                 dgLocations.Columns[checkboxColumn].Visible = true;
-                this.btnDelete.Visible = true;
+                this.btnReject.Visible = true;
                 btnAccept.Visible = true;
             }
         }
@@ -291,40 +291,5 @@ namespace Engage.Dnn.Locator
                 return approved;
             }
         }
-
-        //This should be in ModuleBase and used by all.
-        #region Global Admin Event Handlers
-
-        protected void lbSettings_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageLocations_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ManageLocations");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblImportFile_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("Import");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageComments_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("ManageComments");
-            Response.Redirect(href, true);
-        }
-
-        protected void lblManageTypes_OnClick(object sender, EventArgs e)
-        {
-            string href = EditUrl("AttributeDefinitions");
-            Response.Redirect(href, true);
-        }
-
-        #endregion
     }
 }
