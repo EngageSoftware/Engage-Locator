@@ -28,16 +28,8 @@ namespace Engage.Dnn.Locator
 
         protected override void OnInit(EventArgs e)
         {
-            InitializeComponent();
             base.OnInit(e);
-        }
-
-        private void InitializeComponent()
-        {
-            //this.Load += new EventHandler(this.Page_Load);
-            cmdUpdate.Click += new System.Web.UI.ImageClickEventHandler(cmdUpdate_Click);
-            cmdCancel.Click += new System.Web.UI.ImageClickEventHandler(cmdCancel_Click);
-            cmdDelete.Click += new System.Web.UI.ImageClickEventHandler(cmdDelete_Click);
+            divDelete.Visible = ((bool)IsAddMode == false);
         }
 
 
@@ -51,13 +43,9 @@ namespace Engage.Dnn.Locator
         #region Protected Members
 
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-        private bool _IsAddMode = Null.NullBoolean;
-        protected object IsAddMode
+        protected bool IsAddMode
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
-            get { return _IsAddMode; }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
-            set { _IsAddMode = (bool)value; }
+            get { return Request.QueryString["AttributeDefinitionID"] == null; }
         }
 
         protected bool IsList
@@ -97,6 +85,7 @@ namespace Engage.Dnn.Locator
         {
             get
             {
+                //_attributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionId, LocationTypeId);
                 if (_attributeDefinition == null)
                 {
                     if ((bool)IsAddMode)
@@ -117,11 +106,6 @@ namespace Engage.Dnn.Locator
                         //Get Attribute Definition from Data Store
                         _attributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionId, LocationTypeId);
                     }
-                }
-                else
-                {
-                    _attributeDefinition.AttributeName = txtName.Text;
-                    _attributeDefinition.DefaultValue = txtDefaultValue.Text;
                 }
                 return _attributeDefinition;
             }
@@ -188,7 +172,6 @@ namespace Engage.Dnn.Locator
                     }
                     else
                     {
-                        IsAddMode = true;
                         cmdDelete.Visible = false;
                     }
                 }
@@ -198,7 +181,7 @@ namespace Engage.Dnn.Locator
                 {
                     //Add Delete Confirmation
                     cmdDelete.Visible = true;
-                    ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteAttribute"));
+                    ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteAttribute", LocalResourceFile));
 
                     BindData();
                 }
@@ -216,6 +199,9 @@ namespace Engage.Dnn.Locator
         {
             try
             {
+                AttributeDefinition.AttributeName = txtName.Text;
+                AttributeDefinition.DefaultValue = txtDefaultValue.Text;
+
                 if ((bool)IsAddMode)
                 {
                     LocationType.AddAttributeDefinition(AttributeDefinition);
@@ -271,6 +257,7 @@ namespace Engage.Dnn.Locator
 
         private void BindData()
         {
+            _attributeDefinition = LocationType.GetAttributeDefinition(AttributeDefinitionId, LocationTypeId);
             txtName.Text = AttributeDefinition.AttributeName;
             txtDefaultValue.Text = AttributeDefinition.DefaultValue;
         }

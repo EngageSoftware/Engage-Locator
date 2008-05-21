@@ -39,38 +39,15 @@ namespace Engage.Dnn.Locator
 
         #endregion
 
-        #region Protected Members
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets whether we are dealing with SuperUsers
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected bool IsSuperUser
-        {
-            get
-            {
-                if (PortalSettings.ActiveTab.ParentId == PortalSettings.SuperTabId)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+        #region Private Methods
 
-        protected int LocationTypeId
+        private int LocationTypeId
         {
             get
             {
                 return Convert.ToInt32(lbLocType.SelectedValue);
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private bool IsInEdit
         {
@@ -105,7 +82,7 @@ namespace Engage.Dnn.Locator
                     switch (imageColumn.CommandName)
                     {
                         case "Delete":
-                            imageColumn.OnClickJS = Localization.GetString("DeleteItem");
+                            imageColumn.OnClickJS = Localization.GetString("DeleteItem", LocalResourceFile);
                             imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
                             break;
                         case "Edit":
@@ -129,21 +106,11 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the attributes 
-        /// </summary>
-        /// -----------------------------------------------------------------------------
         private AttributeDefinitionCollection GetAttributes()
         {
             return LocationType.GetAttributeDefinitionsById(LocationTypeId, false);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Helper function that determines whether the client-side functionality is possible
-        /// </summary>
-        /// -----------------------------------------------------------------------------
         private bool SupportsRichClient()
         {
             return DotNetNuke.UI.Utilities.ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML);
@@ -170,13 +137,6 @@ namespace Engage.Dnn.Locator
             BindGrid();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Moves a property
-        /// </summary>
-        /// <param name="index">The index of the Property to move</param>
-        /// <param name="destIndex">The new index of the Property</param>
-        /// -----------------------------------------------------------------------------
         private void MoveAttribute(int index, int destIndex)
         {
             AttributeDefinitionCollection locationTypeAttributes = GetAttributes();
@@ -195,23 +155,11 @@ namespace Engage.Dnn.Locator
             BindGrid();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Moves a property down in the ViewOrder
-        /// </summary>
-        /// <param name="index">The index of the Property to move</param>
-        /// -----------------------------------------------------------------------------
         private void MoveAttributeDown(int index)
         {
             MoveAttribute(index, index + 1);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Moves a property up in the ViewOrder
-        /// </summary>
-        /// <param name="index">The index of the Property to move</param>
-        /// -----------------------------------------------------------------------------
         private void MoveAttributeUp(int index)
         {
             MoveAttribute(index, index - 1);
@@ -269,18 +217,15 @@ namespace Engage.Dnn.Locator
 
         private void BindGrid()
         {
-            AttributeDefinitionCollection attributes = GetAttributes();
-            grdLocationTypeAttributes.DataSource = attributes;
-            grdLocationTypeAttributes.DataBind();
-
+            if (Page.IsPostBack == false)
+            {
+                AttributeDefinitionCollection attributes = GetAttributes();
+                grdLocationTypeAttributes.DataSource = attributes;
+                grdLocationTypeAttributes.DataBind();
+            }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Updates any "dirty" attributes
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void Updateattributes()
+        private void UpdateAttributes()
         {
             AttributeDefinitionCollection locationTypeAttributes = GetAttributes();
             foreach (AttributeDefinition objAttribute in locationTypeAttributes)
@@ -304,18 +249,6 @@ namespace Engage.Dnn.Locator
             {
                 AttributeDefinitionCollection objAttributes = GetAttributes();
                 string[] aryNewOrder = DotNetNuke.UI.Utilities.ClientAPI.GetClientSideReorder(this.grdLocationTypeAttributes.ClientID, this.Page);
-                AttributeDefinition objAttribute;
-                DataGridItem objItem;
-                CheckBox chk;
-                for (int i = 0; i <= this.grdLocationTypeAttributes.Items.Count - 1; i++)
-                {
-                    objItem = this.grdLocationTypeAttributes.Items[i];
-                    objAttribute = objAttributes[i];
-                    //chk = (CheckBox)objItem.Cells[COLUMN_REQUIRED].Controls[0];
-                    //objAttribute.Required = chk.Checked;
-                    //chk = (CheckBox)objItem.Cells[COLUMN_VISIBLE].Controls[0];
-                    //objAttribute.Visible = chk.Checked;
-                }
                 //assign vieworder
                 for (int i = 0; i <= aryNewOrder.Length - 1; i++)
                 {
@@ -358,8 +291,11 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void Page_Init(object sender, System.EventArgs e)
         {
-           Localization.LocalizeDataGrid(ref grdLocationTypeAttributes, this.LocalResourceFile);
-           BindTypes();
+            Localization.LocalizeDataGrid(ref grdLocationTypeAttributes, this.LocalResourceFile);
+            BindTypes();
+
+            grdLocationTypeAttributes.ItemCommand += new DataGridCommandEventHandler(grdLocationTypeAttributes_ItemCommand);
+
         }
 
         /// -----------------------------------------------------------------------------
@@ -422,34 +358,8 @@ namespace Engage.Dnn.Locator
                 }
             }
 
-            BindGrid();
+            //BindGrid();
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdLocationTypeAttributes_ItemCommand runs when a Command event is raised in the
-        /// Grid
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        //protected void grdLocationTypeAttributes_ItemCommand(object source, DataGridCommandEventArgs e)
-        //{
-        //    string commandName = e.CommandName;
-        //    //int commandArgument = (int)e.CommandArgument;
-        //    int index = e.Item.ItemIndex;
-
-        //    switch (commandName)
-        //    {
-        //        case "Delete":
-        //            DeleteAttribute(index);
-        //            break;
-        //        case "MoveUp":
-        //            MoveAttributeUp(index);
-        //            break;
-        //        case "MoveDown":
-        //            MoveAttributeDown(index);
-        //            break;
-        //    }
-        //}
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -552,8 +462,8 @@ namespace Engage.Dnn.Locator
             ProcessPostBack();
             try
             {
-                Updateattributes();
-
+                UpdateAttributes();
+                LocationType.ClearCache(LocationTypeId);
                 BindGrid();
             }
             catch (Exception exc)

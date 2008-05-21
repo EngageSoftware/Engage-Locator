@@ -1,5 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="EditAttributeDefinition.ascx.cs"
-    Inherits="Engage.Dnn.Locator.EditAttributeDefinition" %>
+<%@ Control Language="C#" CodeBehind="EditAttributeDefinition.ascx.cs" Inherits="Engage.Dnn.Locator.EditAttributeDefinition" AutoEventWireup="true" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <fieldset>
     <legend class="Head">Attribute Definition</legend>
@@ -12,13 +11,11 @@
             <asp:TextBox ID="txtDefaultValue" runat="server" CssClass="NormalTextBox"></asp:TextBox>
         </div>
 </fieldset>
-<p>
-    <asp:ImageButton class="CommandButton" ID="cmdUpdate" OnClick="cmdUpdate_Click"
-        ImageUrl="~/desktopmodules/EngageLocator/images/Update.gif" ResourceKey="cmdUpdate" runat="server" Text="Update" />
-    <asp:ImageButton class="CommandButton" ID="cmdCancel" OnClick="cmdCancel_Click"
-        ImageUrl="~/desktopmodules/EngageLocator/images/Cancel.gif" ResourceKey="cmdCancel" runat="server" Text="Cancel"
-        CausesValidation="False" />
-    <asp:ImageButton class="CommandButton" ID="cmdDelete" OnClick="cmdDelete_Click"
-        ImageUrl="~/desktopmodules/EngageLocator/images/caDelete.gif" ResourceKey="cmdDelete" runat="server" Text="Delete"
-        CausesValidation="False" />
-</p>
+<br />
+<div id="div_commands">
+    <asp:ImageButton class="CommandButton" ID="cmdUpdate" OnClick="cmdUpdate_Click" ImageUrl="~/desktopmodules/EngageLocator/images/Update.gif" ResourceKey="cmdUpdate" runat="server" Text="Update" />
+    <asp:ImageButton class="CommandButton" ID="cmdCancel" OnClick="cmdCancel_Click" ImageUrl="~/desktopmodules/EngageLocator/images/Cancel.gif" ResourceKey="cmdCancel" runat="server" Text="Cancel" CausesValidation="False" />
+    <div id="divDelete" runat="server"> 
+        <asp:ImageButton class="CommandButton" ID="cmdDelete" OnClick="cmdDelete_Click" ImageUrl="~/desktopmodules/EngageLocator/images/caDelete.gif" ResourceKey="cmdDelete" runat="server" Text="Delete" CausesValidation="False" />
+    </div>
+</div>
