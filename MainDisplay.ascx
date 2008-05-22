@@ -7,9 +7,8 @@
     <asp:ImageButton ID="lbImportFile" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/importbt.gif" OnClick="lblImportFile_OnClick" />
     <asp:ImageButton ID="lbManageComments" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/commentsbt.gif" OnClick="lblManageComments_OnClick" />
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lblManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" />
-    
 </div>
-
+<br />
 <div class="locatorHeader">
     <h1 class="locatorHeaderText">
         <asp:Label ID="lblHeader" runat="server" EnableViewState="false" resourcekey="lblHeader" Text="lblHeader" /></h1>
