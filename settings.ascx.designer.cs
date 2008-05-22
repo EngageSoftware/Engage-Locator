@@ -275,13 +275,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblLocationComments;
         
         /// <summary>
-        /// cbLocationComments control.
+        /// chkAllowComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbLocationComments;
+        protected global::System.Web.UI.WebControls.CheckBox chkAllowComments;
         
         /// <summary>
         /// lblModerateComments control.
@@ -293,13 +293,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblModerateComments;
         
         /// <summary>
-        /// cbModerateComments control.
+        /// chkModerateComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbModerateComments;
+        protected global::System.Web.UI.WebControls.CheckBox chkModerateComments;
         
         /// <summary>
         /// lblMapType control.
@@ -500,13 +500,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblAllowSubmissions;
         
         /// <summary>
-        /// cbAllowSubmissions control.
+        /// chkAllowLocations control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAllowSubmissions;
+        protected global::System.Web.UI.WebControls.CheckBox chkAllowLocations;
         
         /// <summary>
         /// lblSubmissionModeration control.
@@ -518,12 +518,12 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblSubmissionModeration;
         
         /// <summary>
-        /// cbSubmissionModeration control.
+        /// chkModerateLocations control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbSubmissionModeration;
+        protected global::System.Web.UI.WebControls.CheckBox chkModerateLocations;
     }
 }

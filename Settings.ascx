@@ -137,7 +137,8 @@
                 ResourceKey="lblLocationComments" />
         </td>
         <td>
-            <asp:CheckBox ID="cbLocationComments" runat="server" Enabled="false" />
+            <asp:CheckBox ID="chkAllowComments" runat="server" Enabled="false" 
+                AutoPostBack="True" oncheckedchanged="chkAllowComments_CheckedChanged" />
         </td>
     </tr>
     <tr>
@@ -150,7 +151,7 @@
             <dnn:label ID="lblModerateComments" runat="server" Text="Moderate Comments" ResourceKey="lblModerateComments" />
         </td>
         <td>
-            <asp:CheckBox ID="cbModerateComments" runat="server" Enabled="false" />
+            <asp:CheckBox ID="chkModerateComments" runat="server" Enabled="false" />
         </td>
     </tr>
     <tr>
@@ -289,7 +290,8 @@
             <dnn:label ID="lblAllowSubmissions" runat="server" ResourceKey="lblAllowSubmissions" />
         </td>
         <td width="350">
-            <asp:CheckBox ID="cbAllowSubmissions" runat="server" />
+            <asp:CheckBox ID="chkAllowLocations" runat="server" AutoPostBack="True" 
+                oncheckedchanged="chkAllowLocations_CheckedChanged" />
         </td>
     </tr>
     <tr>
@@ -297,7 +299,7 @@
             <dnn:label ID="lblSubmissionModeration" runat="server" ResourceKey="lblSubmissionModeration" />
         </td>
         <td width="350">
-            <asp:CheckBox ID="cbSubmissionModeration" runat="server" />
+            <asp:CheckBox ID="chkModerateLocations" runat="server" Enabled="False" />
         </td>
     </tr>
 </table>
