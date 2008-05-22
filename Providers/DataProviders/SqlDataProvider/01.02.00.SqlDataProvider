@@ -1,3 +1,9 @@
+/***********************************************/
+/***                                         ***/
+/***        SqlDataProvider 01.02.00         ***/
+/***                                         ***/
+/***********************************************/
+
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]
 GO

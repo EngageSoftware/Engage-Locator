@@ -1,4 +1,10 @@
-﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_Country]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+﻿/***********************************************/
+/***                                         ***/
+/***        SqlDataProvider 01.00.00         ***/
+/***                                         ***/
+/***********************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_Country]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT FK_{objectQualifier}EngageLocator_Location_{objectQualifier}EngageLocator_Country
 GO
 
