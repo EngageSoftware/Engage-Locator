@@ -137,10 +137,6 @@
     <Compile Include="Providers\MapProviders\GoogleProvider.cs" />
     <Compile Include="Maps\MapProvider.cs" />
     <Compile Include="Location.cs" />
-    <Compile Include="Services\Services.asmx.cs">
-      <DependentUpon>Services.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Import.ascx.cs">
       <DependentUpon>Import.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -148,6 +144,10 @@
     <Compile Include="Components\DataImportScheduler.cs" />
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="SearchUtility.cs" />
+    <Compile Include="Services\WebServices.asmx.cs">
+      <DependentUpon>WebServices.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -245,7 +245,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ManageLocations.ascx" />
-    <Content Include="Services\Services.asmx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="CsvReader\LumenWorks.Framework.IO\LumenWorks.Framework.IO.csproj">
@@ -284,6 +283,7 @@
     <Content Include="Images\settingsBt.gif" />
     <Content Include="Images\submit_bt.gif" />
     <Content Include="Images\update.gif" />
+    <Content Include="Services\WebServices.asmx" />
     <Content Include="Settings.ascx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
