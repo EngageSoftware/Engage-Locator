@@ -21,7 +21,7 @@ UNIQUE_KEY,EXTERNAL_IDENTIFIER,LOCATION_NAME,ADDRESS1,ADDRESS2,CITY,STATE,ZIP,PH
 20,Oakland Athletics,McAfee Coliseum,7000 Coliseum Way,,Oakland,California,94621,,34077,http://oakland.athletics.mlb.com/,American League,United States
 21,Philadelphia Phillies,Citizens Bank Park,One Citizens Bank Way,,Philadelphia,Pennsylvania,19148,,43300,http://philadelphia.phillies.mlb.com/,National League,United States
 22,Pittsburgh Pirates,PNC Park,115 Federal St.,,Pittsburgh,Pennsylvania,15212,,38500,http://pittsburgh.pirates.mlb.com/,National League,United States
-23,San Diego Padres,PETCO Park,19 Tony Gwynn Way,,San Diego,San Diego,92101,,42445,http://sandiego.padres.mlb.com/,National League,United States
+23,San Diego Padres,PETCO Park,19 Tony Gwynn Way,,San Diego,California,92101,,42445,http://sandiego.padres.mlb.com/,National League,United States
 24,San Francisco Giants,AT&T Park,24 Willie Mays Plaza,,San Francisco,California,94107,,41500,http://sanfrancisco.giants.mlb.com/,National League,United States
 25,Seattle Mariners,Safeco Field,1516 First Avenue S,,Seattle,Washington,98134,,47100,http://seattle.mariners.mlb.com/,American League,United States
 26,St. Louis Cardinals,Busch Stadium,420 South Eighth Street,,St. Louis,Missouri,63102,,44000,http://stlouis.cardinals.mlb.com/,National League,United States
