@@ -185,6 +185,12 @@
 	                            <asp:Label ID="lblLocationDetails" runat="server" CssClass="Normal"><%# DataBinder.Eval(Container.DataItem, "LocationDetails").ToString()%></asp:Label>
                             </td>
                             <% } %>
+                           <td class="Normal">
+                                <div id="div_SiteLink">
+	                                <asp:HyperLink ID="lbSiteLink" Visible="false" runat="server" CssClass="Normal" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString()%>' resourceKey="lbSiteLink" Text="Click Here"></asp:HyperLink>
+	                            </div>                              
+                            </td>
+
                         </tr>
                     </ItemTemplate>
                 </asp:Repeater>

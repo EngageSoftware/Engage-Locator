@@ -53,7 +53,7 @@ function show(d)
     <% } %>
     <tr>
         <td>
-            <div id="div_customAttributes">
+            <div id="div_customAttributes" class="Normal">
                 <asp:PlaceHolder ID="plhCustomAttributes" runat="server"></asp:PlaceHolder>
             </div>
         </td>
