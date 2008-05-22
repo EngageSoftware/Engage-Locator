@@ -15,27 +15,27 @@ function show(d)
 
 <table class="titleHeading">
     <tr class="locationEntryTR">
-        <td class="locationTitleTD Normal">
-            <div>
+        <td class="locationTitleTD">
+            <div class="ldID">
                 <asp:Label ID="lblLocationId" runat="server" CssClass="Normal" Visible="false" />
             </div>
-            <div>
+            <div class="ldName">
                 <asp:Label ID="lblLocationName" runat="server" CssClass="Head" />
             </div>
-            <div>
-                <asp:HyperLink ID="lnkLocationName" runat="server" CssClass="SubHead" Target="_blank"></asp:HyperLink>
-            </div>
-            <div>
+            <div class="ldAddress1">
                 <asp:Label ID="lblLocationsAddress1" runat="server" CssClass="Normal" />
             </div>
-            <div>
+            <div class="ldAddress2">
                 <asp:Label ID="lblLocationsAddress2" runat="server" CssClass="Normal" />
             </div>
-            <div>
+            <div class="ldAddress3">
                 <asp:Label ID="lblLocationsAddress3" runat="server" CssClass="Normal" />
             </div>
-            <div>
+            <div class="ldPhone">
                 <asp:Label ID="lblPhoneNumber" runat="server" CssClass="Normal" />
+            </div>
+            <div class="ldLink">
+                <asp:HyperLink ID="lnkLocationName" runat="server" CssClass="Normal" Target="_blank"></asp:HyperLink>
             </div>
         </td>
     </tr>
@@ -43,46 +43,36 @@ function show(d)
        { %><tr>
         <td>
             <div>
-                <asp:Label ID="lblLocationDetailsTitle" runat="server" CssClass="SubHead" resourcekey="lblLocationDetailsTitle" />
+                <asp:Label ID="lblLocationDetailsTitle" runat="server" CssClass="Head" resourcekey="lblLocationDetailsTitle" />
             </div>
             <div>
                 <asp:Label ID="lblLocationDetails" runat="server" CssClass="Normal"></asp:Label>
             </div>
-        </td>
-    </tr>
     <% } %>
-    <tr>
-        <td>
             <div id="div_customAttributes" class="Normal">
                 <asp:PlaceHolder ID="plhCustomAttributes" runat="server"></asp:PlaceHolder>
             </div>
+			<div class="ldRating">
+                <asp:UpdatePanel ID="upnlRating" runat="server" UpdateMode="conditional" Visible="false">
+                    <ContentTemplate>
+                        <div id="divRating" class="divRatingBefore">
+                            <asp:Label ID="lblRatingMessage" runat="server" CssClass="Normal" resourcekey="lblRatingMessage"></asp:Label>
+                            <ajaxToolkit:Rating ID="ajaxRating" runat="server" MaxRating="5" StarCssClass="ratingStar" WaitingStarCssClass="savedRatingStar" FilledStarCssClass="filledRatingStar" EmptyStarCssClass="emptyRatingStar" OnChanged="ajaxRating_Changed" Visible="true" />
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+			</div>            
         </td>
     </tr>
     <tr>
         <td>
-            <asp:UpdatePanel ID="upnlRating" runat="server" UpdateMode="conditional" Visible="false">
-	            <ContentTemplate>
-                    <div id="divRating" class="divRatingBefore">
-                        <asp:Label ID="lblRatingMessage" runat="server" resourcekey="lblRatingMessage"></asp:Label>
-                        <ajaxToolkit:Rating ID="ajaxRating" runat="server" MaxRating="5" StarCssClass="ratingStar" WaitingStarCssClass="savedRatingStar" FilledStarCssClass="filledRatingStar" EmptyStarCssClass="emptyRatingStar" OnChanged="ajaxRating_Changed" Visible="true" />
-                    </div>
-                </ContentTemplate>
-            </asp:UpdatePanel>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div>
-                <asp:Label ID="lblLocationComments" runat="server" CssClass="SubHead" Text="Comments"
+            <div class="ldCommentHeading">
+                <asp:Label ID="lblLocationComments" runat="server" CssClass="Head" Text="Comments"
                     resourcekey="lblLocationComments" />
             </div>
             <div>
                 <asp:Label ID="lblCommentSubmitted" runat="server" CssClass="Normal" Text="" Visible="false" />
             </div>	
-            <div class="SubHead">
-                <a id="lnkAddComment" href="javascript:show('divAddComment')" visible="true">
-                    <asp:Label ID="lblAddComment" runat="server" Text="Add a Comment" resourcekey="lblAddComment" /></a>
-            </div>
             <div id="divAddComment" style="display: none">
                 <div>
                     <asp:Label ID="lblAddCommentInstructions" runat="server" CssClass="Normal" resourcekey="lblAddCommentInstructions" />
@@ -116,17 +106,28 @@ function show(d)
                     </tr>
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <tr>
-                        <td class="locationComment">
+                    <tr class="userCommentRow">
+                        <td class="userComment">
                             <asp:Label ID="lblComment" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Text").ToString())%></asp:Label>
                         </td>
-                        <td>
+                        <td class="usernameComment">
                             <asp:Label ID="lblCommentAuthor" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Author").ToString())%></asp:Label>
                         </td>
                     </tr>
                 </ItemTemplate>
             </asp:Repeater>
-        </td>
+			</td>
+
+			<tr>
+            	<td>
+                    <div class="addCommentBt">
+                        <a id="lnkAddComment" href="javascript:show('divAddComment')" visible="true">
+                            <asp:Label ID="lblAddComment" runat="server" CssClass="CommandButton" Text="Add a Comment" resourcekey="lblAddComment" /></a>
+                    </div>
+				</td>                    
+			</tr>
+
+
     </tr>
 </table>
 <div>
