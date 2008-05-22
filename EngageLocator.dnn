@@ -103,6 +103,9 @@
         <file>
           <name>LumenWorks.Framework.IO.dll</name>
         </file>
+        <file>
+          <name>Engage.Dnn.UserFeedback.dll</name>
+        </file>
       </files>
     </folder>
   </folders>
