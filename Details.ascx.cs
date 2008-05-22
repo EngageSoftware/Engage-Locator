@@ -130,6 +130,7 @@ namespace Engage.Dnn.Locator
         }
 
         #endregion
+
         #region Properties
 
         protected bool ShowLocationDetails
