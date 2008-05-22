@@ -69,7 +69,7 @@
                         </td>
                         <td>
                             <asp:DropDownList ID="ddlState" CssClass="Normal" runat="server" 
-                                OnSelectedIndexChanged="ddlState_SelectedIndexChanged" TabIndex="7">
+                                TabIndex="7">
                             </asp:DropDownList>
                             <asp:CompareValidator ID="cvState" runat="server" ControlToValidate="ddlState" ErrorMessage="Please select a State"
                                 Operator="NotEqual" ValueToCompare="-1" ValidationGroup="addLocation">*</asp:CompareValidator></td>

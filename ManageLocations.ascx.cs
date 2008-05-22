@@ -51,12 +51,6 @@ namespace Engage.Dnn.Locator
         }
 
 
-
-        protected void btnBack_Click(object sender, EventArgs e)
-        {
-            Response.Redirect(Globals.NavigateURL(TabId));
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             string error = String.Empty;
@@ -116,15 +110,6 @@ namespace Engage.Dnn.Locator
 
         }
 
-        protected void dgLocations_PageChange(Object sender, DataGridPageChangedEventArgs e)
-        {
-            //dgLocations.CurrentPageIndex = e.NewPageIndex;
-            //int approved = 0;
-            //if (rbApproved.Checked)
-            //    approved = 1;
-            //BindDataGrid(approved);  
-        }
-
         protected void dgLocations_EditCommand(object source, DataGridCommandEventArgs e)
         {
             Label locationId = (Label)e.Item.FindControl("lblLocationId");
@@ -138,21 +123,26 @@ namespace Engage.Dnn.Locator
             BindData(approved, "Name");
         }
 
-        protected void dgLocations_DeleteCommand(object source, DataGridCommandEventArgs e)
-        {
-            DataProvider provider = DataProvider.Instance();
-            Label lbl = (Label)e.Item.FindControl("lblLocationId");
-            if (lbl.Text != "")
-            {
-                provider.DeleteLocation(Convert.ToInt32(lbl.Text));
-            }
-            bool approved = rbApproved.Checked;
-            BindData(approved, "Name");
-        }
+        //protected void dgLocations_DeleteCommand(object source, DataGridCommandEventArgs e)
+        //{
+        //    DataProvider provider = DataProvider.Instance();
+        //    Label lbl = (Label)e.Item.FindControl("lblLocationId");
+        //    if (lbl.Text != "")
+        //    {
+        //        provider.DeleteLocation(Convert.ToInt32(lbl.Text));
+        //    }
+        //    bool approved = rbApproved.Checked;
+        //    BindData(approved, "Name");
+        //}
 
         protected void btnAddLocation_Click(object sender, EventArgs e)
         {
             Response.Redirect(Globals.NavigateURL(TabId, "ManageLocation", "mid=" + ModuleId + "&tmid=" + TabModuleId));
+        }
+
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(Globals.NavigateURL(TabId));
         }
 
         protected void rbApproved_CheckChanged(object sender, EventArgs e)
@@ -212,12 +202,12 @@ namespace Engage.Dnn.Locator
 
         protected void dgLocations_ItemCreated(object sender, DataGridItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
-            {
-                TableCell cell = e.Item.Cells[e.Item.Cells.Count - 1];
-                LinkButton button = (LinkButton)cell.Controls[0];
-                ClientAPI.AddButtonConfirm(button, Localization.GetString("confirmDeleteLocation", LocalResourceFile));
-            }
+            //if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
+            //{
+            //    TableCell cell = e.Item.Cells[e.Item.Cells.Count - 1];
+            //    LinkButton button = (LinkButton)cell.Controls[0];
+            //    ClientAPI.AddButtonConfirm(button, Localization.GetString("confirmDeleteLocation", LocalResourceFile));
+            //}
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)

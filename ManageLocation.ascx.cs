@@ -214,16 +214,6 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        protected void ddlState_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ListController controller = new ListController();
-            int parentid = controller.GetListEntryInfo(Convert.ToInt32(ddlState.SelectedValue)).ParentID;
-
-            ddlCountry.SelectedValue = parentid.ToString();
-            //ScriptManager.GetCurrent(Page).SetFocus(ddlState);
-            Page.SetFocus(ddlState);
-        }
-
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             if (Page.IsValid == false) return;

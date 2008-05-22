@@ -31,8 +31,6 @@ namespace Engage.Dnn.Locator
     partial class ManageComments : ModuleBase
     {
         protected TextEditor teLocationDetails;
-        private const int checkboxColumn = 15;
-        private const int commentsColumn = 14;
 
         protected override void OnInit(EventArgs e)
         {

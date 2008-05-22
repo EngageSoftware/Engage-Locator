@@ -263,6 +263,7 @@
     <Content Include="App_LocalResources\ManageComments.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Images\approve.gif" />
     <Content Include="Images\back.gif" />
     <Content Include="Images\caAddNew.gif" />
     <Content Include="Images\caCreateNew.gif" />
@@ -277,6 +278,7 @@
     <Content Include="Images\importBt.gif" />
     <Content Include="Images\locationBt.gif" />
     <Content Include="Images\locationTypesBt.gif" />
+    <Content Include="Images\reject.gif" />
     <Content Include="Images\SavedStar.png" />
     <Content Include="Images\settingsBt.gif" />
     <Content Include="Images\submit_bt.gif" />

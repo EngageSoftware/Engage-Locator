@@ -30,9 +30,9 @@
                 </div>
                 <dnn:PagingControl ID="pager" runat="server"></dnn:PagingControl>
                 <asp:DataGrid ID="dgLocations" runat="server" CssClass="importData" 
-                    GridLines="Vertical" OnDataBinding="dgLocations_DataBind" OnPageIndexChanged="dgLocations_PageChange"
+                    GridLines="Vertical" OnDataBinding="dgLocations_DataBind" 
                     AutoGenerateColumns="False" OnEditCommand="dgLocations_EditCommand" OnCancelCommand="dgLocations_CancelCommand"
-                    OnDeleteCommand="dgLocations_DeleteCommand" OnItemDataBound="dgLocations_ItemDataBound"
+                    OnItemDataBound="dgLocations_ItemDataBound"
                     OnItemCreated="dgLocations_ItemCreated" AllowSorting="True" 
                     DataKeyField="LocationId" onsortcommand="dgLocations_SortCommand">
                     <FooterStyle BackColor="#ccc" ForeColor="Black" />
@@ -140,7 +140,7 @@
     </asp:UpdatePanel>
     <br />
     <div id="div_navigation">
-        <asp:ImageButton ID="btnAccept" runat="server" Text="Accept" CssClass="CommandButton" OnClick="btnAccept_Click" Visible="False" ToolTip="Click here to Approve the selected locations." ImageUrl="~/desktopmodules/EngageLocator/images/accept.gif" />
+        <asp:ImageButton ID="btnAccept" runat="server" Text="Accept" CssClass="CommandButton" OnClick="btnAccept_Click" Visible="False" ToolTip="Click here to Approve the selected locations." ImageUrl="~/desktopmodules/EngageLocator/images/approve.gif" />
         <asp:ImageButton ID="btnReject" runat="server" Text="Reject" CssClass="CommandButton" OnClick="btnReject_Click" Visible="False" ToolTip="Click here to Reject the selected locations." ImageUrl="~/desktopmodules/EngageLocator/images/reject.gif" />
         <asp:ImageButton ID="btnCancel" runat="server" CssClass="CommandButton" Text="Cancel" OnClick="btnCancel_Click" ToolTip="Click here to go back to the previous screen." ImageUrl="~/desktopmodules/EngageLocator/images/back.gif"/>        
     </div>
