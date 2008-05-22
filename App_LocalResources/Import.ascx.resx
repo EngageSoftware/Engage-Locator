@@ -342,4 +342,7 @@
   <data name="lgImport.Text" xml:space="preserve">
     <value>Import Fiile</value>
   </data>
+  <data name="ControlTitle_import.Text" xml:space="preserve">
+    <value>Import File</value>
+  </data>
 </root>

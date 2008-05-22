@@ -192,4 +192,7 @@
   <data name="lgTypes.Text" xml:space="preserve">
     <value>Location Types</value>
   </data>
+  <data name="ControlTitle_attributedefinitions.Text" xml:space="preserve">
+    <value>Attribute Definitions</value>
+  </data>
 </root>

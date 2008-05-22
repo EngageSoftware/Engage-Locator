@@ -339,4 +339,7 @@
   <data name="lblNoPending.Text" xml:space="preserve">
     <value>No Pending Comments</value>
   </data>
+  <data name="ControlTitle_managecomments.Text" xml:space="preserve">
+    <value>Manage Comments</value>
+  </data>
 </root>

@@ -336,4 +336,7 @@
   <data name="Submitted By.Header" xml:space="preserve">
     <value>Submitted By</value>
   </data>
+  <data name="ControlTitle_managelocations.Text" xml:space="preserve">
+    <value>Manage Locations</value>
+  </data>
 </root>
