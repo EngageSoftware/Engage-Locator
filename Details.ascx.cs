@@ -83,7 +83,7 @@ namespace Engage.Dnn.Locator
 
             ListController controller = new ListController();
             ListEntryInfo region = controller.GetListEntryInfo(location.RegionId);
-            if (!DotNetNuke.Common.Utilities.Null.IsNull(region.Value))
+            if (!DotNetNuke.Common.Utilities.Null.IsNull(region))
             {
                 lblLocationsAddress3.Text = location.City + ", " + region.Value + " " + location.PostalCode;
             }
