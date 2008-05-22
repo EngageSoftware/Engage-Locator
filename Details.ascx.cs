@@ -83,7 +83,15 @@ namespace Engage.Dnn.Locator
 
             ListController controller = new ListController();
             ListEntryInfo region = controller.GetListEntryInfo(location.RegionId);
-            lblLocationsAddress3.Text = location.City + ", " + region.Value + " " + location.PostalCode;
+            if (!DotNetNuke.Common.Utilities.Null.IsNull(region.Value)
+            {
+                lblLocationsAddress3.Text = location.City + ", " + region.Value + " " + location.PostalCode;
+            }
+            // Correct fix? - look into proper International address handling.
+            else 
+            {
+                lblLocationsAddress3.Text = location.City + ", " + location.PostalCode;
+            }
             lblPhoneNumber.Text = location.Phone;
 
             DataTable comments = location.GetComments(true).Tables[0];
