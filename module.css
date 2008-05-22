@@ -1,86 +1,19 @@
-﻿.requiredAsterisk
-{
-	color: red;
-	font-weight: bold;
-}
-
-.groupingPanel
-{
-	border: none 0px;
-	clear:both;
-}
-
-.groupingPanel table, .addressPanel table
-{
-	margin-left: 5px;
-	vertical-align: middle;
-}
-.groupingPanel fieldset
-{
-	border-color:#6A82A4;
-	border-style:solid none none; 
-	border-width:1px 0px 0px; 
-	padding: 10px; 
-	margin: 0;
-}
-	
-.locatorBody
-{
-	margin-left:20px;
-	width:100%;
-}
-
-
-.locatorSubHead
-{
-	background-color: #6A82A4;
-	color: White;
-	margin-top:0px;
-}
-
-.locatorLandingPage
-{
-	font-size: 13px;
-}
-
-.locatorInputLabel
-{
-	width:160px;
-	font-weight:bold;
-	margin:2px 0px 0px;
-	padding:0pt;
-}
-
-.locatorSubmit{margin-top: 0px;
-	position: relative;
-	top: 0px;
-}
-.locatorErrorPanel
-{
-}
-.locatorErrorMessageText
-{
-	color: Red;
-}
-.locationsGrid td
-{
-	border: solid 1px Black;
-}
-.datagridLocations input
-{
-	width: 90px;
-}
-.locationsGridAddress
-{
-	width: 150px;
-}
-.locationsGrid
-{
-	width: 100%;
-	border: solid 1px Black;
-}
+﻿.requiredAsterisk{color: red;font-weight: bold;}
+.groupingPanel{border: none 0px;clear:both;}
+.groupingPanel table, .addressPanel table{margin-left: 5px;vertical-align: middle;}
+.groupingPanel fieldset{border-color:#6A82A4;border-style:solid none none; border-width:1px 0px 0px; padding: 10px; margin: 0;}
+.locatorBody{margin-left:20px;width:100%;}
+.locatorSubHead{background-color: #6A82A4;color: White;margin-top:0px;}
+.locatorLandingPage{font-size: 13px;}
+.locatorInputLabel{width:160px;font-weight:bold;margin:2px 0px 0px;padding:0pt;}
+.locatorSubmit{margin-top: 0px;position: relative;top: 0px;}
+.locatorErrorPanel{}
+.locatorErrorMessageText{color: Red;}
+.locationsGrid td{border: solid 1px Black;}
+.datagridLocations input{width: 90px;}
+.locationsGridAddress{width: 150px;}
+.locationsGrid{width: 100%;border: solid 1px Black;}
 .locationsGridIndex{border-left: none 0px;}
-
 .locatorMap{height: 400px; margin: 0 auto; background: #fff; border: 1px #999 solid; width: 100% !important;}
 
 .pnlAddress{ width: 300px; vertical-align:middle; }
@@ -128,104 +61,28 @@
 .LocationDisplay{vertical-align: top; width: 480px; border-bottom: 1px #ccc solid;}
 .LocationDisplay td{vertical-align: top;}
 
-tr.locationEntryTR
-{
-	height:75px;
-	vertical-align:top;
-	
-}
-
-.locationTitleTD_Number
-{
-	width: 10px;
-	vertical-align:text-top;
-}
-
-.locationTitleTD
-{
-	width: 170px;
-}
-
-td.locationTitleTD
-{
-	padding: 0;
-}
-
-.locationDetailsTitleTD
-{
-	width: 150px;
-}
-
-td.locationDetailsTitleTD
-{
-	padding: 5px 0 0 20px;
-}
-
-.distanceTitleTD
-{
-	width: 150px;
-}
-
-td.distanceTitleTD
-{
-	padding: 5px 0 0 20px;
-	width: 150px;
-}
-
-.titleHeading th
-{
-	font: bold 11px "Trebuchet MS", Helvetica, Verdana, Arial, sans-serif;
-	color: #4f6b72;
-	border-right: 1px solid #C1DAD7;
-	border-bottom: 1px solid #C1DAD7;
-	border-top: 1px solid #C1DAD7;letter-spacing: 2px; text-transform: uppercase;	text-align: left;padding: 2px 6px 2px 12px;background: #e7f6f7;
-}
-
-.dataImportHeader{font: bold 11px "Trebuchet MS", Helvetica, Verdana, Arial, sans-serif; color: #000;border-right: 1px solid #C1DAD7;border-bottom: 1px solid #C1DAD7;border-top: 1px solid #C1DAD7; letter-spacing: 2px;	text-align: left;padding: 6px 6px 6px 12px;background: #e7f6f7;
-}
-
-.dataImportPage{background: #f8f8f8; border-right: 1px #f1f1f1 solid; border-bottom: 1px #f1f1f1 solid;
-}
-
-.titleHeading{width: 480px;
-}
-.locationTitleHead
-{
-	width: 180px;
-}
-
-.locationDetailsTitleHead
-{
-	width: 150px;
-}
-
-.distanceTitleHead
-{
-	width: 150px;
-}
-
-.progress
-{
-	position:relative;
-	z-index: 1;
-	margin-top: 10px;
-}
-
-.progressMainDisplay
-{
-	position:relative;
-	z-index: 1;
-	margin-left: 300px;
-	text-align: center;
-	margin: 0 auto; 
-}
-
+tr.locationEntryTR{height:75px;vertical-align:top;}
+.locationTitleTD_Number{width: 10px;vertical-align:text-top;}
+.locationTitleTD{width: 170px;}
+td.locationTitleTD{padding-bottom: 1em;}
+.locationDetailsTitleTD{width: 150px;}
+td.locationDetailsTitleTD{padding: 5px 0 0 20px;}
+.distanceTitleTD{width: 150px;}
+td.distanceTitleTD{padding: 5px 0 0 20px;width: 150px;}
+.titleHeading th{font: bold 11px Helvetica, Geneva, Arial, sans-serif;color: #4f6b72;border-right: 1px solid #C1DAD7;border-bottom: 1px solid #C1DAD7;
+border-top: 1px solid #C1DAD7;letter-spacing: 2px; text-transform: uppercase;	text-align: left;padding: 2px 6px 2px 12px;background: #e7f6f7;}
+.dataImportHeader{font: bold 11px Helvetica, Geneva, Arial, sans-serif; color: #000;border-right: 1px solid #C1DAD7;border-bottom: 1px solid #C1DAD7;
+border-top: 1px solid #C1DAD7; letter-spacing: 2px;	text-align: left;padding: 6px 6px 6px 12px;background: #e7f6f7;}
+.dataImportPage{background: #f8f8f8; border-right: 1px #f1f1f1 solid; border-bottom: 1px #f1f1f1 solid;}
+.titleHeading{width: 480px;}
+.locationTitleHead{width: 180px;}
+.locationDetailsTitleHead{width: 150px;}
+.distanceTitleHead{width: 150px;}
+.progress{position:relative;z-index: 1;margin-top: 10px;}
+.progressMainDisplay{position:relative;z-index: 1;margin-left: 300px;text-align: center;margin: 0 auto;}
 .LocatorBackButton{}
-
 .LocatorMapItButton{}
-
 .viewMapBt{padding: 5px 0;}
-
 
 .LocatorInput{width: 100%; clear: both;}
 	.LocatorInput p{padding: 0; margin: 0;}
@@ -280,7 +137,7 @@ td.distanceTitleTD
 
 .ajax__tab_xp .ajax__tab_header{text-align:left !important;}
 
-.importData{background: #fff !important; font-size: 12px; font-family: Helvetica, Arial, sans-serif; border: none; width: 100%; text-align: left;}
+.importData{background: #fff !important; font-size: 12px; font-family: Helvetica, Geneva, Arial, sans-serif; border: none; width: 100%; text-align: left;}
 .importData td{padding: 5px;}
 .importData td a{color: #960000 !important;}
 
@@ -317,37 +174,37 @@ td.distanceTitleTD
 .cvMiniSearch { clear: both;}
 
 /*************************Comments************************************/
-.locationComment { width: 250px;}
+.userCommentRow{}
+.userCommentRow td{padding: 5px 10px; border-bottom: 1px #ccc solid;}
+.userComment{width: 250px;}
+.usernameComment{}
 
 
 /**************************Ratings************************************/
-.ratingStar {
-    font-size: 0pt;
-    width: 13px;
-    height: 12px;
-    margin: 0px;
-    padding: 0px;
-    cursor: pointer;
-    display: block;
-    background-repeat: no-repeat;
-}
+.ldRating{}
+.ratingStar {font-size: 0pt;width: 13px;height: 12px;margin: 0px;padding: 0px;cursor: pointer;display: block;background-repeat: no-repeat;}
+.filledRatingStar {background-image: url(Images/FilledStar.png);}
+.emptyRatingStar {background-image: url(Images/EmptyStar.png);}
+.savedRatingStar {background-image: url(Images/SavedStar.png);}
+.divRatingBefore{}
+.divRatingAfter{}
 
-.filledRatingStar {
-    background-image: url(Images/FilledStar.png);
 
-}
+/*==================================================================
 
-.emptyRatingStar {
-    background-image: url(Images/EmptyStar.png);
-}
+Location Detail Page
 
-.savedRatingStar {
-    background-image: url(Images/SavedStar.png);
-}
+==================================================================*/
 
-.divRatingBefore
-{
-}
-.divRatingAfter
-{
-}
+
+.ldID{}
+.ldName{}
+.ldAddress1{}
+.ldAddress2{}
+.ldAddress3{}
+.ldPhone{}
+.ldLink{}
+
+.ldCommentHeading{padding-top: 1em;}
+
+.addCommentBt{}
