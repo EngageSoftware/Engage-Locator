@@ -169,7 +169,7 @@
     <value>Country</value>
   </data>
   <data name="lblLatitude.Help" xml:space="preserve">
-    <value>Some addresses do not match with the map providers exactly and will not be found. An easy way around this is to pin point your location and use the longitude and latitude to force the map provider to find you location</value>
+    <value>Some addresses do not match with the map providers exactly and will not be found. An easy way around this is to pin point your location and use the longitude and latitude to force the map provider to find your location</value>
   </data>
   <data name="lblLatitude.Text" xml:space="preserve">
     <value>Latitude</value>
@@ -178,7 +178,7 @@
     <value>Key</value>
   </data>
   <data name="lblLongitude.Help" xml:space="preserve">
-    <value>Some addresses do not match with the map providers exactly and will not be found. An easy way around this is to pin point your location and use the longitude and latitude to force the map provider to find you location</value>
+    <value>Some addresses do not match with the map providers exactly and will not be found. An easy way around this is to pin point your location and use the longitude and latitude to force the map provider to find your location</value>
   </data>
   <data name="lblLongitude.Text" xml:space="preserve">
     <value>Longitude</value>
