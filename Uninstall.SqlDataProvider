@@ -131,10 +131,6 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]') AND objectproperty(id, N'IsProcedure') = 1)
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]
-GO
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]') AND objectproperty(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]
 GO

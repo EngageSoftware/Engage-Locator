@@ -411,26 +411,6 @@ AS
 	WHERE CommentId = @commentId
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]
-	@locationId int,
-	@text ntext,
-	@submittedBy varchar(50),
-	@approved bit,
-	@userId int
-AS
-	UPDATE {databaseOwner}[{objectQualifier}EngageLocator_Comment]
-	SET	[Text] = @text, 
-		Author = @submittedBy, 
-		CreateDate = getdate(), 
-		Approved = @approved, 
-		ApprovalDate = getdate()	
-	WHERE LocationId = @locationId 
-GO
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetComments]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetComments]
 GO
