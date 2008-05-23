@@ -313,6 +313,27 @@ namespace Engage.Dnn.Locator.Data
         }
 
         /// <summary>
+        /// Creates a String (ntext) SQL param, setting and checking the bounds of the value within the parameter.
+        /// Sets the value to DBNull if the string is <see cref="Null.NullString"/> or <c>Nothing</c>.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter in the SQL Stored Procedure.</param>
+        /// <param name="value">The value of the parameter.</param>
+        /// <returns>A SqlParameter with the correct value, type, and capacity.</returns>
+        private static SqlParameter CreateNTextParam(string parameterName, string value)
+        {
+            SqlParameter param = new SqlParameter(parameterName, SqlDbType.NText);
+            if (value == null || value.Equals(Null.NullString))
+            {
+                param.Value = DBNull.Value;
+            }
+            else
+            {
+                param.Value = value;
+            }
+            return param;
+        }
+
+        /// <summary>
         /// Creates a Bit SQL param, setting the value to DBNull if <paramref name="value"/> is <see cref="Nullable<bool>"/> without a value.
         /// </summary>
         /// <param name="parameterName">Name of the parameter in the SQL Stored Procedure.</param>
@@ -471,17 +492,17 @@ namespace Engage.Dnn.Locator.Data
 
         public override int SaveLocation(Location loc)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateVarcharParam("@LocationDetails", loc.LocationDetails, 100), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@CsvLineNumber", 0), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved))));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateNTextParam("@LocationDetails", loc.LocationDetails), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@CsvLineNumber", 0), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved))));
         }
 
         public override int SaveTempLocation(Location loc, bool successful)
         {
-            return SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertTempLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateVarcharParam("@LocationDetails", loc.LocationDetails, 100), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@CSVLineNumber", loc.CsvLineNumber), CreateVarcharParam("@successful", Convert.ToInt32(successful).ToString(), 25), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved)));
+            return SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertTempLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateNTextParam("@LocationDetails", loc.LocationDetails), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@CSVLineNumber", loc.CsvLineNumber), CreateVarcharParam("@successful", Convert.ToInt32(successful).ToString(), 25), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved)));
         }
 
         public override int UpdateLocation(Location loc)
         {
-            return SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spUpdateLocation", CreateIntegerParam("@LocationId", loc.LocationId), CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateVarcharParam("@LocationDetails", loc.LocationDetails, 500), CreateIntegerParam("@PortalId", loc.PortalId), CreateDateTimeParam("@LastUpdatedDate", loc.LastUpdateDate), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved)));
+            return SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spUpdateLocation", CreateIntegerParam("@LocationId", loc.LocationId), CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateNTextParam("@LocationDetails", loc.LocationDetails), CreateIntegerParam("@PortalId", loc.PortalId), CreateDateTimeParam("@LastUpdatedDate", loc.LastUpdateDate), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved)));
         }
 
         public override DataTable GetCountriesList(int portalId)
@@ -605,7 +626,7 @@ namespace Engage.Dnn.Locator.Data
 
         public override void UpdateAttribute(int locationAttributeId, int locationId, string attributeValue)
         {
-            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spUpdateLocationAttribute", CreateIntegerParam("@locationAttributeId", locationAttributeId), CreateIntegerParam("@locationId", locationId), CreateVarcharParam("@attributeValue", attributeValue, 255));
+            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spUpdateLocationAttribute", CreateIntegerParam("@locationAttributeId", locationAttributeId), CreateIntegerParam("@locationId", locationId), CreateNTextParam("@attributeValue", attributeValue));
         }
 
         public override DataTable GetAttributeValues(int locationId)
@@ -616,7 +637,7 @@ namespace Engage.Dnn.Locator.Data
         public override void InsertComment(int locationId, string text, string submittteBy, bool approved)
         {
             SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spInsertComment",
-                CreateIntegerParam("@locationId", locationId), CreateVarcharParam("@text", text, 200), CreateVarcharParam("@submittedBy", submittteBy, 50),
+                CreateIntegerParam("@locationId", locationId), CreateNTextParam("@text", text), CreateVarcharParam("@submittedBy", submittteBy, 50),
                 CreateIntegerParam("@approved", Convert.ToInt32(approved)));
         }
 
@@ -657,7 +678,7 @@ namespace Engage.Dnn.Locator.Data
 
         public override void SaveComment(Comment myComment)
         {
-            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spSaveComment", CreateIntegerParam("@commentId", myComment.CommentId), CreateVarcharParam("@text", myComment.Text, 255), CreateVarcharParam("@submittedBy", myComment.SubmittedBy, 50), CreateIntegerParam("@approved", Convert.ToInt32(myComment.Approved)));
+            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spSaveComment", CreateIntegerParam("@commentId", myComment.CommentId), CreateNTextParam("@text", myComment.Text), CreateVarcharParam("@submittedBy", myComment.SubmittedBy, 50), CreateIntegerParam("@approved", Convert.ToInt32(myComment.Approved)));
         }
 
         public override void DeleteComment(int commentId)
@@ -667,7 +688,7 @@ namespace Engage.Dnn.Locator.Data
 
         public override void AddAttribute(int attributeDefinitionId, int locationId, string attributeValue)
         {
-            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spAddLocationAttribute", CreateIntegerParam("@attributeDefinitionId", attributeDefinitionId), CreateIntegerParam("@locationId", locationId), CreateVarcharParam("@attributeValue", attributeValue, 255));
+            SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, NamePrefix + "spAddLocationAttribute", CreateIntegerParam("@attributeDefinitionId", attributeDefinitionId), CreateIntegerParam("@locationId", locationId), CreateNTextParam("@attributeValue", attributeValue));
         }
 
         #region Custom Attributes Methods
