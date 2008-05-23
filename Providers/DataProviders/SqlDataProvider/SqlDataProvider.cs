@@ -177,23 +177,18 @@ namespace Engage.Dnn.Locator.Data
         public override DataTable GetLocation(int locationId)
         {
             return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocation", CreateIntegerParam("@locationId", locationId)).Tables[0];
-            //Location loc = new Location();
-            
-            //loc.Address = dt.Rows[0]["Address"].ToString();
-            //loc.City = dt.Rows[0]["City"].ToString();
-            //loc.LocationDetails = dt.Rows[0]["LocationDetails"].ToString();
-            //loc.ExternalIdentifier = dt.Rows[0]["ExternalIdentifier"].ToString();
-            //loc.Latitude = Convert.ToDouble(dt.Rows[0]["Latitude"]);
-            //loc.LocationId = Convert.ToInt32(dt.Rows[0]["LocationId"]);
-            //loc.LocationTypeId = Convert.ToInt32(dt.Rows[0]["LocationTypeId"]);
-            //loc.Longitude = Convert.ToDouble(dt.Rows[0]["Longitude"]);
-            //loc.Name = dt.Rows[0]["Name"].ToString();
-            //loc.Website = dt.Rows[0]["Website"].ToString();
-            //loc.Phone = dt.Rows[0]["Phone"].ToString();
-            //loc.PostalCode = dt.Rows[0]["PostalCode"].ToString();
-            //loc.StateName = dt.Rows[0]["State"].ToString();
-            //loc.RegionId = Convert.ToInt32(dt.Rows[0]["RegionId"].ToString());
-            //loc.Approved = Convert.ToBoolean(dt.Rows[0]["Approved"].ToString());
+        }
+
+        public override DataTable GetLocations(int typeId, int portalId)
+        {
+            StringBuilder sql = new StringBuilder(98);
+            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Phone, StateName, RegionId, LocationDetails, [Type], PostalCode FROM {0}vLocations ", NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE LocationTypeId = @LocationTypeId ");
+            sql.AppendFormat(CultureInfo.InvariantCulture, " AND PortalId = @PortalId ");
+            sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY Name ");
+
+            return SqlHelper.ExecuteDataset(connectionString, CommandType.Text, sql.ToString(), CreateIntegerParam("@LocationTypeId", typeId), CreateIntegerParam("@PortalId", portalId)).Tables[0];
+
         }
 
         public override DataTable GetLocationsByCountry(int countryId, int portalId)

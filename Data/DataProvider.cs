@@ -81,6 +81,7 @@ namespace Engage.Dnn.Locator.Data
         public abstract int GetLastImportIndex();
         public abstract DataTable GetLatitudeLongitude(string address, string city);
         public abstract DataTable GetLocationTypes();
+        public abstract DataTable GetLocations(int typeId, int portalId);
         public abstract int GetLocationTypeCount(string type);
         public abstract void UpdateLocationType(int locationTypeId, string locationTypeName);
         public abstract int InsertLocationType(string locationTypeName);

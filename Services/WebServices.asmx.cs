@@ -70,9 +70,9 @@ namespace Engage.Dnn.Locator.Services
         }
 
         [WebMethod]
-        public DataTable GetLocations(int locationTypeId)
+        public DataTable GetLocations(int locationTypeId, int portalId)
         {
-            return Data.DataProvider.Instance().GetLocationType(locationTypeId);
+            return Data.DataProvider.Instance().GetLocations(locationTypeId, portalId);
         }
     }
 }
