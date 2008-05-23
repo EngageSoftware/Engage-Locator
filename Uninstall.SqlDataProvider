@@ -1,267 +1,272 @@
-﻿IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_AttributeDefinition_{objectQualifier}EngageLocator_LocationType]
+﻿/***********************************************/
+/***                                         ***/
+/***        SqlDataProvider Uninstall        ***/
+/***                                         ***/
+/***********************************************/
+
+
+/* Stored Procedures */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddAttributeDefinition]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddAttributeDefinition]
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_Location]') AND fkeyid = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_Location]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = OBJECT_ID(N'[FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_AttributeDefinition]') AND fkeyid = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_AttributeDefinition]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddRating]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spAddRating]
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_State]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_Location_EngageLocator_State]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_State_EngageLocator_Country]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_State] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_State_EngageLocator_Country]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_Country]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_Country]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_State]') AND OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_State]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_State]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_State]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Country]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Country]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_fnDistanceBetween]') AND OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
-DROP FUNCTION {databaseOwner}[{objectQualifier}EngageLocator_fnDistanceBetween]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') AND OBJECTPROPERTY(id, N'IsView') = 1)
-DROP VIEW {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeName]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeName]
-GO
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_LocationType]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Country]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Country]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Files]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Files]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_State]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_Location_EngageLocator_State]
-GO
-IF  EXISTS (SELECT * FROM sys.check_constraints WHERE object_id = OBJECT_ID(N'{databaseOwner}[CK_{objectQualifier}EngageLocator_Location_LatitudeLongitude]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [CK_{objectQualifier}EngageLocator_Location_LatitudeLongitude]
-GO
-IF  EXISTS (SELECT * FROM sys.check_constraints WHERE object_id = OBJECT_ID(N'{databaseOwner}[CK_{objectQualifier}EngageLocator_Location_NullLatitudeLongitude]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [CK_{objectQualifier}EngageLocator_Location_NullLatitudeLongitude]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationType]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_State_EngageLocator_Country]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_State]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_State] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_State_EngageLocator_Country]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_State]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_State]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_Country]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_Country]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_State]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_State]
-GO
-IF  EXISTS (SELECT * FROM sys.check_constraints WHERE object_id = OBJECT_ID(N'{databaseOwner}[CK_{objectQualifier}EngageLocator_TempLocation_LatitudeLongitude]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [CK_{objectQualifier}EngageLocator_TempLocation_LatitudeLongitude]
-GO
-IF  EXISTS (SELECT * FROM sys.check_constraints WHERE object_id = OBJECT_ID(N'{databaseOwner}[CK_{objectQualifier}EngageLocator_TempLocation_NullLatitudeLongitude]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [CK_{objectQualifier}EngageLocator_TempLocation_NullLatitudeLongitude]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]') AND type in (N'P', N'PC'))
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]') AND objectproperty(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_fnDistanceBetween]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}EngageLocator_fnDistanceBetween]
-GO
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]'))
-DROP VIEW {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteAttributeDefinition]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteAttributeDefinition]
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteComment]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteComment]
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetFilesToImport]') AND type in (N'P', N'PC'))
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteRatings]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteRatings]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinition]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinition]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionByName]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionByName]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsById]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsById]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByPortal]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByPortal]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetComment]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetComment]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetComments]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetComments]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetFilesToImport]') AND objectproperty(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetFilesToImport]
 GO
 
-IF  EXISTS (SELECT * FROM sysobjects where id = object_id(N' {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-DROP PROCEDURE  {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]
-GO
-
-IF  EXISTS (SELECT * FROM sysobjects where id = object_id(N' {databaseOwner}[{objectQualifier}EngageLocator_spGetImportedLocationStatistics]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetImportedLocationStatistics]') AND objectproperty(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetImportedLocationStatistics]
 GO
 
-IF  EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetImportedLocationStatistics]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetImportedLocationStatistics]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationType]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationType]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeCount]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeName]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationTypeName]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetNewSubmittedComments]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetNewSubmittedComments]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetRatingByUserForItemVersion]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetRatingByUserForItemVersion]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertComment]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertComment]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spSaveComment]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spSaveComment]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocation]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocation]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateRating]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateRating]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateRatingByUserForItemVersion]') AND objectproperty(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateRatingByUserForItemVersion]
 GO
 
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]
+/* Functions */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_fnDistanceBetween]') AND objectproperty(id, N'IsScalarFunction') = 1)
+DROP FUNCTION {databaseOwner}[{objectQualifier}EngageLocator_fnDistanceBetween]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertLocation]
+
+/* Views */
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') AND objectproperty(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertTempLocation]
+
+/* Tables */
+
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_AttributeDefinition_{objectQualifier}EngageLocator_LocationType]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spCopyLocation]
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = object_id(N'[FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_AttributeDefinition]') AND fkeyid = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_AttributeDefinition]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_vLocations]') and OBJECTPROPERTY(id, N'IsView') = 1)
-drop view {databaseOwner}[{objectQualifier}EngageLocator_vLocations]
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocation]
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsById]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsById]
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocation]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocation]
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]') AND type in (N'U'))
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]') AND objectproperty(id, N'IsUserTable') = 1)
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_AttributeDefinition]
 GO
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]') AND type in (N'U'))
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Comment]') AND objectproperty(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comment]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Country]') AND objectproperty(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Country]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Files]') AND objectproperty(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Files]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_Location]') AND fkeyid = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_LocationAttribute_{objectQualifier}EngageLocator_Location]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]') AND objectproperty(id, N'IsUserTable') = 1)
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationAttribute]
 GO
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Comments]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comments]
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_State]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_State] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spSaveComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spSaveComment]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_State_EngageLocator_Country]') AND objectproperty(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_State] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_State_EngageLocator_Country]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateComment]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_State]') AND objectproperty(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_State]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetComments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetComments]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_State]') AND objectproperty(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_State]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetNewSubmittedComments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetNewSubmittedComments]
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_Country]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spInsertComment]
+IF EXISTS (SELECT * FROM dbo.sysconstraints WHERE constid = object_id(N'{databaseOwner}[CK_{objectQualifier}EngageLocator_Location_LatitudeLongitude]') AND id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [CK_{objectQualifier}EngageLocator_TempLocation_LatitudeLongitude]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetComment]
+IF EXISTS (SELECT * FROM dbo.sysconstraints WHERE constid = object_id(N'{databaseOwner}[CK_{objectQualifier}EngageLocator_TempLocation_NullLatitudeLongitude]') AND id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [CK_{objectQualifier}EngageLocator_TempLocation_NullLatitudeLongitude]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spAddAttributeDefinition]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]') AND objectproperty(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteAttributeDefinition]
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_State]') AND fkeyid = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_TempLocation_EngageLocator_State]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinition]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]') AND objectproperty(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionByName]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Rating]') AND objectproperty(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Rating]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByPortal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetAttributeDefinitionsByPortal]
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]') AND fkeyid = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_Location_EngageLocator_Country]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteComment]
+IF EXISTS (SELECT * FROM dbo.sysforeignkeys WHERE constid = object_id(N'{databaseOwner}[FK_{objectQualifier}EngageLocator_Location_EngageLocator_State]') AND fkeyid = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [FK_{objectQualifier}EngageLocator_Location_EngageLocator_State]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeDefinitions]
+IF  EXISTS (SELECT * FROM dbo.sysconstraints WHERE constid = object_id(N'{databaseOwner}[CK_{objectQualifier}EngageLocator_Location_LatitudeLongitude]') AND id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [CK_{objectQualifier}EngageLocator_Location_LatitudeLongitude]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationAttributeValues]
+IF EXISTS (SELECT * FROM dbo.sysconstraints WHERE constid = object_id(N'{databaseOwner}[CK_{objectQualifier}EngageLocator_Location_NullLatitudeLongitude]') AND id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] DROP CONSTRAINT [CK_{objectQualifier}EngageLocator_Location_NullLatitudeLongitude]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateLocationAttribute]
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spAddLocationAttribute]
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spUpdateAttributeDefinition]
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocations]
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Comment]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
-DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comment]
-GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]') AND objectproperty(id, N'IsUserTable') = 1)
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location]
 GO
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') AND objectproperty(id, N'IsUserTable') = 1)
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationType]
