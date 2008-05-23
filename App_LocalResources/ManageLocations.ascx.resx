@@ -133,7 +133,7 @@
     <value>Choose One...</value>
   </data>
   <data name="Edit.EditText" xml:space="preserve">
-    <value>Delete</value>
+    <value>Edit</value>
   </data>
   <data name="FileExists.Text" xml:space="preserve">
     <value>File already exists. Please Rename or try a new file</value>
