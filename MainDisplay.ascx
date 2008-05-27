@@ -7,8 +7,9 @@
     <asp:ImageButton ID="lbImportFile" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/importbt.gif" OnClick="lblImportFile_OnClick" />
     <asp:ImageButton ID="lbManageComments" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/commentsbt.gif" OnClick="lblManageComments_OnClick" />
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lblManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" />
+    
 </div>
-<br />
+
 <div class="locatorHeader">
     <h1 class="locatorHeaderText">
         <asp:Label ID="lblHeader" runat="server" EnableViewState="false" resourcekey="lblHeader" Text="lblHeader" /></h1>
@@ -153,13 +154,13 @@
                     </HeaderTemplate>
                     <ItemTemplate> 
                         <tr class="locationEntryTR">
-                            <td class="locationTitleTD Normal">
+                            <td class="locationTitleTD">
                                 <table>
                                     <tr>
-                                        <td class="locationTitleTD_Number Normal">
-                                            <asp:Label ID="lblLocationMapNumber" runat="server" />
+                                        <td class="locationTitleTD_Number">
+                                            <asp:Label ID="lblLocationMapNumber" CssClass="NormalBold" runat="server" />
                                         </td>
-                                        <td class="locationTitleTD Normal">
+                                        <td class="locationTitleTD">
                                             <asp:Hyperlink ID="lnkLocationName" runat="server" CssClass="SubHead" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString() %>'><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Name").ToString())%></asp:Hyperlink> <br />
 	                                        <asp:Label ID="lblLocationsGridAddress" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Address").ToString())%><br /></asp:Label>
 	                                        <asp:Label ID="lblLocationsGridCity" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "City").ToString()) + ","%></asp:Label> 
@@ -172,15 +173,15 @@
                                     </tr>
                                 </table>
 	                        </td>
-                            <td class="distanceTitleTD Normal">
-	                            <asp:Label ID="lblWalkIn" runat="server"></asp:Label>
+                            <td class="distanceTitleTD">
+	                            <asp:Label ID="lblWalkIn" CssClass="Normal" runat="server"></asp:Label>
 	                            <asp:Label ID="lblLocationsGridDistance" runat="server" CssClass="Normal" /><br />
 	                            <asp:Label ID="lblCurrentlyMapped" runat="server" resourcekey="LocationDisplayHeaders" CssClass="hideCurrentlyMapped" />
 	                            <asp:Panel ID="pnlDescription" runat="server" CssClass="locationsGridDescriptionPopup" style="display:none"></asp:Panel>
 	                            <div class="viewMapBt"><asp:LinkButton ID="lnkMapIt" runat="server" Text="View Map" CssClass="CommandButton" resourcekey="lnkMapIt" /></div>
                             </td>
                             <% if(ShowLocationDetails == "True" || ShowLocationDetails == "SamePage") { %>
-                            <td class="locationDetailsTitleTD Normal">                                
+                            <td class="locationDetailsTitleTD">                                
 	                            <asp:Label ID="lblLocationDetails" runat="server" CssClass="Normal"><%# DataBinder.Eval(Container.DataItem, "LocationDetails").ToString()%></asp:Label>
                             </td>
                             <% } %>
