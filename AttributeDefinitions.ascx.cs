@@ -307,6 +307,14 @@ namespace Engage.Dnn.Locator
         /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, System.EventArgs e)
         {
+            // Global navigation
+            if (UserInfo.IsSuperUser)
+            {
+                lbLocationTypes.Enabled = false;
+                lbLocationTypes.CssClass = "menuLocationTypesDisabled";
+                lbLocationTypes.ImageUrl = "~/desktopmodules/EngageLocator/images/locationTypesBt-grey.gif";
+            }
+
             try
             {
                 BindData();

@@ -140,7 +140,15 @@ namespace Engage.Dnn.Locator
         }
 
         protected void Page_Load(object sender, EventArgs e)
-        {           
+        {
+            // Global navigation
+            if (UserInfo.IsSuperUser)
+            {
+                lbImportFile.Enabled = false;
+                lbImportFile.CssClass = "menuImportFileDisabled";
+                lbImportFile.ImageUrl = "~/desktopmodules/EngageLocator/images/importBt-grey.gif";
+            }
+
             string error = String.Empty;
 
             if (MainDisplay.IsConfigured(TabModuleId, ref error))

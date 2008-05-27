@@ -95,25 +95,25 @@ namespace Engage.Dnn.Locator
             Response.Redirect(href, true);
         }
 
-        protected void lblManageLocations_OnClick(object sender, EventArgs e)
+        protected void lbManageLocations_OnClick(object sender, EventArgs e)
         {
             string href = EditUrl("ManageLocations");
             Response.Redirect(href, true);
         }
 
-        protected void lblImportFile_OnClick(object sender, EventArgs e)
+        protected void lbImportFile_OnClick(object sender, EventArgs e)
         {
             string href = EditUrl("Import");
             Response.Redirect(href, true);
         }
 
-        protected void lblManageComments_OnClick(object sender, EventArgs e)
+        protected void lbManageComments_OnClick(object sender, EventArgs e)
         {
             string href = EditUrl("ManageComments");
             Response.Redirect(href, true);
         }
 
-        protected void lblManageTypes_OnClick(object sender, EventArgs e)
+        protected void lbManageTypes_OnClick(object sender, EventArgs e)
         {
             string href = EditUrl("AttributeDefinitions");
             Response.Redirect(href, true);

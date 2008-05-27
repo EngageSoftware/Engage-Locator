@@ -53,6 +53,14 @@ namespace Engage.Dnn.Locator
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Global navigation
+            if (UserInfo.IsSuperUser)
+            {
+                lbManageLocations.Enabled = false;
+                lbManageLocations.CssClass = "menuLocationsDisabled";
+                lbManageLocations.ImageUrl = "~/desktopmodules/EngageLocator/images/locationBt-grey.gif";
+            }
+
             string error = String.Empty;
 
             if (MainDisplay.IsConfigured(TabModuleId, ref error))

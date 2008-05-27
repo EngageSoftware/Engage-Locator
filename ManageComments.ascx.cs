@@ -54,7 +54,14 @@ namespace Engage.Dnn.Locator
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            // Global navigation
+            if (UserInfo.IsSuperUser)
+            {
+                lbManageComments.Enabled = false;
+                lbManageComments.CssClass = "menuCommentsDisabled";
+                lbManageComments.ImageUrl = "~/desktopmodules/EngageLocator/images/commentsBt-grey.gif";
+            }
+
             string error = String.Empty;
 
             if (MainDisplay.IsConfigured(TabModuleId, ref error))
