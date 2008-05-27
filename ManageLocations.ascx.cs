@@ -57,7 +57,7 @@ namespace Engage.Dnn.Locator
             if (UserInfo.IsSuperUser)
             {
                 lbManageLocations.Enabled = false;
-                lbManageLocations.CssClass = "menuLocationsDisabled";
+                lbManageLocations.CssClass = "mnavDisabled";
                 lbManageLocations.ImageUrl = "~/desktopmodules/EngageLocator/images/locationBt-grey.gif";
             }
 

@@ -311,7 +311,7 @@ namespace Engage.Dnn.Locator
             if (UserInfo.IsSuperUser)
             {
                 lbLocationTypes.Enabled = false;
-                lbLocationTypes.CssClass = "menuLocationTypesDisabled";
+                lbLocationTypes.CssClass = "mnavDisabled";
                 lbLocationTypes.ImageUrl = "~/desktopmodules/EngageLocator/images/locationTypesBt-grey.gif";
             }
 

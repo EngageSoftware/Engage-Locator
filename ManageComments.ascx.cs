@@ -58,7 +58,7 @@ namespace Engage.Dnn.Locator
             if (UserInfo.IsSuperUser)
             {
                 lbManageComments.Enabled = false;
-                lbManageComments.CssClass = "menuCommentsDisabled";
+                lbManageComments.CssClass = "mnavDisabled";
                 lbManageComments.ImageUrl = "~/desktopmodules/EngageLocator/images/commentsBt-grey.gif";
             }
 

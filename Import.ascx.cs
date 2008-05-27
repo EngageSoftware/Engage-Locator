@@ -145,7 +145,7 @@ namespace Engage.Dnn.Locator
             if (UserInfo.IsSuperUser)
             {
                 lbImportFile.Enabled = false;
-                lbImportFile.CssClass = "menuImportFileDisabled";
+                lbImportFile.CssClass = "mnavDisabled";
                 lbImportFile.ImageUrl = "~/desktopmodules/EngageLocator/images/importBt-grey.gif";
             }
 
