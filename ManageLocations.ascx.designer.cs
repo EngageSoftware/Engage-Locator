@@ -23,6 +23,15 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.ImageButton lbSettings;
         
         /// <summary>
+        /// lbManageLocations control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton lbManageLocations;
+        
+        /// <summary>
         /// lbImportFile control.
         /// </summary>
         /// <remarks>
