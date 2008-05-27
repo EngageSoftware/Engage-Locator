@@ -35,7 +35,10 @@ namespace Engage.Dnn.Locator
                 BindData();
             }
 
-            lblAddComment.Visible = CommentsEnabled;
+            btnAddComment.OnClientClick = "show('divAddComment'); return false;";
+            btnCancel.OnClientClick = "hide('divAddComment'); return false;";
+
+            btnAddComment.Visible = CommentsEnabled;
             upnlRating.Visible = RatingsEnabled;
         }
 

@@ -85,10 +85,8 @@ function show(d)
                     <asp:TextBox ID="txtSubmittedBy" runat="server" CssClass="Normal" />
                 </div>
                 <div>
-                    <asp:LinkButton ID="btnSubmit" runat="server" CssClass="CommandButton" OnClick="btnSubmit_Click"
-                        resourcekey="btnSubmit" Text='<%# Localization.GetString("btnSubmit", LocalResourceFile) %>' />
-                    <a href="javascript:hide('divAddComment')">
-                        <asp:Label ID="lblCancel" runat="server" CssClass="CommandButton" Text="Cancel" resourcekey="lblCancel" /></a>
+                    <asp:Button ID="btnSubmit" runat="server" CssClass="CommandButton" OnClick="btnSubmit_Click" resourcekey="btnSubmit" Text='<%# Localization.GetString("btnSubmit", LocalResourceFile) %>' />
+                    <asp:Button ID="btnCancel" runat="server" CssClass="CommandButton" resourcekey="btnCancel" Text='<%# Localization.GetString("btnCancel", LocalResourceFile) %>' />
                 </div>
             </div>
         </td>
@@ -119,14 +117,11 @@ function show(d)
 
 			<tr>
             	<td>
-                    <div class="addCommentBt">
-                        <a id="lnkAddComment" href="javascript:show('divAddComment')" visible="true">
-                            <asp:Label ID="lblAddComment" runat="server" CssClass="CommandButton" Text="Add a Comment" resourcekey="lblAddComment" /></a>
+                    <div>
+                        <asp:Button ID="btnAddComment" runat="server" CssClass="CommandButton" resourcekey="btnAddComment" Text='<%# Localization.GetString("btnAddComment", LocalResourceFile) %>' />
                     </div>
 				</td>                    
 			</tr>
-
-
     </tr>
 </table>
 <div>

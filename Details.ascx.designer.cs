@@ -32,15 +32,6 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Label lblLocationName;
         
         /// <summary>
-        /// lnkLocationName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkLocationName;
-        
-        /// <summary>
         /// lblLocationsAddress1 control.
         /// </summary>
         /// <remarks>
@@ -75,6 +66,15 @@ namespace Engage.Dnn.Locator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPhoneNumber;
+        
+        /// <summary>
+        /// lnkLocationName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkLocationName;
         
         /// <summary>
         /// lblLocationDetailsTitle control.
@@ -149,15 +149,6 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Label lblCommentSubmitted;
         
         /// <summary>
-        /// lblAddComment control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAddComment;
-        
-        /// <summary>
         /// lblAddCommentInstructions control.
         /// </summary>
         /// <remarks>
@@ -209,16 +200,16 @@ namespace Engage.Dnn.Locator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSubmit;
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
-        /// lblCancel control.
+        /// btnCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCancel;
+        protected global::System.Web.UI.WebControls.Button btnCancel;
         
         /// <summary>
         /// rptComments control.
@@ -228,6 +219,15 @@ namespace Engage.Dnn.Locator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptComments;
+        
+        /// <summary>
+        /// btnAddComment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddComment;
         
         /// <summary>
         /// btnBack control.

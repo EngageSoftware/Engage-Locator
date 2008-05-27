@@ -126,13 +126,13 @@
   <data name="ControlTitle_locationdetails.Text" xml:space="preserve">
     <value>Location Details</value>
   </data>
-  <data name="lblAddComment.Text" xml:space="preserve">
+  <data name="btnAddComment.Text" xml:space="preserve">
     <value>Add Comment</value>
   </data>
   <data name="lblAddCommentInstructions.Text" xml:space="preserve">
     <value>Let us know your thoughts on this location.</value>
   </data>
-  <data name="lblCancel.Text" xml:space="preserve">
+  <data name="btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="lblCommentAuthor.Text" xml:space="preserve">
