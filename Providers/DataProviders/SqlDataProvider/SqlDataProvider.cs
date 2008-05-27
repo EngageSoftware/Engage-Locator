@@ -556,11 +556,11 @@ namespace Engage.Dnn.Locator.Data
                 {
                     if (i == 0)
                     {
-                        sql.AppendFormat(CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(id) + "'");
+                        sql.AppendFormat(CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
                     }
                     else
                     {
-                        sql.AppendFormat(CultureInfo.InvariantCulture, " OR Type = '" + LocationType.GetLocationTypeName(id) + "'");
+                        sql.AppendFormat(CultureInfo.InvariantCulture, " OR Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
                     }
 
                     i++;
@@ -590,11 +590,11 @@ namespace Engage.Dnn.Locator.Data
                 {
                     if (i == 0)
                     {
-                        sql.AppendFormat(CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(Convert.ToInt32(s)) + "'");
+                        sql.AppendFormat(CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(Convert.ToInt32(s)).Replace("'", "''") + "'");
                     }
                     else
                     {
-                        sql.AppendFormat(CultureInfo.InvariantCulture, " OR Type = '" + LocationType.GetLocationTypeName(Convert.ToInt32(s)) + "'");
+                        sql.AppendFormat(CultureInfo.InvariantCulture, " OR Type = '" + LocationType.GetLocationTypeName(Convert.ToInt32(s)).Replace("'", "''") + "'");
                     }
 
                     i++;
