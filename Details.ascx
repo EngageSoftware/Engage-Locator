@@ -20,7 +20,7 @@ function show(d)
                 <asp:Label ID="lblLocationId" runat="server" CssClass="Normal" Visible="false" />
             </div>
             <div class="ldName">
-                <asp:Label ID="lblLocationName" runat="server" CssClass="Head" />
+                <asp:Label ID="lblLocationName" runat="server" CssClass="SubHead" />
             </div>
             <div class="ldAddress1">
                 <asp:Label ID="lblLocationsAddress1" runat="server" CssClass="Normal" />
@@ -43,7 +43,7 @@ function show(d)
        { %><tr>
         <td>
             <div>
-                <asp:Label ID="lblLocationDetailsTitle" runat="server" CssClass="Head" resourcekey="lblLocationDetailsTitle" />
+                <asp:Label ID="lblLocationDetailsTitle" runat="server" CssClass="SubHead" resourcekey="lblLocationDetailsTitle" />
             </div>
             <div>
                 <asp:Label ID="lblLocationDetails" runat="server" CssClass="Normal"></asp:Label>
@@ -67,7 +67,7 @@ function show(d)
     <tr>
         <td>
             <div class="ldCommentHeading">
-                <asp:Label ID="lblLocationComments" runat="server" CssClass="Head" Text="Comments"
+                <asp:Label ID="lblLocationComments" runat="server" CssClass="SubHead" Text="Comments"
                     resourcekey="lblLocationComments" />
             </div>
             <div>
@@ -75,21 +75,20 @@ function show(d)
             </div>	
             <div id="divAddComment" style="display: none">
                 <div>
-                    <asp:Label ID="lblAddCommentInstructions" runat="server" CssClass="Normal" resourcekey="lblAddCommentInstructions" />
-                    <asp:TextBox ID="txtComment" runat="server" CssClass="Normal" TextMode="multiLine"
-                        Rows="5" MaxLength="200" />
-                    <asp:RequiredFieldValidator ID="rfvComment" runat="server" CssClass="Normal" ErrorMessage="Please enter a comment"
-                        resourcekey="rfvComment" ControlToValidate="txtComment" />
+                    <p><asp:Label ID="lblAddCommentInstructions" runat="server" CssClass="Normal" resourcekey="lblAddCommentInstructions" />
+                    <div><asp:TextBox ID="txtComment" runat="server" CssClass="NormalTextBox" TextMode="multiLine" Rows="5" MaxLength="200" Columns="42" /></div>
+                    <div><asp:RequiredFieldValidator ID="rfvComment" runat="server" CssClass="NormalRed" ErrorMessage="Please enter a comment" 
+                    	resourcekey="rfvComment" ControlToValidate="txtComment" /></div>
                 </div>
                 <div>
                     <asp:Label ID="lblSubmittedBy" runat="server" CssClass="Normal" resourcekey="lblSubmittedBy" />
                     <asp:TextBox ID="txtSubmittedBy" runat="server" CssClass="Normal" />
                 </div>
                 <div>
-                    <asp:LinkButton ID="btnSubmit" runat="server" CssClass="Normal" OnClick="btnSubmit_Click"
+                    <asp:LinkButton ID="btnSubmit" runat="server" CssClass="CommandButton" OnClick="btnSubmit_Click"
                         resourcekey="btnSubmit" Text='<%# Localization.GetString("btnSubmit", LocalResourceFile) %>' />
-                    <a href="javascript:hide('divAddComment')" class="Normal">
-                        <asp:Label ID="lblCancel" runat="server" Text="Cancel" resourcekey="lblCancel" /></a>
+                    <a href="javascript:hide('divAddComment')">
+                        <asp:Label ID="lblCancel" runat="server" CssClass="CommandButton" Text="Cancel" resourcekey="lblCancel" /></a>
                 </div>
             </div>
         </td>
