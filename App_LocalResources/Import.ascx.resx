@@ -142,7 +142,7 @@
     <value>File already exists. Please Rename or try a new file</value>
   </data>
   <data name="FileUploaded.Text" xml:space="preserve">
-    <value>File has been uploaded to the processing directory.</value>
+    <value>Your file has been submitted for processing and you will be notified when the scheduler has processed your file.</value>
   </data>
   <data name="Details.Help" xml:space="preserve">
     <value>Specify the details to be displayed when users are viewing the location(s).</value>

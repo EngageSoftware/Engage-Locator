@@ -62,7 +62,7 @@ namespace Engage.Dnn.Locator
                 }
                 else
                 {
-                    lblMessage.Text = Localization.GetString("FileExists", LocalResourceFile);
+                    lblMessage.Text = Localization.GetString("lblMessage", LocalResourceFile);
                 }
 
                 VerifyFolders();
