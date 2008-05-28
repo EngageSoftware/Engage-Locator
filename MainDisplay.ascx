@@ -122,7 +122,7 @@
 	            <asp:Label ID="lblNumClosest" runat="server" CssClass="Normal" resourcekey="lblNumClosest" />
 	        </div>
 	        <div class="closestLocationTitle"><a name="map"></a><asp:Label ID="lblLocatorMapLabel" runat="server" /><span id="locatorMapLabel" class="SubHead"></span> </div>
-	        <div class="locatorMapLabelWrapper">
+	        <div class="locatorMapLabelWrapper Normal">
                 <div id="Div1" style="display:none;">
 	                <a id="A1" target="_blank" ><asp:Label ID="Label1" runat="server" resourcekey="lblMapLinkMapName" /></a>
 	                <asp:Label ID="Label2" runat="server" resourcekey="lblMapLinkDrivingDirections"/>
