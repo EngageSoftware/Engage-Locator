@@ -264,25 +264,47 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Images\approve.gif" />
+    <Content Include="Images\approveBtDisabled.gif" />
     <Content Include="Images\back.gif" />
+    <Content Include="Images\backBtDisabled.gif" />
     <Content Include="Images\caAddNew.gif" />
+    <Content Include="Images\caAddNewBtDisabled.gif" />
     <Content Include="Images\caCreateNew.gif" />
+    <Content Include="Images\caCreateNewBtDisabled.gif" />
     <Content Include="Images\caDelete.gif" />
+    <Content Include="Images\caDeleteBtDisabled.gif" />
     <Content Include="Images\caEdit.gif" />
     <Content Include="Images\cancel.gif" />
+    <Content Include="Images\cancelBt.gif" />
+    <Content Include="Images\cancelBtDisabled.gif" />
     <Content Include="Images\commentsBt.gif" />
+    <Content Include="Images\commentsBtDisabled.gif" />
     <Content Include="Images\delete_disabled_bt.gif" />
     <Content Include="Images\edit_disabled_bt.gif" />
     <Content Include="Images\EmptyStar.png" />
     <Content Include="Images\FilledStar.png" />
     <Content Include="Images\importBt.gif" />
+    <Content Include="Images\importBtDisabled.gif" />
+    <Content Include="Images\import_bt.gif" />
+    <Content Include="Images\indicator_mozilla_blu.gif" />
     <Content Include="Images\locationBt.gif" />
+    <Content Include="Images\locationBtDisabled.gif" />
     <Content Include="Images\locationTypesBt.gif" />
+    <Content Include="Images\locationTypesBtDisabled.gif" />
+    <Content Include="Images\manage_comments_bt.gif" />
+    <Content Include="Images\manage_location_bt.gif" />
+    <Content Include="Images\progressbar_microsoft.gif" />
     <Content Include="Images\reject.gif" />
+    <Content Include="Images\rejectBtDisabled.gif" />
     <Content Include="Images\SavedStar.png" />
     <Content Include="Images\settingsBt.gif" />
+    <Content Include="Images\settingsBtDisabled.gif" />
+    <Content Include="Images\settings_bt.gif" />
+    <Content Include="Images\submitBt.gif" />
+    <Content Include="Images\submitBtDisabled.gif" />
     <Content Include="Images\submit_bt.gif" />
     <Content Include="Images\update.gif" />
+    <Content Include="Images\updateBtDisabled.gif" />
     <Content Include="Services\WebServices.asmx" />
     <Content Include="Settings.ascx" />
   </ItemGroup>
