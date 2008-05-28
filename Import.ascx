@@ -17,7 +17,7 @@
         <div class="divPanelTab" id="divPanelTab" runat="server">
             <div class="importPanel" runat="server" id="fileDiv">
                 <div class="importUploader"><asp:FileUpload ID="fileImport" runat="server" /></div>
-                <div class="importError"><asp:Label ID="lblMessage" runat="server" CssClass="NormalRed"></asp:Label></div>
+                <div class="importSucess"><asp:Label ID="lblMessage" runat="server" CssClass="NormalBold"></asp:Label></div>
             </div>
         </div>            
     </fieldset>
