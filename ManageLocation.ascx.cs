@@ -11,7 +11,6 @@ using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.Utilities;
 using Globals=DotNetNuke.Common.Globals;
 using System.Globalization;
-using Engage.Dnn.Locator.Providers.MapProviders;
 using Engage.Dnn.Locator.Maps;
 
 namespace Engage.Dnn.Locator

@@ -860,9 +860,11 @@ AS
 		WHERE LocationId = @locationId 
 GO
 
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location]
-ALTER COLUMN LocationDetails [ntext]
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] ALTER COLUMN LocationDetails [ntext]
 GO
 
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comment]
-ALTER COLUMN Text [ntext]
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] ALTER COLUMN LocationDetails [ntext]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comment] ALTER COLUMN Text [ntext]
+go

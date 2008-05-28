@@ -3,7 +3,6 @@ using System.Text;
 using System.Web;
 using System.Xml;
 using System.Net;
-using Engage.Dnn.Locator.Providers.MapProviders;
 
 namespace Engage.Dnn.Locator
 {
