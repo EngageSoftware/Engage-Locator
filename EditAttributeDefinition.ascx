@@ -16,7 +16,7 @@
             <p><asp:Label ID="lblDefaultValue" runat="server" resourceKey="lblDefaultValue" CssClass="Normal" /></p>
         </div>
         <div id="div_DefaultValue" class="eadTextBox">
-            <p><asp:TextBox ID="txtName" runat="server" CssClass="NormalTextBox" /><asp:RequiredFieldValidator ID="rfvName" CssClass="Normal" runat="server" ControlToValidate="txtName" ErrorMessage="Name is required" /></p>
+            <p><asp:TextBox ID="txtName" runat="server" CssClass="NormalTextBox" /><asp:RequiredFieldValidator ID="rfvName" CssClass="NormalRed" runat="server" ControlToValidate="txtName" ErrorMessage="Name is required" /></p>
             <p><asp:TextBox ID="txtDefaultValue" runat="server" CssClass="NormalTextBox" /></p>
         </div>
 </fieldset>
