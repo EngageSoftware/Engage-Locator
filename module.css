@@ -63,8 +63,11 @@
 
 tr.locationEntryTR{height:75px;vertical-align:top;}
 .locationTitleTD_Number{width: 10px;vertical-align:text-top;}
+
 .locationTitleTD{width: 170px;}
+
 td.locationTitleTD{padding-bottom: 1em;}
+
 .locationDetailsTitleTD{width: 150px;}
 td.locationDetailsTitleTD{padding: 5px 0 0 20px;}
 .distanceTitleTD{width: 150px;}
@@ -75,6 +78,9 @@ border-top: 1px solid #C1DAD7;letter-spacing: 2px; text-transform: uppercase;	te
 border-top: 1px solid #C1DAD7; letter-spacing: 2px;	text-align: left;padding: 6px 6px 6px 12px;background: #e7f6f7;}
 .dataImportPage{background: #f8f8f8; border-right: 1px #f1f1f1 solid; border-bottom: 1px #f1f1f1 solid;}
 .titleHeading{width: 480px;}
+
+.titleHeading td{vertical-align: top;}
+
 .locationTitleHead{width: 180px;}
 .locationDetailsTitleHead{width: 150px;}
 .distanceTitleHead{width: 150px;}
