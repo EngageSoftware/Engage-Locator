@@ -16,7 +16,7 @@
 </div>
 <asp:UpdatePanel ID="upDataImport" runat="server">
     <ContentTemplate>
-        <fieldset>
+        <fieldset class="ltWrapper">
             <legend class="Head" runat="server" id="lgTypes">Location Types</legend>
             <div class="locType">
                 <h3 class="SubHead" runat="server" id="hdSelect">Select a Location</h3>
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </fieldset>
-        <fieldset>
+        <fieldset class="caWrapper">
             <legend class="Head" id="lgCustomAttributes" runat="server">Custom Attributes</legend>
             <div id="divCustomAttributes" runat="server" class="caData">
                 <asp:DataGrid ID="grdLocationTypeAttributes" AutoGenerateColumns="false" runat="server"
