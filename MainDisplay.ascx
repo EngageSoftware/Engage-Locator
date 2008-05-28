@@ -11,7 +11,7 @@
 
 <div class="locatorHeader">
     <h1 class="locatorHeaderText">
-        <asp:Label ID="lblHeader" runat="server" EnableViewState="false" resourcekey="lblHeader" Text="lblHeader" /></h1>
+        <asp:Label ID="lblHeader" runat="server" EnableViewState="false" Text="lblHeader" /></h1>
 </div>
 
 <asp:MultiView ID="mvwLocator" runat="server" ActiveViewIndex="0">

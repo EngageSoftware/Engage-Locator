@@ -440,7 +440,7 @@ namespace Engage.Dnn.Locator
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             Location.DeleteLocation(locationId);
-            Response.Redirect(EditUrl("Import"));
+            Response.Redirect(EditUrl("ManageLocations"));
         }
 
         protected void rptCustomAttributes_ItemDataBound(object sender, RepeaterItemEventArgs e)

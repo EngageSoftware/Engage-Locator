@@ -868,3 +868,36 @@ GO
 
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comment] ALTER COLUMN Text [ntext]
 go
+
+INSERT INTO {databaseOwner}[{objectQualifier}Schedule] 
+([TypeFullName] ,[TimeLapse] ,[TimeLapseMeasurement],[RetryTimeLapse],[RetryTimeLapseMeasurement],[RetainHistoryNum],[AttachToEvent],[CatchUpEnabled],[Enabled],[ObjectDependencies] ,[Servers])
+VALUES ('Engage.Dnn.Locator.Components.DataImportScheduler', 60, 'm', 60,'s', 25, 'APPLICATION_START', 1,	1, '', NULL)
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertFileInfo]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertFileInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spInsertFileInfo]
+	@FileId int, 
+	@UserId int,
+	@TabModuleId int, 
+	@PortalId int, 
+	@UploadDate datetime, 
+	@Succeeded bit, 
+	@Processed bit
+
+AS
+	declare @id int
+	
+	SELECT @id = FileId FROM {databaseOwner}[{objectQualifier}EngageLocator_Files] where FileId = @FileId
+
+	if (@id is null)
+	begin
+		--print 'Insert'
+		Insert into {databaseOwner}[{objectQualifier}EngageLocator_Files] (FileId, UserId, TabModuleId, PortalId, UploadDate, Succeeded, Processed)
+		Values (@FileId, @UserId, @TabModuleId,  @PortalId, @UploadDate, @Succeeded, @Processed)	
+	end
+	
+GO
+

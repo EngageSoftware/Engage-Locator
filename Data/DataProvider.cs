@@ -76,7 +76,7 @@ namespace Engage.Dnn.Locator.Data
         public abstract string CopyData();
         public abstract void ClearLocations(int portalId);
         public abstract void ClearTempLocations();
-        public abstract void InsertFileInfo(int fileId, int userId, int tabModuleId, int portalId, DateTime uploadDate, int succeeded, int processed);
+        public abstract void InsertFileInfo(int fileId, int userId, int tabModuleId, int portalId, DateTime uploadDate, bool succeeded, bool processed);
         public abstract DataTable GetEmailByFileId(int fileId);
         public abstract int GetLastImportIndex();
         public abstract DataTable GetLatitudeLongitude(string address, string city);

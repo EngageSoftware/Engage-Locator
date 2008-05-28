@@ -107,8 +107,20 @@ namespace Engage.Dnn.Locator
         {
             try
             {
-                if (!SubmissionsEnabled)
-                    lnkSubmitLocation.Visible = false;
+
+                string title;
+                if (Settings["SearchTitle"] != null)
+                {
+                    title = Settings["SearchTitle"].ToString();
+                }
+                else
+                {
+                    title = Localization.GetString("lblHeader", LocalResourceFile);
+                }
+
+                lblHeader.Text = title;
+
+                if (!SubmissionsEnabled) lnkSubmitLocation.Visible = false;
                 lbSettings.Visible = IsEditable;
                 lbImportFile.Visible = IsEditable;
                 lbManageComments.Visible = IsEditable;

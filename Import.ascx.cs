@@ -67,7 +67,7 @@ namespace Engage.Dnn.Locator
 
                 VerifyFolders();
                 UploadFile();
-                DataImportScheduler import = new DataImportScheduler();
+
             }
             catch (Exception exc)
             {
@@ -79,15 +79,19 @@ namespace Engage.Dnn.Locator
         protected void UploadFile()
         {
             System.Web.HttpPostedFile postedFile = fileImport.PostedFile;
+            
             FolderInfo fi = FileSystemUtils.GetFolder(PortalId, "Location Import");
-            ArrayList al = FileSystemUtils.GetFilesByFolder(PortalId, fi.FolderID);
+
+            //ArrayList al = FileSystemUtils.GetFilesByFolder(PortalId, fi.FolderID);
+
+            string[] files = Directory.GetFiles(fi.PhysicalPath);
+
             FileController fc = new FileController();
-            DataProvider provider = DataProvider.Instance();
             string fileName = Path.GetFileName(postedFile.FileName);
             string newPath = fi.PhysicalPath + fileName;
-            foreach (FileInfo s in al)
+            foreach (string s in files)
             {
-                if (s.FileName == fileName)
+                if (s == fileName)
                 {
                     lblMessage.Text = Localization.GetString("FileExists", LocalResourceFile); 
                     return;
@@ -98,7 +102,8 @@ namespace Engage.Dnn.Locator
             string ext = Path.GetExtension(postedFile.FileName).Substring(1);
             int fileId = fc.AddFile(PortalId, fileName,ext , postedFile.ContentLength, Null.NullInteger, Null.NullInteger, postedFile.ContentType, fi.FolderPath, fi.FolderID, true);
 
-            provider.InsertFileInfo(fileId, UserId, TabModuleId, PortalId, DateTime.Now, 0, 0);
+            DataProvider provider = DataProvider.Instance();
+            provider.InsertFileInfo(fileId, UserId, TabModuleId, PortalId, DateTime.Now, false, false);
             lblMessage.Text = Localization.GetString("FileUploaded", LocalResourceFile); 
 
         }

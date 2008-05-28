@@ -252,12 +252,20 @@ namespace Engage.Dnn.Locator.Data
             SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.Text, sql.ToString());
         }
 
-        public override void InsertFileInfo(int fileId, int userId, int tabModuleId, int portalId, DateTime uploadDate, int succeeded, int processed)
+        public override void InsertFileInfo(int fileId, int userId, int tabModuleId, int portalId,
+            DateTime uploadDate, bool succeeded, bool processed)
         {
             StringBuilder sql = new StringBuilder(500);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "Insert into {0}Files (FileId, UserId, TabModuleId, PortalId, UploadDate, Succeeded, Processed)  values (@FileId, @UserId, @TabModuleId,  @PortalId, @UploadDate, @Succeeded, @Processed)", NamePrefix);
 
-            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.Text, sql.ToString(), CreateIntegerParam("@FileId", fileId), CreateIntegerParam("@UserId", userId), CreateIntegerParam("@TabModuleId", tabModuleId), CreateIntegerParam("@PortalId", portalId), CreateDateTimeParam("@UploadDate", uploadDate), CreateIntegerParam("@Succeeded", succeeded), CreateIntegerParam("@Processed", processed));
+            SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertFileInfo", 
+                   CreateIntegerParam("@FileId", fileId),
+                   CreateIntegerParam("@UserId", userId), 
+                   CreateIntegerParam("@TabModuleId", tabModuleId), 
+                   CreateIntegerParam("@PortalId", portalId), 
+                   CreateDateTimeParam("@UploadDate", uploadDate), 
+                   CreateBitParam("@Succeeded", succeeded), 
+                   CreateBitParam("@Processed", processed));
+
         }
 
         public override DataTable GetEmailByFileId(int fileId)

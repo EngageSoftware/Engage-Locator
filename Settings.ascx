@@ -165,7 +165,7 @@
         </td>
         <td width="350">
             <asp:RadioButtonList ID="rblMapDisplayType" runat="server" CssClass="Normal" RepeatDirection="horizontal">
-                <asp:ListItem Text="Normal" Value="Normal" resourcekey="rbMapDisplayNormal" />
+                <asp:ListItem Text="Normal" Value="Normal" resourcekey="rbMapDisplayNormal" Selected="True" />
                 <asp:ListItem Text="Satellite" Value="Satellite" resourcekey="rbMapDisplaySatellite" />
                 <asp:ListItem Text="Hybrid" Value="Hybrid" resourcekey="rbMapDisplayHybrid" />
             </asp:RadioButtonList>
@@ -249,7 +249,7 @@
                 <tr>
                     <td>
                         <asp:CheckBox ID="chkCityRegion" runat="server" Text="City & Region" resourcekey="chkCityState" />
-                        <asp:CheckBox ID="chkPostalCode" runat="server" Text="Postal Code" resourcekey="chkPostalCode" />
+                        <asp:CheckBox ID="chkPostalCode" runat="server" Text="Postal Code" Checked="true" resourcekey="chkPostalCode" />
                     </td>
                 </tr>
                 <tr>

@@ -26,8 +26,7 @@ using LumenWorks.Framework.IO.Csv;
 
 namespace Engage.Dnn.Locator.Components
 {
-    public class DataImportScheduler
-    //public class DataImportScheduler: DotNetNuke.Services.Scheduling.SchedulerClient
+    public class DataImportScheduler : DotNetNuke.Services.Scheduling.SchedulerClient
     {
         private const string ImportFolderName = "Location Import";
         private const string WorkingFolderName = "Location Import/Working/";
@@ -35,24 +34,19 @@ namespace Engage.Dnn.Locator.Components
         private const string ErrorFolderName = "Location Import/Error/";
         private int _portalId;
 
-        public DataImportScheduler()
+        public DataImportScheduler(DotNetNuke.Services.Scheduling.ScheduleHistoryItem scheduleHistoryItem)
         {
-            ThreadPool.QueueUserWorkItem(DoWork);
+            ScheduleHistoryItem = scheduleHistoryItem;
         }
 
-        //public DataImportScheduler(DotNetNuke.Services.Scheduling.ScheduleHistoryItem scheduleHistoryItem)
-        //{
-        //    ScheduleHistoryItem = scheduleHistoryItem;
-        //}
-
-        public void DoWork(Object threadContext)
+        public override void DoWork()
         {
-            while (HasFilesToImport)
+            try
             {
-                DataTable files = Location.GetFilesToImport();
-
-                try
+                while (HasFilesToImport)
                 {
+                    DataTable files = Location.GetFilesToImport();
+
                     foreach (DataRow file in files.Rows)
                     {
                         _portalId = Convert.ToInt32(file["PortalId"].ToString());
@@ -83,18 +77,26 @@ namespace Engage.Dnn.Locator.Components
                     }
 
                 }
-                catch (System.IO.IOException io)
-                {
-                    //these occur when trying to access the file and it is open. This will occur alot and we don't want to 
-                    //write all of them to the log.
-                    FileMove(false);
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                    FileMove(false);
-                }
             }
+            catch (System.IO.IOException io)
+            {
+                //these occur when trying to access the file and it is open. This will occur alot and we don't want to 
+                //write all of them to the log.
+                FileMove(false);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                ScheduleHistoryItem.Succeeded = false;
+                ScheduleHistoryItem.AddLogNote("Locator Import Failed: " + ex.ToString());
+                FileMove(false);
+            }
+            finally
+            {
+                ScheduleHistoryItem.Succeeded = true;
+                ScheduleHistoryItem.AddLogNote("Locator Import completed successfully.<br>");
+            }
+
         }
 
         public void StageData(ArrayList files, FolderInfo folderInfo)
