@@ -7,7 +7,6 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using Engage.Dnn.Locator.Data;
 using Engage.Dnn.Locator.Maps;
-using Engage.Dnn.Locator.Providers.MapProviders;
 
 namespace Engage.Dnn.Locator.Services
 {
