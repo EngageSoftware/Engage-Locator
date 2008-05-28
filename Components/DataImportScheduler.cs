@@ -21,7 +21,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using Engage.Dnn.Locator.Data;
-using Engage.Dnn.Locator.Providers.MapProviders;
 using Engage.Dnn.Locator.Maps;
 using LumenWorks.Framework.IO.Csv;
 
@@ -84,6 +83,12 @@ namespace Engage.Dnn.Locator.Components
                     }
 
                 }
+                catch (System.IO.IOException io)
+                {
+                    //these occur when trying to access the file and it is open. This will occur alot and we don't want to 
+                    //write all of them to the log.
+                    FileMove(false);
+                }
                 catch (Exception ex)
                 {
                     Exceptions.LogException(ex);
@@ -99,8 +104,11 @@ namespace Engage.Dnn.Locator.Components
             {
                 foreach (DotNetNuke.Services.FileSystem.FileInfo fileInfo in files)
                 {
-                    File.Move(fileInfo.PhysicalPath, folderInfo.PhysicalPath + fileInfo.FileName);
-                    fc.UpdateFile(fileInfo.FileId, fileInfo.FileName, fileInfo.Extension.Substring(1), fileInfo.Size, Null.NullInteger, Null.NullInteger, fileInfo.ContentType, folderInfo.PhysicalPath, folderInfo.FolderID);
+                    if (File.Exists(fileInfo.PhysicalPath))
+                    {
+                        File.Move(fileInfo.PhysicalPath, folderInfo.PhysicalPath + fileInfo.FileName);
+                        fc.UpdateFile(fileInfo.FileId, fileInfo.FileName, fileInfo.Extension.Substring(1), fileInfo.Size, Null.NullInteger, Null.NullInteger, fileInfo.ContentType, folderInfo.PhysicalPath, folderInfo.FolderID);
+                    }
                 }
             }
         }
