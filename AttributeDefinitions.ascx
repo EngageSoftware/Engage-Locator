@@ -2,7 +2,8 @@
     Inherits="Engage.Dnn.Locator.AttributeDefinitions" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 
-<div class="div_ManagementButtons">
+<div class="adWrapper">
+<div class="globalNav">
     <asp:ImageButton ID="lbSettings" CssClass="CommandButton" runat="server" AlternateText="Settings" ImageUrl="~/desktopmodules/EngageLocator/images/settingsBt.gif" OnClick="lbSettings_OnClick" />
     <asp:ImageButton ID="lbManageLocations" CssClass="CommandButton" runat="server" AlternateText="Manage Locations" ImageUrl="~/desktopmodules/EngageLocator/images/locationbt.gif" OnClick="lbManageLocations_OnClick" />
     <asp:ImageButton ID="lbImportFile" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/importbt.gif" OnClick="lbImportFile_OnClick" />
@@ -10,23 +11,21 @@
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lbManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" />
 </div>
 
-<div style="text-align: left;">
+<div class="adInstruction">
     <asp:Label ID="lblLocationTypeHelp" runat="Server" class="Normal" resourcekey="LocationTypeAttributesHelp" />
 </div>
-<br />
 <asp:UpdatePanel ID="upDataImport" runat="server">
     <ContentTemplate>
         <fieldset>
             <legend class="Head" runat="server" id="lgTypes">Location Types</legend>
             <div class="locType">
                 <h3 class="SubHead" runat="server" id="hdSelect">Select a Location</h3>
-                <div class="">
+                <div class="locTypeWrapper">
                     <div class="locTypeListView">
                         <asp:ListBox ID="lbLocType" CssClass="Normal" runat="server" Rows="5" Width="50%"
                             AutoPostBack="True" OnSelectedIndexChanged="lbLocType_SelectedIndexChanged">
                         </asp:ListBox>
                     </div>
-                    <br />
                     <div class="locTypeNav">
                         <div>
                             <asp:ImageButton ID="btnEditLocationType" runat="server" ToolTip="Click here to edit this location type"
@@ -46,16 +45,17 @@
                         </div>
                         <div id="dvLocationType" runat="server" visible="false">
                             <div id="dvLocationTypeEdit" runat="server">
-                                <asp:TextBox ID="txtEditLocationType" runat="server" Width="150px" CssClass="Normal"></asp:TextBox><asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtEditLocationType" CssClass="Normal" Display="Dynamic" ErrorMessage="Name is required."></asp:RequiredFieldValidator>
-                                <asp:ImageButton ID="btnUpdateLocationType" runat="server" ImageUrl ="~/desktopmodules/EngageLocator/images/submit_bt.gif" OnClick="btnUpdateLocationType_Click"  CssClass="CommandButton"></asp:ImageButton>
-                                <asp:ImageButton ID="btnCancelLocationType" runat="server" ImageUrl="~/desktopmodules/EngageLocator/images/Cancel.gif" OnClick="btnCancelLocationType_Click" CssClass="CommandButton" CausesValidation="false"></asp:ImageButton>
+                                <div><asp:TextBox ID="txtEditLocationType" runat="server" Width="150px" CssClass="Normal"></asp:TextBox><asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtEditLocationType" CssClass="Normal" Display="Dynamic" ErrorMessage="Name is required."></asp:RequiredFieldValidator></div>
+                                <div>
+                                <asp:ImageButton ID="btnUpdateLocationType" runat="server" ImageUrl ="~/desktopmodules/EngageLocator/images/submitBt.gif" OnClick="btnUpdateLocationType_Click" CssClass="CommandButton" ToolTip="Click here to update changes when done" AlternateText="Submit Changes"></asp:ImageButton>
+                                <asp:ImageButton ID="btnCancelLocationType" runat="server" ImageUrl="~/desktopmodules/EngageLocator/images/cancelBt.gif" OnClick="btnCancelLocationType_Click" CssClass="CommandButton" CausesValidation="false" ToolTip="Click here to abort changes" AlternateText="Cancel changes" ></asp:ImageButton>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </fieldset>
-        <br />
         <fieldset>
             <legend class="Head" id="lgCustomAttributes" runat="server">Custom Attributes</legend>
             <div id="divCustomAttributes" runat="server" class="caData">
@@ -102,7 +102,6 @@
                     </Columns>
                 </asp:DataGrid>
             </div>
-            <br />
             <div class="caAddNew">
                 <asp:ImageButton ID="btnCAAdd" runat="server" ToolTip="Click here to add a new custom attribute"
                     AlternateText="Add a new custom attribute" CssClass="CommandButton" ImageUrl="~/desktopmodules/EngageLocator/images/caAddNew.gif"
@@ -111,8 +110,6 @@
         </fieldset>
     </ContentTemplate>
 </asp:UpdatePanel>
-<br />
-<br />
 <div class="caNavBt">
     <asp:ImageButton ID="cmdUpdate" runat="server" ToolTip="Click here to update this window"
         AlternateText="Update this entire window" CssClass="CommandButton" ImageUrl="~/desktopmodules/EngageLocator/images/update.gif"
@@ -120,4 +117,5 @@
     <asp:ImageButton ID="cmdCancel" runat="server" ToolTip="Click here to go back to the previous screen"
         AlternateText="Cancel and return to previous screen" CssClass="CommandButton"
         ImageUrl="~/desktopmodules/EngageLocator/images/back.gif" OnClick="cmdCancel_Click" />
+</div>
 </div>
