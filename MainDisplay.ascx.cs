@@ -22,7 +22,6 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Locator.Data;
-using Engage.Dnn.Locator.Providers.MapProviders;
 using Engage.Dnn.Locator.Maps;
 
 namespace Engage.Dnn.Locator
