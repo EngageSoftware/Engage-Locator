@@ -340,7 +340,7 @@
     <value>Click the browse button to locate a .csv file to import your locations.</value>
   </data>
   <data name="lgImport.Text" xml:space="preserve">
-    <value>Import Fiile</value>
+    <value>Import File</value>
   </data>
   <data name="ControlTitle_import.Text" xml:space="preserve">
     <value>Import File</value>
