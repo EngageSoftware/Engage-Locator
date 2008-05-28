@@ -59,7 +59,7 @@ namespace Engage.Dnn.Locator
             {
                 lbManageComments.Enabled = false;
                 lbManageComments.CssClass = "mnavDisabled";
-                lbManageComments.ImageUrl = "~/desktopmodules/EngageLocator/images/commentsBt-grey.gif";
+                lbManageComments.ImageUrl = "~/desktopmodules/EngageLocator/images/commentsBtDisabled.gif";
             }
 
             string error = String.Empty;

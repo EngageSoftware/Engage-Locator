@@ -312,7 +312,7 @@ namespace Engage.Dnn.Locator
             {
                 lbLocationTypes.Enabled = false;
                 lbLocationTypes.CssClass = "mnavDisabled";
-                lbLocationTypes.ImageUrl = "~/desktopmodules/EngageLocator/images/locationTypesBt-grey.gif";
+                lbLocationTypes.ImageUrl = "~/desktopmodules/EngageLocator/images/locationTypesBtDisabled.gif";
             }
 
             try

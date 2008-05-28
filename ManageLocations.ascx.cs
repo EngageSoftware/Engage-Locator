@@ -58,7 +58,7 @@ namespace Engage.Dnn.Locator
             {
                 lbManageLocations.Enabled = false;
                 lbManageLocations.CssClass = "mnavDisabled";
-                lbManageLocations.ImageUrl = "~/desktopmodules/EngageLocator/images/locationBt-grey.gif";
+                lbManageLocations.ImageUrl = "~/desktopmodules/EngageLocator/images/locationBtDisabled.gif";
             }
 
             string error = String.Empty;

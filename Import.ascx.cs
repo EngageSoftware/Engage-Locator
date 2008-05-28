@@ -146,7 +146,7 @@ namespace Engage.Dnn.Locator
             {
                 lbImportFile.Enabled = false;
                 lbImportFile.CssClass = "mnavDisabled";
-                lbImportFile.ImageUrl = "~/desktopmodules/EngageLocator/images/importBt-grey.gif";
+                lbImportFile.ImageUrl = "~/desktopmodules/EngageLocator/images/importBtDisabled.gif";
             }
 
             string error = String.Empty;
