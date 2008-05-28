@@ -9,7 +9,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.Utilities;
-using Globals=DotNetNuke.Common.Globals;
+using Globals = DotNetNuke.Common.Globals;
 using System.Globalization;
 using Engage.Dnn.Locator.Maps;
 
@@ -78,7 +78,7 @@ namespace Engage.Dnn.Locator
                 }
 
                 LoadCustomAttributes();
-                
+
                 txtLocationId.Focus();
             }
         }
@@ -227,168 +227,190 @@ namespace Engage.Dnn.Locator
             {
                 if (txtLocationId.Text != String.Empty && locationId > 0)
                 {
-                    Location currentLocation = Location.GetLocation(locationId);
-                    string error;
-                    string address;
-                    string city = txtCity.Text;
-
-                    currentLocation.ExternalIdentifier = txtLocationId.Text;
-                    currentLocation.Name = txtName.Text;
-                    currentLocation.Website = txtWebsite.Text;
-
-                    address = txtAddress1.Text;
-
-                    if (txtAddress2.Text != String.Empty)
-                    {
-                        address = address + ", " + txtAddress2.Text;
-                    }
-                    currentLocation.Address = address;
-                    currentLocation.City = city;
-                    currentLocation.RegionId = Convert.ToInt32(ddlState.SelectedValue);
-                    currentLocation.StateName = ddlState.SelectedItem.ToString();
-                    currentLocation.CountryId = Convert.ToInt32(ddlCountry.SelectedValue);
-                    currentLocation.PostalCode = txtZip.Text;
-                    currentLocation.Phone = txtPhone.Text;
-                    currentLocation.LocationDetails = teLocationDetails.Text;
-                    currentLocation.LocationTypeId = Convert.ToInt32(ddlType.SelectedValue);
-                    currentLocation.PortalId = PortalId;
-                    currentLocation.Website = txtWebsite.Text;
-                    currentLocation.LastUpdateDate = DateTime.Now;
-                    string location = txtAddress1.Text + ", " + currentLocation.City + ", " + currentLocation.StateName + ", " + currentLocation.PostalCode;
-                    if (currentLocation.Latitude.ToString() != txtLatitude.Text || currentLocation.Longitude.ToString() != txtLongitude.Text)
-                    {
-                        currentLocation.Latitude = Convert.ToDouble(txtLatitude.Text);
-                        currentLocation.Longitude = Convert.ToDouble(txtLongitude.Text);
-                        error = "Success";
-                    }
-                    else
-                    {
-                        Nullable<double> latitude;
-                        Nullable<double> longitude;
-                        GetGeoCodeResults(city, ddlState.SelectedItem.ToString(), txtZip.Text, txtAddress1.Text, out latitude, out longitude, out error, location);
-                        currentLocation.Latitude = Convert.ToDouble(latitude);
-                        currentLocation.Longitude = Convert.ToDouble(longitude);
-                    }
-                    if (SubmissionModerationEnabled)
-                        currentLocation.Approved = rbApprove.Checked;
-                    else
-                        currentLocation.Approved = true;
-                    if (error == "Success")
-                    {
-                        foreach (RepeaterItem item in rptCustomAttributes.Items)
-                        {
-                            HiddenField hdnLocationAttributeID = (HiddenField)item.FindControl("hdnLocationAttributeID");
-                            HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
-                            TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
-                            if (Convert.ToInt32(hdnLocationAttributeID.Value) > 0)
-                            {
-                                Attribute.UpdateAttribute(Convert.ToInt32(hdnLocationAttributeID.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
-                            }
-                            else
-                            {
-                                Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
-                            }
-                        }
-                        currentLocation.Update();
-                        Response.Redirect(EditUrl("ManageLocations"));
-                    }
-                    else
-                    {
-                        lblError.Text = error + " - Please try submitting your location again.";
-                    }
+                    UpdateLocation();
                 }
                 else
                 {
-                    Location newLocation = new Location();
-                    string error;
-                    string address;
-                    string city = txtCity.Text;
-
-                    newLocation.ExternalIdentifier = txtLocationId.Text;
-                    newLocation.Name = txtName.Text;
-                    newLocation.Website = txtWebsite.Text;
-
-                    address = txtAddress1.Text;
-
-                    if (txtAddress2.Text != String.Empty)
-                    {
-                        address = address + ", " + txtAddress2.Text;
-                    }
-
-                    if (SubmissionModerationEnabled)
-                    {
-                        if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
-                            newLocation.Approved = rbApprove.Checked;
-                        else
-                            newLocation.Approved = false;
-                    }
-
-                    newLocation.Address = address;
-                    newLocation.City = city;
-                    newLocation.RegionId = Convert.ToInt32(ddlState.SelectedValue);
-                    newLocation.StateName = ddlState.SelectedItem.ToString();
-                    newLocation.CountryId = Convert.ToInt32(ddlCountry.SelectedValue);
-                    newLocation.PostalCode = txtZip.Text;
-                    newLocation.Phone = txtPhone.Text;
-                    newLocation.LocationDetails = teLocationDetails.Text;
-                    newLocation.LocationTypeId = Convert.ToInt32(ddlType.SelectedValue);
-                    newLocation.PortalId = PortalId;
-                    newLocation.Website = txtWebsite.Text;
-                    newLocation.LastUpdateDate = DateTime.Now;
-                    string location = txtAddress1.Text + ", " + newLocation.City + ", " + newLocation.StateName + ", " + newLocation.PostalCode;
-                    if (txtLatitude.Text != "" || txtLongitude.Text != "")
-                    {
-                        newLocation.Latitude = Convert.ToDouble(txtLatitude.Text);
-                        newLocation.Longitude = Convert.ToDouble(txtLongitude.Text);
-                        error = "Success";
-                    }
-                    else
-                    {
-                        Nullable<double> latitude;
-                        Nullable<double> longitude;
-                        GetGeoCodeResults(city, ddlState.SelectedItem.ToString(), txtZip.Text, txtAddress1.Text, out latitude, out longitude, out error, location);
-                        newLocation.Latitude = Convert.ToDouble(latitude);
-                        newLocation.Longitude = Convert.ToDouble(longitude);
-                    }
-                    //settings are set to moderate and the user is logged in as admin
-                    if (SubmissionModerationEnabled)
-                    {
-                        newLocation.Approved = false;
-                    }
-                    else
-                    {
-                        newLocation.Approved = true;
-                    }
-
-                    if (rbApprove.Visible) newLocation.Approved = rbApprove.Checked;
-
-
-                    if (error == "Success")
-                    {
-                        lblError.Visible = false;
-                        newLocation.Save();
-                        foreach (RepeaterItem item in rptCustomAttributes.Items)
-                        {
-                            HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
-                            TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
-                            Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), newLocation.LocationId, txtLocationAttributeValue.Text);
-                        }
-                        if (IsEditable)
-                            Response.Redirect(EditUrl("ManageLocations"));
-                        else
-                            Response.Redirect(Globals.NavigateURL());
-                    }
-                    else
-                    {
-                        lblError.Text = error + " - Please try submitting your location again.";
-                        singleDivError.Visible = true;
-                        lblError.Visible = true;
-                    }
+                    SaveLocation();
                 }
+
             }
             catch (Exception ex)
             {
                 Exceptions.ProcessModuleLoadException(this, ex);
+            }
+        }
+
+        private void UpdateLocation()
+        {
+            Location currentLocation = Location.GetLocation(locationId);
+            string error;
+            string address;
+            string city = txtCity.Text;
+
+            currentLocation.ExternalIdentifier = txtLocationId.Text;
+            currentLocation.Name = txtName.Text;
+            currentLocation.Website = txtWebsite.Text;
+
+            address = txtAddress1.Text;
+
+            if (txtAddress2.Text != String.Empty)
+            {
+                address = address + ", " + txtAddress2.Text;
+            }
+            currentLocation.Address = address;
+            currentLocation.City = city;
+            currentLocation.RegionId = Convert.ToInt32(ddlState.SelectedValue);
+            currentLocation.StateName = ddlState.SelectedItem.ToString();
+            currentLocation.CountryId = Convert.ToInt32(ddlCountry.SelectedValue);
+            currentLocation.PostalCode = txtZip.Text;
+            currentLocation.Phone = txtPhone.Text;
+            currentLocation.LocationDetails = teLocationDetails.Text;
+            currentLocation.LocationTypeId = Convert.ToInt32(ddlType.SelectedValue);
+            currentLocation.PortalId = PortalId;
+            currentLocation.Website = txtWebsite.Text;
+            currentLocation.LastUpdateDate = DateTime.Now;
+            string location = txtAddress1.Text + ", " + currentLocation.City + ", " + currentLocation.StateName + ", " + currentLocation.PostalCode;
+            if (currentLocation.Latitude.ToString() != txtLatitude.Text || currentLocation.Longitude.ToString() != txtLongitude.Text)
+            {
+                currentLocation.Latitude = Convert.ToDouble(txtLatitude.Text);
+                currentLocation.Longitude = Convert.ToDouble(txtLongitude.Text);
+                error = "Success";
+            }
+            else
+            {
+                Nullable<double> latitude;
+                Nullable<double> longitude;
+                GetGeoCodeResults(city, ddlState.SelectedItem.ToString(), txtZip.Text, txtAddress1.Text, out latitude, out longitude, out error, location);
+                currentLocation.Latitude = Convert.ToDouble(latitude);
+                currentLocation.Longitude = Convert.ToDouble(longitude);
+            }
+            if (SubmissionModerationEnabled)
+                currentLocation.Approved = rbApprove.Checked;
+            else
+                currentLocation.Approved = true;
+            if (error == "Success")
+            {
+                foreach (RepeaterItem item in rptCustomAttributes.Items)
+                {
+                    HiddenField hdnLocationAttributeID = (HiddenField)item.FindControl("hdnLocationAttributeID");
+                    HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
+                    TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
+                    if (Convert.ToInt32(hdnLocationAttributeID.Value) > 0)
+                    {
+                        Attribute.UpdateAttribute(Convert.ToInt32(hdnLocationAttributeID.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
+                    }
+                    else
+                    {
+                        Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), currentLocation.LocationId, txtLocationAttributeValue.Text);
+                    }
+                }
+                currentLocation.Update();
+                if (IsEditable)
+                {
+                    Response.Redirect(EditUrl("ManageLocations"), true);
+                }
+                else
+                {
+                    Response.Redirect(Globals.NavigateURL(), true);
+                }
+            }
+            else
+            {
+                singleDivError.Visible = true;
+                lblError.Text = error + " - Please try submitting your location again.";
+            }
+        }
+
+        private void SaveLocation()
+        {
+            Location newLocation = new Location();
+            string error;
+            string address;
+            string city = txtCity.Text;
+
+            newLocation.ExternalIdentifier = txtLocationId.Text;
+            newLocation.Name = txtName.Text;
+            newLocation.Website = txtWebsite.Text;
+
+            address = txtAddress1.Text;
+
+            if (txtAddress2.Text != String.Empty)
+            {
+                address = address + ", " + txtAddress2.Text;
+            }
+
+            if (SubmissionModerationEnabled)
+            {
+                if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
+                    newLocation.Approved = rbApprove.Checked;
+                else
+                    newLocation.Approved = false;
+            }
+
+            newLocation.Address = address;
+            newLocation.City = city;
+            newLocation.RegionId = Convert.ToInt32(ddlState.SelectedValue);
+            newLocation.StateName = ddlState.SelectedItem.ToString();
+            newLocation.CountryId = Convert.ToInt32(ddlCountry.SelectedValue);
+            newLocation.PostalCode = txtZip.Text;
+            newLocation.Phone = txtPhone.Text;
+            newLocation.LocationDetails = teLocationDetails.Text;
+            newLocation.LocationTypeId = Convert.ToInt32(ddlType.SelectedValue);
+            newLocation.PortalId = PortalId;
+            newLocation.Website = txtWebsite.Text;
+            newLocation.LastUpdateDate = DateTime.Now;
+            string location = txtAddress1.Text + ", " + newLocation.City + ", " + newLocation.StateName + ", " + newLocation.PostalCode;
+            if (txtLatitude.Text != "" || txtLongitude.Text != "")
+            {
+                newLocation.Latitude = Convert.ToDouble(txtLatitude.Text);
+                newLocation.Longitude = Convert.ToDouble(txtLongitude.Text);
+                error = "Success";
+            }
+            else
+            {
+                Nullable<double> latitude;
+                Nullable<double> longitude;
+                GetGeoCodeResults(city, ddlState.SelectedItem.ToString(), txtZip.Text, txtAddress1.Text, out latitude, out longitude, out error, location);
+                newLocation.Latitude = Convert.ToDouble(latitude);
+                newLocation.Longitude = Convert.ToDouble(longitude);
+            }
+            //settings are set to moderate and the user is logged in as admin
+            if (SubmissionModerationEnabled)
+            {
+                newLocation.Approved = false;
+            }
+            else
+            {
+                newLocation.Approved = true;
+            }
+
+            if (rbApprove.Visible) newLocation.Approved = rbApprove.Checked;
+
+
+            if (error == "Success")
+            {
+                lblError.Visible = false;
+                newLocation.Save();
+                foreach (RepeaterItem item in rptCustomAttributes.Items)
+                {
+                    HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
+                    TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
+                    Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value), newLocation.LocationId, txtLocationAttributeValue.Text);
+                }
+                if (IsEditable)
+                {
+                    Response.Redirect(EditUrl("ManageLocations"), true);
+                }
+                else
+                {
+                    Response.Redirect(Globals.NavigateURL(), true);
+                }
+            }
+            else
+            {
+                lblError.Text = error + " - Please try submitting your location again.";
+                singleDivError.Visible = true;
             }
         }
 

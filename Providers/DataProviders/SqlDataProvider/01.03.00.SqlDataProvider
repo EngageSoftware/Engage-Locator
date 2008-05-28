@@ -871,7 +871,7 @@ go
 
 INSERT INTO {databaseOwner}[{objectQualifier}Schedule] 
 ([TypeFullName] ,[TimeLapse] ,[TimeLapseMeasurement],[RetryTimeLapse],[RetryTimeLapseMeasurement],[RetainHistoryNum],[AttachToEvent],[CatchUpEnabled],[Enabled],[ObjectDependencies] ,[Servers])
-VALUES ('Engage.Dnn.Locator.Components.DataImportScheduler', 60, 'm', 60,'s', 25, 'APPLICATION_START', 1,	1, '', NULL)
+VALUES ('Engage.Dnn.Locator.Components.DataImportScheduler', 15, 'm', 60,'s', 25, 'APPLICATION_START', 1,	1, '', NULL)
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spInsertFileInfo]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
