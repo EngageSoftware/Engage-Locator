@@ -11,9 +11,7 @@
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lbManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" CausesValidation="false" />
 </div>
 
-<div class="adInstruction">
-    <asp:Label ID="lblLocationTypeHelp" runat="Server" class="Normal" resourcekey="LocationTypeAttributesHelp" />
-</div>
+<asp:Label ID="lblLocationTypeHelp" runat="Server" class="locatorInstruction Normal" resourcekey="LocationTypeAttributesHelp" />
 <asp:UpdatePanel ID="upDataImport" runat="server">
     <ContentTemplate>
         <fieldset class="ltWrapper">
@@ -22,30 +20,33 @@
                 <h3 class="SubHead" runat="server" id="hdSelect">Select a Location</h3>
                 <div class="locTypeWrapper">
                     <div class="locTypeListView">
-                        <asp:ListBox ID="lbLocType" CssClass="Normal" runat="server" Rows="5" Width="50%"
+                        <asp:ListBox ID="lbLocType" CssClass="Normal" runat="server" Rows="5" Width="100%"
                             AutoPostBack="True" OnSelectedIndexChanged="lbLocType_SelectedIndexChanged">
                         </asp:ListBox>
                     </div>
                     <div class="locTypeNav">
-                        <div>
+                        <div class="adEditBt">
                             <asp:ImageButton ID="btnEditLocationType" runat="server" ToolTip="Click here to edit this location type"
                                 AlternateText="Edit this location type" CssClass="CommandButton" ImageUrl="~/desktopmodules/EngageLocator/images/caEdit.gif"
                                 OnClick="btnEditLocationType_Click" />
                         </div>
-                        <div>
+                        <div class="adDeleteBt">
                             <asp:ImageButton ID="btnDeleteLocationType" runat="server" ToolTip="Click here to delete this location type"
                                 AlternateText="Delele this location type" CssClass="CommandButton" 
                                 ImageUrl="~/desktopmodules/EngageLocator/images/caDelete.gif" 
                                 onclick="btnDeleteLocationType_Click" />
                         </div>
-                        <div>
+                        <div class="adCreateNewBt">
                             <asp:ImageButton ID="btnCreateLocationType" runat="server" ToolTip="Click here to create a new location type"
                                 AlternateText="Create new location type" CssClass="CommandButton" ImageUrl="~/desktopmodules/EngageLocator/images/caCreateNew.gif"
                                 OnClick="btnCreateLocationType_Click" />
                         </div>
                         <div id="dvLocationType" runat="server" visible="false">
                             <div id="dvLocationTypeEdit" runat="server">
-                                <div><asp:TextBox ID="txtEditLocationType" runat="server" Width="150px" CssClass="Normal"></asp:TextBox><asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtEditLocationType" CssClass="Normal" Display="Dynamic" ErrorMessage="Name is required."></asp:RequiredFieldValidator></div>
+                                <div class="adAddNewLT">
+                                    <div><asp:TextBox ID="txtEditLocationType" runat="server" Width="150px" CssClass="NormalTextBox"></asp:TextBox></div>
+                                    <div class="adError"><asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtEditLocationType" CssClass="NormalRed" Display="Dynamic" ErrorMessage="Name is required."></asp:RequiredFieldValidator></div>
+                                </div>
                                 <div>
                                 <asp:ImageButton ID="btnUpdateLocationType" runat="server" ImageUrl ="~/desktopmodules/EngageLocator/images/submitBt.gif" OnClick="btnUpdateLocationType_Click" CssClass="CommandButton" ToolTip="Click here to update changes when done" AlternateText="Submit Changes"></asp:ImageButton>
                                 <asp:ImageButton ID="btnCancelLocationType" runat="server" ImageUrl="~/desktopmodules/EngageLocator/images/cancelBt.gif" OnClick="btnCancelLocationType_Click" CssClass="CommandButton" CausesValidation="false" ToolTip="Click here to abort changes" AlternateText="Cancel changes" ></asp:ImageButton>

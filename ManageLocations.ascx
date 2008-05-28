@@ -10,7 +10,7 @@
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lbManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" CausesValidation="false" />
 </div>
 
-<asp:Label ID="lblConfigured" runat="server" CssClass="Normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations." Visible="False" resourcekey="lblConfigured"></asp:Label>
+<asp:Label ID="lblConfigured" runat="server" CssClass="locatorInstruction Normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations." Visible="False" resourcekey="lblConfigured"></asp:Label>
 
 <div class="divPanelTab" id="divPanelTab" runat="server">
     <asp:ImageButton runat="server" ID="btnAddLocation" CssClass="CommandButton" AlternateText="Add New Location" OnClick="btnAddLocation_Click" ImageUrl="~/desktopmodules/EngageLocator/images/caCreateNew.gif" />

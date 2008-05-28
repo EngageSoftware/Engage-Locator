@@ -159,7 +159,7 @@ border-top: 1px solid #C1DAD7; letter-spacing: 2px;	text-align: left;padding: 6p
 
 
 .globalNav{padding: 1em 0;}
-
+legend{padding: 0 20px 0 5px; text-align: left;}
 
 /**********************Mini Search***********************************/
 .MiniSearch {width: 200px;}
@@ -218,22 +218,47 @@ Attribute Definition (Custom Attribute) Page
 
 .mnavDisabled{cursor: default;}
 .adWrapper{}
-	.adInstruction{text-align: left; background: #ffffa5; padding: 1em; border: 1px #ccc solid;}
-
+	.locatorInstruction{text-align: left; background: #fbff9b; padding: 1em; border: 1px #666 solid; display: block; margin: 1em 0;}
 	.ltWrapper{margin: 1em 0; text-align: left;}
 	.caWrapper{text-align: left;}
 		.locType{}
 			.locTypeWrapper{width: 100%;}
-				.locTypeListView{float: left; width: 60%;}
-				.locTypeNav{float: left; width: 35%; text-align: left;}
+				.locTypeListView{float: left; width: 60%; text-align: right;}
+					.locTypeListView option{border-bottom: 1px #ccc solid; padding: 5px 0; display: block;}
+					.locTypeListView select{}
+					.locTypeListView select option[selected]{background-color: #455170;  color: #fff; cursor: default;}
+				.locTypeNav{float: right; width: 38%; text-align: left;}
 				
+				
+
+.adAddNewLT{}
+	.adAddNewLT .NormalTextBox{margin: 5px 0;}
+	.adAddNewLT .adError{padding-bottom: 5px;}
+				
+	.caAddNew{text-align: center; padding-top: 1em;}	
+	.caNavBt{padding: 1em 0;}
+	
+
+	.adEditBt, .adDeleteBt, .adCreateNewBt{padding-bottom: 5px;}
+	
+
+.editeAttributeWrapper{width: 100%;}
+	.editeAttributeWrapper .eadLabel{float: left; text-align: right; width: 48%;}
+	.editeAttributeWrapper .eadTextBox{float: right; text-align: left; width: 48%;}
+	
+	.editeAttributeWrapper p{margin: 10px 0;}
+	
+
+	
 /*==================================================================
 
 Import Page
 
 ==================================================================*/
 
-.importInstruction{}
+.importFileWrapper{padding-top: 1em;}
+	.importFileWrapper legend{padding: 0 20px 0 5px;}
+	.importHelpText{}
 	.importPanel{}
 		.importUploader{}
 		.importError{}
