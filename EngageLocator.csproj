@@ -304,6 +304,7 @@
     <Content Include="Images\submitBtDisabled.gif" />
     <Content Include="Images\submit_bt.gif" />
     <Content Include="Images\update.gif" />
+    <Content Include="Images\updateBt.gif" />
     <Content Include="Images\updateBtDisabled.gif" />
     <Content Include="Services\WebServices.asmx" />
     <Content Include="Settings.ascx" />
