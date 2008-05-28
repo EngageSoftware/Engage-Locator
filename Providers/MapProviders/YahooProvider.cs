@@ -40,7 +40,7 @@ namespace Engage.Dnn.Locator
         public override string GenerateMapScriptCore(string mapType)
         {
             if (SearchCriteria == null) { throw new InvalidOperationException("Search Criteria is not defined"); }
-            if (LatLong == null) { throw new InvalidOperationException("Latitude and Longitude is not defined"); }
+            //if (LatLong == null) { throw new InvalidOperationException("Latitude and Longitude is not defined"); }
 
             StringBuilder script = new StringBuilder(2000);
             script.AppendFormat(CultureInfo.InvariantCulture, @"<script type=""text/javascript"">{0}", Environment.NewLine);
