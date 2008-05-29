@@ -122,7 +122,7 @@
 	            <asp:Label ID="lblNumClosest" runat="server" CssClass="Normal" resourcekey="lblNumClosest" />
 	        </div>
 	        <div class="closestLocationTitle"><a name="map"></a><asp:Label ID="lblLocatorMapLabel" runat="server" /><span id="locatorMapLabel" class="SubHead"></span> </div>
-	        <div class="locatorMapLabelWrapper Normal">
+	        <div class="locatorMapLabelWrapper">
                 <div id="Div1" style="display:none;">
 	                <a id="A1" target="_blank" ><asp:Label ID="Label1" runat="server" resourcekey="lblMapLinkMapName" /></a>
 	                <asp:Label ID="Label2" runat="server" resourcekey="lblMapLinkDrivingDirections"/>
@@ -131,7 +131,7 @@
         </div>
         <div id="divMap" runat="server" class="locatorMap" style="display:none;"></div>
         
-         <div class="locatorMapLabelWrapper">
+         <div class="locatorMapLabelWrapper Normal">
             <asp:Label ID="lblScrollToViewMore" runat="server" resourcekey="lblScrollToViewMore" style="display:none;" />
             <div id="lblMapLink" style="display:none;">
 	            <a id="lnkDrivingDirections" target="_blank" ><asp:Label ID="lblMapLinkMapName" runat="server" resourcekey="lblMapLinkMapName" /></a>
@@ -145,46 +145,45 @@
                 <asp:Repeater ID="rptLocations" runat="server" OnItemDataBound="rptLocations_ItemDataBound">
                     <HeaderTemplate>
 					        <tr>
-					        <th class="locationTitleHead"><asp:Label id="lblLocationHeader" runat="server" resourcekey="lblLocationHeader" /></th>
-					        <th id="thDistance" class="distanceTitleHead"><asp:Label id="lblStoreDistance" runat="server" resourcekey="lblStoreDistance" /></th>
-					        <% if(ShowLocationDetails == "True" || ShowLocationDetails == "SamePage") { %><th><br /><asp:Label id="lblLocationDetails" runat="server" resourcekey="lblLocationDetails" /></th><% } %>
+					        <th class="mdLocationHeading"><asp:Label id="lblLocationHeader" runat="server" resourcekey="lblLocationHeader" /></th>
+					        <th id="thDistance" class="mdDistanceHeading"><asp:Label id="lblStoreDistance" runat="server" resourcekey="lblStoreDistance" /></th>
+					        <% if(ShowLocationDetails == "True" || ShowLocationDetails == "SamePage") { %><th class="mdLDHeading"><asp:Label id="lblLocationDetails" runat="server" resourcekey="lblLocationDetails" /></th><% } %>
 					        </tr>
                         
                     </HeaderTemplate>
                     <ItemTemplate> 
                         <tr class="locationEntryTR">
-                            <td class="locationTitleTD">
-                                <table>
+                            <td class="mdLocation">
+                                <table class="mdLocationDetailTable">
                                     <tr>
-                                        <td class="locationTitleTD_Number">
-                                            <asp:Label ID="lblLocationMapNumber" CssClass="NormalBold" runat="server" />
+                                        <td class="mdLocationNumber">
+                                            <p><asp:Label ID="lblLocationMapNumber" CssClass="NormalBold" runat="server" /></p>
                                         </td>
-                                        <td class="locationTitleTD">
-                                            <asp:Hyperlink ID="lnkLocationName" runat="server" CssClass="SubHead" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString() %>'><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Name").ToString())%></asp:Hyperlink> <br />
+                                        <td class="mdLocationInfo">
+                                            <p><asp:Hyperlink ID="lnkLocationName" runat="server" CssClass="SubHead" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString() %>'><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Name").ToString())%></asp:Hyperlink></p>
 	                                        <asp:Label ID="lblLocationsGridAddress" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Address").ToString())%><br /></asp:Label>
 	                                        <asp:Label ID="lblLocationsGridCity" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "City").ToString()) + ","%></asp:Label> 
 	                                        <asp:Label ID="lblLocationsGridState" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Abbreviation").ToString())%></asp:Label> 
 	                                        <asp:Label ID="lblLocationsGridPostalCode" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "PostalCode").ToString())%></asp:Label>
-	                                        <br />
 	                                        <asp:Label ID="lblPhoneNumber" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Phone").ToString())%></asp:Label>
-	                                        <asp:HyperLink id="lnkShowLocationDetails" runat="server" class="Normal" resourcekey="lnkShowLocationDetails" Visible="false" />
+	                                        <div class="mdViewDetail"><asp:HyperLink id="lnkShowLocationDetails" CssClass="Normal" runat="server" resourcekey="lnkShowLocationDetails" Visible="false" /></div>
                                         </td>
                                     </tr>
                                 </table>
 	                        </td>
-                            <td class="distanceTitleTD">
-	                            <asp:Label ID="lblWalkIn" CssClass="Normal" runat="server"></asp:Label>
-	                            <asp:Label ID="lblLocationsGridDistance" runat="server" CssClass="Normal" /><br />
+                            <td class="mdDistance Normal">
+	                            <asp:Label ID="lblWalkIn" runat="server"></asp:Label>
+	                            <asp:Label ID="lblLocationsGridDistance" runat="server" /><br />
 	                            <asp:Label ID="lblCurrentlyMapped" runat="server" resourcekey="LocationDisplayHeaders" CssClass="hideCurrentlyMapped" />
 	                            <asp:Panel ID="pnlDescription" runat="server" CssClass="locationsGridDescriptionPopup" style="display:none"></asp:Panel>
-	                            <div class="viewMapBt"><asp:LinkButton ID="lnkMapIt" runat="server" Text="View Map" CssClass="CommandButton" resourcekey="lnkMapIt" /></div>
+	                            <div class="viewMapBt"><asp:LinkButton ID="lnkMapIt" runat="server" Text="View Map" resourcekey="lnkMapIt" /></div>
                             </td>
                             <% if(ShowLocationDetails == "True" || ShowLocationDetails == "SamePage") { %>
                             <td class="locationDetailsTitleTD">                                
 	                            <asp:Label ID="lblLocationDetails" runat="server" CssClass="Normal"><%# DataBinder.Eval(Container.DataItem, "LocationDetails").ToString()%></asp:Label>
                             </td>
                             <% } %>
-                           <td class="Normal">
+                           <td class="mdLocationDetail Normal">
                                 <div id="div_SiteLink">
 	                                <asp:HyperLink ID="lbSiteLink" Visible="false" runat="server" CssClass="Normal" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString()%>' resourceKey="lbSiteLink" Text="Click Here"></asp:HyperLink>
 	                            </div>                              

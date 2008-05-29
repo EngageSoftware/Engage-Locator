@@ -61,25 +61,33 @@
 .LocationDisplay{vertical-align: top; width: 480px; border-bottom: 1px #ccc solid;}
 .LocationDisplay td{vertical-align: top;}
 
-tr.locationEntryTR{height:75px;vertical-align:top;}
-.locationTitleTD_Number{width: 10px;vertical-align:text-top;}
-.locationTitleTD{width: 170px;}
-td.locationTitleTD{padding-bottom: 1em;}
-.locationDetailsTitleTD{width: 150px;}
+.mdLocationDetailTable{width: 100%;}
+.mdLocationNumber{width: 10%;vertical-align:text-top;}
+.mdLocationInfo{width: 90%;}
+.mdLocation{}
+
+.locationDetailsTitleTD{}
 td.locationDetailsTitleTD{padding: 5px 0 0 20px;}
-.distanceTitleTD{width: 150px;}
-td.distanceTitleTD{padding: 5px 0 0 20px;width: 150px;}
+.mdDistance{}
+td.mdDistance{padding: 5px 0 0 20px;}
+
+
+.mdLocationDetail{}
+
+
 .titleHeading th{font: bold 11px Helvetica, Geneva, Arial, sans-serif;color: #4f6b72;border-right: 1px solid #C1DAD7;border-bottom: 1px solid #C1DAD7;
 border-top: 1px solid #C1DAD7;letter-spacing: 2px; text-transform: uppercase;	text-align: left;padding: 2px 6px 2px 12px;background: #e7f6f7;}
 .dataImportHeader{font: bold 11px Helvetica, Geneva, Arial, sans-serif; color: #000;border-right: 1px solid #C1DAD7;border-bottom: 1px solid #C1DAD7;
 border-top: 1px solid #C1DAD7; letter-spacing: 2px;	text-align: left;padding: 6px 6px 6px 12px;background: #e7f6f7;}
 .dataImportPage{background: #f8f8f8; border-right: 1px #f1f1f1 solid; border-bottom: 1px #f1f1f1 solid;}
-.titleHeading{width: 480px;}
 
-.titleHeading td{vertical-align: top;}
+.titleHeading{width: 100%;}
 
-.locationTitleHead{width: 180px;}
-.locationDetailsTitleHead{width: 150px;}
+.mdLocationHeading{width: 50%;}
+.mdDistanceHeading{width: 15%;}
+.mdLDHeading{width: 35%;}
+
+
 .distanceTitleHead{width: 150px;}
 .progress{position:relative;z-index: 1;margin-top: 10px;}
 .progressMainDisplay{position:relative;z-index: 1;margin-left: 300px;text-align: center;margin: 0 auto;}
@@ -163,6 +171,8 @@ border-top: 1px solid #C1DAD7; letter-spacing: 2px;	text-align: left;padding: 6p
 
 .globalNav{padding: 1em 0;}
 legend{padding: 0 20px 0 5px; text-align: left;}
+
+.mdViewDetail{}
 
 /**********************Mini Search***********************************/
 .MiniSearch {width: 200px;}
