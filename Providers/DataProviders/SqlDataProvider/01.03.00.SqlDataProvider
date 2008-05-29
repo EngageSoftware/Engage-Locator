@@ -860,13 +860,18 @@ AS
 		WHERE LocationId = @locationId 
 GO
 
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] ALTER COLUMN LocationDetails [ntext]
-GO
+IF EXISTS (SELECT sc.Name, so.Name FROM dbo.syscolumns sc join dbo.sysObjects so on (so.Id = sc.Id)
+	where sc.xusertype = '99' and so.xtype = 'u' AND so.id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_Location]') and sc.Name = 'LocationDetails')
+begin
+	ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] ALTER COLUMN LocationDetails [ntext]
+end
+go
 
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] ALTER COLUMN LocationDetails [ntext]
-GO
-
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Comment] ALTER COLUMN Text [ntext]
+IF EXISTS (SELECT sc.Name, so.Name FROM dbo.syscolumns sc join dbo.sysObjects so on (so.Id = sc.Id)
+	where sc.xusertype = '99' and so.xtype = 'u' AND so.id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]') and sc.Name = 'LocationDetails')
+begin
+	ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] ALTER COLUMN LocationDetails [ntext]
+end
 go
 
 if not exists(select * from {databaseOwner}[Schedule] where TypeFullname = 'Engage.Dnn.Locator.Components.DataImportScheduler')
