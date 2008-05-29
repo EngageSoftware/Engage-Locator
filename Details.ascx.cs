@@ -30,6 +30,12 @@ namespace Engage.Dnn.Locator
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            lbSettings.Visible = IsEditable;
+            lbImportFile.Visible = IsEditable;
+            lbManageLocations.Visible = IsEditable;
+            lbLocationTypes.Visible = IsEditable;
+            lbManageComments.Visible = IsEditable;
+
             if(!Page.IsPostBack)
             {
                 BindData();
