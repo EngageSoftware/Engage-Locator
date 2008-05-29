@@ -874,7 +874,7 @@ begin
 end
 go
 
-if not exists(select * from {databaseOwner}[Schedule] where TypeFullname = 'Engage.Dnn.Locator.Components.DataImportScheduler')
+if not exists(select * from {databaseOwner}[{objectQualifier}Schedule] where TypeFullname = 'Engage.Dnn.Locator.Components.DataImportScheduler')
 begin
 	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] 
 	([TypeFullName] ,[TimeLapse] ,[TimeLapseMeasurement],[RetryTimeLapse],[RetryTimeLapseMeasurement],[RetainHistoryNum],[AttachToEvent],[CatchUpEnabled],[Enabled],[ObjectDependencies] ,[Servers])
