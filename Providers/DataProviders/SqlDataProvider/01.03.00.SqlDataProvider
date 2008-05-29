@@ -878,7 +878,7 @@ if not exists(select * from {databaseOwner}[{objectQualifier}Schedule] where Typ
 begin
 	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] 
 	([TypeFullName] ,[TimeLapse] ,[TimeLapseMeasurement],[RetryTimeLapse],[RetryTimeLapseMeasurement],[RetainHistoryNum],[AttachToEvent],[CatchUpEnabled],[Enabled],[ObjectDependencies] ,[Servers])
-	VALUES ('Engage.Dnn.Locator.Components.DataImportScheduler', 15, 'm', 60,'s', 25, 'APPLICATION_START', 1,	1, '', NULL)
+	VALUES ('Engage.Dnn.Locator.Components.DataImportScheduler,EngageLocator', 15, 'm', 60,'s', 25, 'APPLICATION_START', 1,	1, '', NULL)
 end
 GO
 
