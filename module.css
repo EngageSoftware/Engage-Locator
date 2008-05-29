@@ -22,8 +22,6 @@
 .dvAddressContent a { font-size: 10px; font-weight: bold; }
 .locatorMapSmall{width: 250px; /*Keep this value same as in .locatorMapLabelWrapper */height: 200px;position: fixed;background-color: #f8f1c2;border:solid 1px #000;padding:2px;text-align:left;margin-top:10px;visibility: hidden;position: absolute;cursor:pointer}
 
-
-
 .locationMapHeading {padding: 0; width:100%; clear: both; overflow:hidden; padding: 10px 0px;}
 	.closestsLocations {float: left; width: 20%;}
 	.closestLocationTitle {float:right; text-align:left; width:80%;}
@@ -45,14 +43,18 @@
 
 .importPanelSingle{padding: 10px; margin-top: 15px; border: 1px #ccc solid; background: #f8f8f8;}
 .importPanelSingleCenter{margin: 0 auto; text-align: left; background: #fff; padding: 20px; }
+
 .importPanelSingleCenter input {width: 180px;}
+
 .importPanelSingleCenter select {width: 180px;}
 .importPanelSingleCenter textarea {width: 180px;}
 .importPanelSingleCenter .importButton input {width:80px;}
 .importTableSingle{margin: 0 auto;}
 .datagridLocations{font-size: 14px;}
-.rbstatus {width: 150px; }
-.rbstatus input {width: 30px; }
+
+
+.rbStatus{}
+.rbStatus input{width: 10px !important;}
 
 .InnerLocationDisplay{}
 .LocationDisplayHeaders{}

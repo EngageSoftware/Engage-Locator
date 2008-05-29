@@ -153,15 +153,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="SubHead" style="width: 150px">
-                            <dnn:Label ID="lblStatus" runat="server" Text="Status" Visible="false" />
-                        </td>
-                        <td class="rbStatus">
-                            <asp:RadioButton ID="rbWaitingForApproval" runat="server" Text="Waiting For Approval" resourcekey="rbWaitingForApproval" GroupName="rblStatus" CssClass="Normal" />
-                            <asp:RadioButton ID="rbApprove" runat="server" Text="Approve" resourcekey="rbApprove" GroupName="rblStatus" CssClass="Normal" />
-                        </td>
-                    </tr>
-                    <tr>
                         <td class="SubHead">
                             <dnn:Label ID="lblAttributes" runat="server" Visible="false" />
                         </td>
@@ -188,6 +179,15 @@
                                     </ItemTemplate>
                             </asp:Repeater>
                             </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="SubHead" style="width: 150px">
+                            <dnn:Label ID="lblStatus" runat="server" Text="Status" Visible="false" />
+                        </td>
+                        <td class="rbStatus">
+                            <asp:RadioButton ID="rbWaitingForApproval" runat="server" Text="Waiting For Approval" resourcekey="rbWaitingForApproval" GroupName="rblStatus" CssClass="Normal" />
+                            <asp:RadioButton ID="rbApprove" runat="server" Text="Approve" resourcekey="rbApprove" GroupName="rblStatus" CssClass="Normal" />
                         </td>
                     </tr>
                 </table>
