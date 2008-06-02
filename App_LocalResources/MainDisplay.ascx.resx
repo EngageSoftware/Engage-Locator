@@ -270,7 +270,10 @@
   <data name="lblScrollToViewMore.Text" xml:space="preserve">
     <value>&lt;img src="/images/dn.gif" /&gt;Scroll down to select another location to display</value>
   </data>
-  <data name="lbSiteLink.Text" xml:space="preserve">
-    <value>Make Preferred</value>
+  <data name="Open.Text" xml:space="preserve">
+    <value>Buy Now</value>
+  </data>
+  <data name="Closed.Text" xml:space="preserve">
+    <value>Store Not Open</value>
   </data>
 </root>

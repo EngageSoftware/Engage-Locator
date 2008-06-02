@@ -730,6 +730,14 @@ namespace Engage.Dnn.Locator
                                 Localization.GetString("Miles", LocalResourceFile);
                     }
                 }
+                HyperLink lnkSite = (HyperLink)e.Item.FindControl("lbSiteLink");
+                string text = Localization.GetString("Closed", LocalResourceFile);
+                if (row["WebSite"].ToString().Length > 0)
+                {
+                    text = Localization.GetString("Open", LocalResourceFile);
+                }
+                lnkSite.Text = text;
+
             }
         }
 
