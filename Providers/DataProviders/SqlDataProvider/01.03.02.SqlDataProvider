@@ -12,3 +12,10 @@ begin
 	ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] ALTER COLUMN LocationDetails [ntext]
 end
 go
+
+alter table {databaseOwner}[{objectQualifier}EngageLocator_Location] Alter Column ExternalIdentifier nvarchar(510) null
+go
+
+alter table {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] Alter Column ExternalIdentifier nvarchar(510) null
+go
+
