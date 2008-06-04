@@ -121,6 +121,7 @@ namespace Engage.Dnn.Locator
                 lblHeader.Text = title;
 
                 if (!SubmissionsEnabled) lnkSubmitLocation.Visible = false;
+                if (!SubmissionsEnabled) lnkSubmitLocationSearch.Visible = false;
                 lbSettings.Visible = IsEditable;
                 lbImportFile.Visible = IsEditable;
                 lbManageComments.Visible = IsEditable;
