@@ -1,220 +1,832 @@
-﻿.requiredAsterisk{color: red;font-weight: bold;}
-.groupingPanel{border: none 0px;clear:both;}
-.groupingPanel table, .addressPanel table{margin-left: 5px;vertical-align: middle;}
-.groupingPanel fieldset{border-color:#6A82A4;border-style:solid none none; border-width:1px 0px 0px; padding: 10px; margin: 0;}
-.locatorBody{margin-left:20px;width:100%;}
-.locatorSubHead{background-color: #6A82A4;color: White;margin-top:0px;}
-.locatorLandingPage{font-size: 13px;}
-.locatorInputLabel{width:160px;font-weight:bold;margin:2px 0px 0px;padding:0pt;}
-.locatorSubmit{margin-top: 0px;position: relative;top: 0px;}
-.locatorErrorPanel{}
-.locatorErrorMessageText{color: Red;}
-.locationsGrid td{border: solid 1px Black;}
-.datagridLocations input{width: 90px;}
-.locationsGridAddress{width: 150px;}
-.locationsGrid{width: 100%;border: solid 1px Black;}
-.locationsGridIndex{border-left: none 0px;}
-.locatorMap{height: 400px; margin: 0 auto; background: #fff; border: 1px #999 solid; width: 100% !important;}
+﻿.requiredAsterisk
+{
+	color: red;
+	font-weight: bold;
+}
+.groupingPanel
+{
+	border: none 0px;
+	clear:both;
+}
+.groupingPanel table, .addressPanel table
+{
+	margin-left: 5px;
+	vertical-align: middle;
+}
 
-.pnlAddress{ width: 300px; vertical-align:middle; }
-.dvMapImage{ float: left; width: 70px; padding-top: 10px; }
-.dvAddressContent{ float: left; width: 230px; font-size:12px; }
-.dvAddressContent a { font-size: 10px; font-weight: bold; }
-.locatorMapSmall{width: 250px; /*Keep this value same as in .locatorMapLabelWrapper */height: 200px;position: fixed;background-color: #f8f1c2;border:solid 1px #000;padding:2px;text-align:left;margin-top:10px;visibility: hidden;position: absolute;cursor:pointer}
+.groupingPanel fieldset
+{
+	border-color:#6A82A4;
+	border-style:solid none none;
+	border-width:1px 0px 0px;
+	padding: 10px;
+	margin: 0;
+}
+.locatorBody
+{
+	margin-left:20px;
+	width:100%;
+}
+.locatorSubHead
+{
+	background-color: #6A82A4;
+	color: White;
+	margin-top:0px;
+}
+.locatorLandingPage
+{
+	font-size: 13px;
+}
+.locatorInputLabel
+{
+	width:160px;
+	font-weight:bold;
+	margin:2px 0px 0px;
+	padding:0pt;
 
-.locationMapHeading {padding: 0; width:100%; clear: both; overflow:hidden; padding: 10px 0px;}
-	.closestsLocations {float: left; width: 20%;}
-	.closestLocationTitle {float:right; text-align:left; width:80%;}
+}
+.locatorSubmit
+{
+	margin-top: 0px;
+	position: relative;
+	top: 0px;
+	}
+.locatorErrorPanel
+{
+}
+.locatorErrorMessageText
+{
+	color: Red;
+}
+.locationsGrid td
+{
+	border: solid 1px Black;
+}
+.datagridLocations input
+{
+	width: 90px;
+}
+.locationsGridAddress
+{
+	width: 150px;
+}
+.locationsGrid
+{
+	width: 100%;
+	border: solid 1px Black;
+}
+.locationsGridIndex
+{
+	border-left: none 0px;
+}
+.locatorMap
+{
+	height: 400px;
+	margin: 0 auto;
+	background: #fff;
+	border: 1px #999 solid;
+	width: 100% !important;
+}
 
-.locatorMapLabelWrapper{font-size: 100%; padding: 10px 0 0 0;}
+.pnlAddress 
+{
+	width: 300px;
+	vertical-align:middle;
+
+}
+.dvMapImage 
+{
+	float: left;
+	width: 70px;
+	padding-top: 10px;
+
+}
+.dvAddressContent 
+{
+	float: left;
+	width: 230px;
+	font-size:12px;
+
+}
+.dvAddressContent a 
+{
+	 font-size: 10px;
+	 font-weight: bold;
+}
+.locatorMapSmall
+{
+	width: 250px;
+	
+/*Keep this value same as in .locatorMapLabelWrapper */
+	height: 200px;
+	position: fixed;
+	background-color: #f8f1c2;
+	border:solid 1px #000;
+	padding:2px;
+	text-align:left;
+	margin-top:10px;
+	visibility: hidden;
+	position: absolute;
+	cursor:pointer
+}
+
+.locationMapHeading 
+{
+	padding: 0;
+	width:100%;
+	clear: both;
+	overflow:hidden;
+	padding: 10px 0px;
+}
+
+.closestsLocations 
+{
+	float: left;
+	width: 20%;
+}
+	
+.closestLocationTitle 
+{
+	float:right;
+	text-align:left;
+	width:80%;
+}
+
+.locatorMapLabelWrapper
+{
+	font-size: 100%;
+	padding: 10px 0 0 0;
+}
 .locatorMapLabel{}
 
-.inputTable, .noteTable{border: none 0px;width: 100%;font-size: 14px;}
-.locatorRightAlignCell{text-align: right}
-.locatorInputLabelNote, .locatorLabelNote{font-size: small;}
-.locatorLabelCell{width: 100%;}
-.hideCurrentlyMapped{display: none;visibility: hidden;}
-.locationsGridLocationName{font-weight: bold;color: #960000;font-size: 1.1em;}
-.locationsGridDescriptionPopup{width: 200px;}
+.inputTable, .noteTable
+{
+	border: none 0px;
+	width: 100%;
+	font-size: 14px;
+}
+.locatorRightAlignCell
+{
+	text-align: right;
+}
+.locatorInputLabelNote, .locatorLabelNote
+{
+	font-size: small;
+}
 
-.importInputLabel{padding-right: 20px;}
-.importPanel{width: 100%;margin: 0 auto;}
-	.importPanel table{width: 100%;}
+.locatorLabelCell
+{
+	width: 100%;
+}
 
-.importPanelSingle{padding: 10px; margin-top: 15px; border: 1px #ccc solid; background: #f8f8f8;}
-.importPanelSingleCenter{margin: 0 auto; text-align: left; background: #fff; padding: 20px; }
+.hideCurrentlyMapped
+{
+	display: none;
+	visibility: hidden;
+}
 
-.importPanelSingleCenter input {width: 180px;}
+.locationsGridLocationName
+{
+	font-weight: bold;
+	color: #960000;
+    font-size: 1.1em;
+}
 
-.importPanelSingleCenter select {width: 180px;}
-.importPanelSingleCenter textarea {width: 180px;}
-.importPanelSingleCenter .importButton input {width:80px;}
-.importTableSingle{margin: 0 auto;}
-.datagridLocations{font-size: 14px;}
+.locationsGridDescriptionPopup
+{
+	width: 200px;
+}
+
+
+.importInputLabel
+{
+	padding-right: 20px;
+}
+
+.importPanel
+{
+	width: 100%;
+	margin: 0 auto;
+}
+
+.importPanel table
+{
+	width: 100%;
+}
+
+
+.importPanelSingle
+{
+	padding: 10px;
+	margin-top: 15px;
+	border: 1px #ccc solid;
+	background: #f8f8f8;
+}
+
+.importPanelSingleCenter
+{
+	margin: 0 auto;
+	text-align: left;
+	background: #fff;
+	padding: 20px;
+}
+
+.importPanelSingleCenter input 
+{
+	width: 180px;
+}
+
+
+.importPanelSingleCenter select 
+{
+	width: 180px;
+}
+
+.importPanelSingleCenter textarea 
+{
+	width: 180px;
+}
+
+.importPanelSingleCenter .importButton input 
+{
+	width:80px;
+}
+
+.importTableSingle
+{
+	margin: 0 auto;
+}
+
+.datagridLocations
+{
+	font-size: 14px;
+}
+
 
 
 .rbStatus{}
-.rbStatus input{width: 10px !important;}
+.rbStatus input
+{
+	width: 10px !important;
+}
+
 
 .InnerLocationDisplay{}
 .LocationDisplayHeaders{}
-.LocationDisplayTitles{font: bold;}
+.LocationDisplayTitles
+{
+	font: bold;
+}
 
-.LocationDisplay{vertical-align: top; width: 480px; border-bottom: 1px #ccc solid;}
-.LocationDisplay td{vertical-align: top;}
 
-.mdLocationDetailTable{width: 100%;}
-.mdLocationNumber{width: 10%;vertical-align:text-top;}
-.mdLocationInfo{width: 90%;}
+.LocationDisplay
+{
+	vertical-align: top;
+	width: 480px;
+	border-bottom: 1px #ccc solid;
+}
+
+.LocationDisplay td
+{
+	vertical-align: top;
+}
+
+
+.mdLocationDetailTable
+{
+	width: 100%;
+}
+
+.mdLocationNumber
+{
+	width: 10%;
+	vertical-align:text-top;
+}
+
+.mdLocationInfo{width: 90%;
+}
+
 .mdLocation{}
 
 .locationDetailsTitleTD{}
-td.locationDetailsTitleTD{padding: 5px 0 0 20px;}
+td.locationDetailsTitleTD
+{
+	padding: 5px 0 0 20px;
+}
+
 .mdDistance{}
-td.mdDistance{padding: 5px 0 0 20px;}
+td.mdDistance
+{
+	padding: 5px 0 0 20px;
+}
+
 
 
 .mdLocationDetail{}
 
 
-.titleHeading th{font: bold 11px Helvetica, Geneva, Arial, sans-serif;color: #4f6b72;border-right: 1px solid #C1DAD7;border-bottom: 1px solid #C1DAD7;
-border-top: 1px solid #C1DAD7;letter-spacing: 2px; text-transform: uppercase;	text-align: left;padding: 2px 6px 2px 12px;background: #e7f6f7;}
-.dataImportHeader{font: bold 11px Helvetica, Geneva, Arial, sans-serif; color: #000;border-right: 1px solid #C1DAD7;border-bottom: 1px solid #C1DAD7;
-border-top: 1px solid #C1DAD7; letter-spacing: 2px;	text-align: left;padding: 6px 6px 6px 12px;background: #e7f6f7;}
-.dataImportPage{background: #f8f8f8; border-right: 1px #f1f1f1 solid; border-bottom: 1px #f1f1f1 solid;}
+.titleHeading th
+{
+	font: bold 11px Helvetica, Geneva, Arial, sans-serif;
+	color: #4f6b72;
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	border-top: 1px solid #C1DAD7;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	text-align: left;
+	padding: 2px 6px 2px 12px;
+	background: #e7f6f7;
+}
 
-.titleHeading{width: 100%;}
+.dataImportHeader
+{
+	font: bold 11px Helvetica, Geneva, Arial, sans-serif;	
+	color: #000;
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	border-top: 1px solid #C1DAD7;	
+	letter-spacing: 2px;	
+	text-align: left;
+	padding: 6px 6px 6px 12px;
+	background: #e7f6f7;
+}
 
-.mdLocationHeading{width: 50%;}
-.mdDistanceHeading{width: 15%;}
-.mdLDHeading{width: 35%;}
+.dataImportPage
+{
+	background: #f8f8f8;
+	border-right: 1px #f1f1f1 solid;
+	border-bottom: 1px #f1f1f1 solid;
+}
 
 
-.distanceTitleHead{width: 150px;}
-.progress{position:relative;z-index: 1;margin-top: 10px;}
-.progressMainDisplay{position:relative;z-index: 1;margin-left: 300px;text-align: center;margin: 0 auto;}
+.titleHeading
+{
+	width: 100%;
+}
+
+
+.mdLocationHeading
+{
+	width: 50%;
+}
+
+.mdDistanceHeading
+{
+	width: 15%;
+}
+
+.mdLDHeading
+{
+	width: 35%;
+}
+
+.distanceTitleHead
+{
+	width: 150px;
+}
+
+.progress
+{
+	position:relative;
+	z-index: 1;
+	margin-top: 10px;
+}
+
+.progressMainDisplay
+{
+	position:relative;
+	z-index: 1;
+	margin-left: 300px;
+	text-align: center;
+	margin: 0 auto;
+}
+
 .LocatorBackButton{}
 .LocatorMapItButton{}
-.viewMapBt{padding: 5px 0;}
-
-.LocatorInput{width: 100%; clear: both;}
-	.LocatorInput p{padding: 0; margin: 0;}
-
-.addressFirstLine{clear: both; width: 100%; overflow: hidden; padding: 5px 0; }
-	.addressFirstLine .Normal, .addressSecondLine .Normal {float: left; width: 50px; text-align: right; padding-top: 1px; padding-right: 5px; }
-	.addressFirstLine .LocatorInputText{float: left; width: 100px;}
-	.addressFirstLine .LocatorInputText input { width: 315px; } 
+.viewMapBt
+{
+	padding: 5px 0;
+}
 
 
-.addressSecondLine{clear: both; width: 100%; overflow: hidden; padding: 5px 0; }
-	.addressSecondLine .LocatorInputText{float: left; width: 100px;}
+.LocatorInput
+{
+	width: 100%;
+	clear: both;
+}
+
+.LocatorInput p
+{
+	padding: 0;
+	margin: 0;
+}
+
+.addressFirstLine
+{
+	clear: both;
+	width: 100%;
+	overflow: hidden;
+	padding: 5px 0;
+}
+.addressFirstLine .Normal, .addressSecondLine .Normal 
+{
+	float: left;
+	width: 50px;
+	text-align: right;
+	padding-top: 1px;
+	padding-right: 5px;
+}
+
+.addressFirstLine .LocatorInputText
+{
+	float: left;
+	width: 100px;
+}
+
+.addressFirstLine .LocatorInputText input  
+{
+	width: 315px;
+} 
+
+
+.addressSecondLine
+{
+	clear: both;
+	width: 100%;
+	overflow: hidden;
+	padding: 5px 0;
+}
+.addressSecondLine .LocatorInputText
+{
+	float: left;
+	width: 100px;
+}
 	
-	.addressSecondLine .ltCity{float: left; width: 215px;}
-		.addressSecondLine .ltCity input {width: 160px;}
-	.addressSecondLine .ltRegion{float: left; width: 155px;}
-		.addressSecondLine .ltDropDownList .Normal{text-align: left; width: 100px; padding-right: 0;}
+.addressSecondLine .ltCity
+{
+	float: left;
+	width: 215px;
+}
+
+.addressSecondLine .ltCity input 
+{
+	width: 160px;
+}
+
+.addressSecondLine .ltRegion
+{
+	float: left;
+	width: 155px;
+}
+
+.addressSecondLine .ltDropDownList .Normal
+{
+	text-align: left;
+	width: 100px;
+	padding-right: 0;
+}
 			
-	.addressSecondLine .ltPostalCode{float: left; width: 130px;}
-		.addressSecondLine .LocationPostalCode{width: 50px; float: left;}
-	
-	.addressSecondLine .LocatorInputText input {}
-	
-.addressThirdLine {clear: both; width: 100%; overflow: hidden; margin-left: 325px; padding: 5px 0;}
-	.addressThirdLine .Normal { float: left; width: 50px; padding-top: 1px; }
-	.addressThirdLine .ltCountry { float: left; width: 185px; margin-left: 0;}
-		.addressThirdLine .ltCountry select { width: 100px; }
+.addressSecondLine .ltPostalCode
+{
+	float: left;
+	width: 130px;
+}
 
-.addressPanel{vertical-align: middle; }
-.LocatorSubmitButton{margin: 0 0 0 75px;}
-/*.LocatorInputText input{ width: 160px; display: inline; font-size: 11px; border-left: 1px #ccc solid; border-top: 1px #bbb solid;}
-.LocatorInput{ margin-bottom: 15px; }
-.LocatorInputText { margin: 4px 0 0 0; vertical-align: middle; float:left; }
-.LocatorInputLabel { margin: 4px 0 0 0; text-align: right; width: 50px; float: left; vertical-align: middle; }
-.LocationPostalCode { float:left; width: 50px; font-size: 11px; border-left: 1px #ccc solid; border-top: 1px #bbb solid; }
+.addressSecondLine .LocationPostalCode
+{
+	width: 50px;
+	float: left;
+}
+	
+.addressSecondLine .LocatorInputText input {}
+	
+.addressThirdLine 
+{
+	clear: both;
+	width: 100%;
+	overflow: hidden;
+	margin-left: 325px;
+	padding: 5px 0;
+}
+
+.addressThirdLine .Normal  
+{
+	float: left;
+	width: 50px;
+	padding-top: 1px;	
+}
+
+.addressThirdLine .ltCountry  
+{
+	float: left;
+	width: 185px;
+	margin-left: 0;
+}
+
+.addressThirdLine .ltCountry select  
+{
+	width: 100px;	
+}
+
+.addressPanel
+{
+	vertical-align: middle;	
+}
+
+.LocatorSubmitButton
+{
+	margin: 0 0 0 75px;
+}
+
+/*.LocatorInputText input{ width: 160px;
+display: inline;
+font-size: 11px;
+border-left: 1px #ccc solid;
+border-top: 1px #bbb solid;
+}
+
+.LocatorInput{ margin-bottom: 15px;
+}
+.LocatorInputText { margin: 4px 0 0 0;
+vertical-align: middle;
+float:left;
+}
+.LocatorInputLabel { margin: 4px 0 0 0;
+text-align: right;
+width: 50px;
+float: left;
+vertical-align: middle;
+}
+.LocationPostalCode { float:left;
+width: 50px;
+font-size: 11px;
+border-left: 1px #ccc solid;
+border-top: 1px #bbb solid;
+}
 */
-.f02{ width: 100% }
-.ddlDistance{ width: 150px; margin: 0 0 0 10px;}
-.ddlCountry{ width: 150px; margin: 0 0 0 80px; }
+.f02
+{
+	width: 100% 
+}
+.ddlDistance 
+{
+	width: 150px;
+	margin: 0 0 0 10px;
+}
 
-.idDataGridFooter input { width: 60px; }
-.nameDataGridFooter input { width: 90px; }
-.cityDataGridFooter input { width: 70px; }
-.stateDataGridFooter select { width: 70px; }
-.zipDataGridFooter input { width: 45px; }
-.countryDataGridFooter select { width: 95px; }
-.phoneDataGridFooter input { width: 70px; }
-.locationDetailsDataGridFooter input { width: 100px; }
-.typeDataGridFooter select { width: 70px; }
+.ddlCountry 
+{
+	width: 150px;
+	margin: 0 0 0 80px;	
+}
 
-.divPanelTab{padding: 10px 0;}
+.idDataGridFooter input  
+{
+	width: 60px;
+}
+.nameDataGridFooter input  
+{
+	width: 90px;
+}
 
-.ajax__tab_xp .ajax__tab_header{text-align:left !important;}
+.cityDataGridFooter input  
+{
+	width: 70px;
+}
+.stateDataGridFooter select  
+{
+	width: 70px;
+}
+.zipDataGridFooter input  
+{
+	width: 45px;
+}
+.countryDataGridFooter select 
+{
+	width: 95px;	
+}
+.phoneDataGridFooter input  
+{
+	width: 70px;	
+}
+.locationDetailsDataGridFooter input  
+{
+	width: 100px;
+}
+.typeDataGridFooter select  
+{
+	width: 70px;
+}
 
-.importData{background: #fff !important; font-size: 12px; font-family: Helvetica, Geneva, Arial, sans-serif; border: none; width: 100%; text-align: left;}
-.importData td{padding: 5px;}
-.importData td a{color: #960000 !important;}
+.divPanelTab
+{
+	padding: 10px 0;
+}
 
-.rbLocations { margin-bottom: 10px;}
+
+.ajax__tab_xp .ajax__tab_header
+{
+	text-align:left !important;
+}
+
+
+.importData
+{
+	background: #fff !important;
+	border: none;
+	width: 100%;
+	text-align: left;
+}
+
+.importData td
+{
+	padding: 5px;
+}
+
+.importData td a
+{
+	color: #960000 !important;
+}
+
+.rbLocations  
+{
+	margin-bottom: 10px;
+}
+
 
 .searchOptions {}
-	.searchOptionsFirstLine {clear: both; width: 100%; overflow: hidden; }
-		.searchOptionsFirstLine .Normal { float: left;}
-	.searchOptionsSecondLine {clear: both; width: 100%; overflow: hidden; }
-		.searchOptionsSecondLine .chkCityRegion { float: left; width: 200px; }
-			.searchOptionsSecondLine .chkCityRegion label { width: 200px; }
-			.searchOptionsSecondLine .chkCityRegion input { width: 200px; }
-		.searchOptionsSecondLine .chkPostalCode { float: left; width: 100px; }
-	.searchOptionsThirdLine {clear: both; width: 100%; overflow: hidden; }
-		.searchOptionsFirstLine .chkCountry { float: left; }
+.searchOptionsFirstLine 
+{
+	clear: both;
+	width: 100%;
+	overflow: hidden;
+}
 
-#Buttons{width: 100%; text-align:center;}
-#Buttons .CommandButton{text-align: center; width: 75px;}
+.searchOptionsFirstLine .Normal  
+{
+	float: left;
+}
+
+.searchOptionsSecondLine 
+{
+	clear: both;
+	width: 100%;
+	overflow: hidden;
+}
+.searchOptionsSecondLine .chkCityRegion  
+{
+	float: left;
+	width: 200px;
+}
+
+.searchOptionsSecondLine .chkCityRegion label  
+{
+	width: 200px;
+}
+
+.searchOptionsSecondLine .chkCityRegion input  
+{
+	width: 200px;
+}
+.searchOptionsSecondLine .chkPostalCode  
+{
+	float: left;
+	width: 100px;
+}
+.searchOptionsThirdLine 
+{
+	clear: both;
+	width: 100%;
+	overflow: hidden;	
+}
+.searchOptionsFirstLine .chkCountry  
+{
+	float: left;	
+}
+
+#Buttons
+{
+	width: 100%;
+	text-align:center;
+}
+
+#Buttons .CommandButton
+{
+	text-align: center;
+	width: 75px;
+}
 
 
-.globalNav{padding: 1em 0;}
-legend{padding: 0 20px 0 5px; text-align: left;}
+
+.globalNav
+{
+	padding: 1em 0;
+}
+
+legend
+{
+	padding: 0 20px 0 5px;
+	text-align: left;
+}
+
 
 .mdViewDetail{}
 
 /**********************Mini Search***********************************/
-.MiniSearch {width: 200px;}
+.MiniSearch 
+{
+	width: 200px;
+}
 
 #msFirstLine {}
-	.msFirstLine { float: left;}
-	.msFirstLine .Head {}
-#msPostalCode { width: 75px; }
-	.msPostalCode{clear: both; float: left; width: 70px;}
-		.msPostalCode input {width: 65px; }
+.msFirstLine  
+{
+	float: left;
+}
+
+.msFirstLine .Head {}
+#msPostalCode  
+{
+	width: 75px;
+}
+.msPostalCode
+{
+	clear: both;
+	float: left;
+	width: 70px;
+}
+
+.msPostalCode input 
+{
+	width: 65px;
+}
 #msSubmit {}
-	.msSubmit { float: left; margin-left: 5px;}
+.msSubmit 
+{
+	float: left;
+	margin-left: 5px;
+}
 	
 /**********************Mini Search Settings***************************/
-.cvMiniSearch { clear: both;}
+.cvMiniSearch  
+{
+	clear: both;
+}
+
 
 /*************************Comments************************************/
 .userCommentRow{}
-.userCommentRow td{padding: 5px 10px; border-bottom: 1px #ccc solid;}
-.userComment{width: 250px;}
+.userCommentRow td
+{
+	padding: 5px 10px;
+	border-bottom: 1px #ccc solid;
+}
+
+.userComment
+{
+	width: 250px;
+}
+
 .usernameComment{}
 
 
 /**************************Ratings************************************/
 .ldRating{}
-.ratingStar {font-size: 0pt;width: 13px;height: 12px;margin: 0px;padding: 0px;cursor: pointer;display: block;background-repeat: no-repeat;}
-.filledRatingStar {background-image: url(Images/FilledStar.png);}
-.emptyRatingStar {background-image: url(Images/EmptyStar.png);}
-.savedRatingStar {background-image: url(Images/SavedStar.png);}
+.ratingStar 
+{
+	font-size: 0pt;
+	width: 13px;
+	height: 12px;
+	margin: 0px;
+	padding: 0px;
+	cursor: pointer;
+	display: block;
+	background-repeat: no-repeat;
+}
+
+.filledRatingStar 
+{
+	background-image: url(Images/FilledStar.png);
+}
+
+.emptyRatingStar 
+{
+	background-image: url(Images/EmptyStar.png);
+}
+
+.savedRatingStar 
+{
+	background-image: url(Images/SavedStar.png);
+}
+
 .divRatingBefore{}
 .divRatingAfter{}
 
 
 /*==================================================================
-
 Location Detail Page
-
 ==================================================================*/
-
-
 .ldID{}
 .ldName{}
 .ldAddress1{}
@@ -223,52 +835,133 @@ Location Detail Page
 .ldPhone{}
 .ldLink{}
 
-.ldCommentHeading{padding-top: 1em;}
+.ldCommentHeading
+{
+	padding-top: 1em;
+}
+
 
 /*==================================================================
-
 Attribute Definition (Custom Attribute) Page
-
 ==================================================================*/
 
-.mnavDisabled{cursor: default;}
+.mnavDisabled
+{
+	cursor: default;
+}
+
 .adWrapper{}
-	.locatorInstruction{text-align: left; background: #fbff9b; padding: 1em; border: 1px #666 solid; display: block; margin: 1em 0;}
-	.ltWrapper{margin: 1em 0; text-align: left;}
-	.caWrapper{text-align: left;}
-		.locType{}
-			.locTypeWrapper{width: 100%;}
-				.locTypeListView{float: left; width: 60%; text-align: right;}
-					.locTypeListView option{border-bottom: 1px #ccc solid; padding: 5px 0; display: block;}
-					.locTypeListView select{}
-					.locTypeListView select option[selected]{background-color: #455170;  color: #fff; cursor: default;}
-				.locTypeNav{float: right; width: 38%; text-align: left;}
-				
-				
+.locatorInstruction
+{
+	text-align: left;
+	background: #fbff9b;
+	padding: 1em;
+	border: 1px #666 solid;
+	display: block;
+	margin: 1em 0;
+}
+
+.ltWrapper
+{
+	margin: 1em 0;
+	text-align: left;
+}
+
+.caWrapper
+{
+	text-align: left;
+}
+.locType{}
+
+.locTypeWrapper
+{
+	width: 100%;
+}
+
+.locTypeListView
+{
+	float: left;
+	width: 60%;
+	text-align: right;
+}
+
+.locTypeListView option
+{
+	border-bottom: 1px #ccc solid;
+	padding: 5px 0;
+	display: block;
+}
+
+.locTypeListView select{}
+.locTypeListView select option[selected]
+{
+	background-color: #455170;
+	color: #fff;
+	cursor: default;
+}
+
+.locTypeNav
+{
+	float: right;
+	width: 38%;
+	text-align: left;
+}
 
 .adAddNewLT{}
-	.adAddNewLT .NormalTextBox{margin: 5px 0;}
-	.adAddNewLT .adError{padding-bottom: 5px;}
+.adAddNewLT .NormalTextBox
+{
+	margin: 5px 0;
+}
+
+.adAddNewLT .adError
+{
+	padding-bottom: 5px;
+}
 				
-	.caAddNew{text-align: center; padding-top: 1em;}	
-	.caNavBt{padding: 1em 0;}
+.caAddNew
+{
+	text-align: center;
+	padding-top: 1em;
+}
 	
+.caNavBt
+{
+	padding: 1em 0;
+}
 
-	.adEditBt, .adDeleteBt, .adCreateNewBt{padding-bottom: 5px;}
-	
+.adEditBt, .adDeleteBt, .adCreateNewBt
+{
+	padding-bottom: 5px;
+}
 
-.editeAttributeWrapper{width: 100%;}
+.editeAttributeWrapper
+{
+	width: 100%;
+}
+
 .editeAttributeWrapper div
 {
 	height:30px;
 	vertical-align:middle;
 }
-	.editeAttributeWrapper .eadLabel{float: left; text-align: right; width: 48%;}
-	.editeAttributeWrapper .eadTextBox{float: right; text-align: left; width: 48%;}
-	
-	.editeAttributeWrapper p{margin: 10px 0;}
-	
+.editeAttributeWrapper .eadLabel
+{
+	float: left;
+	text-align: right;
+	width: 48%;
+}
 
+.editeAttributeWrapper .eadTextBox
+{
+	float: right;
+	text-align: left;
+	width: 48%;
+}
+	
+.editeAttributeWrapper p
+{
+	margin: 10px 0;
+}
 	
 /*==================================================================
 
@@ -276,11 +969,49 @@ Import Page
 
 ==================================================================*/
 
-.importFileWrapper{padding-top: 1em;}
-	.importFileWrapper legend{padding: 0 20px 0 5px;}
-	.importHelpText{}
-	.importPanel{}
-		.importUploader{}
-		.importError{}
+.importFileWrapper
+{
+	padding-top: 1em;
+}
+
+.importFileWrapper legend
+{
+	padding: 0 20px 0 5px;
+}
+
+.importHelpText{}
+.importPanel{}
+.importUploader{}
+.importError{}
 		
-.btNav{padding: 1em 0;}
+.btNav
+{
+	padding: 1em 0;
+}
+
+
+/* DataGrid Overrides */
+tr.DataGrid_Item
+{
+	background:#f8f8f8;
+}
+
+tr.DataGrid_AlternatingItem
+{
+	background:#eeeeee;
+}
+tr.DataGrid_SelectedItem
+{
+	background:#008A8C;
+}
+
+tr.DataGrid_Header
+{
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	border-top: 1px solid #C1DAD7;	
+	letter-spacing: 2px;	
+	text-align: left;
+	padding: 6px 6px 6px 12px;
+	background: #e7f6f7;
+}

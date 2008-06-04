@@ -30,25 +30,29 @@
                         AutoPostBack="true" />
                 </div>
                 <dnn:PagingControl ID="pager" runat="server"></dnn:PagingControl>
-                <asp:DataGrid ID="dgLocations" runat="server" CssClass="importData" 
+                <asp:DataGrid ID="dgLocations" runat="server" CssClass="DataGrid_Container" 
                     GridLines="Vertical" OnDataBinding="dgLocations_DataBind" 
-                    AutoGenerateColumns="False" OnEditCommand="dgLocations_EditCommand" OnCancelCommand="dgLocations_CancelCommand"
+                    AutoGenerateColumns="False" 
+                    OnEditCommand="dgLocations_EditCommand" 
+                    OnCancelCommand="dgLocations_CancelCommand"
                     OnItemDataBound="dgLocations_ItemDataBound"
-                    OnItemCreated="dgLocations_ItemCreated" AllowSorting="True" 
-                    DataKeyField="LocationId" onsortcommand="dgLocations_SortCommand">
-                    <FooterStyle BackColor="#ccc" ForeColor="Black" />
-                    <PagerStyle CssClass="dataImportPage" HorizontalAlign="Center" Mode="NumericPages" />
-                    <HeaderStyle CssClass="dataImportHeader" />
+                    OnItemCreated="dgLocations_ItemCreated" 
+                    AllowSorting="True" 
+                    DataKeyField="LocationId" 
+                    onsortcommand="dgLocations_SortCommand">
+                    <FooterStyle CssClass="Normal DataGrid_Footer" />
+                    <PagerStyle CssClass="Normal PagingTable" HorizontalAlign="Center" Mode="NumericPages" />
+                    <HeaderStyle CssClass="Normal DataGrid_Header" />
                     <Columns>
                         <asp:TemplateColumn HeaderText="ID" Visible="False">
                             <ItemTemplate>
-                                <asp:Label ID="lblLocationId" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.LocationId", "{0:d}") %>'>
+                                <asp:Label ID="lblLocationId" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.LocationId", "{0:d}") %>'>
                                 </asp:Label>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                        <%-- <asp:TemplateColumn HeaderText="Key">
                             <ItemTemplate>
-                                <asp:Label ID="lblLoc" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.ExternalIdentifier", "{0:d}") %>'>
+                                <asp:Label ID="lblLoc" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.ExternalIdentifier", "{0:d}") %>'>
                                 </asp:Label>
                             </ItemTemplate>
                             <ItemStyle CssClass="idDataGridFooter" />
@@ -57,83 +61,62 @@
                         </asp:TemplateColumn>--%>
                         <asp:TemplateColumn HeaderText="Name" SortExpression="Name">
                             <ItemTemplate>
-                                <asp:Label ID="lblName" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Name", "{0:d}") %>'>
+                                <asp:Label ID="lblName" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Name", "{0:d}") %>'>
                                 </asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="nameDataGridFooter" />
-                            <FooterStyle CssClass="nameDataGridFooter" />
-                            <HeaderStyle CssClass="nameDataGridFooter" />
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Address" SortExpression="Address">
                             <ItemTemplate>
-                                <asp:Label ID="lblAddress" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Address", "{0:d}") %>'>
+                                <asp:Label ID="lblAddress" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Address", "{0:d}") %>'>
                                 </asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="addressDataGridFooter" />
-                            <FooterStyle CssClass="addressDataGridFooter" />
-                            <HeaderStyle CssClass="addressDataGridFooter" />
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="City" SortExpression="City">
                             <ItemTemplate>
-                                <asp:Label ID="lblCity" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.City", "{0:d}") %>'>
+                                <asp:Label ID="lblCity" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.City", "{0:d}") %>'>
                                 </asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="cityDataGridFooter" />
-                            <FooterStyle CssClass="cityDataGridFooter" />
-                            <HeaderStyle CssClass="cityDataGridFooter" />
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Region" SortExpression="StateName">
                             <ItemTemplate>
-                                <asp:Label ID="lblState" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.StateName", "{0:d}") %>'>
+                                <asp:Label ID="lblState" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.StateName", "{0:d}") %>'>
                                 </asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="stateDataGridFooter" />
-                            <FooterStyle CssClass="stateDataGridFooter" />
-                            <HeaderStyle CssClass="stateDataGridFooter" />
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Latitude" SortExpression="Latitude">
                             <ItemTemplate>
-                                <asp:Label ID="lblLatitude" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Latitude") %>'>
+                                <asp:Label ID="lblLatitude" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Latitude") %>'>
                                 </asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="latitudeDataGridFooter" />
-                            <FooterStyle CssClass="latitudeDataGridFooter" />
-                            <HeaderStyle CssClass="latitudeDataGridFooter" />
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Longitude" SortExpression="Longitude">
                             <ItemTemplate>
-                                <asp:Label ID="lblLongitude" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Longitude") %>'>
+                                <asp:Label ID="lblLongitude" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Longitude") %>'>
                                 </asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="longitudeDataGridFooter" />
-                            <FooterStyle CssClass="longitudeDataGridFooter" />
-                            <HeaderStyle CssClass="longitudeDataGridFooter" />
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Location Type" SortExpression="Type">
                             <ItemTemplate>
-                                <asp:Label ID="lblType" runat="server" CssClass="datagridLables" Text='<%# DataBinder.Eval(Container, "DataItem.Type", "{0:d}") %>'>
+                                <asp:Label ID="lblType" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Type", "{0:d}") %>'>
                                 </asp:Label>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Comments">
                             <ItemTemplate>
-                                <asp:Label ID="lblApprovedComments" runat="server" CssClass="Normal" /><br />
-                                <asp:Label ID="lblWaitingComments" runat="server" CssClass="Normal"/>
+                                <asp:Label ID="lblApprovedComments" runat="server" /><br />
+                                <asp:Label ID="lblWaitingComments" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateColumn>
                         <asp:TemplateColumn>
                             <ItemTemplate>
                                 <asp:CheckBox ID="chkApproved" runat="server" />
                             </ItemTemplate>
-                            <ItemStyle CssClass="typeDataGridFooter" />
-                            <FooterStyle CssClass="typeDataGridFooter" />
-                            <HeaderStyle CssClass="typeDataGridFooter" />
                         </asp:TemplateColumn>
                         <asp:EditCommandColumn CancelText="Cancel" EditText="Edit" UpdateText="Update"></asp:EditCommandColumn>
                     </Columns>
-                    <SelectedItemStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
-                    <AlternatingItemStyle BackColor="#eeeeee" />
-                    <ItemStyle BackColor="#f8f8f8" ForeColor="Black" />
+                    <SelectedItemStyle CssClass="Normal DataGrid_SelectedItem" />
+                    <AlternatingItemStyle CssClass="Normal DataGrid_AlternatingItem" />
+                    <ItemStyle CssClass="Normal DataGrid_Item" />
                 </asp:DataGrid>
             </div>
             <br />
