@@ -187,6 +187,7 @@
     <None Include="Docs\Import.csv" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.02.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.03.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\01.03.02.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
