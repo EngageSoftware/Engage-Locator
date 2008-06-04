@@ -189,7 +189,7 @@
                            <td class="mdLocationDetail Normal">
                                 <div id="div_SiteLink">
                                     <br />
-	                                <asp:HyperLink ID="lbSiteLink" Visible="true" runat="server" CssClass="Normal" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString()%>' resourceKey="lbSiteLink"></asp:HyperLink>
+	                                <asp:HyperLink ID="lbSiteLink" Visible="false" runat="server" CssClass="Normal" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString()%>' resourceKey="lbSiteLink"></asp:HyperLink>
 	                            </div>                              
                             </td>
 
