@@ -19,7 +19,7 @@
     <div class="importPanelSingleCenter">
                 <table id="tblSettings" class="importTableSingle" cellspacing="0" cellpadding="2"
                     border="0" align="center">
-                    <tr>
+                    <tr visible="false" runat="server">
                         <td class="SubHead" style="width: 150px">
                             <dnn:label id="lblLocationId" runat="server" text="Key:" />
                         </td>

@@ -148,9 +148,9 @@ namespace Engage.Dnn.Locator
                     {
                         FillDropDowns();
 
-                        if (Request.QueryString["Search"] != null)
+                        if (Request.QueryString["srch"] != null)
                         {
-                            DoWork(Request.QueryString["Search"]);
+                            DoWork(Request.QueryString["srch"]);
                         }
                         else
                         {
@@ -247,7 +247,7 @@ namespace Engage.Dnn.Locator
                     ShowMaps();
                 }
             }
-            else Response.Redirect(Globals.NavigateURL(DisplayTabId,  "", "search=" + txtLocationPostalCode.Text));
+            else Response.Redirect(Globals.NavigateURL(DisplayTabId, "", "srch=" + txtLocationPostalCode.Text));
 
         }
 

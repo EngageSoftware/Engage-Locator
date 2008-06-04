@@ -189,24 +189,25 @@ namespace Engage.Dnn.Locator
 
         private void DisplayLocationTypes(ListControl ddl)
         {
+            
             ddl.DataSource = LocationType.GetLocationTypes();
             ddl.DataTextField = "LocationTypeName";
             ddl.DataValueField = "LocationTypeId";
             ddl.DataBind();
 
-            string displayTypes = Convert.ToString((new ModuleController()).GetModuleSettings(ModuleId)["DisplayTypes"]);
+            string displayTypes = Settings["DisplayTypes"].ToString();
             string[] displayTypesArray = displayTypes.Split(',');
 
-            foreach (string s in displayTypesArray)
-            {
-                foreach (ListItem locationItems in ddl.Items)
-                {
-                    if (locationItems.Value == s)
-                    {
-                        locationItems.Selected = true;
-                    }
-                }
-            }
+            //foreach (string s in displayTypesArray)
+            //{
+            //    foreach (ListItem locationItems in ddl.Items)
+            //    {
+            //        if (locationItems.Value == s)
+            //        {
+            //            locationItems.Selected = true;
+            //        }
+            //    }
+            //}
             ddl.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
 
             if (ddl.Items.Count == 0)
@@ -217,6 +218,16 @@ namespace Engage.Dnn.Locator
             {
                 singleError.Visible = false;
             }
+
+            //If this module has been configured to display only one location and a user is adding a new entry
+            //we are defaulting the locationtype based on the setting. hk
+            if (displayTypes.Length == 1)
+            {
+                string id = displayTypesArray[0];
+                ListItem li = ddl.Items.FindByValue(id);
+                if (li != null) li.Selected = true;
+            }
+
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)

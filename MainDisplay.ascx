@@ -109,6 +109,9 @@
         &nbsp;
         <div class="LocatorSubmitButton">
             <asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Search" resourcekey="btnSubmit"/>
+	        <asp:Button ID="lnkSubmitLocationSearch" runat="server" 
+                OnClick="lnkSubmitLocations_Click" resourcekey="lnkSubmitLocations" 
+                Text="Submit A Location" />
 	    </div>
     </asp:View>
     
