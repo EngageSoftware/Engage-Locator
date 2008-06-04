@@ -258,6 +258,11 @@ Attribute Definition (Custom Attribute) Page
 	
 
 .editeAttributeWrapper{width: 100%;}
+.editeAttributeWrapper div
+{
+	height:30px;
+	vertical-align:middle;
+}
 	.editeAttributeWrapper .eadLabel{float: left; text-align: right; width: 48%;}
 	.editeAttributeWrapper .eadTextBox{float: right; text-align: left; width: 48%;}
 	
