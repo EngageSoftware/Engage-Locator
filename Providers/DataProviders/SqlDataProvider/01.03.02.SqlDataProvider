@@ -19,3 +19,7 @@ go
 alter table {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] Alter Column ExternalIdentifier nvarchar(510) null
 go
 
+UPDATE{databaseOwner}[{objectQualifier}Schedule] 
+SET AttachToEvent = ''
+WHERE TypeFullName = 'Engage.Dnn.Locator.Components.DataImportScheduler,EngageLocator'
+GO
