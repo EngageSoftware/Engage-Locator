@@ -6,3 +6,5 @@ DesktopModules\EngageLocator\ZipLocator.cs
 DesktopModules\EngageLocator\ZipLocator.designer.cs
 DesktopModules\EngageLocator\DataImport.cs
 DesktopModules\EngageLocator\DataImport.designer.cs
+DesktopModules\EngageLocator\MiniLocator.ascx
+
