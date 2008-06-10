@@ -266,3 +266,4 @@ GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_LocationType]') AND objectproperty(id, N'IsUserTable') = 1)
 DROP TABLE {databaseOwner}[{objectQualifier}EngageLocator_LocationType]
+GO

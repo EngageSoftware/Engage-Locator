@@ -865,14 +865,14 @@ IF EXISTS (SELECT sc.Name, so.Name FROM dbo.syscolumns sc join dbo.sysObjects so
 begin
 	ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] ALTER COLUMN LocationDetails [ntext]
 end
-go
+GO
 
 IF EXISTS (SELECT sc.Name, so.Name FROM dbo.syscolumns sc join dbo.sysObjects so on (so.Id = sc.Id)
 	where sc.xusertype = '99' and so.xtype = 'u' AND so.id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]') and sc.Name = 'LocationDetails')
 begin
 	ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] ALTER COLUMN LocationDetails [ntext]
 end
-go
+GO
 
 if not exists(select * from {databaseOwner}[{objectQualifier}Schedule] where TypeFullname = 'Engage.Dnn.Locator.Components.DataImportScheduler')
 begin

@@ -4,20 +4,20 @@ IF NOT EXISTS (SELECT sc.Name, so.Name FROM dbo.syscolumns sc join dbo.sysObject
 begin
 	ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_Location] ALTER COLUMN LocationDetails [ntext]
 end
-go
+GO
 
 IF NOT EXISTS (SELECT sc.Name, so.Name FROM dbo.syscolumns sc join dbo.sysObjects so on (so.Id = sc.Id)
 	where sc.xusertype = '99' and so.xtype = 'u' AND so.id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageLocator_TempLocation]') and sc.Name = 'LocationDetails')
 begin
 	ALTER TABLE {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] ALTER COLUMN LocationDetails [ntext]
 end
-go
+GO
 
 alter table {databaseOwner}[{objectQualifier}EngageLocator_Location] Alter Column ExternalIdentifier nvarchar(510) null
-go
+GO
 
 alter table {databaseOwner}[{objectQualifier}EngageLocator_TempLocation] Alter Column ExternalIdentifier nvarchar(510) null
-go
+GO
 
 UPDATE {databaseOwner}[{objectQualifier}Schedule] 
 SET AttachToEvent = ''
