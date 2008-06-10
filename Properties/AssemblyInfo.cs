@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("EngageLocator")]
-[assembly: AssemblyDescription("The DotNetNuke Locator Module from Engage Software")]
+[assembly: AssemblyDescription("The Locator Module from Engage Software for DotNetNuke")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Engage Software")]
 [assembly: AssemblyProduct("EngageLocator")]
-[assembly: AssemblyCopyright("Copyright © Engage Software 2007")]
+[assembly: AssemblyCopyright("Copyright © Engage Software 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,5 +30,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("01.03.02.00")]
-[assembly: AssemblyFileVersion("01.03.02.00")]
+[assembly: AssemblyVersion("01.03.03.00")]
+[assembly: AssemblyFileVersion("01.03.03.00")]
