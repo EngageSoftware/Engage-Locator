@@ -164,7 +164,8 @@
                                         </td>
                                         <td class="mdLocationInfo">
                                             <p><asp:Hyperlink ID="lnkLocationName" runat="server" CssClass="SubHead" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString() %>'><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Name").ToString())%></asp:Hyperlink></p>
-	                                        <asp:Label ID="lblLocationsGridAddress" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Address").ToString())%><br /></asp:Label>
+	                                        <%--<asp:Label ID="lblLocationsGridAddress" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Address").ToString())%><br /></asp:Label>--%>
+	                                        <asp:Label ID="lblLocationsGridAddress" runat="server" CssClass="Normal"><br /></asp:Label>
 	                                        <asp:Label ID="lblLocationsGridCity" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "City").ToString()) + ","%></asp:Label> 
 	                                        <asp:Label ID="lblLocationsGridState" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Abbreviation").ToString())%></asp:Label> 
 	                                        <asp:Label ID="lblLocationsGridPostalCode" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "PostalCode").ToString())%></asp:Label>

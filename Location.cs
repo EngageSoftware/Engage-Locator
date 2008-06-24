@@ -121,6 +121,30 @@ namespace Engage.Dnn.Locator
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string _address2;
+        public string Address2
+        {
+            [DebuggerStepThroughAttribute]
+            get { return _address2; }
+            [DebuggerStepThroughAttribute]
+            set { _address2 = value; }
+        }
+
+        public string FullAddress
+        {
+            [DebuggerStepThroughAttribute]
+            get 
+            {
+                string address = _address;
+                if (_address2.Length > 0)
+                {
+                    address += " " + _address2;
+                }
+                return address;
+            }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string _postalCode;
         public string PostalCode
         {
@@ -289,7 +313,7 @@ namespace Engage.Dnn.Locator
 
         public static Location GetLocation(int locationId)
         {
-            Location location = Location.Create(DataProvider.Instance().GetLocation(locationId).Rows[0]);
+            Location location = Location.Load(DataProvider.Instance().GetLocation(locationId).Rows[0]);
             return location;
         }
 
@@ -326,11 +350,12 @@ namespace Engage.Dnn.Locator
         }
 
         //This method should be used for all instance creation so that this code is in one place! hk
-        public static Location Create(DataRow row)
+        public static Location Load(DataRow row)
         {
             Location loc = new Location();
 
             loc.Address = row["Address"].ToString();
+            loc.Address2 = row["Address2"].ToString();
             loc.City = row["City"].ToString();
             loc.LocationDetails = row["LocationDetails"].ToString();
             loc.ExternalIdentifier = row["ExternalIdentifier"].ToString();

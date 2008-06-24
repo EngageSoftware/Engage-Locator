@@ -739,6 +739,10 @@ namespace Engage.Dnn.Locator
                 }
                 lnkSite.Text = text;
 
+                Location loc = Location.GetLocation(Convert.ToInt32(row["LocationId"]));
+                Label l = (Label)e.Item.FindControl("lblLocationsGridAddress");
+                l.Text = loc.FullAddress;
+
             }
         }
 

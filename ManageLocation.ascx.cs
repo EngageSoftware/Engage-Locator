@@ -17,8 +17,6 @@ namespace Engage.Dnn.Locator
 {
     public partial class ManageLocation : ModuleBase
     {
-        private int locationId;
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -36,14 +34,12 @@ namespace Engage.Dnn.Locator
             lbLocationTypes.Visible = IsEditable;
             lbManageComments.Visible = IsEditable;
 
-            locationId = Convert.ToInt32(Request.QueryString["lid"]);
-
             if (!Page.IsPostBack)
             {
                 FillCountry();
                 FillState();
                 DisplayLocationTypes(ddlType);
-                if (locationId > 0)
+                if (LocationId > 0)
                 {
                     LoadLocation();
                     btnDelete.Visible = true;
@@ -85,19 +81,19 @@ namespace Engage.Dnn.Locator
 
         private void LoadLocation()
         {
-            Location location = Location.GetLocation(locationId);
-            string address2 = string.Empty;
+            Location location = Location.GetLocation(LocationId);
+            //string address2 = string.Empty;
 
             txtLocationId.Text = location.ExternalIdentifier;
             txtName.Text = location.Name;
             txtWebsite.Text = location.Website;
-            if (location.Address != String.Empty && location.Address.Contains(","))
-            {
-                int length = location.Address.IndexOf(',');
-                address2 = location.Address.Remove(0, length);
-            }
+            //if (location.Address != String.Empty && location.Address.Contains(","))
+            //{
+            //    int length = location.Address.IndexOf(',');
+            //    address2 = location.Address.Remove(0, length);
+            //}
             txtAddress1.Text = location.Address;
-            txtAddress2.Text = address2;
+            txtAddress2.Text = location.Address2;
             txtCity.Text = location.City;
             txtZip.Text = location.PostalCode;
             txtPhone.Text = location.Phone;
@@ -236,7 +232,7 @@ namespace Engage.Dnn.Locator
 
             try
             {
-                if (txtLocationId.Text != String.Empty && locationId > 0)
+                if (LocationId > 0)
                 {
                     UpdateLocation();
                 }
@@ -254,23 +250,25 @@ namespace Engage.Dnn.Locator
 
         private void UpdateLocation()
         {
-            Location currentLocation = Location.GetLocation(locationId);
+            Location currentLocation = Location.GetLocation(LocationId);
             string error;
-            string address;
-            string city = txtCity.Text;
+            //string address;
+            //string city = txtCity.Text;
 
             currentLocation.ExternalIdentifier = txtLocationId.Text;
             currentLocation.Name = txtName.Text;
             currentLocation.Website = txtWebsite.Text;
 
-            address = txtAddress1.Text;
+            //address = txtAddress1.Text;
 
-            if (txtAddress2.Text != String.Empty)
-            {
-                address = address + ", " + txtAddress2.Text;
-            }
-            currentLocation.Address = address;
-            currentLocation.City = city;
+            //if (txtAddress2.Text != String.Empty)
+            //{
+            //    address = address + ", " + txtAddress2.Text;
+            //}
+            //currentLocation.Address = address;
+            currentLocation.Address = txtAddress1.Text;
+            currentLocation.Address2 = txtAddress2.Text;
+            currentLocation.City = txtCity.Text; 
             currentLocation.RegionId = Convert.ToInt32(ddlState.SelectedValue);
             currentLocation.StateName = ddlState.SelectedItem.ToString();
             currentLocation.CountryId = Convert.ToInt32(ddlCountry.SelectedValue);
@@ -292,7 +290,7 @@ namespace Engage.Dnn.Locator
             {
                 Nullable<double> latitude;
                 Nullable<double> longitude;
-                GetGeoCodeResults(city, ddlState.SelectedItem.ToString(), txtZip.Text, txtAddress1.Text, out latitude, out longitude, out error, location);
+                GetGeoCodeResults(txtCity.Text, ddlState.SelectedItem.ToString(), txtZip.Text, txtAddress1.Text, out latitude, out longitude, out error, location);
                 currentLocation.Latitude = Convert.ToDouble(latitude);
                 currentLocation.Longitude = Convert.ToDouble(longitude);
             }
@@ -337,19 +335,19 @@ namespace Engage.Dnn.Locator
         {
             Location newLocation = new Location();
             string error;
-            string address;
+            //string address;
             string city = txtCity.Text;
 
             newLocation.ExternalIdentifier = txtLocationId.Text;
             newLocation.Name = txtName.Text;
             newLocation.Website = txtWebsite.Text;
 
-            address = txtAddress1.Text;
+            //address = txtAddress1.Text;
 
-            if (txtAddress2.Text != String.Empty)
-            {
-                address = address + ", " + txtAddress2.Text;
-            }
+            //if (txtAddress2.Text != String.Empty)
+            //{
+            //    address = address + ", " + txtAddress2.Text;
+            //}
 
             if (SubmissionModerationEnabled)
             {
@@ -359,7 +357,9 @@ namespace Engage.Dnn.Locator
                     newLocation.Approved = false;
             }
 
-            newLocation.Address = address;
+            //newLocation.Address = address;
+            newLocation.Address = txtAddress1.Text;
+            newLocation.Address2 = txtAddress2.Text;
             newLocation.City = city;
             newLocation.RegionId = Convert.ToInt32(ddlState.SelectedValue);
             newLocation.StateName = ddlState.SelectedItem.ToString();
@@ -478,7 +478,7 @@ namespace Engage.Dnn.Locator
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            Location.DeleteLocation(locationId);
+            Location.DeleteLocation(LocationId);
             Response.Redirect(EditUrl("ManageLocations"));
         }
 
@@ -500,7 +500,7 @@ namespace Engage.Dnn.Locator
 
         private void LoadCustomAttributes()
         {
-            rptCustomAttributes.DataSource = Attribute.GetAttributes(Convert.ToInt32(ddlType.SelectedValue), locationId);
+            rptCustomAttributes.DataSource = Attribute.GetAttributes(Convert.ToInt32(ddlType.SelectedValue), LocationId);
             rptCustomAttributes.DataBind();
 
             if (rptCustomAttributes.Items.Count > 0)
@@ -513,6 +513,20 @@ namespace Engage.Dnn.Locator
         protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadCustomAttributes();
+        }
+
+        private int LocationId
+        {
+            get
+            {
+                int locationId = -1;
+                object o = Request.QueryString["lid"];
+                if (o != null)
+                {
+                    locationId = Convert.ToInt32(Request.QueryString["lid"]);
+                }
+                return locationId;
+            }            
         }
     }
 }

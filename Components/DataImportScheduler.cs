@@ -207,7 +207,9 @@ namespace Engage.Dnn.Locator.Components
                         Nullable<double> latitude;
                         Nullable<double> longitude;
                         string error;
-                        location.Address = GetGeoCoordinates(tabModuleId, address1, address2, location.City, state, country, location.PostalCode, out latitude, out longitude, out error);
+                        location.Address = GetGeoCoordinates(tabModuleId, address1, location.City, state, country, location.PostalCode, out latitude, out longitude, out error);
+                        //Address2 is informational only - See Pat Renner.
+                        location.Address2 = address2;
 
                         location.Latitude = Convert.ToDouble(latitude);
                         location.Longitude = Convert.ToDouble(longitude);
@@ -250,11 +252,11 @@ namespace Engage.Dnn.Locator.Components
             }
         }
 
-        public static string GetGeoCoordinates(int tabModuleId, string address1, string address2, string city, string state, string country, string zip, out double? latitude, out double? longitude, out string error)
+        public static string GetGeoCoordinates(int tabModuleId, string address1, string city, string state, string country, string zip, out double? latitude, out double? longitude, out string error)
         {
             string address;
 
-            StringBuilder location = GetLocation(address1, string.Empty, ref city, state, country, out address);
+            StringBuilder location = GetLocation(address1, ref city, state, country, out address);
 
             DataTable existingLatitudeLongitude = DataProvider.Instance().GetLatitudeLongitude(address, city);
             error = "";
@@ -281,17 +283,17 @@ namespace Engage.Dnn.Locator.Components
                     longitude = Convert.ToDouble(existingLatitudeLongitude.Rows[0]["Longitude"]);
                 }
             }
-            location = GetLocation(address1, address2, ref city, state, country, out address);
+            location = GetLocation(address1, ref city, state, country, out address);
             return address;
         }
 
-        private static StringBuilder GetLocation(string address1, string address2, ref string city, string state, string country, out string address)
+        private static StringBuilder GetLocation(string address1, ref string city, string state, string country, out string address)
         {
             StringBuilder location = new StringBuilder(address1);
-            if (!String.IsNullOrEmpty(address2))
-            {
-                location.Append(", " + address2);
-            }
+            //if (!String.IsNullOrEmpty(address2))
+            //{
+            //    location.Append(", " + address2);
+            //}
 
             address = location.ToString();
 

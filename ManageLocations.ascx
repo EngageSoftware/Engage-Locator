@@ -61,25 +61,25 @@
                         </asp:TemplateColumn>--%>
                         <asp:TemplateColumn HeaderText="Name" SortExpression="Name">
                             <ItemTemplate>
-                                <asp:Label ID="lblName" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Name", "{0:d}") %>'>
+                                <asp:Label ID="lblName" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Name") %>'>
                                 </asp:Label>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Address" SortExpression="Address">
                             <ItemTemplate>
-                                <asp:Label ID="lblAddress" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Address", "{0:d}") %>'>
+                                <asp:Label ID="lblAddress" runat="server" CssClass="datagridLabels">
                                 </asp:Label>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="City" SortExpression="City">
                             <ItemTemplate>
-                                <asp:Label ID="lblCity" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.City", "{0:d}") %>'>
+                                <asp:Label ID="lblCity" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.City") %>'>
                                 </asp:Label>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Region" SortExpression="StateName">
                             <ItemTemplate>
-                                <asp:Label ID="lblState" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.StateName", "{0:d}") %>'>
+                                <asp:Label ID="lblState" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.StateName") %>'>
                                 </asp:Label>
                             </ItemTemplate>
                         </asp:TemplateColumn>
@@ -97,7 +97,7 @@
                         </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Location Type" SortExpression="Type">
                             <ItemTemplate>
-                                <asp:Label ID="lblType" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Type", "{0:d}") %>'>
+                                <asp:Label ID="lblType" runat="server" CssClass="datagridLabels" Text='<%# DataBinder.Eval(Container, "DataItem.Type") %>'>
                                 </asp:Label>
                             </ItemTemplate>
                         </asp:TemplateColumn>

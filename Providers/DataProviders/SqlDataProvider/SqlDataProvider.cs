@@ -118,7 +118,7 @@ namespace Engage.Dnn.Locator.Data
         public override DataTable GetNClosestLocations(double latitude, double longitude, int N, int portalId)
         {
             StringBuilder sql = new StringBuilder(500);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT TOP {1} LocationId, Id, LocationTypeId, Name, Latitude, Longitude, Abbreviation, CountryName, City, Address, PostalCode, Phone, LocationDetails, [Type], {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ", NamePrefix, N);
+            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT TOP {1} LocationId, Id, LocationTypeId, Name, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, PostalCode, Phone, LocationDetails, [Type], {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ", NamePrefix, N);
             sql.AppendFormat(CultureInfo.InvariantCulture, " FROM {0}vLocations ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE PortalId = @PortalId ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " AND IsSearchable = 1 ");
@@ -140,7 +140,7 @@ namespace Engage.Dnn.Locator.Data
         public override DataTable GetClosestLocationsByRadius(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds)
         {
             StringBuilder sql = new StringBuilder(500);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, StateName, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Phone, RegionId, LocationDetails, [Type], PostalCode, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ", NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, StateName, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, Phone, RegionId, LocationDetails, [Type], PostalCode, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " FROM {0}vLocations ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) <= @Radius ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " AND PortalId = @PortalId ");
@@ -176,13 +176,19 @@ namespace Engage.Dnn.Locator.Data
 
         public override DataTable GetLocation(int locationId)
         {
-            return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, NamePrefix + "spGetLocation", CreateIntegerParam("@locationId", locationId)).Tables[0];
+            StringBuilder sql = new StringBuilder(98);
+            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, Phone, StateName, RegionId, LocationDetails, [Type], PostalCode, Approved, AverageRating ");
+            sql.AppendFormat(CultureInfo.InvariantCulture, "FROM {0}vLocations ", NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE LocationId = @LocationId ");
+
+            return SqlHelper.ExecuteDataset(connectionString, CommandType.Text, sql.ToString(), CreateIntegerParam("@LocationId", locationId)).Tables[0];
         }
 
         public override DataTable GetLocations(int typeId, int portalId)
         {
             StringBuilder sql = new StringBuilder(98);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Phone, StateName, RegionId, LocationDetails, [Type], PostalCode FROM {0}vLocations ", NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, Phone, StateName, RegionId, LocationDetails, [Type], PostalCode, Approved, AverageRating");
+            sql.AppendFormat(CultureInfo.InvariantCulture, "FROM {0}vLocations ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE LocationTypeId = @LocationTypeId ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " AND PortalId = @PortalId ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY Name ");
@@ -194,7 +200,7 @@ namespace Engage.Dnn.Locator.Data
         public override DataTable GetLocationsByCountry(int countryId, int portalId)
         {
             StringBuilder sql = new StringBuilder(98);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Phone, RegionId, LocationDetails, [Type], PostalCode FROM {0}vLocations ", NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, Phone, RegionId, LocationDetails, [Type], PostalCode FROM {0}vLocations ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE CountryId = @CountryId ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " AND PortalId = @PortalId ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY City ");
@@ -500,17 +506,17 @@ namespace Engage.Dnn.Locator.Data
 
         public override int SaveLocation(Location loc)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateNTextParam("@LocationDetails", loc.LocationDetails), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@CsvLineNumber", 0), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved))));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 510), CreateVarcharParam("@Address2", loc.Address2, 510), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateNTextParam("@LocationDetails", loc.LocationDetails), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@CsvLineNumber", 0), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved))));
         }
 
         public override int SaveTempLocation(Location loc, bool successful)
         {
-            return SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertTempLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateNTextParam("@LocationDetails", loc.LocationDetails), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@CSVLineNumber", loc.CsvLineNumber), CreateVarcharParam("@successful", Convert.ToInt32(successful).ToString(), 25), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved)));
+            return SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spInsertTempLocation", CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 510), CreateVarcharParam("@Address", loc.Address, 510), CreateVarcharParam("@Address2", loc.Address2, 510), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateNTextParam("@LocationDetails", loc.LocationDetails), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateIntegerParam("@PortalId", loc.PortalId), CreateIntegerParam("@CSVLineNumber", loc.CsvLineNumber), CreateVarcharParam("@successful", Convert.ToInt32(successful).ToString(), 25), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved)));
         }
 
         public override int UpdateLocation(Location loc)
         {
-            return SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spUpdateLocation", CreateIntegerParam("@LocationId", loc.LocationId), CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 100), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateNTextParam("@LocationDetails", loc.LocationDetails), CreateIntegerParam("@PortalId", loc.PortalId), CreateDateTimeParam("@LastUpdatedDate", loc.LastUpdateDate), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved)));
+            return SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spUpdateLocation", CreateIntegerParam("@LocationId", loc.LocationId), CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100), CreateIntegerParam("@LocationTypeId", loc.LocationTypeId), CreateVarcharParam("@Name", loc.Name, 100), CreateVarcharParam("@Website", loc.Website, 255), CreateDoubleParam("@Latitude", loc.Latitude), CreateDoubleParam("@Longitude", loc.Longitude), CreateIntegerParam("@CountryId", loc.CountryId), CreateIntegerParam("@RegionId", loc.RegionId), CreateVarcharParam("@City", loc.City, 100), CreateVarcharParam("@Address", loc.Address, 510), CreateVarcharParam("@Address2", loc.Address2, 510), CreateVarcharParam("@PostalCode", loc.PostalCode, 100), CreateVarcharParam("@Phone", loc.Phone, 100), CreateNTextParam("@LocationDetails", loc.LocationDetails), CreateIntegerParam("@PortalId", loc.PortalId), CreateDateTimeParam("@LastUpdatedDate", loc.LastUpdateDate), CreateIntegerParam("@approved", Convert.ToInt32(loc.Approved)));
         }
 
         public override DataTable GetCountriesList(int portalId)
@@ -549,7 +555,7 @@ namespace Engage.Dnn.Locator.Data
         public override DataTable GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds)
         {
             StringBuilder sql = new StringBuilder(500);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, RegionId, Phone, LocationDetails, [Type], PostalCode, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ", NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, RegionId, Phone, LocationDetails, [Type], PostalCode, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " FROM {0}vLocations ", NamePrefix);
             //sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) <= @Radius ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE PortalId = @PortalId ");
@@ -587,7 +593,7 @@ namespace Engage.Dnn.Locator.Data
         {
             StringBuilder sql = new StringBuilder(98);
             sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, vl.LocationTypeId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, ");
-            sql.AppendFormat(CultureInfo.InvariantCulture, "CountryName as Country, CountryId, RegionId, City, Address, Latitude, Longitude, Phone, LocationDetails, ");
+            sql.AppendFormat(CultureInfo.InvariantCulture, "CountryName as Country, CountryId, RegionId, City, Address, Address2, Latitude, Longitude, Phone, LocationDetails, ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "lt.LocationTypeName, PostalCode FROM {0}vLocations vl join {0}LocationType lt on (vl.LocationTypeId = lt.LocationTypeId) ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE vl.PortalId = @PortalId and Approved = 1");
 

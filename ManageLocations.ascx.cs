@@ -230,6 +230,7 @@ namespace Engage.Dnn.Locator
             {
                 TableCell cell = e.Item.Cells[0];
                 Label id = (Label)cell.FindControl("lblLocationId");
+                //TODO: We should not be going back to the database here. If BindData() set the datasource to Location[] then this would not be needed. Change Location.GetLocations() to return a Location[] list.
                 Location location = Location.GetLocation(Convert.ToInt32(id.Text));
                 DataSet approved = location.GetComments(true);
                 DataSet waiting = location.GetComments(false);
@@ -237,6 +238,9 @@ namespace Engage.Dnn.Locator
                 lbl.Text = approved.Tables[0].Rows.Count + Localization.GetString("lblApprovedComments", LocalResourceFile);
                 lbl = (Label)cell.FindControl("lblWaitingComments");
                 lbl.Text = waiting.Tables[0].Rows.Count + Localization.GetString("lblWaitingComments", LocalResourceFile);
+
+                Label lblAddress = (Label)cell.FindControl("lblAddress");
+                lblAddress.Text = location.FullAddress;
             }
         }
 
