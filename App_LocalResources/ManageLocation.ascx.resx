@@ -124,7 +124,7 @@
     <value>Address 1</value>
   </data>
   <data name="lblAddress2.Help" xml:space="preserve">
-    <value>Specify additional Address information used to Geo-Code the locations and will be displayed when users are viewing the location(s).</value>
+    <value>Specify additional Address information. This infromation is not used in geo coding the location, but is informational regarding the phyical location of your entry.</value>
   </data>
   <data name="lblAddress2.Text" xml:space="preserve">
     <value>Address 2</value>

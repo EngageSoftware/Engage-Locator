@@ -1,5 +1,4 @@
 <%@ Control Language="C#" AutoEventWireup="True"  CodeBehind="Details.ascx.cs"  Inherits="Engage.Dnn.Locator.Details" %>
-<%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 
 <div class="div_ManagementButtons">
