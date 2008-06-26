@@ -82,13 +82,7 @@ namespace Engage.Dnn.Locator
             lnkLocationName.Text = location.Website;
             lnkLocationName.NavigateUrl = location.Website;
             lblLocationDetails.Text = location.LocationDetails;
-
-            if (location.Address != String.Empty && location.Address.Contains(","))
-            {
-                int length = location.Address.IndexOf(',');
-                lblLocationsAddress2.Text = location.Address.Remove(0, length);
-            }
-            lblLocationsAddress1.Text = location.Address;
+            lblLocationsAddress1.Text = location.FullAddress;
 
             ListController controller = new ListController();
             ListEntryInfo region = controller.GetListEntryInfo(location.RegionId);
