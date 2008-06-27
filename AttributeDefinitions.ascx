@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="False" CodeBehind="AttributeDefinitions.ascx.cs"
+<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="AttributeDefinitions.ascx.cs"
     Inherits="Engage.Dnn.Locator.AttributeDefinitions" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 
