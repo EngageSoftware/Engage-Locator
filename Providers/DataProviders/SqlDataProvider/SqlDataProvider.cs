@@ -187,7 +187,7 @@ namespace Engage.Dnn.Locator.Data
         public override DataTable GetLocations(int typeId, int portalId)
         {
             StringBuilder sql = new StringBuilder(98);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, Phone, StateName, RegionId, LocationDetails, [Type], PostalCode, Approved, AverageRating");
+            sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, Phone, StateName, RegionId, LocationDetails, [Type], PostalCode, Approved, AverageRating ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "FROM {0}vLocations ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE LocationTypeId = @LocationTypeId ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " AND PortalId = @PortalId ");
