@@ -2,6 +2,7 @@
     Inherits="Engage.Dnn.Locator.AttributeDefinitions" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 
+<div class="adWrapper">
 <div class="globalNav">
     <asp:ImageButton ID="lbSettings" CssClass="CommandButton" runat="server" AlternateText="Settings" ImageUrl="~/desktopmodules/EngageLocator/images/settingsBt.gif" OnClick="lbSettings_OnClick" CausesValidation="false" />
     <asp:ImageButton ID="lbManageLocations" CssClass="CommandButton" runat="server" AlternateText="Manage Locations" ImageUrl="~/desktopmodules/EngageLocator/images/locationbt.gif" OnClick="lbManageLocations_OnClick" CausesValidation="false" />
@@ -116,4 +117,5 @@
     <asp:ImageButton ID="cmdCancel" runat="server" ToolTip="Click here to go back to the previous screen"
         AlternateText="Cancel and return to previous screen" CssClass="CommandButton"
         ImageUrl="~/desktopmodules/EngageLocator/images/back.gif" OnClick="cmdCancel_Click" />
+</div>
 </div>
