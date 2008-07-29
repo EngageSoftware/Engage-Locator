@@ -75,14 +75,12 @@
     </Compile>
     <Compile Include="ManageComments.ascx.cs">
       <DependentUpon>ManageComments.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ManageComments.ascx.designer.cs">
       <DependentUpon>ManageComments.ascx</DependentUpon>
     </Compile>
     <Compile Include="ManageLocations.ascx.cs">
       <DependentUpon>ManageLocations.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ManageLocations.ascx.designer.cs">
       <DependentUpon>ManageLocations.ascx</DependentUpon>
@@ -119,7 +117,6 @@
     </Compile>
     <Compile Include="ManageLocation.ascx.cs">
       <DependentUpon>ManageLocation.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ManageLocation.ascx.designer.cs">
       <DependentUpon>ManageLocation.ascx</DependentUpon>
@@ -305,6 +302,7 @@
     <Content Include="Images\update.gif" />
     <Content Include="Images\updateBt.gif" />
     <Content Include="Images\updateBtDisabled.gif" />
+    <EmbeddedResource Include="JavaScript\locator.js" />
     <Content Include="Services\WebServices.asmx" />
     <Content Include="Settings.ascx" />
   </ItemGroup>

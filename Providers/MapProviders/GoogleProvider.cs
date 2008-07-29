@@ -329,7 +329,7 @@ namespace Engage.Dnn.Locator
             script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
         }
 
-        private void MapType(StringBuilder script, string mapType)
+        private static void MapType(StringBuilder script, string mapType)
         {
             if (mapType == "Normal") 
                 script.AppendFormat(CultureInfo.InvariantCulture, "map.setMapType(G_NORMAL_MAP);{0}", Environment.NewLine);
