@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B001E2F2-72ED-49F6-93E7-D0819D799075}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -49,7 +49,9 @@
       <HintPath>..\..\..\Assemblies\DNN 4.5.1\DotNetNuke.WebUtility.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Engage.Dnn.UserFeedback, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Engage.Dnn.UserFeedback, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
@@ -75,12 +77,14 @@
     </Compile>
     <Compile Include="ManageComments.ascx.cs">
       <DependentUpon>ManageComments.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ManageComments.ascx.designer.cs">
       <DependentUpon>ManageComments.ascx</DependentUpon>
     </Compile>
     <Compile Include="ManageLocations.ascx.cs">
       <DependentUpon>ManageLocations.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ManageLocations.ascx.designer.cs">
       <DependentUpon>ManageLocations.ascx</DependentUpon>
@@ -117,6 +121,7 @@
     </Compile>
     <Compile Include="ManageLocation.ascx.cs">
       <DependentUpon>ManageLocation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ManageLocation.ascx.designer.cs">
       <DependentUpon>ManageLocation.ascx</DependentUpon>
