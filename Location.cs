@@ -1,295 +1,388 @@
-//Copyright (c) 2004-2007
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using Engage.Dnn.Locator.Data;
+// <copyright file="Location.cs" company="Engage Software">
+// Copyright (c) 2004-2008
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Locator
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Globalization;
+    using Data;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+
+    /// <summary>
+    /// Represents a location, the main component in Engage: Locator
+    /// </summary>
     public class Location
     {
-
-        #region Properties
-
+        /// <summary>
+        /// Backing field for <see cref="Address"/>
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _locationId = -1;
+        private string address;
+
+        /// <summary>
+        /// Backing field for <see cref="Address2"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string address2;
+
+        /// <summary>
+        /// Backing field for <see cref="Approved"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private bool approved;
+
+        /// <summary>
+        /// Backing field for <see cref="AverageRating"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private float averageRating;
+
+        /// <summary>
+        /// Backing field for <see cref="City"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string city;
+
+        /// <summary>
+        /// Backing field for <see cref="CountryId"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int countryId;
+
+        /// <summary>
+        /// Backing field for <see cref="CsvLineNumber"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int csvLineNumber;
+
+        /// <summary>
+        /// Backing field for <see cref="ExternalIdentifier"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string externalIdentifier;
+
+        /// <summary>
+        /// Backing field for <see cref="LastUpdateDate"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private DateTime lastUpdateDate;
+
+        /// <summary>
+        /// Backing field for <see cref="Latitude"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private double latitude;
+
+        /// <summary>
+        /// Backing field for <see cref="LocationDetails"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string locationDetails;
+
+        /// <summary>
+        /// Backing field for <see cref="LocationId"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int locationId = -1;
+
+        /// <summary>
+        /// Backing field for <see cref="LocationTypeId"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int locationTypeId;
+
+        /// <summary>
+        /// Backing field for <see cref="Longitude"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private double longitude;
+
+        /// <summary>
+        /// Backing field for <see cref="Name"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string name;
+
+        /// <summary>
+        /// Backing field for <see cref="Phone"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string phone;
+
+        /// <summary>
+        /// Backing field for <see cref="PortalId"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int portalId;
+
+        /// <summary>
+        /// Backing field for <see cref="PostalCode"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string postalCode;
+
+        /// <summary>
+        /// Backing field for <see cref="RegionId"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private int regionId;
+
+        /// <summary>
+        /// Backing field for <see cref="StateName"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string stateName;
+
+        /// <summary>
+        /// Backing field for <see cref="Website"/>
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string website;
+        
         public int LocationId
         {
-            [DebuggerStepThroughAttribute]
-            get { return _locationId; }
-            [DebuggerStepThroughAttribute]
-            set { _locationId = value; }
+            [DebuggerStepThrough]
+            get { return this.locationId; }
+            [DebuggerStepThrough]
+            set { this.locationId = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _externalIdentifier;
         public string ExternalIdentifier
         {
-            [DebuggerStepThroughAttribute]
-            get { return _externalIdentifier; }
-            [DebuggerStepThroughAttribute]
-            set { _externalIdentifier = value; }
+            [DebuggerStepThrough]
+            get { return this.externalIdentifier; }
+            [DebuggerStepThrough]
+            set { this.externalIdentifier = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _name;
         public string Name
         {
-            [DebuggerStepThroughAttribute]
-            get { return _name; }
-            [DebuggerStepThroughAttribute]
-            set { _name = value; }
+            [DebuggerStepThrough]
+            get { return this.name; }
+            [DebuggerStepThrough]
+            set { this.name = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private double _latitude;
         public double Latitude
         {
-            [DebuggerStepThroughAttribute]
-            get { return _latitude; }
-            [DebuggerStepThroughAttribute]
-            set { _latitude = value; }
+            [DebuggerStepThrough]
+            get { return this.latitude; }
+            [DebuggerStepThrough]
+            set { this.latitude = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private double _longitude;
         public double Longitude
         {
-            [DebuggerStepThroughAttribute]
-            get { return _longitude; }
-            [DebuggerStepThroughAttribute]
-            set { _longitude = value; }
+            [DebuggerStepThrough]
+            get { return this.longitude; }
+            [DebuggerStepThrough]
+            set { this.longitude = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _countryId;
         public int CountryId
         {
-            [DebuggerStepThroughAttribute]
-            get { return _countryId; }
-            [DebuggerStepThroughAttribute]
-            set { _countryId = value; }
+            [DebuggerStepThrough]
+            get { return this.countryId; }
+            [DebuggerStepThrough]
+            set { this.countryId = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _regionId;
         public int RegionId
         {
-            [DebuggerStepThroughAttribute]
-            get { return _regionId; }
-            [DebuggerStepThroughAttribute]
-            set { _regionId = value; }
+            [DebuggerStepThrough]
+            get { return this.regionId; }
+            [DebuggerStepThrough]
+            set { this.regionId = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _stateName;
         public string StateName
         {
-            [DebuggerStepThroughAttribute]
-            get { return _stateName; }
-            [DebuggerStepThroughAttribute]
-            set { _stateName = value; }
+            [DebuggerStepThrough]
+            get { return this.stateName; }
+            [DebuggerStepThrough]
+            set { this.stateName = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _city;
         public string City
         {
-            [DebuggerStepThroughAttribute]
-            get { return _city; }
-            [DebuggerStepThroughAttribute]
-            set { _city = value; }
+            [DebuggerStepThrough]
+            get { return this.city; }
+            [DebuggerStepThrough]
+            set { this.city = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _address;
         public string Address
         {
-            [DebuggerStepThroughAttribute]
-            get { return _address; }
-            [DebuggerStepThroughAttribute]
-            set { _address = value; }
+            [DebuggerStepThrough]
+            get { return this.address; }
+            [DebuggerStepThrough]
+            set { this.address = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _address2;
         public string Address2
         {
-            [DebuggerStepThroughAttribute]
-            get { return _address2; }
-            [DebuggerStepThroughAttribute]
-            set { _address2 = value; }
+            [DebuggerStepThrough]
+            get { return this.address2; }
+            [DebuggerStepThrough]
+            set { this.address2 = value; }
+        }
+
+        /// <summary>
+        /// Gets the third line of an address, containing city, state (if applicable) and postal code.
+        /// </summary>
+        /// <value>The third line of the address.</value>
+        public string Address3
+        {
+            get
+            {
+                ListEntryInfo region = new ListController().GetListEntryInfo(this.RegionId);
+                return this.City + ", " 
+                    + (!Null.IsNull(region) 
+                        ? region.Value + " " 
+                        : string.Empty) 
+                    + this.PostalCode;
+            }
         }
 
         public string FullAddress
         {
-            [DebuggerStepThroughAttribute]
-            get 
-            {
-                string address = _address;
-                if (_address2.Length > 0)
-                {
-                    address += " " + _address2;
-                }
-                return address;
-            }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _postalCode;
-        public string PostalCode
-        {
-            [DebuggerStepThroughAttribute]
-            get { return _postalCode; }
-            [DebuggerStepThroughAttribute]
-            set { _postalCode = value; }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _phone;
-        public string Phone
-        {
-            [DebuggerStepThroughAttribute]
-            get { return _phone; }
-            [DebuggerStepThroughAttribute]
-            set { _phone = value; }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _locationDetails;
-        public string LocationDetails
-        {
-            [DebuggerStepThroughAttribute]
-            get { return _locationDetails; }
-            [DebuggerStepThroughAttribute]
-            set { _locationDetails = value; }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _locationTypeId;
-        public int LocationTypeId
-        {
-            [DebuggerStepThroughAttribute]
-            get { return _locationTypeId; }
-            [DebuggerStepThroughAttribute]
-            set { _locationTypeId = value; }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _portalId;
-        public int PortalId
-        {
-            [DebuggerStepThroughAttribute]
-            get { return _portalId; }
-            [DebuggerStepThroughAttribute]
-            set { _portalId = value; }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _website;
-        public string Website
-        {
-            [DebuggerStepThroughAttribute]
-            get { return _website; }
-            [DebuggerStepThroughAttribute]
-            set { _website = value; }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private DateTime _lastUpdateDate;
-        public DateTime LastUpdateDate
-        {
-
             get
             {
-                if (_lastUpdateDate == DateTime.MinValue)
-                {
-                    return DateTime.Now;
-                }
-                else
-                {
-                    return _lastUpdateDate;
-                }
+                return this.address + (this.address2.Length > 0 ? " " + this.address2 : string.Empty);
             }
-            [DebuggerStepThroughAttribute]
-            set { _lastUpdateDate = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _csvLineNumber;
+        public string PostalCode
+        {
+            [DebuggerStepThrough]
+            get { return this.postalCode; }
+            [DebuggerStepThrough]
+            set { this.postalCode = value; }
+        }
+
+        public string Phone
+        {
+            [DebuggerStepThrough]
+            get { return this.phone; }
+            [DebuggerStepThrough]
+            set { this.phone = value; }
+        }
+
+        public string LocationDetails
+        {
+            [DebuggerStepThrough]
+            get { return this.locationDetails; }
+            [DebuggerStepThrough]
+            set { this.locationDetails = value; }
+        }
+
+        public int LocationTypeId
+        {
+            [DebuggerStepThrough]
+            get { return this.locationTypeId; }
+            [DebuggerStepThrough]
+            set { this.locationTypeId = value; }
+        }
+
+        public int PortalId
+        {
+            [DebuggerStepThrough]
+            get { return this.portalId; }
+            [DebuggerStepThrough]
+            set { this.portalId = value; }
+        }
+
+        public string Website
+        {
+            [DebuggerStepThrough]
+            get { return this.website; }
+            [DebuggerStepThrough]
+            set { this.website = value; }
+        }
+
+        public DateTime LastUpdateDate
+        {
+            get
+            {
+                return this.lastUpdateDate == DateTime.MinValue ? DateTime.Now : this.lastUpdateDate;
+            }
+
+            [DebuggerStepThrough]
+            set 
+            { 
+                this.lastUpdateDate = value; 
+            }
+        }
+
         public int CsvLineNumber
         {
-            [DebuggerStepThroughAttribute]
-            get { return _csvLineNumber; }
-            [DebuggerStepThroughAttribute]
-            set { _csvLineNumber = value; }
+            [DebuggerStepThrough]
+            get { return this.csvLineNumber; }
+            [DebuggerStepThrough]
+            set { this.csvLineNumber = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool _approved;
         public bool Approved
         {
-            [DebuggerStepThroughAttribute]
-            get { return _approved; }
-            [DebuggerStepThroughAttribute]
-            set { _approved = value; }
+            [DebuggerStepThrough]
+            get { return this.approved; }
+            [DebuggerStepThrough]
+            set { this.approved = value; }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private float _averageRating;
         public float AverageRating
         {
             [DebuggerStepThrough]
-            get { return _averageRating; }
+            get { return this.averageRating; }
             [DebuggerStepThrough]
-            private set { _averageRating = value; }
+            private set { this.averageRating = value; }
         }
-
-        #endregion
 
         #region Methods
 
         public void Save()
         {
-            if (_locationId == -1)
+            if (this.locationId == -1)
             {
-                _locationId = DataProvider.Instance().SaveLocation(this);
+                this.locationId = DataProvider.Instance().SaveLocation(this);
             }
         }
 
         public void SaveTemp(bool successful)
         {
-            if (_locationId != -1)
+            if (this.locationId != -1)
             {
-                _locationId = DataProvider.Instance().SaveTempLocation(this, successful);
+                this.locationId = DataProvider.Instance().SaveTempLocation(this, successful);
             }
         }
 
         public void Update()
         {
-            if (_locationId != -1)
+            if (this.locationId != -1)
             {
-                _locationId = DataProvider.Instance().UpdateLocation(this);
+                this.locationId = DataProvider.Instance().UpdateLocation(this);
             }
         }
 
-        public DataSet GetComments(bool approved)
+        public DataSet GetComments(bool onlyApproved)
         {
-            return DataProvider.Instance().GetComments(_locationId, approved);
+            return DataProvider.Instance().GetComments(this.locationId, onlyApproved);
         }
 
         public List<Attribute> GetAttributes()
         {
-            return Attribute.GetAttributes(_locationTypeId, _locationId);
+            return Attribute.GetAttributes(this.locationTypeId, this.locationId);
         }
 
         #endregion
@@ -313,7 +406,7 @@ namespace Engage.Dnn.Locator
 
         public static Location GetLocation(int locationId)
         {
-            Location location = Location.Load(DataProvider.Instance().GetLocation(locationId).Rows[0]);
+            Location location = Load(DataProvider.Instance().GetLocation(locationId).Rows[0]);
             return location;
         }
 
@@ -329,13 +422,14 @@ namespace Engage.Dnn.Locator
 
         public static List<Location> GetSearchLocations(int portalId, bool approved)
         {
-            DataTable dtLocations = DataProvider.Instance().GetAllLocations(portalId, approved, "Name", 0, 0);
+            DataTable locationsTable = DataProvider.Instance().GetAllLocations(portalId, approved, "Name", 0, 0);
             List<Location> locations = new List<Location>();
-            foreach (DataRow row in dtLocations.Rows)
+            foreach (DataRow row in locationsTable.Rows)
             {
-                Location loc = GetLocation(Convert.ToInt32(row["LocationId"]));
+                Location loc = GetLocation(Convert.ToInt32(row["LocationId"], CultureInfo.InvariantCulture));
                 locations.Add(loc);
             }
+
             return locations;
         }
 
@@ -349,7 +443,6 @@ namespace Engage.Dnn.Locator
             return DataProvider.Instance().GetNewSubmittedComments(portalId, approved);
         }
 
-        //This method should be used for all instance creation so that this code is in one place! hk
         public static Location Load(DataRow row)
         {
             Location loc = new Location();
@@ -359,24 +452,22 @@ namespace Engage.Dnn.Locator
             loc.City = row["City"].ToString();
             loc.LocationDetails = row["LocationDetails"].ToString();
             loc.ExternalIdentifier = row["ExternalIdentifier"].ToString();
-            loc.Latitude = Convert.ToDouble(row["Latitude"]);
-            loc.LocationId = Convert.ToInt32(row["LocationId"]);
-            loc.LocationTypeId = Convert.ToInt32(row["LocationTypeId"]);
-            loc.Longitude = Convert.ToDouble(row["Longitude"]);
+            loc.Latitude = Convert.ToDouble(row["Latitude"], CultureInfo.InvariantCulture);
+            loc.LocationId = Convert.ToInt32(row["LocationId"], CultureInfo.InvariantCulture);
+            loc.LocationTypeId = Convert.ToInt32(row["LocationTypeId"], CultureInfo.InvariantCulture);
+            loc.Longitude = Convert.ToDouble(row["Longitude"], CultureInfo.InvariantCulture);
             loc.Name = row["Name"].ToString();
             loc.Website = row["Website"].ToString();
             loc.Phone = row["Phone"].ToString();
             loc.PostalCode = row["PostalCode"].ToString();
             loc.StateName = row["StateName"].ToString();
-            loc.RegionId = Convert.ToInt32(row["RegionId"].ToString());
-            loc.Approved = Convert.ToBoolean(row["Approved"].ToString());
-            loc.AverageRating = row["AverageRating"] is DBNull ? 0 : Convert.ToSingle(row["AverageRating"]);
+            loc.RegionId = Convert.ToInt32(row["RegionId"].ToString(), CultureInfo.InvariantCulture);
+            loc.Approved = Convert.ToBoolean(row["Approved"].ToString(), CultureInfo.InvariantCulture);
+            loc.AverageRating = row["AverageRating"] is DBNull ? 0 : Convert.ToSingle(row["AverageRating"], CultureInfo.InvariantCulture);
 
             return loc;
         }
 
         #endregion
-
-
     }
 }

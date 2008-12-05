@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="True"  CodeBehind="Details.ascx.cs"  Inherits="Engage.Dnn.Locator.Details" %>
+<%@ Control Language="C#" AutoEventWireup="false"  CodeBehind="Details.ascx.cs"  Inherits="Engage.Dnn.Locator.Details" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 
@@ -7,7 +7,7 @@
     <asp:ImageButton ID="lbManageLocations" CssClass="CommandButton" runat="server" AlternateText="Manage Locations" ImageUrl="~/desktopmodules/EngageLocator/images/locationbt.gif" OnClick="lbManageLocations_OnClick" CausesValidation="false" />
     <asp:ImageButton ID="lbImportFile" CssClass="CommandButton" runat="server" AlternateText="Import File" ImageUrl="~/desktopmodules/EngageLocator/images/importbt.gif" OnClick="lbImportFile_OnClick" CausesValidation="false" />
     <asp:ImageButton ID="lbManageComments" CssClass="CommandButton" runat="server" AlternateText="Comments" ImageUrl="~/desktopmodules/EngageLocator/images/commentsbt.gif" OnClick="lbManageComments_OnClick" CausesValidation="false" />
-    <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lbManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" CausesValidation="false" />
+    <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" OnClick="lbManageTypes_OnClick" CausesValidation="false" />
 </div>
 
 <script type="text/javascript">
@@ -24,48 +24,53 @@ function show(d)
 <table class="titleHeading">
     <tr class="locationEntryTR">
         <td class="locationTitleTD">
-            <div class="ldID">
-                <asp:Label ID="lblLocationId" runat="server" CssClass="Normal" Visible="false" />
-            </div>
             <div class="ldName">
-                <asp:Label ID="lblLocationName" runat="server" CssClass="SubHead" />
+                <asp:Label ID="LocationNameLabel" runat="server" CssClass="SubHead" />
             </div>
             <div class="ldAddress1">
-                <asp:Label ID="lblLocationsAddress1" runat="server" CssClass="Normal" />
+                <asp:Label ID="LocationAddress1Label" runat="server" CssClass="Normal" />
             </div>
             <div class="ldAddress2">
-                <asp:Label ID="lblLocationsAddress2" runat="server" CssClass="Normal" />
+                <asp:Label ID="LocationAddress2Label" runat="server" CssClass="Normal" />
             </div>
             <div class="ldAddress3">
-                <asp:Label ID="lblLocationsAddress3" runat="server" CssClass="Normal" />
+                <asp:Label ID="LocationAddress3Label" runat="server" CssClass="Normal" />
             </div>
             <div class="ldPhone">
-                <asp:Label ID="lblPhoneNumber" runat="server" CssClass="Normal" />
+                <asp:Label ID="PhoneNumberLabel" runat="server" CssClass="Normal" />
             </div>
             <div class="ldLink">
-                <asp:HyperLink ID="lnkLocationName" runat="server" CssClass="Normal" Target="_blank"></asp:HyperLink>
+                <asp:HyperLink ID="LocationNameLink" runat="server" CssClass="Normal" Target="_blank"/>
             </div>
         </td>
     </tr>
-    <% if (ShowLocationDetails)
-       { %><tr>
+      <tr>
         <td>
-            <div>
-                <asp:Label ID="lblLocationDetailsTitle" runat="server" CssClass="SubHead" resourcekey="lblLocationDetailsTitle" />
-            </div>
-            <div>
-                <asp:Label ID="lblLocationDetails" runat="server" CssClass="Normal"></asp:Label>
-            </div>
-    <% } %>
+            <% if (ShowLocationDetails) { %>
+                <div>
+                    <asp:Label ID="LocationDetailsHeaderLabel" runat="server" CssClass="SubHead" resourcekey="lblLocationDetailsTitle" />
+                </div>
+                <div>
+                    <asp:Label ID="LocationDetailsLabel" runat="server" CssClass="Normal"/>
+                </div>
+            <% } %>
             <div id="div_customAttributes" class="Normal">
-                <asp:PlaceHolder ID="plhCustomAttributes" runat="server"></asp:PlaceHolder>
+                <asp:Repeater ID="CustomAttributeRepeater" runat="server">
+                    <ItemTemplate>
+                        <div class=div_CustomAttribute<%#Eval("AttributeId") %>>
+                            <asp:Label runat="server" Text='<%#Localization.GetString(Eval("AttributeName").ToString(), this.LocalResourceFile) ?? Eval("AttributeName") %>' />&nbsp;
+                            <asp:Label runat="server" Text='<%#Eval("AttributeValue") %>' />
+                            <br />
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
             </div>
 			<div class="ldRating">
-                <asp:UpdatePanel ID="upnlRating" runat="server" UpdateMode="conditional" Visible="false">
+                <asp:UpdatePanel ID="RatingUpdatePanel" runat="server" UpdateMode="conditional" Visible="false">
                     <ContentTemplate>
                         <div id="divRating" class="divRatingBefore">
-                            <asp:Label ID="lblRatingMessage" runat="server" CssClass="Normal" resourcekey="lblRatingMessage"></asp:Label>
-                            <ajaxToolkit:Rating ID="ajaxRating" runat="server" MaxRating="5" StarCssClass="ratingStar" WaitingStarCssClass="savedRatingStar" FilledStarCssClass="filledRatingStar" EmptyStarCssClass="emptyRatingStar" OnChanged="ajaxRating_Changed" Visible="true" />
+                            <asp:Label ID="RatingMessageLabel" runat="server" CssClass="Normal" resourcekey="lblRatingMessage"/>
+                            <ajaxToolkit:Rating ID="RatingControl" runat="server" MaxRating="5" StarCssClass="ratingStar" WaitingStarCssClass="savedRatingStar" FilledStarCssClass="filledRatingStar" EmptyStarCssClass="emptyRatingStar" Visible="true" />
                         </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
@@ -75,48 +80,46 @@ function show(d)
     <tr>
         <td>
             <div class="ldCommentHeading">
-                <asp:Label ID="lblLocationComments" runat="server" CssClass="SubHead" Text="Comments"
-                    resourcekey="lblLocationComments" />
+                <asp:Label ID="LocationCommentsLabel" runat="server" CssClass="SubHead" resourcekey="LocationCommentsLabel" />
             </div>
             <div>
-                <asp:Label ID="lblCommentSubmitted" runat="server" CssClass="Normal" Text="" Visible="false" />
+                <asp:Label ID="CommentSubmittedLabel" runat="server" CssClass="Normal" Visible="false" />
             </div>	
             <div id="divAddComment" style="display: none">
                 <div>
-                    <p><asp:Label ID="lblAddCommentInstructions" runat="server" CssClass="Normal" resourcekey="lblAddCommentInstructions" />
-                    <div><asp:TextBox ID="txtComment" runat="server" CssClass="NormalTextBox" TextMode="multiLine" Rows="5" MaxLength="200" Columns="42" /></div>
-                    <div><asp:RequiredFieldValidator ID="rfvComment" runat="server" CssClass="NormalRed" ErrorMessage="Please enter a comment" 
-                    	resourcekey="rfvComment" ControlToValidate="txtComment" /></div>
+                    <p><asp:Label ID="AddCommentInstructionsLabel" runat="server" CssClass="Normal" resourcekey="lblAddCommentInstructions" /></p>
+                    <div><asp:TextBox ID="CommentTextBox" runat="server" CssClass="NormalTextBox" TextMode="multiLine" Rows="5" MaxLength="200" Columns="42" /></div>
+                    <div><asp:RequiredFieldValidator ID="CommentRequiredValidator" runat="server" CssClass="NormalRed" ErrorMessage="Please enter a comment" resourcekey="rfvComment" ControlToValidate="CommentTextBox" /></div>
                 </div>
                 <div>
-                    <asp:Label ID="lblSubmittedBy" runat="server" CssClass="Normal" resourcekey="lblSubmittedBy" />
-                    <asp:TextBox ID="txtSubmittedBy" runat="server" CssClass="Normal" />
+                    <asp:Label ID="SubmittedByLabel" runat="server" CssClass="Normal" resourcekey="lblSubmittedBy" />
+                    <asp:TextBox ID="SubmittedByTextBox" runat="server" CssClass="Normal" />
                 </div>
                 <div>
-                    <asp:Button ID="btnSubmit" runat="server" CssClass="CommandButton" OnClick="btnSubmit_Click" resourcekey="btnSubmit" Text='<%# Localization.GetString("btnSubmit", LocalResourceFile) %>' />
-                    <asp:Button ID="btnCancel" runat="server" CssClass="CommandButton" resourcekey="btnCancel" Text='<%# Localization.GetString("btnCancel", LocalResourceFile) %>' />
+                    <asp:Button ID="SubmitButton" runat="server" CssClass="CommandButton" resourcekey="btnSubmit" />
+                    <asp:Button ID="CancelButton" runat="server" CssClass="CommandButton" resourcekey="CancelButton" OnClientClick="hide('divAddComment'); return false;" />
                 </div>
             </div>
         </td>
         <td>
-            <asp:Repeater ID="rptComments" runat="server">
+            <asp:Repeater ID="CommentsRepeater" runat="server">
                 <HeaderTemplate>
                     <tr>
                         <th class="locationComment">
-                            <asp:Label ID="lblCommentsHeader" runat="server" resourcekey="lblLocationHeader" />
+                            <asp:Label ID="CommentHeaderLabel" runat="server" resourcekey="lblLocationHeader" />
                         </th>
                         <th class="locationCommentAuthor">
-                            <asp:Label ID="lblCommentAuthor" runat="server" resourcekey="lblCommentAuthor" />
+                            <asp:Label ID="CommentAuthorHeaderLabel" runat="server" resourcekey="lblCommentAuthor" />
                         </th>
                     </tr>
                 </HeaderTemplate>
                 <ItemTemplate>
                     <tr class="userCommentRow">
                         <td class="userComment">
-                            <asp:Label ID="lblComment" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Text").ToString())%></asp:Label>
+                            <asp:Label ID="CommentLabel" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Text").ToString())%></asp:Label>
                         </td>
                         <td class="usernameComment">
-                            <asp:Label ID="lblCommentAuthor" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Author").ToString())%></asp:Label>
+                            <asp:Label ID="CommentAuthorLabel" runat="server" CssClass="Normal" ><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Author").ToString())%></asp:Label>
                         </td>
                     </tr>
                 </ItemTemplate>
@@ -126,26 +129,22 @@ function show(d)
 			<tr>
             	<td>
                     <div>
-                        <asp:Button ID="btnAddComment" runat="server" CssClass="CommandButton" resourcekey="btnAddComment" Text='<%# Localization.GetString("btnAddComment", LocalResourceFile) %>' />
+                        <asp:Button ID="ShowCommentEntryButton" runat="server" CssClass="CommandButton" resourcekey="btnAddComment" OnClientClick="show('divAddComment'); return false;" />
                     </div>
 				</td>                    
 			</tr>
     </tr>
 </table>
 <div>
-    <asp:Button ID="btnBack" runat="server" CssClass="CommandButton" Text="Back" resourceKey="btnBack" OnClick="btnBack_Click" CausesValidation="false" />
+    <asp:Button ID="BackButton" runat="server" CssClass="CommandButton" Text="Back" resourceKey="btnBack" CausesValidation="false" />
 </div>
 
+<% if (this.RatingControl.Visible) { %>
 <script type="text/javascript">
-    <% if (ajaxRating.Visible) { %>
-    // Method called when the Rating is changed
     function changeCssClassMethod(eventElement) {
        Sys.UI.DomElement.removeCssClass($get('divRating'), 'divRatingBefore'); 
        Sys.UI.DomElement.addCssClass($get('divRating'), 'divRatingAfter'); 
-
-       //Sys.UI.DomElement.toggleCssClass($get('divRating'), "divRatingAfter");
     }
-    // Add handler using the getElementById method
-    $addHandler(Sys.UI.DomElement.getElementById('<%= ajaxRating.ClientID %>'), 'click', changeCssClassMethod);
-    <% } %>
+    $addHandler($get('<%= this.RatingControl.ClientID %>'), 'click', changeCssClassMethod);
 </script>
+<% } %>
