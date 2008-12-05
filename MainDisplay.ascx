@@ -1,4 +1,5 @@
-﻿<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.MainDisplay" AutoEventWireup="True" Codebehind="MainDisplay.ascx.cs" %>
+﻿<%@ Import Namespace="DotNetNuke.Services.Localization"%>
+<%@ Control Language="C#" Inherits="Engage.Dnn.Locator.MainDisplay" AutoEventWireup="True" Codebehind="MainDisplay.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/sectionheadcontrol.ascx" %>
 
 <div class="div_ManagementButtons">
@@ -36,7 +37,7 @@
                                 <div class="LocatorInput">
                                     <div id="addressFirstLine" runat="server" class="addressFirstLine">
                                         <div id="ltAddress" runat="server">
-                                            <p class="Normal" ><asp:Label ID="lblLocationAddress" runat="server" Text="Address" resourcekey="lblLocationAddress" CssClass="Normal" /></p>
+                                            <p class="Normal" ><asp:Label ID="lblLocationAddress" runat="server" resourcekey="lblLocationAddress" CssClass="Normal" /></p>
                                             <p class="LocatorInputText"><asp:TextBox ID="txtLocationAddress" runat="server" MaxLength="80" /></p>
                                         </div>
                                     </div>
@@ -44,17 +45,17 @@
                                     <div class="addressSecondLine">
 
                                         <div id="ltCity" runat="server" class="ltCity">
-                                            <p class="Normal"><asp:Label ID="lblLocationCity" runat="server" Text="City" resourcekey="lblLocationCity" CssClass="Normal" /></p>
+                                            <p class="Normal"><asp:Label ID="lblLocationCity" runat="server" resourcekey="lblLocationCity" CssClass="Normal" /></p>
                                             <p class="LocatorInputText"><asp:TextBox ID="txtLocationCity" runat="server" MaxLength="80" /></p>
                                         </div>
                                         
                                         <div id="ltRegion" runat="server" class="ltRegion">
-                                            <p class="Normal"><asp:Label ID="lblLocationState" runat="server" Text="Region" resourcekey="lblLocationRegion" CssClass="Normal" /></p>
+                                            <p class="Normal"><asp:Label ID="lblLocationState" runat="server" resourcekey="lblLocationRegion" CssClass="Normal" /></p>
                                             <p class="ltDropDownList"><asp:DropDownList ID="ddlLocationRegion" runat="server" CssClass="Normal" /></p>
                                         </div>
                                         
                                         <div id="ltPostalcode" runat="server" class="ltPostalCode">
-                                            <p class="Normal"><asp:Label ID="lblLocationPostalCode" runat="server" Text="Postal Code" resourcekey="lblLocationPostalCode" CssClass="Normal" /></p>
+                                            <p class="Normal"><asp:Label ID="lblLocationPostalCode" runat="server" resourcekey="lblLocationPostalCode" CssClass="Normal" /></p>
                                             <p class="LocationPostalCode"><asp:TextBox ID="txtLocationPostalCode" runat="server" MaxLength="15" CssClass="LocationPostalCode" /></p>                                        
                                         </div>
                                         
@@ -62,7 +63,7 @@
                                     
                                     <div class="addressThirdLine">
                                         <div id="ltCountry" runat="server">
-                                            <p class="Normal"><asp:Label ID="lblLocatorCountry" runat="server" Text="Country" resourcekey="lblLocatorCountry" /> </p>
+                                            <p class="Normal"><asp:Label ID="lblLocatorCountry" runat="server" resourcekey="lblLocatorCountry" /> </p>
                                             <p class="ltCountry"><asp:DropDownList ID="ddlLocatorCountry" runat="server" CssClass="Normal" /></p>
                                         </div>
                                     </div>

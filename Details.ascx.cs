@@ -83,7 +83,7 @@ namespace Engage.Dnn.Locator
                 = this.lbManageComments.Visible
                 = this.IsEditable;
 
-            this.ShowCommentEntryButton.Visible = this.CommentsEnabled;
+            this.ShowCommentEntryButton.Visible = this.AddCommentSection.Visible = this.CommentsEnabled;
             this.RatingUpdatePanel.Visible = this.RatingsEnabled;
         }
 

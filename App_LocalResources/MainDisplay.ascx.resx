@@ -276,4 +276,10 @@
   <data name="Closed.Text" xml:space="preserve">
     <value>Store Not Open</value>
   </data>
+  <data name="lblLocationAddress.Text" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="lblLocatorCountry.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
 </root>

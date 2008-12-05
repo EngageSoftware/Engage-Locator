@@ -324,6 +324,10 @@ td.mdDistance
 
 .mdLocationDetail{}
 
+table.commentsTable
+{
+	width: 100%;
+}
 
 .titleHeading th
 {
