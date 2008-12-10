@@ -106,12 +106,12 @@ namespace Engage.Dnn.Locator.Maps
             return mp;
         }
 
-        public void RegisterMapScript(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSpanId, List<Location> locations)
+        public void RegisterMapScript(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSpanId, List<Location> locations, bool showAllLocationsOnLoad)
         {
-            this.GenerateMapScriptCore(scriptManager, apiKey, mapType, mapSectionId, currentLocationSpanId, noLocationSpanId, instructionSpanId, directionsLinkId, directionsSpanId, locations);
+            this.GenerateMapScriptCore(scriptManager, apiKey, mapType, mapSectionId, currentLocationSpanId, noLocationSpanId, instructionSpanId, directionsLinkId, directionsSpanId, locations, showAllLocationsOnLoad);
         }
 
-        public abstract void GenerateMapScriptCore(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, List<Location> locations);
+        public abstract void GenerateMapScriptCore(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, List<Location> locations, bool showAllLocationsOnLoad);
 
         public string GenerateMiniMapScript()
         {

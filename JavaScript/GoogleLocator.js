@@ -18,7 +18,9 @@ Engage.Dnn.Locator.GoogleMap.prototype = {
         this._map = new GMap2(this.get_element());
         this._map.addControl(new GSmallMapControl());
         this._map.addControl(new GMapTypeControl());
-        this._map.setMapType(this._mapType);
+        
+        // setCenter _must_ be called before any other operations, to initialize the map.
+        this._map.setCenter(new GLatLng(0, 0), Engage.Dnn.Locator.GoogleMap.defaultZoomLevel, this._mapType);
 
         for (var i = 0; i < this._locationsArray.length; i++) {
             var locationMarker = Engage.Dnn.Locator.GoogleMap.createLocationMarker(this._locationsArray[i].Latitude, this._locationsArray[i].Longitude, i);
@@ -50,7 +52,6 @@ Engage.Dnn.Locator.GoogleMap.prototype = {
     },
     showLocation: function(marker, locationSpan) {
         this._map.clearOverlays();
-        this._map.setCenter(marker.getPoint(), 13);
         this._map.addOverlay(marker);
 
         this._noLocationSpan.hide();
@@ -65,12 +66,12 @@ Engage.Dnn.Locator.GoogleMap.prototype = {
 
         this.displayMap();
         this._map.checkResize();
-        this._map.setCenter(marker.getPoint(), 13);
+        this._map.setCenter(marker.getPoint(), Engage.Dnn.Locator.GoogleMap.defaultZoomLevel);
     },
     displayInfo: function() {
         this._noLocationSpan.show();
         this._currentLocationSpan.show();
-        this._instructionsSpan.show();
+        this._instructionSpan.show();
         this._directionsSection.show();
     },
     showAllLocations: function() {
@@ -83,7 +84,7 @@ Engage.Dnn.Locator.GoogleMap.prototype = {
         this.displayInfo();
         this.displayMap();
         this._map.checkResize();
-        var bounds = getBounds(this._map.getCurrentMapType(), this._map.getSize(), this._locationsArray);
+        var bounds = Engage.Dnn.Locator.GoogleMap.getBounds(this._map.getCurrentMapType(), this._map.getSize(), this._locationsArray);
         this._map.setCenter(bounds.getCenter(), this._map.getBoundsZoomLevel(bounds) - 1);
 
         Engage.Dnn.Locator.GoogleMap.hideCurrentlyMappedLabels();
@@ -136,6 +137,7 @@ Engage.Dnn.Locator.GoogleMap.prototype = {
 };
 
 Engage.Dnn.Locator.GoogleMap.htmlBreak = "<br />";
+Engage.Dnn.Locator.GoogleMap.defaultZoomLevel = 13;
 
 Engage.Dnn.Locator.GoogleMap.registerClass("Engage.Dnn.Locator.GoogleMap", Sys.UI.Behavior);
 
@@ -156,30 +158,30 @@ Engage.Dnn.Locator.GoogleMap.createLocationMarker = function(latitude, longitude
     return marker;
 };
 
-Engage.Dnn.Locator.GoogleMap.getBounds = function(mapType, size, arr) {
+Engage.Dnn.Locator.GoogleMap.getBounds = function(mapType, size, markers) {
     var south, west, east, north;
     south = west = 180;
     east = north = -180;
-    for (var i = 0; i < arr.length; i++) { 
-		if (arr[i].getPoint().lat() > north) {
-            north = arr[i].getPoint().lat();
+    for (var i = 0; i < markers.length; i++) { 
+		if (markers[i].getPoint().lat() > north) {
+            north = markers[i].getPoint().lat();
         }
-        if (arr[i].getPoint().lat() < south) {
-            south = arr[i].getPoint().lat();
+        if (markers[i].getPoint().lat() < south) {
+            south = markers[i].getPoint().lat();
         }
-        if (arr[i].getPoint().lng() > east) {
-            east = arr[i].getPoint().lng();
+        if (markers[i].getPoint().lng() > east) {
+            east = markers[i].getPoint().lng();
         }
-        if (arr[i].getPoint().lng() < west) {
-            west = arr[i].getPoint().lng();
+        if (markers[i].getPoint().lng() < west) {
+            west = markers[i].getPoint().lng();
         }
     }
 	
     var southWest = new GLatLng(south, west);
     var northEast = new GLatLng(north, east);
     var bounds = new GLatLngBounds(southWest, northEast);
-    var zoomLevel = mapType.getBoundsZoomLevel(bounds, map.getSize());
-    var minZoom = mapType.getMinimumResolution(arr[0]);
+    var zoomLevel = mapType.getBoundsZoomLevel(bounds, size);
+    var minZoom = mapType.getMinimumResolution(markers[0]);
     if (zoomLevel < minZoom) {
         zoomLevel = minZoom;
     }

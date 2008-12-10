@@ -57,7 +57,7 @@ namespace Engage.Dnn.Locator
             throw new NotImplementedException();
         }
 
-        public override void GenerateMapScriptCore(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, List<Location> locations)
+        public override void GenerateMapScriptCore(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, List<Location> locations, bool showAllLocationsOnLoad)
         {
             List<JavaScript.Location> locationsAsJson = locations.ConvertAll(delegate(Location location)
                 {
@@ -67,7 +67,22 @@ namespace Engage.Dnn.Locator
 
             scriptManager.Scripts.Add(new ScriptReference(GetLoaderUrl(apiKey)));
             scriptManager.Scripts.Add(new ScriptReference("Engage.Dnn.Locator.JavaScript.GoogleLocator.js", "EngageLocator"));
-            ScriptManager.RegisterStartupScript(scriptManager.Page, typeof(GoogleProvider), "Initialize", "jQuery(document).ready(function() {jQuery.noConflict(); $create(Engage.Dnn.Locator.GoogleMap, {" + mapParameters + "}, {}, {}, $get('" + mapSectionId + "'));});", true);
+            ScriptManager.RegisterStartupScript(
+                    scriptManager.Page,
+                    typeof(GoogleProvider),
+                    "Initialize",
+                    "google.setOnLoadCallback(function(){ jQuery.noConflict(); $create(Engage.Dnn.Locator.GoogleMap, {" + mapParameters + "}, {}, {}, $get('" + mapSectionId + "')); });",
+                    true);
+
+            if (showAllLocationsOnLoad)
+            {
+                ScriptManager.RegisterStartupScript(
+                        scriptManager.Page,
+                        typeof(GoogleProvider),
+                        "showAllLocations",
+                        "google.setOnLoadCallback(function(){ $find('" + mapSectionId + "$GoogleMap').showAllLocations(); });",
+                        true);
+            }
         }
 
         public override bool IsKeyValid(string apiKey)

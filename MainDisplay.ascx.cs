@@ -554,12 +554,6 @@ namespace Engage.Dnn.Locator
         {
             string apiKey = Dnn.Utility.GetStringSetting(this.Settings, this.GetProvider().GetType().FullName + ".ApiKey");
             this.BindData(parameters, apiKey);
-
-            if (this.ShowMapDefaultDisplay || this.loadDefault)
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "showAllLocations", "$find('" + this.divMap.ClientID + "$GoogleMap').showAllLocations();", true);
-            }
-
             this.lnkViewMap.Visible = false;
         }
 
@@ -615,6 +609,7 @@ namespace Engage.Dnn.Locator
 
             foreach (ListItem li in this.ddlDistance.Items)
             {
+                li.Value = li.Value;
                 li.Text = String.Format(CultureInfo.CurrentCulture, "{0} {1}", li.Value, Localization.GetString("Miles", this.LocalResourceFile));
             }
 
@@ -739,7 +734,8 @@ namespace Engage.Dnn.Locator
                     this.lblScrollToViewMore.ClientID,
                     this.DrivingDirectionsLink.ClientID,
                     this.MapLinkPanel.ClientID,
-                    locations);
+                    locations,
+                    this.ShowMapDefaultDisplay || this.loadDefault);
         }
 
         /// <summary>
