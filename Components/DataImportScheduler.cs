@@ -81,11 +81,11 @@ namespace Engage.Dnn.Locator.Components
 
                 }
             }
-            catch (System.IO.IOException io)
+            catch (IOException)
             {
-                //these occur when trying to access the file and it is open. This will occur alot and we don't want to 
-                //write all of them to the log.
-                FileMove(false);
+                // these occur when trying to access the file and it is open. This will occur alot and we don't want to 
+                // write all of them to the log.
+                this.FileMove(false);
             }
             catch (Exception ex)
             {
