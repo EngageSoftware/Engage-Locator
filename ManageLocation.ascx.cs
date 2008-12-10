@@ -552,11 +552,11 @@ namespace Engage.Dnn.Locator
             else if (displayProvider.Contains("Yahoo"))
             {
                 YahooGeocodeResult yahoo;
-                yahoo.accuracyCode = YahooAccuracyCode.Unknown;
+                yahoo.AccuracyCode = YahooAccuracyCode.Unknown;
                 yahoo = SearchUtility.SearchYahoo(location, address, city, state, zip, apiKey);
-                latitude = yahoo.latitude;
-                longitude = yahoo.longitude;
-                error = yahoo.statusCode.ToString();
+                latitude = yahoo.Latitude;
+                longitude = yahoo.Longitude;
+                error = yahoo.StatusCode.ToString();
             }
             else
             {

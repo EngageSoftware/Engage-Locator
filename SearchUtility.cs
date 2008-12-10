@@ -25,8 +25,8 @@ namespace Engage.Dnn.Locator
         {
             YahooGeocodeResult locationResult = new YahooGeocodeResult();
             YahooGeocodeResult cityStateResult = new YahooGeocodeResult();
-            locationResult.statusCode = YahooStatusCode.BadRequest;
-            cityStateResult.statusCode = YahooStatusCode.BadRequest;
+            locationResult.StatusCode = YahooStatusCode.BadRequest;
+            cityStateResult.StatusCode = YahooStatusCode.BadRequest;
 
             if (!String.IsNullOrEmpty(apiKey))
             {
@@ -35,7 +35,7 @@ namespace Engage.Dnn.Locator
                     locationResult = SearchYahoo("&location=" + HttpUtility.UrlEncode(location), apiKey);
                 }
 
-                if (locationResult.accuracyCode < YahooAccuracyCode.Zip)
+                if (locationResult.AccuracyCode < YahooAccuracyCode.Zip)
                 {
                     string cityStateParams = GetCityStateParams(street, city, state, zip);
                     if (!String.IsNullOrEmpty(cityStateParams))
@@ -43,20 +43,23 @@ namespace Engage.Dnn.Locator
                         cityStateResult = SearchYahoo(cityStateParams, apiKey);
                     }
                     
-                    if (locationResult.statusCode == YahooStatusCode.Success && cityStateResult.statusCode != YahooStatusCode.Success)
+                    if (locationResult.StatusCode == YahooStatusCode.Success && cityStateResult.StatusCode != YahooStatusCode.Success)
                     {
                         return locationResult;
                     }
-                    else if (locationResult.statusCode != YahooStatusCode.Success && cityStateResult.statusCode == YahooStatusCode.Success)
+                    
+                    if (locationResult.StatusCode != YahooStatusCode.Success && cityStateResult.StatusCode == YahooStatusCode.Success)
                     {
                         return cityStateResult;
                     }
-                    else if (locationResult.statusCode == YahooStatusCode.Success && cityStateResult.statusCode == YahooStatusCode.Success)
+                    
+                    if (locationResult.StatusCode == YahooStatusCode.Success && cityStateResult.StatusCode == YahooStatusCode.Success)
                     {
-                        return locationResult.accuracyCode > cityStateResult.accuracyCode ? locationResult : cityStateResult;
+                        return locationResult.AccuracyCode > cityStateResult.AccuracyCode ? locationResult : cityStateResult;
                     }
                 }
             }
+
             return locationResult;
         }
 
@@ -64,54 +67,60 @@ namespace Engage.Dnn.Locator
         {
             YahooGeocodeResult result = new YahooGeocodeResult();
 
-            ////Uri searchUrl = new Uri(YahooProvider.SearchUrl + queryParams + "&appid=" + apiKey);
-            ////try
-            ////{
-            ////    using (XmlReader resultsReader = XmlReader.Create(searchUrl.ToString()))
-            ////    {
-            ////        resultsReader.Read();
-            ////        if (resultsReader.IsStartElement("ResultSet"))
-            ////        {
-            ////            resultsReader.ReadStartElement("ResultSet");
+            Uri searchUrl = new Uri(YahooProvider.SearchUrl + queryParams + "&appid=" + apiKey);
+            try
+            {
+                using (XmlReader resultsReader = XmlReader.Create(searchUrl.ToString()))
+                {
+                    resultsReader.Read();
+                    if (resultsReader.IsStartElement("ResultSet"))
+                    {
+                        resultsReader.ReadStartElement("ResultSet");
 
-            ////            result.accuracyCode = GetYahooAccuracyCode(resultsReader.GetAttribute("precision"));
-            ////            resultsReader.ReadStartElement("Result");
+                        result.AccuracyCode = GetYahooAccuracyCode(resultsReader.GetAttribute("precision"));
+                        resultsReader.ReadStartElement("Result");
 
-            ////            resultsReader.ReadStartElement("Latitude");
-            ////            result.latitude = double.Parse(resultsReader.ReadString());
-            ////            resultsReader.ReadEndElement();
+                        resultsReader.ReadStartElement("Latitude");
+                        result.Latitude = double.Parse(resultsReader.ReadString());
+                        resultsReader.ReadEndElement();
 
-            ////            resultsReader.ReadStartElement("Longitude");
-            ////            result.longitude = double.Parse(resultsReader.ReadString());
+                        resultsReader.ReadStartElement("Longitude");
+                        result.Longitude = double.Parse(resultsReader.ReadString());
 
-            ////            result.statusCode = YahooStatusCode.Success;
-            ////        }
-            ////        else
-            ////        {
-            ////            result.accuracyCode = YahooAccuracyCode.Unknown;
-            ////        }
-            ////    }
-            ////}
-            ////catch (WebException exc)
-            ////{
-            ////    result.accuracyCode = YahooAccuracyCode.Unknown;
-            ////    if (exc.Status == WebExceptionStatus.ProtocolError)
-            ////    {
-            ////        HttpWebResponse response = (HttpWebResponse)exc.Response;
-            ////        switch (response.StatusCode)
-            ////        {
-            ////            case HttpStatusCode.BadRequest: //400
-            ////                result.statusCode = YahooStatusCode.BadRequest;
-            ////                break;
-            ////            case HttpStatusCode.Forbidden: //403
-            ////                result.statusCode = YahooStatusCode.Forbidden;
-            ////                break;
-            ////            case HttpStatusCode.ServiceUnavailable: //503
-            ////                result.statusCode = YahooStatusCode.ServiceUnavailable;
-            ////                break;
-            ////        }
-            ////    }
-            ////}
+                        result.StatusCode = YahooStatusCode.Success;
+                    }
+                    else
+                    {
+                        result.AccuracyCode = YahooAccuracyCode.Unknown;
+                    }
+                }
+            }
+            catch (WebException exc)
+            {
+                result.AccuracyCode = YahooAccuracyCode.Unknown;
+                if (exc.Status == WebExceptionStatus.ProtocolError)
+                {
+                    HttpWebResponse response = (HttpWebResponse)exc.Response;
+                    switch (response.StatusCode)
+                    {
+                        // 400
+                        case HttpStatusCode.BadRequest:
+                            result.StatusCode = YahooStatusCode.BadRequest;
+                            break;
+
+                        // 403
+                        case HttpStatusCode.Forbidden:
+                            result.StatusCode = YahooStatusCode.Forbidden;
+                            break;
+
+                        // 503
+                        case HttpStatusCode.ServiceUnavailable: 
+                            result.StatusCode = YahooStatusCode.ServiceUnavailable;
+                            break;
+                    }
+                }
+            }
+
             return result;
         }
 

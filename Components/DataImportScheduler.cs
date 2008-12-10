@@ -325,7 +325,7 @@ namespace Engage.Dnn.Locator.Components
         {
             YahooGeocodeResult yahoo = new YahooGeocodeResult();
             GoogleGeocodeResult google = new GoogleGeocodeResult();
-            yahoo.accuracyCode = YahooAccuracyCode.Unknown;
+            yahoo.AccuracyCode = YahooAccuracyCode.Unknown;
 
             string apiKey = String.Empty;
             ModuleController mc = new ModuleController();
@@ -345,9 +345,9 @@ namespace Engage.Dnn.Locator.Components
             if (displayProvider == "Yahoo")
             {
                 yahoo = SearchUtility.SearchYahoo(location, address, city, state, zip, apiKey);
-                latitude = yahoo.latitude;
-                longitude = yahoo.longitude;
-                error = yahoo.statusCode.ToString();
+                latitude = yahoo.Latitude;
+                longitude = yahoo.Longitude;
+                error = yahoo.StatusCode.ToString();
             }
             else if (displayProvider == "Google")
             {
@@ -360,7 +360,7 @@ namespace Engage.Dnn.Locator.Components
             {
                 latitude = null;
                 longitude = null;
-                error = google.statusCode + " - " + yahoo.statusCode;
+                error = google.statusCode + " - " + yahoo.StatusCode;
             }
         }
 

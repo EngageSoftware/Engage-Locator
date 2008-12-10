@@ -493,14 +493,14 @@ namespace Engage.Dnn.Locator
 
         private List<Location> CompareProviders(YahooGeocodeResult yahooResult, GoogleGeocodeResult googleResult)
         {
-            if (yahooResult.statusCode == YahooStatusCode.Success || googleResult.statusCode == GoogleStatusCode.Success)
+            if (yahooResult.StatusCode == YahooStatusCode.Success || googleResult.statusCode == GoogleStatusCode.Success)
             {
                 double latitude = 0;
                 double longitude = 0;
-                if (yahooResult.statusCode == YahooStatusCode.Success)
+                if (yahooResult.StatusCode == YahooStatusCode.Success)
                 {
-                    latitude = yahooResult.latitude;
-                    longitude = yahooResult.longitude;
+                    latitude = yahooResult.Latitude;
+                    longitude = yahooResult.Longitude;
                 }
                 else if (googleResult.statusCode == GoogleStatusCode.Success)
                 {
@@ -532,7 +532,7 @@ namespace Engage.Dnn.Locator
             }
 
             this.lblErrorMessage.Text = "An unknown error occurred.";
-            switch (yahooResult.statusCode)
+            switch (yahooResult.StatusCode)
             {
                 case YahooStatusCode.BadRequest: // 400
                     this.lblErrorMessage.Text = "The entered location could not be found.";
