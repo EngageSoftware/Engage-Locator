@@ -9,11 +9,11 @@
     <asp:ImageButton ID="lbManageComments" CssClass="CommandButton" runat="server" AlternateText="Comments" ImageUrl="~/desktopmodules/EngageLocator/images/commentsbt.gif" OnClick="lbManageComments_OnClick" CausesValidation="false" />
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lbManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" CausesValidation="false" />
 </div>
-<asp:Label ID="lblConfigured" runat="server" CssClass="locatorInstruction Normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations." Visible="False" resourcekey="lblConfigured"></asp:Label>
+<asp:Label ID="lblConfigured" runat="server" CssClass="locatorInstruction normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations." Visible="False" resourcekey="lblConfigured"></asp:Label>
 <div class="importFileWrapper">
     <fieldset>
         <legend class="Head" id="lgImport" runat="server">Import File</legend>
-        <div class="importHelpText"><asp:Label ID="lblInstructions" runat="server" CssClass="Normal" Text="Click the browse button to locate a .csv file to import your locations." resourceKey="lblInstructions"></asp:Label></div>
+        <div class="importHelpText"><asp:Label ID="lblInstructions" runat="server" CssClass="normal" Text="Click the browse button to locate a .csv file to import your locations." resourceKey="lblInstructions"></asp:Label></div>
         <div class="divPanelTab" id="divPanelTab" runat="server">
             <div class="importPanel" runat="server" id="fileDiv">
                 <div class="importUploader"><asp:FileUpload ID="fileImport" runat="server" /></div>

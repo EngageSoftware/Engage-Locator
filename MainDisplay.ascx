@@ -18,7 +18,7 @@
 <asp:MultiView ID="mvwLocator" runat="server" ActiveViewIndex="0">
     <asp:View ID="vwSetup" runat="server">
         <asp:Panel ID="pnlSetup" runat="server" CssClass="locatorSetupPage">
-            <asp:Label ID="lblSetupText" runat="server" CssClass="Normal" />
+            <asp:Label ID="lblSetupText" runat="server" CssClass="normal" />
         </asp:Panel>
     </asp:View>
     <asp:View ID="vwLocator" runat="server">
@@ -37,7 +37,7 @@
                                 <div class="LocatorInput">
                                     <div id="addressFirstLine" runat="server" class="addressFirstLine">
                                         <div id="ltAddress" runat="server">
-                                            <p class="Normal" ><asp:Label ID="lblLocationAddress" runat="server" resourcekey="lblLocationAddress" CssClass="Normal" /></p>
+                                            <p class="normal" ><asp:Label ID="lblLocationAddress" runat="server" resourcekey="lblLocationAddress" CssClass="normal" /></p>
                                             <p class="LocatorInputText"><asp:TextBox ID="txtLocationAddress" runat="server" MaxLength="80" /></p>
                                         </div>
                                     </div>
@@ -45,17 +45,17 @@
                                     <div class="addressSecondLine">
 
                                         <div id="ltCity" runat="server" class="ltCity">
-                                            <p class="Normal"><asp:Label ID="lblLocationCity" runat="server" resourcekey="lblLocationCity" CssClass="Normal" /></p>
+                                            <p class="normal"><asp:Label ID="lblLocationCity" runat="server" resourcekey="lblLocationCity" CssClass="normal" /></p>
                                             <p class="LocatorInputText"><asp:TextBox ID="txtLocationCity" runat="server" MaxLength="80" /></p>
                                         </div>
                                         
                                         <div id="ltRegion" runat="server" class="ltRegion">
-                                            <p class="Normal"><asp:Label ID="lblLocationState" runat="server" resourcekey="lblLocationRegion" CssClass="Normal" /></p>
-                                            <p class="ltDropDownList"><asp:DropDownList ID="ddlLocationRegion" runat="server" CssClass="Normal" /></p>
+                                            <p class="normal"><asp:Label ID="lblLocationState" runat="server" resourcekey="lblLocationRegion" CssClass="normal" /></p>
+                                            <p class="ltDropDownList"><asp:DropDownList ID="ddlLocationRegion" runat="server" CssClass="normal" /></p>
                                         </div>
                                         
                                         <div id="ltPostalcode" runat="server" class="ltPostalCode">
-                                            <p class="Normal"><asp:Label ID="lblLocationPostalCode" runat="server" resourcekey="lblLocationPostalCode" CssClass="Normal" /></p>
+                                            <p class="normal"><asp:Label ID="lblLocationPostalCode" runat="server" resourcekey="lblLocationPostalCode" CssClass="normal" /></p>
                                             <p class="LocationPostalCode"><asp:TextBox ID="txtLocationPostalCode" runat="server" MaxLength="15" CssClass="LocationPostalCode" /></p>                                        
                                         </div>
                                         
@@ -63,8 +63,8 @@
                                     
                                     <div class="addressThirdLine">
                                         <div id="ltCountry" runat="server">
-                                            <p class="Normal"><asp:Label ID="lblLocatorCountry" runat="server" resourcekey="lblLocatorCountry" /> </p>
-                                            <p class="ltCountry"><asp:DropDownList ID="ddlLocatorCountry" runat="server" CssClass="Normal" /></p>
+                                            <p class="normal"><asp:Label ID="lblLocatorCountry" runat="server" resourcekey="lblLocatorCountry" /> </p>
+                                            <p class="ltCountry"><asp:DropDownList ID="ddlLocatorCountry" runat="server" CssClass="normal" /></p>
                                         </div>
                                     </div>
 
@@ -76,7 +76,7 @@
                             <table class="inputTable">
                             <tr>
                             	<td>
-                                <asp:Label ID="lblDistance" runat="server" CssClass="Normal" resourcekey="lblDistance">Find locations within:</asp:Label>
+                                <asp:Label ID="lblDistance" runat="server" CssClass="normal" resourcekey="lblDistance">Find locations within:</asp:Label>
                                 <asp:DropDownList ID="ddlDistance" runat="server" CssClass="ddlDistance" AutoPostBack="true" OnSelectedIndexChanged="ddlDistance_SelectedIndexChanged" >
                                     <asp:ListItem Text="5" />
                                     <asp:ListItem Text="10" />
@@ -91,14 +91,14 @@
                         <% if (ShowCountry && ShowRadius) { %><table>
                             <tr>
                                 <td>
-                                    <asp:Label ID="lblOr" runat="server" Text="OR" CssClass="Normal" ></asp:Label>
+                                    <asp:Label ID="lblOr" runat="server" Text="OR" CssClass="normal" ></asp:Label>
                                 </td>
                             </tr>
                         </table><% } %>
                         <asp:Panel ID="pnlCountry" runat="server" CssClass="groupingPanel" GroupingText='<%# Localization.GetString("pnlCountry", LocalResourceFile) %>'>
                             <table class="inputTable">
                             <tr><td class="locatorLabelCell">
-                                <asp:Label ID="lblCountry" runat="server" CssClass="Normal" AssociatedControlID="ddlCountry" resourcekey="lblCountry">Country:</asp:Label>
+                                <asp:Label ID="lblCountry" runat="server" CssClass="normal" AssociatedControlID="ddlCountry" resourcekey="lblCountry">Country:</asp:Label>
                                 <asp:DropDownList ID="ddlCountry" runat="server" CssClass="ddlCountry" AutoPostBack="true" OnSelectedIndexChanged="ddlCountry_SelectedIndexChanged" />
                             </td></tr>
                             </table>
@@ -123,9 +123,9 @@
         <asp:Button ID="lnkSubmitLocation" runat="server" Text="Submit A Location" Visible="false" resourcekey="lnkSubmitLocations" OnClick="lnkSubmitLocations_Click" />
         <div class="locationMapHeading">
             <div class="closestsLocations">
-	            <asp:Label ID="lblNumClosest" runat="server" CssClass="Normal" resourcekey="lblNumClosest" />
+	            <asp:Label ID="lblNumClosest" runat="server" CssClass="normal" resourcekey="lblNumClosest" />
 	        </div>
-	        <div class="closestLocationTitle"><a name="map"></a><asp:Label ID="lblLocatorMapLabel" runat="server" /><span id="locatorMapLabel" class="SubHead"></span> </div>
+	        <div class="closestLocationTitle"><a name="map"></a><asp:Label ID="lblLocatorMapLabel" runat="server" /><asp:Label id="CurrentLocationLabel" runat="server" CssClass="SubHead"></asp:Label> </div>
 	        <div class="locatorMapLabelWrapper">
                 <div id="Div1" style="display:none;">
 	                <a id="A1" target="_blank" ><asp:Label ID="Label1" runat="server" resourcekey="lblMapLinkMapName" /></a>
@@ -135,12 +135,12 @@
         </div>
         <div id="divMap" runat="server" class="locatorMap" style="display:none;"></div>
         
-         <div class="locatorMapLabelWrapper Normal">
+         <div class="locatorMapLabelWrapper normal">
             <asp:Label ID="lblScrollToViewMore" runat="server" resourcekey="lblScrollToViewMore" style="display:none;" />
-            <div id="lblMapLink" style="display:none;">
-	            <a id="lnkDrivingDirections" target="_blank" ><asp:Label ID="lblMapLinkMapName" runat="server" resourcekey="lblMapLinkMapName" /></a>
+            <asp:Panel ID="MapLinkPanel" runat="server" style="display:none;">
+	            <asp:HyperLink ID="DrivingDirectionsLink" runat="server" Target="_blank" ><asp:Label ID="lblMapLinkMapName" runat="server" resourcekey="lblMapLinkMapName" /></asp:HyperLink>
 	            <asp:Label ID="lblMapLinkDrivingDirections" runat="server" resourcekey="lblMapLinkDrivingDirections"/>
-            </div>
+            </asp:Panel>
         </div>
         <br />
         <div class="locationsGridWrapper">
@@ -164,19 +164,18 @@
                                             <p><asp:Label ID="lblLocationMapNumber" CssClass="NormalBold" runat="server" /></p>
                                         </td>
                                         <td class="mdLocationInfo">
-                                            <p><asp:Hyperlink ID="lnkLocationName" runat="server" CssClass="SubHead" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString() %>'><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Name").ToString())%></asp:Hyperlink></p>
-	                                        <%--<asp:Label ID="lblLocationsGridAddress" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Address").ToString())%><br /></asp:Label>--%>
-	                                        <asp:Label ID="lblLocationsGridAddress" runat="server" CssClass="Normal"><br /></asp:Label>
-	                                        <asp:Label ID="lblLocationsGridCity" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "City").ToString()) + ","%></asp:Label> 
-	                                        <asp:Label ID="lblLocationsGridState" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Abbreviation").ToString())%></asp:Label> 
-	                                        <asp:Label ID="lblLocationsGridPostalCode" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "PostalCode").ToString())%></asp:Label>
-	                                        <asp:Label ID="lblPhoneNumber" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Phone").ToString())%></asp:Label>
-	                                        <div class="mdViewDetail"><asp:HyperLink id="lnkShowLocationDetails" CssClass="Normal" runat="server" resourcekey="lnkShowLocationDetails" Visible="false" /></div>
+                                            <p><asp:Hyperlink ID="lnkLocationName" runat="server" CssClass="SubHead locatorName" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString() %>'><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Name").ToString())%></asp:Hyperlink></p>
+	                                        <asp:Label ID="lblLocationsGridAddress" runat="server" CssClass="normal locatorAddress"><br /></asp:Label>
+	                                        <asp:Label ID="lblLocationsGridCity" runat="server" CssClass="normal locatorCity"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "City").ToString()) + ","%></asp:Label> 
+	                                        <asp:Label ID="lblLocationsGridState" runat="server" CssClass="normal locatorState"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "RegionAbbreviation").ToString())%></asp:Label> 
+	                                        <asp:Label ID="lblLocationsGridPostalCode" runat="server" CssClass="normal locatorPostalCode"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "PostalCode").ToString())%></asp:Label>
+	                                        <asp:Label ID="lblPhoneNumber" runat="server" CssClass="normal locatorPhone"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Phone").ToString())%></asp:Label>
+	                                        <div class="mdViewDetail"><asp:HyperLink id="lnkShowLocationDetails" CssClass="normal" runat="server" resourcekey="lnkShowLocationDetails" Visible="false" /></div>
                                         </td>
                                     </tr>
                                 </table>
 	                        </td>
-                            <td class="mdDistance Normal">
+                            <td class="mdDistance normal">
 	                            <asp:Label ID="lblWalkIn" runat="server"></asp:Label>
 	                            <asp:Label ID="lblLocationsGridDistance" runat="server" /><br />
 	                            <asp:Label ID="lblCurrentlyMapped" runat="server" resourcekey="LocationDisplayHeaders" CssClass="hideCurrentlyMapped" />
@@ -185,13 +184,13 @@
                             </td>
                             <% if(ShowLocationDetails == "True" || ShowLocationDetails == "SamePage") { %>
                             <td class="locationDetailsTitleTD">                                
-	                            <asp:Label ID="lblLocationDetails" runat="server" CssClass="Normal"><%# DataBinder.Eval(Container.DataItem, "LocationDetails").ToString()%></asp:Label>
+	                            <asp:Label ID="lblLocationDetails" runat="server" CssClass="normal"><%# DataBinder.Eval(Container.DataItem, "LocationDetails").ToString()%></asp:Label>
                             </td>
                             <% } %>
-                           <td class="mdLocationDetail Normal">
+                           <td class="mdLocationDetail normal">
                                 <div id="div_SiteLink">
                                     <br />
-	                                <asp:HyperLink ID="lbSiteLink" Visible="false" runat="server" CssClass="Normal" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString()%>' resourceKey="lbSiteLink"></asp:HyperLink>
+	                                <asp:HyperLink ID="lbSiteLink" Visible="false" runat="server" CssClass="normal" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString()%>' resourceKey="lbSiteLink"></asp:HyperLink>
 	                            </div>                              
                             </td>
 

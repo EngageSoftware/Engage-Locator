@@ -71,8 +71,8 @@ namespace Engage.Dnn.Locator
                 {
                     if (Request.QueryString["lid"] != null && Request.QueryString["approved"] != null)
                     {
-                        bool approved = Convert.ToBoolean(Request.QueryString["approved"]);
-                        Location location = Location.GetLocation(Convert.ToInt32(Request.QueryString["lid"]));
+                        bool approved = Convert.ToBoolean(Request.QueryString["approved"], CultureInfo.InvariantCulture);
+                        Location location = Location.GetLocation(Convert.ToInt32(Request.QueryString["lid"], CultureInfo.InvariantCulture));
                         Localization.LocalizeDataGrid(ref dgSubmittedComments, LocalResourceFile);
                         dgSubmittedComments.DataSource = location.GetComments(approved);
                         dgSubmittedComments.DataBind();
@@ -107,14 +107,13 @@ namespace Engage.Dnn.Locator
             btnDeleteComment.Visible = (comments.Rows.Count > 0);
             dgSubmittedComments.PagerStyle.Visible = (comments.Rows.Count > 0);
         }
-        
       
         protected void dgComments_DeleteCommand(object source, DataGridCommandEventArgs e)
         {
             Label lblCommentId = (Label)e.Item.FindControl("lblCommentId");
             if (lblCommentId.Text != "")
             {
-                Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text));
+                Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text, CultureInfo.InvariantCulture));
             }
             if (dgSubmittedComments.Items.Count > 0)
             {
@@ -134,7 +133,7 @@ namespace Engage.Dnn.Locator
                 if (cbApproved.Checked)
                 {
                     Label lblCommentId = (Label)row.FindControl("lblCommentId");
-                    Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text));
+                    Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text, CultureInfo.InvariantCulture));
                 }
             }
             BindData();
@@ -148,7 +147,7 @@ namespace Engage.Dnn.Locator
                 if (cbApproved.Checked)
                 {
                     Label lblCommentId = (Label)row.FindControl("lblCommentId");
-                    Comment comment = Comment.GetComment(Convert.ToInt32(lblCommentId.Text));
+                    Comment comment = Comment.GetComment(Convert.ToInt32(lblCommentId.Text, CultureInfo.InvariantCulture));
                     comment.Approved = true;
                     comment.Update();
                 }

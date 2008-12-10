@@ -1,55 +1,97 @@
-//Copyright (c) 2004-2007
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Reflection;
+// <copyright file="MapProvider.cs" company="Engage Software">
+// Copyright (c) 2004-2007
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Locator.Maps
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
     public abstract class MapProvider
     {
-        private int _locationCount;
-        private HtmlGenericControl _mapDiv;
-        private WebControl _locatorMapLabel;
-        private WebControl _scrollToViewMore;
-        private Repeater _rptLocations;
-        private string _searchCriteria;
+        /// <summary>
+        /// Backing field for <see cref="LatLong"/>
+        /// </summary>
         private Pair _latLong;
 
-        public abstract string Url { get; }
-        public abstract string GetMapUrl(string apiKey);
-        public abstract bool IsKeyValid(string apiKey);
-        public abstract string GenerateMapScriptCore(string mapType);
-        public abstract string GenerateMiniMapScriptCore();
-        public string GenerateMapScript(string mapType)
+        /// <summary>
+        /// Backing field for <see cref="LocationCount"/>
+        /// </summary>
+        private int _locationCount;
+
+        /// <summary>
+        /// Backing field for <see cref="LocatorMapLabel"/>
+        /// </summary>
+        private WebControl _locatorMapLabel;
+
+        private HtmlGenericControl _mapDiv;
+
+        private Repeater _rptLocations;
+
+        private WebControl _scrollToViewMore;
+
+        private string _searchCriteria;
+
+        public Pair LatLong
         {
-            Validate();
-            return GenerateMapScriptCore(mapType);            
+            set { this._latLong = value; }
+            get { return this._latLong; }
         }
 
-        public string GenerateMiniMapScript()
+        public int LocationCount
         {
-            return GenerateMiniMapScriptCore();
+            get { return this._locationCount; }
+            protected set { this._locationCount = value; }
         }
 
-        protected void Validate()
+        public WebControl LocatorMapLabel
         {
-            if (MapDiv == null){throw new InvalidOperationException("Map Div is not defined");}
-            if (LocatorMapLabel == null) { throw new InvalidOperationException("Locator Map is not defined"); }
-            if (RptLocations == null) { throw new InvalidOperationException("Location Repeater is not defined"); }
-            if (ScrollToViewMore == null) { throw new InvalidOperationException("Scroll Label is not defined"); }
+            set { this._locatorMapLabel = value; }
+            get { return this._locatorMapLabel; }
+        }
+
+        public HtmlGenericControl MapDiv
+        {
+            set { this._mapDiv = value; }
+            get { return this._mapDiv; }
+        }
+
+        public abstract string MapProviderUrl
+        {
+            get;
+        }
+
+        public Repeater RptLocations
+        {
+            set { this._rptLocations = value; }
+            get { return this._rptLocations; }
+        }
+
+        public WebControl ScrollToViewMore
+        {
+            set { this._scrollToViewMore = value; }
+            get { return this._scrollToViewMore; }
+        }
+
+        public string SearchCriteria
+        {
+            set { this._searchCriteria = value; }
+            get { return this._searchCriteria; }
+        }
+
+        public abstract string Url
+        {
+            get;
         }
 
         public static MapProvider CreateInstance(MapProviderType mapType)
@@ -64,58 +106,41 @@ namespace Engage.Dnn.Locator.Maps
             return mp;
         }
 
-        #region Properties
-
-        public int LocationCount
+        public void RegisterMapScript(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSpanId, List<Location> locations)
         {
-            get { return _locationCount; }
-            protected set { _locationCount = value; }
+            this.GenerateMapScriptCore(scriptManager, apiKey, mapType, mapSectionId, currentLocationSpanId, noLocationSpanId, instructionSpanId, directionsLinkId, directionsSpanId, locations);
         }
 
-        public HtmlGenericControl MapDiv
+        public abstract void GenerateMapScriptCore(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, List<Location> locations);
+
+        public string GenerateMiniMapScript()
         {
-            set { _mapDiv = value; }
-            get { return _mapDiv; }
-        }
-        public WebControl LocatorMapLabel
-        {
-            set { _locatorMapLabel = value; }
-            get { return _locatorMapLabel; }
+            return this.GenerateMiniMapScriptCore();
         }
 
-        public WebControl ScrollToViewMore
-        {
-            set { _scrollToViewMore = value; }
-            get { return _scrollToViewMore; }
-        }
+        public abstract string GenerateMiniMapScriptCore();
 
-        public Repeater RptLocations
-        {
-            set { _rptLocations = value; }
-            get { return _rptLocations; }
-        }
-
-        public string SearchCriteria
-        {
-            set { _searchCriteria = value; }
-            get { return _searchCriteria; }
-        }
-
-        public Pair LatLong
-        {
-            set { _latLong = value; }
-            get { return _latLong; }
-        }
-
-        #endregion
-
-        #region
-
-        public abstract string MapProviderUrl { get; }
-
-        #endregion
-
+        public abstract bool IsKeyValid(string apiKey);
     }
 
-    
+    /// <summary>
+    /// The type of map to display
+    /// </summary>
+    public enum MapType
+    {
+        /// <summary>
+        /// A normal map
+        /// </summary>
+        Normal,
+
+        /// <summary>
+        /// A hybrid map
+        /// </summary>
+        Hybrid,
+
+        /// <summary>
+        /// A satellite map
+        /// </summary>
+        Satellite
+    }
 }

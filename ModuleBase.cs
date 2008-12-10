@@ -1,124 +1,152 @@
-//Copyright (c) 2004-2007
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
-
-
-using System;
-using System.Globalization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-
+// <copyright file="ModuleBase.cs" company="Engage Software">
+// Engage: Locator - http://www.engagemodules.com
+// Copyright (c) 2004-2008
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Locator
 {
-    public class ModuleBase : PortalModuleBase
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+
+    /// <summary>
+    /// The base class for all control in the Engage: Locator module
+    /// </summary>
+    public class ModuleBase : Framework.ModuleBase
     {
-        #region Properties
+        /// <summary>
+        /// Gets the name of the desktop module.
+        /// </summary>
+        /// <value>The name of the desktop module.</value>
+        public override string DesktopModuleName
+        {
+            get { return "EngageLocator"; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether ratings are enabled for the module on this portal.
+        /// </summary>
+        /// <value><c>true</c> if ratings are enabled; otherwise, <c>false</c>.</value>
         public bool RatingsEnabled
         {
-            get
+            get 
             {
-                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowRatings" + PortalId.ToString(CultureInfo.InvariantCulture))))
-                    return false;
-                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowRatings" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                return Utility.GetBooleanPortalSetting("LocatorAllowRatings", this.PortalId, false);
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether comments are enabled for the module on this portal.
+        /// </summary>
+        /// <value><c>true</c> if comments are enabled; otherwise, <c>false</c>.</value>
         public bool CommentsEnabled
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThrough]
             get
             {
-                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId.ToString(CultureInfo.InvariantCulture))))
-                    return false;
-                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowComments" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                return Utility.GetBooleanPortalSetting("LocatorAllowComments", PortalId, false);
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether new comment submissions on this portal should be moderated.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if new comment submissions should be moderated; otherwise, <c>false</c>.
+        /// </value>
         public bool CommentModerationEnabled
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThrough]
             get
             {
-                if (Null.IsNull(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId.ToString(CultureInfo.InvariantCulture))))
-                    return false;
-                return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorCommentModeration" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                return Utility.GetBooleanPortalSetting("LocatorCommentModeration", PortalId, false);
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the module accepts new location submissions on this portal.
+        /// </summary>
+        /// <value><c>true</c> if new location submissions are enabled; otherwise, <c>false</c>.</value>
         public bool SubmissionsEnabled
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get
             {
-                if (Null.IsNull(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId.ToString(CultureInfo.InvariantCulture))))
-                    return false;
-                else
-                    return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorAllowSubmissions" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                return Utility.GetBooleanPortalSetting("LocatorAllowSubmissions", PortalId, false);
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether new location submissions on this portal should be moderated.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if new location submissions should be moderated; otherwise, <c>false</c>.
+        /// </value>
         public bool SubmissionModerationEnabled
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get
             {
-                if (Null.IsNull(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId.ToString(CultureInfo.InvariantCulture))))
-                    return false;
-                else
-                    return Convert.ToBoolean(HostSettings.GetHostSetting("LocatorSubmissionModeration" + PortalId.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                return Utility.GetBooleanPortalSetting("LocatorSubmissionModeration", PortalId, false);
             }
         }
 
-        #endregion
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            if (DotNetNuke.Framework.AJAX.IsInstalled())
-            {
-                DotNetNuke.Framework.AJAX.RegisterScriptManager();
-            }
-        }
-
-        #region Global Naviagation
-
+        /// <summary>
+        /// Handles the OnClick event of the lbSettings control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void lbSettings_OnClick(object sender, EventArgs e)
         {
-            string href = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
-            Response.Redirect(href, true);
+            this.Response.Redirect(this.EditUrl("ModuleId", this.ModuleId.ToString(CultureInfo.InvariantCulture), "Module"), true);
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the lbManageLocations control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void lbManageLocations_OnClick(object sender, EventArgs e)
         {
-            string href = EditUrl("ManageLocations");
-            Response.Redirect(href, true);
+            this.Response.Redirect(this.EditUrl("ManageLocations"), true);
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the lbImportFile control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void lbImportFile_OnClick(object sender, EventArgs e)
         {
-            string href = EditUrl("Import");
-            Response.Redirect(href, true);
+            this.Response.Redirect(this.EditUrl("Import"), true);
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the lbManageComments control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void lbManageComments_OnClick(object sender, EventArgs e)
         {
-            string href = EditUrl("ManageComments");
-            Response.Redirect(href, true);
+            this.Response.Redirect(this.EditUrl("ManageComments"), true);
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the lbManageTypes control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void lbManageTypes_OnClick(object sender, EventArgs e)
         {
-            string href = EditUrl("AttributeDefinitions");
-            Response.Redirect(href, true);
+            this.Response.Redirect(this.EditUrl("AttributeDefinitions"), true);
         }
-
-        #endregion
     }
 }

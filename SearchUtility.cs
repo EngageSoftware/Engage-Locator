@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Engage.Dnn.Locator
 {
+    using System.Globalization;
+
     //NUKE THIS CLASS - behavior should be on mapprovider class(es).hk!
     public static class SearchUtility
     {
@@ -62,54 +64,54 @@ namespace Engage.Dnn.Locator
         {
             YahooGeocodeResult result = new YahooGeocodeResult();
 
-            Uri searchUrl = new Uri(YahooProvider.SearchUrl + queryParams + "&appid=" + apiKey);
-            try
-            {
-                using (XmlReader resultsReader = XmlReader.Create(searchUrl.ToString()))
-                {
-                    resultsReader.Read();
-                    if (resultsReader.IsStartElement("ResultSet"))
-                    {
-                        resultsReader.ReadStartElement("ResultSet");
+            ////Uri searchUrl = new Uri(YahooProvider.SearchUrl + queryParams + "&appid=" + apiKey);
+            ////try
+            ////{
+            ////    using (XmlReader resultsReader = XmlReader.Create(searchUrl.ToString()))
+            ////    {
+            ////        resultsReader.Read();
+            ////        if (resultsReader.IsStartElement("ResultSet"))
+            ////        {
+            ////            resultsReader.ReadStartElement("ResultSet");
 
-                        result.accuracyCode = GetYahooAccuracyCode(resultsReader.GetAttribute("precision"));
-                        resultsReader.ReadStartElement("Result");
+            ////            result.accuracyCode = GetYahooAccuracyCode(resultsReader.GetAttribute("precision"));
+            ////            resultsReader.ReadStartElement("Result");
 
-                        resultsReader.ReadStartElement("Latitude");
-                        result.latitude = double.Parse(resultsReader.ReadString());
-                        resultsReader.ReadEndElement();
+            ////            resultsReader.ReadStartElement("Latitude");
+            ////            result.latitude = double.Parse(resultsReader.ReadString());
+            ////            resultsReader.ReadEndElement();
 
-                        resultsReader.ReadStartElement("Longitude");
-                        result.longitude = double.Parse(resultsReader.ReadString());
+            ////            resultsReader.ReadStartElement("Longitude");
+            ////            result.longitude = double.Parse(resultsReader.ReadString());
 
-                        result.statusCode = YahooStatusCode.Success;
-                    }
-                    else
-                    {
-                        result.accuracyCode = YahooAccuracyCode.Unknown;
-                    }
-                }
-            }
-            catch (WebException exc)
-            {
-                result.accuracyCode = YahooAccuracyCode.Unknown;
-                if (exc.Status == WebExceptionStatus.ProtocolError)
-                {
-                    HttpWebResponse response = (HttpWebResponse)exc.Response;
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.BadRequest: //400
-                            result.statusCode = YahooStatusCode.BadRequest;
-                            break;
-                        case HttpStatusCode.Forbidden: //403
-                            result.statusCode = YahooStatusCode.Forbidden;
-                            break;
-                        case HttpStatusCode.ServiceUnavailable: //503
-                            result.statusCode = YahooStatusCode.ServiceUnavailable;
-                            break;
-                    }
-                }
-            }
+            ////            result.statusCode = YahooStatusCode.Success;
+            ////        }
+            ////        else
+            ////        {
+            ////            result.accuracyCode = YahooAccuracyCode.Unknown;
+            ////        }
+            ////    }
+            ////}
+            ////catch (WebException exc)
+            ////{
+            ////    result.accuracyCode = YahooAccuracyCode.Unknown;
+            ////    if (exc.Status == WebExceptionStatus.ProtocolError)
+            ////    {
+            ////        HttpWebResponse response = (HttpWebResponse)exc.Response;
+            ////        switch (response.StatusCode)
+            ////        {
+            ////            case HttpStatusCode.BadRequest: //400
+            ////                result.statusCode = YahooStatusCode.BadRequest;
+            ////                break;
+            ////            case HttpStatusCode.Forbidden: //403
+            ////                result.statusCode = YahooStatusCode.Forbidden;
+            ////                break;
+            ////            case HttpStatusCode.ServiceUnavailable: //503
+            ////                result.statusCode = YahooStatusCode.ServiceUnavailable;
+            ////                break;
+            ////        }
+            ////    }
+            ////}
             return result;
         }
 
@@ -123,10 +125,10 @@ namespace Engage.Dnn.Locator
                     WebClient client = new WebClient();
                     string[] csvResults = client.DownloadString(GoogleProvider.SearchUrl + "&q=" + HttpUtility.UrlEncode(location) + "&key=" + apiKey).Split(',');
 
-                    result.statusCode = (GoogleStatusCode)int.Parse(csvResults[0]);
-                    result.accuracyCode = (GoogleAccuracyCode)int.Parse(csvResults[1]);
-                    result.latitude = double.Parse(csvResults[2]);
-                    result.longitude = double.Parse(csvResults[3]);
+                    result.statusCode = (GoogleStatusCode)int.Parse(csvResults[0], CultureInfo.InvariantCulture);
+                    result.accuracyCode = (GoogleAccuracyCode)int.Parse(csvResults[1], CultureInfo.InvariantCulture);
+                    result.latitude = double.Parse(csvResults[2], CultureInfo.InvariantCulture);
+                    result.longitude = double.Parse(csvResults[3], CultureInfo.InvariantCulture);
 
                     return result;
                 }

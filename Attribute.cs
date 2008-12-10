@@ -21,6 +21,8 @@ using Engage.Dnn.Locator.Data;
 
 namespace Engage.Dnn.Locator
 {
+    using System.Globalization;
+
     public class Attribute
     {
         #region Properties
@@ -105,20 +107,20 @@ namespace Engage.Dnn.Locator
             foreach (DataRow row in dtLocationAttributeDefinitions.Rows)
             {
                 Attribute attribute = new Attribute();
-                attribute.AttributeDefinitionId = Convert.ToInt32(row["AttributeDefinitionId"]);
+                attribute.AttributeDefinitionId = Convert.ToInt32(row["AttributeDefinitionId"], CultureInfo.InvariantCulture);
                 attribute.AttributeName = row["AttributeName"].ToString();
                 attribute.LocationId = locationId;
                 attribute.AttributeValue = row["DefaultValue"].ToString(); //default this and change later if needed.hkh
                 foreach (DataRow valueRow in dtLocationAttributeValues.Rows)
                 {
-                    if(attribute.LocationId == Convert.ToInt32(valueRow["LocationId"]) && attribute.AttributeDefinitionId == Convert.ToInt32(valueRow["AttributeDefinitionId"]))
+                    if (attribute.LocationId == Convert.ToInt32(valueRow["LocationId"], CultureInfo.InvariantCulture) && attribute.AttributeDefinitionId == Convert.ToInt32(valueRow["AttributeDefinitionId"], CultureInfo.InvariantCulture))
                     {
                         if (valueRow["LocationAttributeId"] != null)
                         {
-                            attribute._attributeId = Convert.ToInt32(valueRow["LocationAttributeId"]);
+                            attribute._attributeId = Convert.ToInt32(valueRow["LocationAttributeId"], CultureInfo.InvariantCulture);
                             attribute._attributeValue = valueRow["AttributeValue"].ToString();
-                            attribute._createDate = Convert.ToDateTime(valueRow["CreateDate"]);
-                            attribute._revisionDate = Convert.ToDateTime(valueRow["RevisionDate"]);
+                            attribute._createDate = Convert.ToDateTime(valueRow["CreateDate"], CultureInfo.InvariantCulture);
+                            attribute._revisionDate = Convert.ToDateTime(valueRow["RevisionDate"], CultureInfo.InvariantCulture);
                         }
                         else
                         {

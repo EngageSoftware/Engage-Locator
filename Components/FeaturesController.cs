@@ -24,8 +24,8 @@ namespace Engage.Dnn.Locator.Components
             {
                 SearchItemInfo searchItem =
                     new SearchItemInfo(ModInfo.ModuleTitle, location.Name, 1, DateTime.Now, ModInfo.ModuleID,
-                        location.Address + " " + location.City + " " + location.StateName + " " + location.PostalCode,
-                        location.Address + " " + location.City + " " + location.StateName + " " + location.PostalCode + " " + location.LocationDetails);
+                        location.Address + " " + location.City + " " + location.RegionName + " " + location.PostalCode,
+                        location.Address + " " + location.City + " " + location.RegionName + " " + location.PostalCode + " " + location.LocationDetails);
                 searchItemCollection.Add(searchItem);
             }
             return searchItemCollection;

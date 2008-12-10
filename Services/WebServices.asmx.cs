@@ -1,65 +1,56 @@
-﻿using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Web;
-using System.Web.Services;
-using System.Web.Services.Protocols;
-using Engage.Dnn.Locator.Data;
-using Engage.Dnn.Locator.Maps;
-
-namespace Engage.Dnn.Locator.Services
+﻿namespace Engage.Dnn.Locator.Services
 {
-    /// <summary>
-    /// Summary description for WebService1
-    /// </summary>
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Web.Services;
+    using Maps;
+
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [ToolboxItem(false)]
-    public class WebServices : System.Web.Services.WebService
+    public class WebServices : WebService
     {
-
         [WebMethod]
-        public DataTable GetLocationsByZip(string mapProviderTypeName, string apiKey, int radius, string postalCode, int locationTypeId, int portalId)
+        public List<Location> GetLocationsByZip(string mapProviderTypeName, string apiKey, int radius, string postalCode, int locationTypeId, int portalId)
         {
             int[] locationTypeIds = { locationTypeId };
 
             return SearchLocationsByZip(mapProviderTypeName, apiKey, radius, postalCode, locationTypeIds, portalId);
         }
 
-        public DataTable GetLocationsByZip(string mapProviderTypeName, string apiKey, int radius, string postalCode, int[] locationTypeIds, int portalId)
+        public List<Location> GetLocationsByZip(string mapProviderTypeName, string apiKey, int radius, string postalCode, int[] locationTypeIds, int portalId)
         {
             return SearchLocationsByZip(mapProviderTypeName, apiKey, radius, postalCode, locationTypeIds, portalId);
         }
 
-        private DataTable SearchLocationsByZip(string mapProviderTypeName, string apiKey, int radius, string postalCode, int[] locationTypeIds, int portalId)
+        private static List<Location> SearchLocationsByZip(string mapProviderTypeName, string apiKey, int radius, string postalCode, int[] locationTypeIds, int portalId)
         {
+            // use reflection to construct the provider class.
+            MapProviderType providerType = MapProviderType.GetFromName(mapProviderTypeName, typeof(MapProviderType));
+            //// MapProvider provider = MapProvider.CreateInstance(providerType);
 
-            //use reflection to construct the provider class.
-            MapProviderType providerType = (MapProviderType)MapProviderType.GetFromName(mapProviderTypeName, typeof(MapProviderType));
-            //MapProvider provider = MapProvider.CreateInstance(providerType);
+            List<Location> matches;
 
-            DataTable matches = null;
-
-            //figure out which method to call based on provider.
+            // figure out which method to call based on provider.
             if (providerType == MapProviderType.GoogleMaps)
             {
                 GoogleGeocodeResult result = SearchUtility.SearchGoogle(postalCode, apiKey);
-                matches = Data.DataProvider.Instance().GetClosestLocationsByRadius(result.latitude, result.longitude, radius, portalId, locationTypeIds);
+                matches = Location.GetClosestLocationsByRadius(result.latitude, result.longitude, radius, portalId, locationTypeIds);
             }
             else
             {
-                YahooGeocodeResult result = SearchUtility.SearchYahoo("", "", "", "", postalCode, apiKey);
-                matches = Data.DataProvider.Instance().GetClosestLocationsByRadius(result.latitude, result.longitude, radius, portalId, locationTypeIds);
+                YahooGeocodeResult result = SearchUtility.SearchYahoo(string.Empty, string.Empty, string.Empty, string.Empty, postalCode, apiKey);
+                matches = Location.GetClosestLocationsByRadius(result.latitude, result.longitude, radius, portalId, locationTypeIds);
             }
 
             return matches;
         }
 
         [WebMethod]
-        public DataTable GetLocation(int locationId)
+        public Location GetLocation(int locationId)
         {
-            return Data.DataProvider.Instance().GetLocation(locationId);
+            return Location.GetLocation(locationId);
         }
 
         [WebMethod]

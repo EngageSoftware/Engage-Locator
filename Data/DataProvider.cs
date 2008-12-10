@@ -68,9 +68,9 @@ namespace Engage.Dnn.Locator.Data
 
         public abstract DataTable GetNClosestLocations(double latitude, double longitude, int N, int portalId);
 
-        public abstract DataTable GetClosestLocationsByRadius(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds);
-        public abstract DataTable GetLocation(int locationId);
-        public abstract DataTable GetLocationsByCountry(int countryId, int portalId);
+        public abstract IDataReader GetClosestLocationsByRadius(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds);
+        public abstract IDataReader GetLocation(int locationId);
+        public abstract IDataReader GetLocationsByCountry(int countryId, int portalId);
         public abstract DataTable GetAllLocations(int portalId, bool approved, string sortColumn, int index, int pageSize);
         public abstract void DeleteLocation(int locationId);
         public abstract string CopyData();
@@ -95,8 +95,8 @@ namespace Engage.Dnn.Locator.Data
         public abstract int GetTabModuleIdByFileId(int fileId);
         public abstract DataTable GetFilesToImport();
         public abstract void UpdateImportedLocationRow(int fileId);
-        public abstract DataTable GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds);
-        public abstract DataTable GetAllLocationsByType(int portalId, string[] types);
+        public abstract IDataReader GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds);
+        public abstract IDataReader GetAllLocationsByType(int portalId, string[] types);
         public abstract DataTable GetImportedLocationStatistics(int portalId);
         public abstract DataTable GetEngageLocatorTabModules(int portalId);
         public abstract void InsertComment(int locationId, string comment, string submittteBy, bool approved);

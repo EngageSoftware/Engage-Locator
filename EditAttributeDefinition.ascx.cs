@@ -1,21 +1,16 @@
-using System.IO;
-using System.Xml;
-
 using Globals = DotNetNuke.Common.Globals;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Common.Lists;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-
 using DotNetNuke.Services.Localization;
 
 using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using System;
 
 namespace Engage.Dnn.Locator
 {
+    using System.Globalization;
+
     partial class EditAttributeDefinition : ModuleBase
     {
 
@@ -110,17 +105,23 @@ namespace Engage.Dnn.Locator
             get
             {
                 int id = Null.NullInteger;
-                if ((ViewState["AttributeDefinitionID"] != null))
+                if (ViewState["AttributeDefinitionID"] != null)
                 {
-                    id = Int32.Parse(ViewState["AttributeDefinitionID"].ToString());
+                    id = Int32.Parse(ViewState["AttributeDefinitionID"].ToString(), CultureInfo.InvariantCulture);
                 }
+
                 if (Request.QueryString["AttributeDefinitionId"] != null)
                 {
-                    id = Convert.ToInt32(Request.QueryString["AttributeDefinitionId"]);
+                    id = Convert.ToInt32(Request.QueryString["AttributeDefinitionId"], CultureInfo.InvariantCulture);
                 }
+
                 return id;
             }
-            set { ViewState["AttributeDefinitionID"] = value; }
+
+            set
+            {
+                ViewState["AttributeDefinitionID"] = value;
+            }
         }
 
         protected int LocationTypeId
@@ -128,10 +129,11 @@ namespace Engage.Dnn.Locator
             get
             {
                 int id = Null.NullInteger;
-                if ((Request.QueryString["ltid"] != null))
+                if (Request.QueryString["ltid"] != null)
                 {
-                    id = Int32.Parse(Request.QueryString["ltid"].ToString());
+                    id = Int32.Parse(this.Request.QueryString["ltid"], CultureInfo.InvariantCulture);
                 }
+
                 return id;
             }
         }
@@ -157,12 +159,12 @@ namespace Engage.Dnn.Locator
         {
             try
             {
-                //Get Attribute Definition Id from Querystring (unless its been stored in the Viewstate)
+                // Get Attribute Definition Id from Querystring (unless its been stored in the Viewstate)
                 if (AttributeDefinitionId == Null.NullInteger)
                 {
                     if ((Request.QueryString["AttributeDefinitionId"] != null))
                     {
-                        AttributeDefinitionId = Int32.Parse(Request.QueryString["AttributeDefinitionId"]);
+                        AttributeDefinitionId = Int32.Parse(Request.QueryString["AttributeDefinitionId"], CultureInfo.InvariantCulture);
                     }
                     else
                     {
@@ -173,7 +175,7 @@ namespace Engage.Dnn.Locator
 
                 if (!Page.IsPostBack)
                 {
-                    //Add Delete Confirmation
+                    // Add Delete Confirmation
                     cmdDelete.Visible = true;
                     ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteAttribute", LocalResourceFile));
 
@@ -196,20 +198,20 @@ namespace Engage.Dnn.Locator
                 AttributeDefinition.AttributeName = txtName.Text;
                 AttributeDefinition.DefaultValue = txtDefaultValue.Text;
 
-                if ((bool)IsAddMode)
+                if (this.IsAddMode)
                 {
                     LocationType.AddAttributeDefinition(AttributeDefinition);
-                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + LocationTypeId));
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&ltid=" + LocationTypeId.ToString(CultureInfo.InvariantCulture)));
                 }
                 else
                 {
                     LocationType.UpdateAttributeDefinition(AttributeDefinition);
-                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + LocationTypeId));
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&ltid=" + LocationTypeId.ToString(CultureInfo.InvariantCulture)));
                 }
             }
             catch (ModuleLoadException exc)
             {
-                //Module failed to load
+                // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
@@ -218,7 +220,7 @@ namespace Engage.Dnn.Locator
         {
             try
             {
-                Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString() + "&ltid=" + LocationTypeId));
+                Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "AttributeDefinitions", "mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&ltid=" + LocationTypeId.ToString(CultureInfo.InvariantCulture)));
             }
             catch (ModuleLoadException exc)
             {

@@ -18,6 +18,8 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Engage.Dnn.Locator
 {
+    using System.Globalization;
+
     public class LocationType
     {
         public const string CacheKey = "AttributeDefinitions{0}";
@@ -107,21 +109,22 @@ namespace Engage.Dnn.Locator
                     canContinue = true;
                 }
             }
+
             if (canContinue)
             {
                 definition = new AttributeDefinition();
-                definition.AttributeDefinitionId = Convert.ToInt32(Null.SetNull(dr["AttributeDefinitionId"], definition.AttributeDefinitionId));
-                definition.PortalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], definition.PortalId));
-                definition.LocationTypeId = Convert.ToInt32(Null.SetNull(dr["LocationTypeId"], definition.LocationTypeId));
-                definition.DataType = Convert.ToInt32(Null.SetNull(dr["DataType"], definition.DataType));
-                definition.DefaultValue = Convert.ToString(Null.SetNull(dr["DefaultValue"], definition.DefaultValue));
-                //definition.AttributeCategory = Convert.ToString(Null.SetNull(dr["AttributeCategory"], definition.AttributeCategory));
-                definition.AttributeName = Convert.ToString(Null.SetNull(dr["AttributeName"], definition.AttributeName));
-                definition.Length = Convert.ToInt32(Null.SetNull(dr["Length"], definition.Length));
-                definition.Required = Convert.ToBoolean(Null.SetNull(dr["Required"], definition.Required));
-                definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression));
-                definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder));
-                definition.Visible = Convert.ToBoolean(Null.SetNull(dr["Visible"], definition.Visible));
+                definition.AttributeDefinitionId = Convert.ToInt32(Null.SetNull(dr["AttributeDefinitionId"], definition.AttributeDefinitionId), CultureInfo.InvariantCulture);
+                definition.PortalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], definition.PortalId), CultureInfo.InvariantCulture);
+                definition.LocationTypeId = Convert.ToInt32(Null.SetNull(dr["LocationTypeId"], definition.LocationTypeId), CultureInfo.InvariantCulture);
+                definition.DataType = Convert.ToInt32(Null.SetNull(dr["DataType"], definition.DataType), CultureInfo.InvariantCulture);
+                definition.DefaultValue = Convert.ToString(Null.SetNull(dr["DefaultValue"], definition.DefaultValue), CultureInfo.InvariantCulture);
+                ////definition.AttributeCategory = Convert.ToString(Null.SetNull(dr["AttributeCategory"], definition.AttributeCategory), CultureInfo.InvariantCulture);
+                definition.AttributeName = Convert.ToString(Null.SetNull(dr["AttributeName"], definition.AttributeName), CultureInfo.InvariantCulture);
+                definition.Length = Convert.ToInt32(Null.SetNull(dr["Length"], definition.Length), CultureInfo.InvariantCulture);
+                definition.Required = Convert.ToBoolean(Null.SetNull(dr["Required"], definition.Required), CultureInfo.InvariantCulture);
+                definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression), CultureInfo.InvariantCulture);
+                definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder), CultureInfo.InvariantCulture);
+                definition.Visible = Convert.ToBoolean(Null.SetNull(dr["Visible"], definition.Visible), CultureInfo.InvariantCulture);
             }
 
             return definition;
@@ -192,13 +195,11 @@ namespace Engage.Dnn.Locator
         /// <summary>
         /// Clears the LocationType Definitions Cache
         /// </summary>
-        /// <param name="PortalId">Id of the Portal</param>
         /// -----------------------------------------------------------------------------
         public static void ClearCache(int locationTypeId)
         {
-            string key = String.Format(CacheKey, locationTypeId);
+            string key = String.Format(CultureInfo.InvariantCulture, CacheKey, locationTypeId);
             DataCache.RemoveCache(key);
-            
         }
 
         /// -----------------------------------------------------------------------------
@@ -286,20 +287,19 @@ namespace Engage.Dnn.Locator
         /// <summary>
         /// Gets a collection of Property Defintions from the Data Store by portal
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
         /// <returns>A LocationTypeAttributeDefinitionCollection object</returns>
         /// -----------------------------------------------------------------------------
         public static AttributeDefinitionCollection GetAttributeDefinitionsById(int locationTypeId, bool clone)
         {
-            string key = String.Format(CacheKey, locationTypeId);
+            string key = string.Format(CultureInfo.InvariantCulture, CacheKey, locationTypeId);
 
-            //Try fetching the List from the Cache
+            // Try fetching the List from the Cache
             AttributeDefinitionCollection attributes = (AttributeDefinitionCollection)DataCache.GetCache(key);
 
             if (attributes == null)
             {
                 attributes = new AttributeDefinitionCollection();
-                int timeOut = CacheTimeOut * Convert.ToInt32(DotNetNuke.Common.Globals.PerformanceSetting);
+                int timeOut = CacheTimeOut * Convert.ToInt32(DotNetNuke.Common.Globals.PerformanceSetting, CultureInfo.InvariantCulture);
 
                 foreach (AttributeDefinition definition in GetAttributeDefinitions(locationTypeId))
                 {
@@ -340,20 +340,6 @@ namespace Engage.Dnn.Locator
             return DataProvider.Instance().GetLocationTypes();
         }
 
-        public static LocationType GetLocationType(int id)
-        {
-            DataTable dt = DataProvider.Instance().GetLocationType(id);
-            LocationType lt = null;
-            if (dt.Rows.Count == 1)
-            {
-                lt = new LocationType();
-                lt._locationId = Convert.ToInt32(dt.Rows[0]["LocationTypeName"]);
-                lt._locationTypeName = dt.Rows[0]["LocationTypeName"].ToString();
-            }
-
-            return lt;
-        }
-
         public static bool GetLocationTypeInUse(string location)
         {
             bool inuse = false;
@@ -372,7 +358,6 @@ namespace Engage.Dnn.Locator
             if (dt.Rows.Count == 1)
             {
                 name = dt.Rows[0]["LocationTypeName"].ToString();
-
             }
 
             return name;

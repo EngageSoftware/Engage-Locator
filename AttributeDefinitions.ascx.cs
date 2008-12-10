@@ -46,7 +46,7 @@ namespace Engage.Dnn.Locator
         {
             get
             {
-                return Convert.ToInt32(lbLocType.SelectedValue);
+                return Convert.ToInt32(lbLocType.SelectedValue, CultureInfo.InvariantCulture);
             }
         }
 
@@ -57,11 +57,16 @@ namespace Engage.Dnn.Locator
                 bool b = false;
                 if ((ViewState["editMode"] != null))
                 {
-                    b = Convert.ToBoolean(ViewState["editMode"]);
+                    b = Convert.ToBoolean(ViewState["editMode"], CultureInfo.InvariantCulture);
                 }
+
                 return b;
             }
-            set { ViewState["editMode"] = value; }
+
+            set
+            {
+                ViewState["editMode"] = value;
+            }
 
         }
         private void BindData()
@@ -177,7 +182,7 @@ namespace Engage.Dnn.Locator
         private void SetButtons()
         {
 
-            bool inUse = LocationType.GetLocationTypeInUse(LocationTypeId.ToString());
+            bool inUse = LocationType.GetLocationTypeInUse(LocationTypeId.ToString(CultureInfo.InvariantCulture));
             if (inUse)
             {
                 btnDeleteLocationType.Enabled = false;
@@ -242,16 +247,17 @@ namespace Engage.Dnn.Locator
         {
             try
             {
-                AttributeDefinitionCollection objAttributes = GetAttributes();
-                string[] aryNewOrder = DotNetNuke.UI.Utilities.ClientAPI.GetClientSideReorder(this.grdLocationTypeAttributes.ClientID, this.Page);
-                //assign vieworder
+                AttributeDefinitionCollection objAttributes = this.GetAttributes();
+                string[] aryNewOrder = ClientAPI.GetClientSideReorder(this.grdLocationTypeAttributes.ClientID, this.Page);
+                
+                // assign vieworder
                 for (int i = 0; i <= aryNewOrder.Length - 1; i++)
                 {
-                    objAttributes[Int32.Parse(aryNewOrder[i])].ViewOrder = i;
+                    objAttributes[Int32.Parse(aryNewOrder[i], CultureInfo.InvariantCulture)].ViewOrder = i;
                 }
+
                 objAttributes.Sort();
             }
-
             catch (Exception ex)
             {
                 throw ex;
@@ -416,12 +422,12 @@ namespace Engage.Dnn.Locator
                     ImageButton delImage = (ImageButton)imgColumnControl;
                     AttributeDefinition loctypeAttribute = (AttributeDefinition)item.DataItem;
 
-                    switch (loctypeAttribute.AttributeName.ToLower())
+                    switch (loctypeAttribute.AttributeName.ToUpperInvariant())
                     {
-                        case "lastname":
-                        case "firstname":
-                        case "timezone":
-                        case "preferredlocale":
+                        case "LASTNAME":
+                        case "FIRSTNAME":
+                        case "TIMEZONE":
+                        case "PREFERREDLOCALE":
                             delImage.Visible = false;
                             break;
                         default:
@@ -462,7 +468,7 @@ namespace Engage.Dnn.Locator
 
         protected void btnCAAdd_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            string href = EditUrl("ltid", LocationTypeId.ToString(), "EditAttributeDefinition");
+            string href = EditUrl("ltid", LocationTypeId.ToString(CultureInfo.InvariantCulture), "EditAttributeDefinition");
             Response.Redirect(href, true);
         }
 
@@ -509,7 +515,7 @@ namespace Engage.Dnn.Locator
 
         protected void btnDeleteLocationType_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            DataProvider.Instance().DeleteLocationType(Convert.ToInt32(lbLocType.SelectedItem.Value));
+            DataProvider.Instance().DeleteLocationType(Convert.ToInt32(lbLocType.SelectedItem.Value, CultureInfo.InvariantCulture));
             BindTypes();
             BindData();
         }
@@ -518,7 +524,7 @@ namespace Engage.Dnn.Locator
         {
             if (IsInEdit)
             {
-                DataProvider.Instance().UpdateLocationType(Convert.ToInt32(lbLocType.SelectedItem.Value), txtEditLocationType.Text);
+                DataProvider.Instance().UpdateLocationType(Convert.ToInt32(lbLocType.SelectedItem.Value, CultureInfo.InvariantCulture), txtEditLocationType.Text);
             }
             else
             {

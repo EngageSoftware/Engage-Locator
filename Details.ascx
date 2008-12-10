@@ -16,19 +16,19 @@
                 <asp:Label ID="LocationNameLabel" runat="server" CssClass="SubHead" />
             </div>
             <div class="ldAddress1">
-                <asp:Label ID="LocationAddress1Label" runat="server" CssClass="Normal" />
+                <asp:Label ID="LocationAddress1Label" runat="server" CssClass="normal" />
             </div>
             <div class="ldAddress2">
-                <asp:Label ID="LocationAddress2Label" runat="server" CssClass="Normal" />
+                <asp:Label ID="LocationAddress2Label" runat="server" CssClass="normal" />
             </div>
             <div class="ldAddress3">
-                <asp:Label ID="LocationAddress3Label" runat="server" CssClass="Normal" />
+                <asp:Label ID="LocationAddress3Label" runat="server" CssClass="normal" />
             </div>
             <div class="ldPhone">
-                <asp:Label ID="PhoneNumberLabel" runat="server" CssClass="Normal" />
+                <asp:Label ID="PhoneNumberLabel" runat="server" CssClass="normal" />
             </div>
             <div class="ldLink">
-                <asp:HyperLink ID="LocationNameLink" runat="server" CssClass="Normal" Target="_blank" />
+                <asp:HyperLink ID="LocationNameLink" runat="server" CssClass="normal" Target="_blank" />
             </div>
         </td>
     </tr>
@@ -40,11 +40,11 @@
                     <asp:Label ID="LocationDetailsHeaderLabel" runat="server" CssClass="SubHead" resourcekey="lblLocationDetailsTitle" />
                 </div>
                 <div>
-                    <asp:Label ID="LocationDetailsLabel" runat="server" CssClass="Normal" />
+                    <asp:Label ID="LocationDetailsLabel" runat="server" CssClass="normal" />
                 </div>
             </div>
             <% } %>
-            <div id="div_customAttributes" class="Normal">
+            <div id="div_customAttributes" class="normal">
                 <asp:Repeater ID="CustomAttributeRepeater" runat="server">
                     <ItemTemplate>
                         <div class='div_CustomAttribute<%#Eval("AttributeId") %>'>
@@ -59,7 +59,7 @@
                 <asp:UpdatePanel ID="RatingUpdatePanel" runat="server" UpdateMode="conditional" Visible="false">
                     <ContentTemplate>
                         <div id="divRating" class="divRatingBefore">
-                            <asp:Label ID="RatingMessageLabel" runat="server" CssClass="Normal" resourcekey="lblRatingMessage" />
+                            <asp:Label ID="RatingMessageLabel" runat="server" CssClass="normal" resourcekey="lblRatingMessage" />
                             <ajaxtoolkit:rating id="RatingControl" runat="server" maxrating="5" starcssclass="ratingStar" waitingstarcssclass="savedRatingStar" filledstarcssclass="filledRatingStar" emptystarcssclass="emptyRatingStar" visible="true" />
                         </div>
                     </ContentTemplate>
@@ -73,20 +73,20 @@
                 <asp:Label ID="LocationCommentsLabel" runat="server" CssClass="SubHead" resourcekey="lblLocationComments" />
             </div>
             <div>
-                <asp:Label ID="CommentSubmittedLabel" runat="server" CssClass="Normal" Visible="false" />
+                <asp:Label ID="CommentSubmittedLabel" runat="server" CssClass="normal" Visible="false" />
             </div>
             <div id="AddCommentSection" runat="server" style="display: none">
                 <div>
                     <p>
-                        <asp:Label ID="AddCommentInstructionsLabel" runat="server" CssClass="Normal" resourcekey="lblAddCommentInstructions" /></p>
+                        <asp:Label ID="AddCommentInstructionsLabel" runat="server" CssClass="normal" resourcekey="lblAddCommentInstructions" /></p>
                     <div>
                         <asp:TextBox ID="CommentTextBox" runat="server" CssClass="NormalTextBox" TextMode="multiLine" Rows="5" MaxLength="200" Columns="42" /></div>
                     <div>
                         <asp:RequiredFieldValidator ID="CommentRequiredValidator" runat="server" CssClass="NormalRed" ErrorMessage="Please enter a comment" resourcekey="rfvComment" ControlToValidate="CommentTextBox" /></div>
                 </div>
                 <div>
-                    <asp:Label ID="SubmittedByLabel" runat="server" CssClass="Normal" resourcekey="lblSubmittedBy" />
-                    <asp:TextBox ID="SubmittedByTextBox" runat="server" CssClass="Normal" />
+                    <asp:Label ID="SubmittedByLabel" runat="server" CssClass="normal" resourcekey="lblSubmittedBy" />
+                    <asp:TextBox ID="SubmittedByTextBox" runat="server" CssClass="normal" />
                 </div>
                 <div>
                     <asp:Button ID="SubmitButton" runat="server" CssClass="CommandButton" resourcekey="btnSubmit" />
@@ -115,10 +115,10 @@
                 <ItemTemplate>
                     <tr class="userCommentRow">
                         <td class="userComment">
-                            <asp:Label ID="CommentLabel" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Text").ToString())%></asp:Label>
+                            <asp:Label ID="CommentLabel" runat="server" CssClass="normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Text").ToString())%></asp:Label>
                         </td>
                         <td class="usernameComment">
-                            <asp:Label ID="CommentAuthorLabel" runat="server" CssClass="Normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Author").ToString())%></asp:Label>
+                            <asp:Label ID="CommentAuthorLabel" runat="server" CssClass="normal"><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Author").ToString())%></asp:Label>
                         </td>
                     </tr>
                 </ItemTemplate>

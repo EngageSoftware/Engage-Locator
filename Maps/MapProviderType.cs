@@ -76,12 +76,6 @@ namespace Engage.Dnn.Locator.Maps
             return "";
         }
 
-        public string GetApiKey(Hashtable settings)
-        {
-            object apiKey = settings[ClassName + ".ApiKey"];
-            return Convert.ToString(apiKey);
-        }
-
         public string Name
         {
             get { return _name; }

@@ -10,7 +10,7 @@
     <asp:ImageButton ID="lbManageComments" CssClass="CommandButton" runat="server" AlternateText="Comments" ImageUrl="~/desktopmodules/EngageLocator/images/commentsbt.gif" OnClick="lbManageComments_OnClick" CausesValidation="false" />
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lbManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" CausesValidation="false" />
 </div>
-<asp:Label ID="lblLocationTypeHelp" runat="Server" class="locatorInstruction Normal" resourcekey="LocationTypeAttributesHelp" />
+<asp:Label ID="lblLocationTypeHelp" runat="Server" class="locatorInstruction normal" resourcekey="LocationTypeAttributesHelp" />
 <asp:UpdatePanel ID="upDataImport" runat="server">
     <ContentTemplate>
         <fieldset class="ltWrapper">
@@ -19,7 +19,7 @@
                 <h3 class="SubHead" runat="server" id="hdSelect">Select a Location</h3>
                 <div class="locTypeWrapper">
                     <div class="locTypeListView">
-                        <asp:ListBox ID="lbLocType" CssClass="Normal" runat="server" Rows="5" Width="100%"
+                        <asp:ListBox ID="lbLocType" CssClass="normal" runat="server" Rows="5" Width="100%"
                             AutoPostBack="True" OnSelectedIndexChanged="lbLocType_SelectedIndexChanged">
                         </asp:ListBox>
                     </div>

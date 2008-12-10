@@ -6,6 +6,8 @@ using Globals=DotNetNuke.Common.Globals;
 
 namespace Engage.Dnn.Locator
 {
+    using System.Globalization;
+
     public partial class ManageComment : ModuleBase
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -14,17 +16,22 @@ namespace Engage.Dnn.Locator
             {
                 if (!Page.IsPostBack)
                 {
-                    int commentId = Convert.ToInt32(Request.QueryString["cid"]);
+                    int commentId = Convert.ToInt32(Request.QueryString["cid"], CultureInfo.InvariantCulture);
                     Comment comment = Comment.GetComment(commentId);
 
-                    lblCommentId.Text = comment.CommentId.ToString();
+                    lblCommentId.Text = comment.CommentId.ToString(CultureInfo.InvariantCulture);
                     lblLocationTitle.Text = comment.LocationName;
                     txtComment.Text = comment.Text;
                     txtSubmittedBy.Text = comment.SubmittedBy;
                     if (comment.Approved)
+                    {
                         rbApproved.Checked = true;
+                    }
                     else
+                    {
                         rbWaitingForApproval.Checked = true;
+                    }
+
                     ClientAPI.AddButtonConfirm(btnDelete, Localization.GetString("confirmDelete", LocalResourceFile));
                 }
             }
@@ -42,7 +49,7 @@ namespace Engage.Dnn.Locator
         protected void btnSaveComment_Click(object sender, EventArgs e)
         {
             Comment comment = new Comment();
-            comment.CommentId = Convert.ToInt32(lblCommentId.Text);
+            comment.CommentId = Convert.ToInt32(lblCommentId.Text, CultureInfo.InvariantCulture);
             comment.Text = txtComment.Text;
             comment.SubmittedBy = txtSubmittedBy.Text;
             comment.Approved = rbApproved.Checked;
@@ -54,7 +61,7 @@ namespace Engage.Dnn.Locator
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text));
+            Comment.DeleteComment(Convert.ToInt32(lblCommentId.Text, CultureInfo.InvariantCulture));
             Response.Redirect(Globals.NavigateURL(TabId, "Import", "mid=" + ModuleId + "&tmid=" + TabModuleId));
         }
     }

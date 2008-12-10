@@ -1,47 +1,48 @@
-//Copyright (c) 2004-2007
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
-
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Locator.Data;
-using Engage.Dnn.Locator.Maps;
+// <copyright file="MainDisplay.ascx.cs" company="Engage Software">
+// Engage: Locator - http://www.engagemodules.com
+// Copyright (c) 2004-2008
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Locator
 {
-    partial class MainDisplay : ModuleBase
-    {
-        #region Properties
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Text;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using Data;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Maps;
 
-        protected string ShowLocationDetails
+    /// <summary>
+    /// The main display for Engage: Locator.  Display the location search, list, and results.
+    /// </summary>
+    public partial class MainDisplay : ModuleBase
+    {
+        /// <summary>
+        /// A value indicating whether to load the default list of all locations, rather than responding to search criteria
+        /// </summary>
+        private bool loadDefault;
+
+        protected int DisplayTabId
         {
             get
             {
-                string showDetails = "False";
-                ModuleController objModules = new ModuleController();
-
-                if (objModules.GetTabModuleSettings(TabModuleId)["ShowLocationDetails"] != null)
-                {
-                    showDetails = objModules.GetTabModuleSettings(TabModuleId)["ShowLocationDetails"].ToString();
-                }
-                return showDetails;
+                return Dnn.Utility.GetIntSetting(this.Settings, "DisplayResultsTab", this.TabId);
             }
         }
 
@@ -49,8 +50,27 @@ namespace Engage.Dnn.Locator
         {
             get
             {
-                ModuleController objModules = new ModuleController();
-                return Convert.ToBoolean(objModules.GetTabModuleSettings(TabModuleId)["Country"].ToString());
+                return Dnn.Utility.GetBoolSetting(this.Settings, "Country", false);
+            }
+        }
+
+        protected bool ShowDefaultDisplay
+        {
+            get
+            {
+                return Dnn.Utility.GetBoolSetting(this.Settings, "ShowDefaultDisplay", false);
+            }
+        }
+
+        /// <summary>
+        /// Gets the location details setting.  Possible values include "True," "False," and "SamePage."
+        /// </summary>
+        /// <value>How to display the location details.</value>
+        protected string ShowLocationDetails
+        {
+            get
+            {
+                return Dnn.Utility.GetStringSetting(this.Settings, "ShowLocationDetails", "False");
             }
         }
 
@@ -58,118 +78,282 @@ namespace Engage.Dnn.Locator
         {
             get
             {
-                ModuleController objModules = new ModuleController();
-                return Convert.ToBoolean(objModules.GetTabModuleSettings(TabModuleId)["Radius"].ToString());
+                return Dnn.Utility.GetBoolSetting(this.Settings, "Radius", true);
             }
         }
 
-        private bool _loadDefault = false;
-        protected bool ShowDefaultDisplay
+        private bool ShowMapDefaultDisplay
         {
             get
             {
-                bool showDefault = false;
-                ModuleController objModules = new ModuleController();
-                if (objModules.GetTabModuleSettings(TabModuleId)["ShowDefaultDisplay"] != null) 
-                    showDefault = Convert.ToBoolean(objModules.GetTabModuleSettings(TabModuleId)["ShowDefaultDisplay"].ToString());
-                return showDefault;
+                return Dnn.Utility.GetBoolSetting(this.Settings, "ShowMapDefaultDisplay", false);
             }
         }
 
-        protected bool ShowMapDefaultDisplay
+        /// <summary>
+        /// Gets the type of the map.
+        /// </summary>
+        /// <value>The type of the map.</value>
+        private MapType MapType
         {
             get
             {
-                bool showMap = false;
-                ModuleController objModules = new ModuleController();
-
-                if (objModules.GetTabModuleSettings(TabModuleId)["ShowMapDefaultDisplay"] != null)
-                    showMap = Convert.ToBoolean(objModules.GetTabModuleSettings(TabModuleId)["ShowMapDefaultDisplay"].ToString());
-                return showMap;
+                return Dnn.Utility.GetEnumSetting(this.Settings, "MapType", MapType.Normal);
             }
         }
 
-        protected int DisplayTabId
+        /// <summary>
+        /// Determines whether the instance with the specified TabModuleId is configured.
+        /// </summary>
+        /// <param name="tabModuleId">The TabModuleId.</param>
+        /// <param name="error">The error message.</param>
+        /// <returns>
+        /// <c>true</c> if the instance with the specified TabModuleId is configured; otherwise, <c>false</c>.
+        /// </returns>
+        public static new bool IsConfigured(int tabModuleId, ref string error)
         {
-            get
+            // TODO: Localize error messages
+            Hashtable settings = PortalSettings.GetTabModuleSettings(tabModuleId);
+            string mapProvider = Dnn.Utility.GetStringSetting(settings, "DisplayProvider");
+            if (string.IsNullOrEmpty(mapProvider))
             {
-                ModuleController objModules = new ModuleController();
-                if (objModules.GetTabModuleSettings(TabModuleId)["DisplayResultsTabId"] != null)
-                    return Convert.ToInt32(objModules.GetTabModuleSettings(TabModuleId)["DisplayResultsTabId"]);
-                else
-                    return TabId;
+                error = "No Map Provider Selected.";
+                return false;
+            }
+
+            string className = MapProviderType.GetMapProviderClassByName(mapProvider);
+            string apiKey = Dnn.Utility.GetStringSetting(settings, className + ".ApiKey");
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                error = "No API Key Entered.";
+                return false;
+            }
+            
+            MapProvider mp = MapProvider.CreateInstance(className);
+            if (!mp.IsKeyValid(apiKey))
+            {
+                error = "API Key is not in the correct format.";
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(Dnn.Utility.GetStringSetting(settings, "DisplayProvider")))
+            {
+                error = "Search Setting \"Results Display Module\" not set.";
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(Dnn.Utility.GetStringSetting(settings, "ShowLocationDetails")))
+            {
+                error = "Display Setting \"Show Location Details\" not set.";
+                return false;
+            }
+            
+            if (!Dnn.Utility.GetIntSetting(settings, "DisplayResultsTabId").HasValue)
+            {
+                error = "Display Results not set.";
+                return false;
+            }
+            
+            return true;
+        }
+
+        public MapProvider GetProvider()
+        {
+            MapProvider mp;
+            switch (Dnn.Utility.GetStringSetting(this.Settings, "DisplayProvider").ToUpperInvariant())
+            {
+                case "GOOGLE":
+                    mp = MapProvider.CreateInstance(MapProviderType.GoogleMaps);
+                    break;
+                case "YAHOO":
+                    mp = MapProvider.CreateInstance(MapProviderType.YahooMaps);
+                    mp.LatLong = this.ViewState["UserLocation"] as Pair;
+                    mp.SearchCriteria = this.GetSearchCriteria();
+                    break;
+                default:
+                    mp = MapProvider.CreateInstance(MapProviderType.GoogleMaps);
+                    break;
+            }
+
+            return mp;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnBack control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            this.mvwLocator.SetActiveView(this.vwLocator);
+
+            this.txtLocationAddress.Text = string.Empty;
+            this.txtLocationCity.Text = string.Empty;
+            this.ddlLocationRegion.SelectedIndex = 0;
+            this.txtLocationPostalCode.Text = string.Empty;
+            this.ddlLocatorCountry.SelectedIndex = 0;
+            if (this.ShowCountry)
+            {
+                this.ddlCountry.SelectedIndex = 0;
+                this.ddlDistance.SelectedIndex = 0;
+            }
+            else
+            {
+                this.ddlCountry.SelectedValue = Localization.GetString("UnlimitedMiles", this.LocalResourceFile);
+            }
+            
+            this.pnlError.Visible = false;
+
+            this.divMap.Style[HtmlTextWriterStyle.Display] = "none";
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnShowAll control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void btnShowAll_Click(object sender, EventArgs e)
+        {
+            this.txtLocationAddress.Text = string.Empty;
+            this.txtLocationCity.Text = string.Empty;
+            this.ddlLocationRegion.SelectedIndex = 0;
+            this.txtLocationPostalCode.Text = string.Empty;
+            this.ddlLocatorCountry.SelectedIndex = 0;
+
+            this.ddlCountry.SelectedIndex = -1;
+            this.loadDefault = true;
+            this.DoWork(null);
+            this.loadDefault = false;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnSubmit control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            if (this.DisplayTabId == this.TabId)
+            {
+                this.BindData(string.Empty, Dnn.Utility.GetStringSetting(this.Settings, this.GetProvider().GetType().FullName + ".ApiKey"));
+            }
+            else
+            {
+                this.Response.Redirect(Globals.NavigateURL(this.DisplayTabId, string.Empty, "srch=" + this.txtLocationPostalCode.Text));
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the ddlCountry control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void ddlCountry_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.ShowRadius)
+            {
+                this.ddlDistance.SelectedIndex = 0;
+            }
+        }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the ddlDistance control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void ddlDistance_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.ShowCountry)
+            {
+                this.ddlCountry.SelectedIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lnkSubmitLocations control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void lnkSubmitLocations_Click(object sender, EventArgs e)
+        {
+            this.Response.Redirect(Globals.NavigateURL(this.TabId, "ManageLocation", "mid=" + this.ModuleId));
+        }
+
+        /// <summary>
+        /// Handles the Load event of the Page control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(Object sender, EventArgs e)
         {
             try
             {
+                string title = this.Settings["SearchTitle"] != null ? this.Settings["SearchTitle"].ToString() : Localization.GetString("lblHeader", this.LocalResourceFile);
 
-                string title;
-                if (Settings["SearchTitle"] != null)
+                this.lblHeader.Text = title;
+
+                if (!this.SubmissionsEnabled)
                 {
-                    title = Settings["SearchTitle"].ToString();
-                }
-                else
-                {
-                    title = Localization.GetString("lblHeader", LocalResourceFile);
+                    this.lnkSubmitLocation.Visible = false;
                 }
 
-                lblHeader.Text = title;
+                if (!this.SubmissionsEnabled)
+                {
+                    this.lnkSubmitLocationSearch.Visible = false;
+                }
 
-                if (!SubmissionsEnabled) lnkSubmitLocation.Visible = false;
-                if (!SubmissionsEnabled) lnkSubmitLocationSearch.Visible = false;
-                lbSettings.Visible = IsEditable;
-                lbImportFile.Visible = IsEditable;
-                lbManageComments.Visible = IsEditable;
-                lbManageLocations.Visible = IsEditable;
-                lbLocationTypes.Visible = IsEditable;
+                this.lbSettings.Visible = this.IsEditable;
+                this.lbImportFile.Visible = this.IsEditable;
+                this.lbManageComments.Visible = this.IsEditable;
+                this.lbManageLocations.Visible = this.IsEditable;
+                this.lbLocationTypes.Visible = this.IsEditable;
 
                 string error = String.Empty;
-                lnkViewMap.OnClientClick = "showAllLocations(); return false;";
-                if (!IsConfigured(TabModuleId, ref error))
+                this.lnkViewMap.OnClientClick = "showAllLocations(); return false;";
+                if (!IsConfigured(this.TabModuleId, ref error))
                 {
-                    mvwLocator.SetActiveView(vwSetup);
-                    if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
+                    this.mvwLocator.SetActiveView(this.vwSetup);
+                    if (this.UserInfo.IsInRole(this.PortalSettings.ActiveTab.AdministratorRoles))
                     {
-                        lblSetupText.Text = Localization.GetString("SetupText_Admin", LocalResourceFile) + error; // "Please setup module through the Module Settings page.<br>Required Items: <br/><br/>" + error;
+                        // "Please setup module through the Module Settings page.<br>Required Items: <br/><br/>" + error;
+                        this.lblSetupText.Text = Localization.GetString("SetupText_Admin", this.LocalResourceFile) + error;
                     }
                     else
                     {
-                        lblSetupText.Text = Localization.GetString("SetupText_NonAdmin", LocalResourceFile); // "This page is not configured. Please contact an Administrator.";
+                        // "This page is not configured. Please contact an Administrator.";
+                        this.lblSetupText.Text = Localization.GetString("SetupText_NonAdmin", this.LocalResourceFile);
                     }
                 }
                 else
                 {
-                    mvwLocator.SetActiveView(vwLocator);
-                    if (!IsPostBack)
+                    this.mvwLocator.SetActiveView(this.vwLocator);
+                    if (!this.IsPostBack)
                     {
-                        FillDropDowns();
+                        this.FillDropDowns();
 
-                        if (Request.QueryString["srch"] != null)
+                        if (this.Request.QueryString["srch"] != null)
                         {
-                            DoWork(Request.QueryString["srch"]);
+                            this.DoWork(this.Request.QueryString["srch"]);
                         }
                         else
                         {
-                            if (ShowDefaultDisplay || ShowMapDefaultDisplay)
+                            if (this.ShowDefaultDisplay || this.ShowMapDefaultDisplay)
                             {
-                                DoWork(null);
+                                this.DoWork(null);
                             }
                         }
 
-                        SetSearchDisplay();
+                        this.SetSearchDisplay();
 
-                        if (Settings["Country"] != null && Settings["Country"].ToString() == "False" && Settings["Radius"] != null &&
-                            Settings["Radius"].ToString() == "False")
-                            btn_ShowAll.Visible = false;
-
-                        if (SubmissionsEnabled)
+                        if (this.Settings["Country"] != null && this.Settings["Country"].ToString() == "False"
+                            && this.Settings["Radius"] != null && this.Settings["Radius"].ToString() == "False")
                         {
-                            lnkSubmitLocation.Visible = true;
+                            this.btn_ShowAll.Visible = false;
+                        }
+
+                        if (this.SubmissionsEnabled)
+                        {
+                            this.lnkSubmitLocation.Visible = true;
                         }
                     }
                 }
@@ -180,223 +364,137 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        private void SetSearchDisplay()
+        /// <summary>
+        /// Handles the ItemDataBound event of the rptLocations control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Web.UI.WebControls.RepeaterItemEventArgs"/> instance containing the event data.</param>
+        protected void rptLocations_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if (Settings["SearchAddress"] != null)
-                addressFirstLine.Visible = Convert.ToBoolean(Settings["SearchAddress"].ToString());
-            else
-                ltCity.Visible = false;
-            if (Settings["SearchCityRegion"] != null)
+            if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
-                ltCity.Visible = Convert.ToBoolean(Settings["SearchCityRegion"].ToString());
-                ltRegion.Visible = Convert.ToBoolean(Settings["SearchCityRegion"].ToString());
-            }
-            else
-            {
-                ltCity.Visible = false;
-                ltRegion.Visible = false;
-            }
-            if (Settings["SearchPostalCode"] != null)
-                ltPostalcode.Visible = Convert.ToBoolean(Settings["SearchPostalCode"].ToString());
-            else
-                ltPostalcode.Visible = true;
-            if (Settings["SearchCountry"] != null)
-                ltCountry.Visible = Convert.ToBoolean(Settings["SearchCountry"].ToString());
-            else
-                ltCountry.Visible = false;
+                Location location = (Location)e.Item.DataItem;
+                Label lblLocationsGridDistance = (Label)e.Item.FindControl("lblLocationsGridDistance");
+                Label lblLocationDetails = (Label)e.Item.FindControl("lblLocationDetails");
+                Label lblLocationMapNumber = (Label)e.Item.FindControl("lblLocationMapNumber");
+                Label l = (Label)e.Item.FindControl("lblLocationsGridAddress");
 
-        }
+                lblLocationDetails.Visible = (this.ShowLocationDetails == "SamePage" || this.ShowLocationDetails == "True");
+                lblLocationMapNumber.Text = Convert.ToString(e.Item.ItemIndex + 1, CultureInfo.CurrentCulture) + ") ";
 
-        private void DoWork(string parameters)
-        {
-            if (BindData(parameters)) //only register map script if binding was successful and we are moving to the map view
-            {
-                MapProvider mp = GetProvider();
-                mp.MapDiv = divMap;
-                mp.LocatorMapLabel = lblLocatorMapLabel;
-                mp.RptLocations = rptLocations;
-                mp.ScrollToViewMore = lblScrollToViewMore;
-                string apiKey = Convert.ToString(Settings[mp.GetType().FullName + ".ApiKey"]);
-                RegisterMapScripts(mp, apiKey);
-                ShowMaps();
-            }
-            if (ShowMapDefaultDisplay || this._loadDefault)
-            {
-                ClientScriptManager cs = Page.ClientScript;
-                if (!cs.IsStartupScriptRegistered(GetType(), "showAllLocations"))
+                if (location != null)
                 {
-                    cs.RegisterStartupScript(GetType(), "showAllLocations", "showAllLocations();", true);
-                }
-            }
-            lnkViewMap.Visible = false;
-
-        }
-
-        protected void btnSubmit_Click(object sender, EventArgs e)
-        {
-            if (DisplayTabId == TabId)
-            {                
-                if (BindData(string.Empty)) //only register map script if binding was successful and we are moving to the map view
-                {
-                    MapProvider mp = GetProvider();
-                    mp.MapDiv = divMap;
-                    mp.LocatorMapLabel = lblLocatorMapLabel;
-                    mp.RptLocations = rptLocations;
-                    mp.ScrollToViewMore = lblScrollToViewMore;
-                    string apiKey = Convert.ToString(Settings[mp.GetType().FullName + ".ApiKey"]);
-                    RegisterMapScripts(mp, apiKey);
-                    ShowMaps();
-                }
-            }
-            else Response.Redirect(Globals.NavigateURL(DisplayTabId, "", "srch=" + txtLocationPostalCode.Text));
-
-        }
-
-        public MapProvider GetProvider()
-        {
-            MapProvider mp;
-            switch (Convert.ToString(Settings["DisplayProvider"]))
-            {
-                case "Google":
-                    mp = MapProvider.CreateInstance(MapProviderType.GoogleMaps);
-                    break;
-                case "Yahoo":
-                    mp = MapProvider.CreateInstance(MapProviderType.YahooMaps);
-                    mp.LatLong = ViewState["UserLocation"] as Pair;
-                    mp.SearchCriteria = GetSearchCriteria();
-                    break;
-                default:
-                    mp = MapProvider.CreateInstance(MapProviderType.GoogleMaps);
-                    break;
-            }
-            return mp;
-        }
-
-        private void ShowMaps()
-        {
-            divMap.Visible = true;
-            lnkViewMap.Visible = true;
-        }
-
-        private bool BindData(string parameters)
-        {
-            DataTable locations = null;
-            string searchCriteria = string.Empty;
-            if (parameters == string.Empty )
-            {
-                searchCriteria = GetSearchCriteria();
-            }
-            else if (parameters != string.Empty )
-            {
-                searchCriteria = parameters;
-            }
-            MapProvider mp = GetProvider();
-
-            //Hide/Show Location Details column based on TabModuleSettings
-
-            string mapsApiKey = Convert.ToString(Settings[mp.GetType().FullName + ".ApiKey"]);
-
-            if (ShowCountry && ddlCountry.SelectedIndex != 0 && _loadDefault == false)
-            {
-                if (ddlCountry.Items.Count > 0)
-                {
-                    if ((ddlCountry.SelectedValue != "-1") || (ddlCountry.SelectedValue == String.Empty))
+                    if (this.ShowLocationDetails == "DetailsPage")
                     {
-                        int countryId = int.Parse(ddlCountry.SelectedValue);
-                        locations = DataProvider.Instance().GetLocationsByCountry(countryId, PortalId);
+                        HyperLink lnkShowLocationDetails = (HyperLink)e.Item.FindControl("lnkShowLocationDetails");
+                        lnkShowLocationDetails.Visible = true;
+                        lnkShowLocationDetails.NavigateUrl = Globals.NavigateURL(this.TabId, "Details", "mid=" + this.ModuleId + "&lid=" + location.LocationId);
+                        lnkShowLocationDetails.Text = Localization.GetString("lnkShowLocationDetails", this.LocalResourceFile);
+                    }
+
+                    lblLocationsGridDistance.Visible = location.Distance.HasValue;
+
+                    if (lblLocationsGridDistance.Visible)
+                    {
+                        lblLocationsGridDistance.Text = location.Distance.Value.ToString("#.00", CultureInfo.CurrentCulture) + Localization.GetString("Miles", this.LocalResourceFile);
+                    }
+                }
+
+                HyperLink lnkSite = (HyperLink)e.Item.FindControl("lbSiteLink");
+                lnkSite.Text = string.IsNullOrEmpty(location.Website) ? Localization.GetString("Closed", this.LocalResourceFile) : Localization.GetString("Open", this.LocalResourceFile);
+
+                l.Text = location.FullAddress;
+            }
+        }
+
+        private void BindData(string parameters, string apiKey)
+        {
+            List<Location> locations = null;
+            string searchCriteria = string.IsNullOrEmpty(parameters) ? this.GetSearchCriteria() : parameters;
+
+            MapProvider mp = this.GetProvider();
+
+            // Hide/Show Location Details column based on TabModuleSettings
+            if (this.ShowCountry && this.ddlCountry.SelectedIndex != 0 && this.loadDefault == false)
+            {
+                if (this.ddlCountry.Items.Count > 0)
+                {
+                    if ((this.ddlCountry.SelectedValue != "-1") || (this.ddlCountry.SelectedValue == String.Empty))
+                    {
+                        int countryId = int.Parse(this.ddlCountry.SelectedValue, CultureInfo.InvariantCulture);
+                        locations = Location.GetLocationsByCountry(countryId, this.PortalId);
                     }
                     else
                     {
-                        lblErrorMessage.Text = Localization.GetString("NoCountrySelected", LocalResourceFile);
-                        pnlError.Visible = true;
-                        return false;
+                        this.lblErrorMessage.Text = Localization.GetString("NoCountrySelected", this.LocalResourceFile);
+                        this.pnlError.Visible = true;
+                        return;
                     }
                 }
             }
             else if (!String.IsNullOrEmpty(searchCriteria))
             {
-                if (ddlDistance.SelectedValue != Localization.GetString("ChooseOne", LocalResourceFile))                    
+                if (this.ddlDistance.SelectedValue != Localization.GetString("ChooseOne", this.LocalResourceFile))
                 {
                     YahooGeocodeResult yahooResult = new YahooGeocodeResult();
                     GoogleGeocodeResult googleResult = new GoogleGeocodeResult();
 
                     if (mp.GetType().FullName.Contains("Yahoo"))
                     {
-                         yahooResult = SearchUtility.SearchYahoo(searchCriteria, "", "", "", "", mapsApiKey);    
+                        yahooResult = SearchUtility.SearchYahoo(searchCriteria, string.Empty, string.Empty, string.Empty, string.Empty, apiKey);
                     }
 
                     if (mp.GetType().FullName.Contains("Google"))
                     {
-                        googleResult = SearchUtility.SearchGoogle(searchCriteria, mapsApiKey);    
+                        googleResult = SearchUtility.SearchGoogle(searchCriteria, apiKey);
                     }
 
-                    locations = CompareProviders(yahooResult, googleResult, locations);
+                    locations = this.CompareProviders(yahooResult, googleResult);
                 }
                 else
                 {
-                    lblErrorMessage.Text = Localization.GetString("NoSelection", LocalResourceFile);
-                    pnlError.Visible = true;
-                    return false;
+                    this.lblErrorMessage.Text = Localization.GetString("NoSelection", this.LocalResourceFile);
+                    this.pnlError.Visible = true;
+                    return;
                 }
             }
-            else if (ShowDefaultDisplay || this._loadDefault || ShowMapDefaultDisplay)
+            else if (this.ShowDefaultDisplay || this.loadDefault || this.ShowMapDefaultDisplay)
             {
-                locations = GetDefaultLocations();
+                locations = this.GetDefaultLocations();
             }
             else
             {
-                lblErrorMessage.Text = Localization.GetString("lblErrorMessage", LocalResourceFile);
-
+                this.lblErrorMessage.Text = Localization.GetString("lblErrorMessage", this.LocalResourceFile);
             }
 
-            if (locations == null || locations.Rows.Count < 1)
+            if (locations == null || locations.Count < 1)
             {
-                if (locations == null)
-                {
-                    lblErrorMessage.Text = Localization.GetString("NoLocationsFound", LocalResourceFile);
-                    pnlError.Visible = true;
-                    return false;
-                }
-                if (locations.Rows.Count < 1)
-                {
-                    lblErrorMessage.Text = Localization.GetString("NoLocationsFound", LocalResourceFile);
-                }
+                this.lblErrorMessage.Text = Localization.GetString("NoLocationsFound", this.LocalResourceFile);
+                this.pnlError.Visible = true;
+                return;
+            }
 
-                pnlError.Visible = true;
-                return false;
-            }
-            else
-            {
-                mvwLocator.SetActiveView(vwResults);
-                
-                lblNumClosest.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lblNumClosest", LocalResourceFile),
-                                      locations.Rows.Count);    
-                //lblNumClosest.Visible = (locations.Rows.Count == 1);
-                rptLocations.DataSource = locations.DefaultView;
-                rptLocations.DataBind();
-                return true;
-            }
+            this.mvwLocator.SetActiveView(this.vwResults);
+
+            this.lblNumClosest.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lblNumClosest", this.LocalResourceFile), locations.Count);
+            
+            this.rptLocations.DataSource = locations;
+            this.rptLocations.DataBind();
+
+            this.RegisterMapScripts(this.GetProvider(), apiKey, locations);
+            this.ShowMaps();
         }
 
-        private DataTable GetDefaultLocations()
+        private List<Location> CompareProviders(YahooGeocodeResult yahooResult, GoogleGeocodeResult googleResult)
         {
-            ModuleController objModules = new ModuleController();
-            string displayTypes = Convert.ToString(objModules.GetTabModuleSettings(TabModuleId)["DisplayTypes"]);
-            string[] displayTypesArray = displayTypes.Split(',');
-            return DataProvider.Instance().GetAllLocationsByType(PortalId, displayTypesArray);
-        }
-
-        private DataTable CompareProviders(YahooGeocodeResult yahooResult, GoogleGeocodeResult googleResult, DataTable locations)
-        {
-            if (yahooResult.statusCode == YahooStatusCode.Success ||
-                googleResult.statusCode == GoogleStatusCode.Success)
+            if (yahooResult.statusCode == YahooStatusCode.Success || googleResult.statusCode == GoogleStatusCode.Success)
             {
                 double latitude = 0;
                 double longitude = 0;
                 if (yahooResult.statusCode == YahooStatusCode.Success)
                 {
-                        latitude = yahooResult.latitude;
-                        longitude = yahooResult.longitude;
+                    latitude = yahooResult.latitude;
+                    longitude = yahooResult.longitude;
                 }
                 else if (googleResult.statusCode == GoogleStatusCode.Success)
                 {
@@ -404,408 +502,222 @@ namespace Engage.Dnn.Locator
                     longitude = googleResult.longitude;
                 }
 
-                ModuleController objModules = new ModuleController();
-                string locationTypes = Convert.ToString(objModules.GetTabModuleSettings(TabModuleId)["DisplayTypes"]);
+                string locationTypes = Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes");
                 string[] values = locationTypes.Split(',');
-                int[] locationTypeIds = Array.ConvertAll<string, int>(values, delegate(string s) {return int.Parse(s); });
-               
-                if(ddlDistance.SelectedValue == Localization.GetString("UnlimitedMiles", LocalResourceFile))
+                int[] locationTypeIds = Array.ConvertAll(values, delegate(string s) { return int.Parse(s, CultureInfo.InvariantCulture); });
+
+                List<Location> locations;
+                if (this.ddlDistance.SelectedValue == Localization.GetString("UnlimitedMiles", this.LocalResourceFile))
                 {
-                    locations = DataProvider.Instance().GetAllLocationsByDistance(latitude, longitude, PortalId, locationTypeIds);
+                    locations = Location.GetAllLocationsByDistance(latitude, longitude, this.PortalId, locationTypeIds);
                 }
                 else
                 {
-                    locations = DataProvider.Instance().GetClosestLocationsByRadius(latitude, longitude, int.Parse(ddlDistance.SelectedValue), PortalId, locationTypeIds);}
-
-                ViewState["UserLocation"] = new Pair(latitude, longitude);
-            }
-            else
-            {
-                lblErrorMessage.Text = "An unknown error occurred.";
-                switch (yahooResult.statusCode)
-                {
-                    case YahooStatusCode.BadRequest: //400
-                        lblErrorMessage.Text = "The entered location could not be found.";
-                        break;
-                    case YahooStatusCode.Forbidden: //403
-                        lblErrorMessage.Text =
-                            "The provided Yahoo! Maps API key is not working, or the rate limit has been reached.  Please try again later.";
-                        break;
-                    case YahooStatusCode.ServiceUnavailable: //503
-                        lblErrorMessage.Text =
-                            "The locator service is temporarily unavailable.  We apologize for the inconvenience.  Please try again.";
-                        break;
+                    locations = Location.GetClosestLocationsByRadius(latitude, longitude, int.Parse(this.ddlDistance.SelectedValue, CultureInfo.InvariantCulture), this.PortalId, locationTypeIds);
                 }
+
+                this.ViewState["UserLocation"] = new Pair(latitude, longitude);
+                return locations;
             }
-            return locations;
-        }
-
-        //protected void dgLocations_ItemDataBound(object sender, DataGridItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
-        //    {
-        //        DataRowView row = e.Item.DataItem as DataRowView;
-        //        HyperLink lnkMapIt = (HyperLink) e.Item.FindControl("lnkMapIt");
-        //        Label lblLocationsGridDistance = (Label) e.Item.FindControl("lblLocationsGridDistance");
-        //        Label lblCurrentlyMapped = (Label) e.Item.FindControl("lblCurrentlyMapped");
-        //        if (row != null) lnkMapIt.Visible = !row["latitude"].Equals(DBNull.Value);
-        //        if (row != null) lblLocationsGridDistance.Visible = row.DataView.Table.Columns.IndexOf("Distance") > -1;
-
-        //        if (lnkMapIt.Visible)
-        //        {
-        //            if (row != null)
-        //            {
-        //                lnkMapIt.Attributes.Add("onclick", "showLocation(" + row["latitude"] + ", " + 
-        //                    row["longitude"] + ", " + (e.Item.ItemIndex + 1) + ", \"" +
-        //                    Server.HtmlEncode(row["Address"].ToString().Replace("'", "")) + "%%" +
-        //                    Server.HtmlEncode(row["City"].ToString().Replace("'", "")) + ", " +
-        //                    Server.HtmlEncode(row["Abbreviation"].ToString().Replace("'", "")) + " " +
-        //                    Server.HtmlEncode(row["PostalCode"].ToString().Replace("'", "")) +
-        //                    "\", \"" + ")" + "Test" + 
-        //                    Server.HtmlEncode(row["LocationName"].ToString().Replace("'", "")) + "\", '" + lblCurrentlyMapped.ClientID + "')");
-                        
-        //            }
-        //        }
-
-        //        if (lblLocationsGridDistance.Visible)
-        //        {
-        //            if (row != null)
-        //                lblLocationsGridDistance.Text =
-        //                    String.Format(CultureInfo.CurrentCulture, "{0:#.00}", (double) row["Distance"]) +
-        //                    Localization.GetString("Miles", LocalResourceFile);
-        //        }
-        //    }
-        //}
-
-        protected void btnBack_Click(object sender, EventArgs e)
-        {
-            mvwLocator.SetActiveView(vwLocator);
-
-            this.txtLocationAddress.Text = string.Empty;
-            this.txtLocationCity.Text = string.Empty;
-            this.ddlLocationRegion.SelectedIndex = 0;
-            this.txtLocationPostalCode.Text = string.Empty;
-            this.ddlLocatorCountry.SelectedIndex = 0;
-            if (ShowCountry)
-            {
-                ddlCountry.SelectedIndex = 0;
-                ddlDistance.SelectedIndex = 0;
-            }
-            else ddlCountry.SelectedValue = Localization.GetString("UnlimitedMiles", LocalResourceFile);
-            pnlError.Visible = false;
-
-            divMap.Style[HtmlTextWriterStyle.Display] = "none";
-        }
-
-
-        private void RegisterMapScripts(MapProvider mp, string apiKey)
-        {
             
-            Page.ClientScript.RegisterClientScriptInclude(divMap.GetType(), "includeMap", mp.GetMapUrl(apiKey));
-
-            string mapType = Settings["MapType"].ToString();
-            string s = mp.GenerateMapScript(mapType);
-
-            if (mp.LocationCount > 0)
+            this.lblErrorMessage.Text = "An unknown error occurred.";
+            switch (yahooResult.statusCode)
             {
-                Page.ClientScript.RegisterStartupScript(divMap.GetType(), "drawMap", s, false);
+                case YahooStatusCode.BadRequest: // 400
+                    this.lblErrorMessage.Text = "The entered location could not be found.";
+                    break;
+                case YahooStatusCode.Forbidden: // 403
+                    this.lblErrorMessage.Text = "The provided Yahoo! Maps API key is not working, or the rate limit has been reached.  Please try again later.";
+                    break;
+                case YahooStatusCode.ServiceUnavailable: // 503
+                    this.lblErrorMessage.Text = "The locator service is temporarily unavailable.  We apologize for the inconvenience.  Please try again.";
+                    break;
             }
+
+            return null;
         }
 
-        /// <summary>
-        /// This method generates a string formatted like ...... and returns it!!!! John
-        /// </summary>
-        /// <returns></returns>
-        private string GetSearchCriteria()
+        private void DoWork(string parameters)
         {
-            StringBuilder criteria = new StringBuilder();
-            if(this.txtLocationAddress.Text != string.Empty)
+            string apiKey = Dnn.Utility.GetStringSetting(this.Settings, this.GetProvider().GetType().FullName + ".ApiKey");
+            this.BindData(parameters, apiKey);
+
+            if (this.ShowMapDefaultDisplay || this.loadDefault)
             {
-                criteria.AppendFormat(txtLocationAddress.Text.Replace(' ', '+'));
-            }
-            if(this.txtLocationCity.Text != string.Empty)
-            {
-                if (criteria.ToString() != string.Empty) criteria.AppendFormat("+");
-                 criteria.AppendFormat(this.txtLocationCity.Text.Replace(' ', '+'));
-            }
-            if (this.ddlLocationRegion.SelectedIndex > 0)
-            {
-                if (criteria.ToString() != string.Empty) criteria.AppendFormat("+");
-                criteria.AppendFormat(this.ddlLocationRegion.SelectedItem.Text.Replace(' ', '+'));
-            }
-            if (this.txtLocationPostalCode.Text != string.Empty)
-            {
-                if (criteria.ToString() != string.Empty) criteria.AppendFormat("+");
-                criteria.AppendFormat(this.txtLocationPostalCode.Text.Replace(' ', '+'));
-            }
-            if (this.ddlLocatorCountry.SelectedIndex > 0)
-            {
-                if (criteria.ToString() != string.Empty) criteria.AppendFormat("+");
-                criteria.AppendFormat(this.ddlLocatorCountry.SelectedItem.Text.Replace(' ', '+'));
-            }
-            return criteria.ToString();
-        }
-
-        private void FillDropDowns()
-        {
-            ModuleController objModules = new ModuleController();
-            Hashtable settings = objModules.GetTabModuleSettings(TabModuleId);
-
-            if (settings.Contains("SearchTitle")) lblSearchTitle.Text = settings["SearchTitle"].ToString();
-            if (settings.Contains("Address")) pnlAddress.Visible = Convert.ToBoolean(settings["Address"]);
-            if (settings.Contains("Country")) pnlCountry.Visible = Convert.ToBoolean(settings["Country"]);
-            if (settings.Contains("Radius")) pnlDistance.Visible = Convert.ToBoolean(settings["Radius"]);
-
-            foreach (ListItem li in ddlDistance.Items)
-            {
-                li.Value = li.Value;
-                li.Text =
-                    String.Format(CultureInfo.CurrentCulture, "{0} {1}", li.Value,
-                                  Localization.GetString("Miles", LocalResourceFile));
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "showAllLocations", "$find('" + this.divMap.ClientID + "$GoogleMap').showAllLocations();", true);
             }
 
-            ddlDistance.Items.Add(Localization.GetString("UnlimitedMiles", LocalResourceFile));
-            ddlDistance.DataBind();
-            ddlDistance.SelectedIndex = ddlDistance.Items.IndexOf(ddlDistance.Items.FindByText(Localization.GetString("UnlimitedMiles", LocalResourceFile)));
-
-            //Load the state list based on country
-            ListController controller = new ListController();
-            ListEntryInfoCollection states = controller.GetListEntryInfoCollection("Region");
-
-            ddlLocationRegion.DataSource = states;
-            ddlLocationRegion.DataTextField = "Text";
-            ddlLocationRegion.DataValueField = "EntryID";
-            ddlLocationRegion.DataBind();
-            ddlLocationRegion.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-
-            //fill the country dropdown
-            ListController countryController = new ListController();
-            ListEntryInfoCollection countries = countryController.GetListEntryInfoCollection("Country");
-
-            ddlLocatorCountry.DataSource = countries;
-            ddlLocatorCountry.DataTextField = "Text";
-            ddlLocatorCountry.DataValueField = "EntryId";
-            ddlLocatorCountry.DataBind();
-            ddlLocatorCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-            ddlLocatorCountry.SelectedIndex = 0;
-
-            if(ShowRadius)
-            {                
-                if(ShowCountry)
-                {
-                    ddlDistance.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-                    ddlDistance.SelectedIndex = 0;
-                }
-            }
-
-            if(ShowCountry)
-            {
-                FillCountry();
-            }
+            this.lnkViewMap.Visible = false;
         }
 
         private void FillCountry()
         {
-            //Check if we have any countries yet
-            DataTable dt = DataProvider.Instance().GetCountriesList(PortalId);
+            // Check if we have any countries yet
+            DataTable dt = DataProvider.Instance().GetCountriesList(this.PortalId);
             if (dt.Rows.Count > 0)
             {
-                ddlCountry.DataSource = dt;
-                ddlCountry.DataTextField = "Text";
-                ddlCountry.DataValueField = "EntryId";
-                ddlCountry.DataBind();
-                ddlCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-                
-                //if we don't have US don't remove and add
-                ModuleController objModules = new ModuleController();
+                this.ddlCountry.DataSource = dt;
+                this.ddlCountry.DataTextField = "Text";
+                this.ddlCountry.DataValueField = "EntryId";
+                this.ddlCountry.DataBind();
+                this.ddlCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
 
-                string countryId = objModules.GetTabModuleSettings(TabModuleId)["ShowLocationDetails"].ToString();
+                // if we don't have US don't remove and add
 
-                ListItem liDefaultCountry = ddlCountry.Items.FindByValue(countryId);
-                if (liDefaultCountry != null)
+                string countryId = this.Settings["ShowLocationDetails"].ToString();
+
+                ListItem defaultCountryListItem = this.ddlCountry.Items.FindByValue(countryId);
+                if (defaultCountryListItem != null)
                 {
-                    ddlCountry.Items.Remove(liDefaultCountry);//remove US and add it back at the top of the list
-                    ddlCountry.Items.Insert(1, liDefaultCountry);
-
+                    // remove default country and add it back at the top of the list
+                    this.ddlCountry.Items.Remove(defaultCountryListItem); 
+                    this.ddlCountry.Items.Insert(1, defaultCountryListItem);
                 }
-
-
             }
-
         }
 
-        public static bool IsConfigured(int tabModuleId, ref string error)
+        private void FillDropDowns()
         {
-            Hashtable settings = DotNetNuke.Entities.Portals.PortalSettings.GetTabModuleSettings(tabModuleId);
-            string mapProvider = Convert.ToString(settings["DisplayProvider"]);
-            if (mapProvider == String.Empty)
+            if (this.Settings.Contains("SearchTitle"))
             {
-                error = "No Map Provider Selected.";
-                return false;
+                this.lblSearchTitle.Text = this.Settings["SearchTitle"].ToString();
             }
-            else
+
+            if (this.Settings.Contains("Address"))
             {
-
-                string className = MapProviderType.GetMapProviderClassByName(mapProvider);
-                string apiKey = Convert.ToString(settings[className + ".ApiKey"]);
-                if (apiKey == String.Empty)
-                {
-                    error = "No API Key Entered.";
-                    return false;
-                }
-                else
-                {
-                    MapProvider mp = MapProvider.CreateInstance(className);
-                    if (!mp.IsKeyValid(apiKey))
-                    {
-                        error = "API Key is not in the correct format.";
-                        return false;
-                    }
-                    else if (Convert.ToString(settings["DisplayProvider"]) == String.Empty)
-                    {
-                        error = "Search Setting \"Results Display Module\" not set.";
-                        return false;
-                    }
-
-                    else if (Convert.ToString(settings["ShowLocationDetails"]) == String.Empty)
-                    {
-                        error = "Display Setting \"Show Location Details\" not set.";
-                        return false;
-                    }
-                    else if (settings["DisplayResultsTabId"] == null)
-                    {
-                        error = "Display Results not set.";
-                        return false;
-                    }
-                    else
-                        return true;
-                }
+                this.pnlAddress.Visible = Convert.ToBoolean(this.Settings["Address"], CultureInfo.InvariantCulture);
             }
-        }
 
-        protected void rptLocations_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
+            if (this.Settings.Contains("Country"))
             {
-                DataRowView row = e.Item.DataItem as DataRowView;
-                LinkButton lnkMapIt = (LinkButton)e.Item.FindControl("lnkMapIt");
-                Label lblLocationsGridDistance = (Label) e.Item.FindControl("lblLocationsGridDistance");
-                Label lblCurrentlyMapped = (Label) e.Item.FindControl("lblCurrentlyMapped");
-                Label lblLocationDetails = (Label)e.Item.FindControl("lblLocationDetails");
-                lblLocationDetails.Visible = (ShowLocationDetails == "SamePage" || ShowLocationDetails == "True");
-                Label lblLocationMapNumber = (Label)e.Item.FindControl("lblLocationMapNumber");
-                lblLocationMapNumber.Text = Convert.ToString(e.Item.ItemIndex + 1) + ") ";
-                if(ShowLocationDetails == "DetailsPage") if (row != null)
-                {
-                    HyperLink lnkShowLocationDetails = (HyperLink)e.Item.FindControl("lnkShowLocationDetails");
-                    lnkShowLocationDetails.Visible = true;
-                    lnkShowLocationDetails.NavigateUrl = Globals.NavigateURL(TabId, "Details", "mid=" + ModuleId + "&lid=" + row["LocationId"]);
-                    lnkShowLocationDetails.Text = Localization.GetString("lnkShowLocationDetails", LocalResourceFile);
-                }
-                if (row != null) lnkMapIt.Visible = !row["latitude"].Equals(DBNull.Value);
-                if (row != null) lblLocationsGridDistance.Visible = row.DataView.Table.Columns.IndexOf("Distance") > -1;
-                if (row != null)
-                {
-                    string[] attrib = new string[2];
-                    attrib[0] = "LocationId";
-                    attrib[1] = row["LocationId"].ToString();
-
-                    if (lnkMapIt.Visible)
-                    {
-                        lnkMapIt.Attributes.Add("onclick",
-                                                "showLocation(" + row["latitude"] + ", " + row["longitude"] + ", " +
-                                                (e.Item.ItemIndex) + ", \"" +
-                                                Server.HtmlEncode(row["Address"].ToString().Replace("'", "")) + "%%" +
-                                                Server.HtmlEncode(row["City"].ToString().Replace("'", "")) + ", " +
-                                                Server.HtmlEncode(row["Abbreviation"].ToString().Replace("'", "")) + " " +
-                                                Server.HtmlEncode(row["PostalCode"].ToString().Replace("'", "")) +
-                                                "\", \"" + 
-                                                Server.HtmlEncode(row["Name"].ToString().Replace("'", "")) +
-                                                "\", '" + lblCurrentlyMapped.ClientID + "'); return false;");
-                    }
-
-                    if (lblLocationsGridDistance.Visible)
-                    {
-                        lblLocationsGridDistance.Text =
-                                String.Format(CultureInfo.CurrentCulture, "{0:#.00}", (double) row["Distance"]) +
-                                Localization.GetString("Miles", LocalResourceFile);
-                    }
-                }
-                HyperLink lnkSite = (HyperLink)e.Item.FindControl("lbSiteLink");
-                string text = Localization.GetString("Closed", LocalResourceFile);
-                if (row["WebSite"].ToString().Length > 0)
-                {
-                    text = Localization.GetString("Open", LocalResourceFile);
-                }
-                lnkSite.Text = text;
-
-                Location loc = Location.GetLocation(Convert.ToInt32(row["LocationId"]));
-                Label l = (Label)e.Item.FindControl("lblLocationsGridAddress");
-                l.Text = loc.FullAddress;
-
+                this.pnlCountry.Visible = Convert.ToBoolean(this.Settings["Country"], CultureInfo.InvariantCulture);
             }
-        }
 
+            if (this.Settings.Contains("Radius"))
+            {
+                this.pnlDistance.Visible = Convert.ToBoolean(this.Settings["Radius"], CultureInfo.InvariantCulture);
+            }
 
-        protected void ddlDistance_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(ShowCountry)
-            {ddlCountry.SelectedIndex = 0;}
-        }
+            foreach (ListItem li in this.ddlDistance.Items)
+            {
+                li.Text = String.Format(CultureInfo.CurrentCulture, "{0} {1}", li.Value, Localization.GetString("Miles", this.LocalResourceFile));
+            }
 
-        protected void ddlCountry_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(ShowRadius)
-            {ddlDistance.SelectedIndex = 0;}
-        }
+            this.ddlDistance.Items.Add(Localization.GetString("UnlimitedMiles", this.LocalResourceFile));
+            this.ddlDistance.DataBind();
+            this.ddlDistance.SelectedIndex = this.ddlDistance.Items.IndexOf(this.ddlDistance.Items.FindByText(Localization.GetString("UnlimitedMiles", this.LocalResourceFile)));
 
-        protected void btnShowAll_Click(object sender, EventArgs e)
-        {
-            this.txtLocationAddress.Text = string.Empty;
-            this.txtLocationCity.Text = string.Empty;
-            this.ddlLocationRegion.SelectedIndex = 0;
-            this.txtLocationPostalCode.Text = string.Empty;
+            // Load the state list based on country
+            ListController controller = new ListController();
+            ListEntryInfoCollection states = controller.GetListEntryInfoCollection("Region");
+
+            this.ddlLocationRegion.DataSource = states;
+            this.ddlLocationRegion.DataTextField = "Text";
+            this.ddlLocationRegion.DataValueField = "EntryID";
+            this.ddlLocationRegion.DataBind();
+            this.ddlLocationRegion.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
+
+            // fill the country dropdown
+            ListEntryInfoCollection countries = new ListController().GetListEntryInfoCollection("Country");
+
+            this.ddlLocatorCountry.DataSource = countries;
+            this.ddlLocatorCountry.DataTextField = "Text";
+            this.ddlLocatorCountry.DataValueField = "EntryId";
+            this.ddlLocatorCountry.DataBind();
+            this.ddlLocatorCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
             this.ddlLocatorCountry.SelectedIndex = 0;
 
-            ddlCountry.SelectedIndex = -1;
-            _loadDefault = true;
-            DoWork(null);
-            _loadDefault = false;
+            if (this.ShowRadius && this.ShowCountry)
+            {
+                this.ddlDistance.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
+                this.ddlDistance.SelectedIndex = 0;
+
+            }
+
+            if (this.ShowCountry)
+            {
+                this.FillCountry();
+            }
         }
 
-        protected void lnkSubmitLocations_Click(object sender, EventArgs e)
+        private List<Location> GetDefaultLocations()
         {
-             Response.Redirect(Globals.NavigateURL(TabId, "ManageLocation", "mid=" + ModuleId));
+            string displayTypes = Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes");
+            return Location.GetAllLocationsByType(this.PortalId, displayTypes.Split(','));
         }
 
-        //protected void lbSettings_OnClick(object sender, EventArgs e)
-        //{
-        //    string href = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
-        //    Response.Redirect(href, true);
-        //}
+        /// <summary>
+        /// This method generates a string formatted like ...... and returns it!!!! John.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        private string GetSearchCriteria()
+        {
+            StringBuilder criteria = new StringBuilder();
+            if (this.txtLocationAddress.Text != string.Empty)
+            {
+                criteria.Append(this.txtLocationAddress.Text.Replace(' ', '+'));
+            }
 
-        //protected void lblManageLocations_OnClick(object sender, EventArgs e)
-        //{
-        //    string href = EditUrl("ManageLocations");
-        //    Response.Redirect(href, true);
-        //}
+            if (this.txtLocationCity.Text != string.Empty)
+            {
+                if (criteria.Length > 0)
+                {
+                    criteria.Append("+");
+                }
 
-        //protected void lblImportFile_OnClick(object sender, EventArgs e)
-        //{
-        //    string href = EditUrl("Import");
-        //    Response.Redirect(href, true);
-        //}
+                criteria.Append(this.txtLocationCity.Text.Replace(' ', '+'));
+            }
 
-        //protected void lblManageComments_OnClick(object sender, EventArgs e)
-        //{
-        //    string href = EditUrl("ManageComments");
-        //    Response.Redirect(href, true);
-        //}
+            if (this.ddlLocationRegion.SelectedIndex > 0)
+            {
+                if (criteria.Length > 0)
+                {
+                    criteria.Append("+");
+                }
 
-        //protected void lblManageTypes_OnClick(object sender, EventArgs e)
-        //{
-        //    string href = EditUrl("AttributeDefinitions");
-        //    Response.Redirect(href, true);
-        //}
+                criteria.Append(this.ddlLocationRegion.SelectedItem.Text.Replace(' ', '+'));
+            }
+
+            if (this.txtLocationPostalCode.Text != string.Empty)
+            {
+                if (criteria.Length > 0)
+                {
+                    criteria.Append("+");
+                }
+
+                criteria.Append(this.txtLocationPostalCode.Text.Replace(' ', '+'));
+            }
+
+            if (this.ddlLocatorCountry.SelectedIndex > 0)
+            {
+                if (criteria.Length > 0)
+                {
+                    criteria.Append("+");
+                }
+
+                criteria.Append(this.ddlLocatorCountry.SelectedItem.Text.Replace(' ', '+'));
+            }
+
+            return criteria.ToString();
+        }
+
+        private void RegisterMapScripts(MapProvider mp, string apiKey, List<Location> locations)
+        {
+            mp.RegisterMapScript(ScriptManager.GetCurrent(this.Page), apiKey, this.MapType, this.divMap.ClientID, this.CurrentLocationLabel.ClientID, this.lblLocatorMapLabel.ClientID, this.lblScrollToViewMore.ClientID, this.DrivingDirectionsLink.ClientID, this.MapLinkPanel.ClientID, locations);
+        }
+
+        private void SetSearchDisplay()
+        {
+            this.addressFirstLine.Visible = this.Settings["SearchAddress"] != null && Convert.ToBoolean(this.Settings["SearchAddress"], CultureInfo.InvariantCulture);
+            this.ltCity.Visible = this.ltRegion.Visible = this.Settings["SearchCityRegion"] != null && Convert.ToBoolean(this.Settings["SearchCityRegion"], CultureInfo.InvariantCulture);
+            this.ltPostalcode.Visible = this.Settings["SearchPostalCode"] == null || Convert.ToBoolean(this.Settings["SearchPostalCode"], CultureInfo.InvariantCulture);
+            this.ltCountry.Visible = this.Settings["SearchCountry"] != null && Convert.ToBoolean(this.Settings["SearchCountry"], CultureInfo.InvariantCulture);
+        }
+
+        private void ShowMaps()
+        {
+            this.divMap.Visible = this.lnkViewMap.Visible = true;
+        }
     }
 }

@@ -106,12 +106,11 @@ namespace Engage.Dnn.Locator
 
             if (locations.Rows.Count > 0)
             {
-                pager.TotalRecords = Convert.ToInt32(locations.Rows[0]["TotalRecords"]);
+                pager.TotalRecords = Convert.ToInt32(locations.Rows[0]["TotalRecords"], CultureInfo.InvariantCulture);
                 pager.PageSize = dgLocations.PageSize;
                 pager.CurrentPage = CurrentPageIndex;
                 pager.TabID = TabId;
-                pager.QuerystringParams = "&mid=" + ModuleId.ToString() + "&ctl=ManageLocations";
-
+                pager.QuerystringParams = "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&ctl=ManageLocations";
 
                 dgLocations.Attributes.Add("SortColumn", sortColumn);
             }
@@ -185,7 +184,7 @@ namespace Engage.Dnn.Locator
                 if (cbApproved.Checked)
                 {
                     Label lbl = (Label)row.FindControl("lblLocationId");
-                    Location.DeleteLocation(Convert.ToInt32(lbl.Text));
+                    Location.DeleteLocation(Convert.ToInt32(lbl.Text, CultureInfo.InvariantCulture));
                 }
             }
 
@@ -200,7 +199,7 @@ namespace Engage.Dnn.Locator
                 if (cbApproved.Checked)
                 {
                     Label lblLocationId = (Label)row.FindControl("lblLocationId");
-                    Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text));
+                    Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text, CultureInfo.InvariantCulture));
                     location.Approved = true;
                     location.Update();
                 }
@@ -230,8 +229,9 @@ namespace Engage.Dnn.Locator
             {
                 TableCell cell = e.Item.Cells[0];
                 Label id = (Label)cell.FindControl("lblLocationId");
-                //TODO: We should not be going back to the database here. If BindData() set the datasource to Location[] then this would not be needed. Change Location.GetLocations() to return a Location[] list.
-                Location location = Location.GetLocation(Convert.ToInt32(id.Text));
+
+                // TODO: We should not be going back to the database here. If BindData() set the datasource to Location[] then this would not be needed. Change Location.GetLocations() to return a Location[] list.
+                Location location = Location.GetLocation(Convert.ToInt32(id.Text, CultureInfo.InvariantCulture));
                 DataSet approved = location.GetComments(true);
                 DataSet waiting = location.GetComments(false);
                 Label lbl = (Label)cell.FindControl("lblApprovedComments");
@@ -272,7 +272,7 @@ namespace Engage.Dnn.Locator
                 //Get the currentpage index from the url parameter
                 if (Request.QueryString["currentpage"] != null)
                 {
-                    index = Convert.ToInt32(Request.QueryString["currentpage"]);
+                    index = Convert.ToInt32(Request.QueryString["currentpage"], CultureInfo.InvariantCulture);
                 }
 
                 return index;
@@ -287,7 +287,7 @@ namespace Engage.Dnn.Locator
                 //Get the currentpage index from the url parameter
                 if (Request.QueryString["Approved"] != null)
                 {
-                    approved = Convert.ToBoolean(Request.QueryString["Approved"]);
+                    approved = Convert.ToBoolean(Request.QueryString["Approved"], CultureInfo.InvariantCulture);
                 }
 
                 return approved;

@@ -12,11 +12,11 @@
             <dnn:label ID="lblMapProviders" ResourceKey="lblMapProviders" runat="server" />
         </td>
         <td width="350">
-            <asp:RadioButtonList ID="rblProviderType" CssClass="Normal" runat="server" AutoPostBack="true"
+            <asp:RadioButtonList ID="rblProviderType" CssClass="normal" runat="server" AutoPostBack="true"
                 OnSelectedIndexChanged="rblProviderType_SelectedIndexChanged" RepeatDirection="horizontal"
                 Width="200px" />
             <div>
-                <asp:Label ID="lblApiMapProvider" CssClass="Normal" runat="server" resourceKey="lblApiMapProvider" />
+                <asp:Label ID="lblApiMapProvider" CssClass="normal" runat="server" resourceKey="lblApiMapProvider" />
             </div>
         </td>
     </tr>
@@ -25,7 +25,7 @@
             &nbsp;
         </td>
         <td width="350">
-            <asp:CustomValidator ID="cvProviderType" runat="server" CssClass="Normal" ErrorMessage="Please select a map provider."
+            <asp:CustomValidator ID="cvProviderType" runat="server" CssClass="normal" ErrorMessage="Please select a map provider."
                 OnServerValidate="cvProviderType_ServerValidate"></asp:CustomValidator>
         </td>
     </tr>
@@ -39,10 +39,10 @@
             <dnn:label ID="lblAPIKey" ResourceKey="lblAPIKey" runat="server" />
         </td>
         <td width="350">
-            <asp:TextBox CssClass="Normal" ID="txtApiKey" runat="server" Columns="55" />
+            <asp:TextBox CssClass="normal" ID="txtApiKey" runat="server" Columns="55" />
             <div>
-                <asp:Label ID="lblApiInstructions" CssClass="Normal" runat="server" resourceKey="lblApiInstructions" /></div>
-            <asp:CustomValidator ID="CustomValidator1" runat="server" CssClass="Normal" ErrorMessage="Invalid API Key"
+                <asp:Label ID="lblApiInstructions" CssClass="normal" runat="server" resourceKey="lblApiInstructions" /></div>
+            <asp:CustomValidator ID="CustomValidator1" runat="server" CssClass="normal" ErrorMessage="Invalid API Key"
                 OnServerValidate="apiKey_ServerValidate"></asp:CustomValidator>
         </td>
     </tr>
@@ -54,11 +54,11 @@
     <tr>
         <td class="SubHead" width="150" valign="top">
             <dnn:label ID="lblLocatorCountry" runat="server" Visible="true" ResourceKey="lblLocatorCountry"
-                CssClass="Normal" />
+                CssClass="normal" />
         </td>
-        <td width="350" class="Normal">
+        <td width="350" class="normal">
             <div>
-                <asp:DropDownList ID="ddlLocatorCountry" runat="server" CssClass="Normal" />
+                <asp:DropDownList ID="ddlLocatorCountry" runat="server" CssClass="normal" />
             </div>
             <asp:CustomValidator ID="cvLocatorCountry" runat="server" ControlToValidate="ddlLocatorCountry"
                 ErrorMessage="Please select a default country." OnServerValidate="cvLocatorCountry_OnServerValidate" />
@@ -75,9 +75,9 @@
             <dnn:label ID="lblSearchTitle" ResourceKey="lblSearchTitle" runat="server" Text="Search Instructions:" />
         </td>
         <td width="350">
-            <asp:TextBox CssClass="Normal" ID="txtSearchTitle" runat="server" Columns="55" />
+            <asp:TextBox CssClass="normal" ID="txtSearchTitle" runat="server" Columns="55" />
             <div>
-                <asp:Label CssClass="Normal" ID="lblSearchInst" runat="server" resourceKey="lblSearchInst" /></div>
+                <asp:Label CssClass="normal" ID="lblSearchInst" runat="server" resourceKey="lblSearchInst" /></div>
             <br />
         </td>
     </tr>
@@ -86,11 +86,11 @@
             <dnn:label ID="lblDefaultDisplay" runat="server" ResourceKey="lblDefaultDisplay" />
         </td>
         <td width="350">
-            <asp:RadioButton ID="rbSearch" runat="server" CssClass="Normal" GroupName="rbDefaultDisplay"
+            <asp:RadioButton ID="rbSearch" runat="server" CssClass="normal" GroupName="rbDefaultDisplay"
                 Text="Search" resourcekey="rbSearch" />
-            <asp:RadioButton ID="rbDisplayAll" runat="server" CssClass="Normal" GroupName="rbDefaultDisplay"
+            <asp:RadioButton ID="rbDisplayAll" runat="server" CssClass="normal" GroupName="rbDefaultDisplay"
                 Text="Show Locations" resourcekey="rbDisplayAll" />
-            <asp:RadioButton ID="rbShowMap" runat="server" CssClass="Normal" GroupName="rbDefaultDisplay"
+            <asp:RadioButton ID="rbShowMap" runat="server" CssClass="normal" GroupName="rbDefaultDisplay"
                 Text="Show Locations & Map" resourcekey="rbShowMap" />
         </td>
     </tr>
@@ -105,12 +105,12 @@
         </td>
         <td width="350">
             <asp:RadioButton ID="rbSamePage" runat="server" GroupName="rbLocationDetails" Text="Same Page"
-                resourcekey="rbSamePage" CssClass="Normal" AutoPostBack="true" OnCheckedChanged="rbLoctionDetails_CheckChanged" />
+                resourcekey="rbSamePage" CssClass="normal" AutoPostBack="true" OnCheckedChanged="rbLoctionDetails_CheckChanged" />
             <asp:RadioButton ID="rbDetailsPage" runat="server" GroupName="rbLocationDetails"
-                Text="Details Page" resourcekey="rbDetailsPage" CssClass="Normal" AutoPostBack="true"
+                Text="Details Page" resourcekey="rbDetailsPage" CssClass="normal" AutoPostBack="true"
                 OnCheckedChanged="rbLoctionDetails_CheckChanged" />
             <asp:RadioButton ID="rbNoDetails" runat="server" GroupName="rbLocationDetails" Text="None"
-                resourcekey="rbNoDetails" CssClass="Normal" AutoPostBack="true" OnCheckedChanged="rbLoctionDetails_CheckChanged" />
+                resourcekey="rbNoDetails" CssClass="normal" AutoPostBack="true" OnCheckedChanged="rbLoctionDetails_CheckChanged" />
         </td>
     </tr>
     <tr>
@@ -164,8 +164,8 @@
             <dnn:label ID="lblMapType" runat="server" ResourceKey="lblMapType" />
         </td>
         <td width="350">
-            <asp:RadioButtonList ID="rblMapDisplayType" runat="server" CssClass="Normal" RepeatDirection="horizontal">
-                <asp:ListItem Text="Normal" Value="Normal" resourcekey="rbMapDisplayNormal" Selected="True" />
+            <asp:RadioButtonList ID="rblMapDisplayType" runat="server" CssClass="normal" RepeatDirection="horizontal">
+                <asp:ListItem Text="normal" Value="normal" resourcekey="rbMapDisplayNormal" Selected="True" />
                 <asp:ListItem Text="Satellite" Value="Satellite" resourcekey="rbMapDisplaySatellite" />
                 <asp:ListItem Text="Hybrid" Value="Hybrid" resourcekey="rbMapDisplayHybrid" />
             </asp:RadioButtonList>
@@ -183,7 +183,7 @@
         <td width="350">
             <div id="dvLocationType" runat="server" visible="true">
                 <asp:ListBox ID="lbLocationType" runat="server" SelectionMode="Multiple" Width="150px"
-                    CssClass="Normal"></asp:ListBox>
+                    CssClass="normal"></asp:ListBox>
             </div>
         </td>
     </tr>
@@ -204,34 +204,34 @@
                     <asp:TemplateField HeaderStyle-Width="10px" ControlStyle-Width="10px">
                         <ItemTemplate>
                             <asp:RadioButton ID="rbLocatorModule" runat="server" AutoPostBack="true" GroupName="rbLocatorModules"
-                                OnCheckedChanged="rbLocatorModules_CheckChanged" CssClass="Normal" />
+                                OnCheckedChanged="rbLocatorModules_CheckChanged" CssClass="normal" />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Page Title" ControlStyle-Width="60px">
                         <ItemTemplate>
                             <asp:Label ID="lblPageTitle" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Title", "{0:d}") %>' />
                         </ItemTemplate>
-                        <ItemStyle CssClass="Normal" />
+                        <ItemStyle CssClass="normal" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="TabId" HeaderStyle-Width="50px" ControlStyle-Width="50px">
                         <ItemTemplate>
                             <asp:Label ID="lblTabId" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.TabId", "{0:d}") %>'></asp:Label>
                         </ItemTemplate>
-                        <ItemStyle CssClass="Normal" />
+                        <ItemStyle CssClass="normal" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Module Title" ControlStyle-Width="150px">
                         <ItemTemplate>
                             <asp:Label ID="lblModuleTitle" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ModuleTitle", "{0:d}") %>'>
                             </asp:Label>
                         </ItemTemplate>
-                        <ItemStyle CssClass="Normal" Width="200px" />
+                        <ItemStyle CssClass="normal" Width="200px" />
                     </asp:TemplateField>
                 </Columns>
                 <SelectedRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
                 <AlternatingRowStyle BackColor="#eeeeee" />
                 <RowStyle BackColor="#f8f8f8" ForeColor="Black" />
             </asp:GridView>
-            <asp:CustomValidator ID="cvLocatorModules" runat="server" CssClass="Normal" ErrorMessage="Please select a results display module."
+            <asp:CustomValidator ID="cvLocatorModules" runat="server" CssClass="normal" ErrorMessage="Please select a results display module."
                 OnServerValidate="cvLocatorModules_ServerValidate"></asp:CustomValidator>
         </td>
     </tr>
@@ -240,7 +240,7 @@
             <dnn:Label ID="lblSearchOptions" runat="server" Text="Search Options" ResourceKey="lblSearchOptions" />
         </td>
         <td>
-            <table class="Normal">
+            <table class="normal">
                 <tr>
                     <td>
                         <asp:CheckBox ID="chkAddress" runat="server" Text="Address" resourcekey="chkAddress" />
@@ -258,7 +258,7 @@
                     </td>
                 </tr>
             </table>
-            <asp:CustomValidator ID="cvSearchOptions" runat="server" CssClass="Normal" ErrorMessage="You must select at least one search option."
+            <asp:CustomValidator ID="cvSearchOptions" runat="server" CssClass="normal" ErrorMessage="You must select at least one search option."
                 OnServerValidate="cvSearchOptions_ServerValidate" resourcekey="cvSearchOptions" />
         </td>
     </tr>
@@ -268,14 +268,14 @@
         </td>
         <td width="350">
             <div id="dvAddress">
-                <asp:RadioButtonList ID="rblRestrictions" runat="server" CssClass="Normal" RepeatDirection="horizontal">
+                <asp:RadioButtonList ID="rblRestrictions" runat="server" CssClass="normal" RepeatDirection="horizontal">
                     <asp:ListItem Text="Country" Value="Country" resourcekey="liSearchRestrictionCountry" />
                     <asp:ListItem Text="Radius" Value="Radius" resourcekey="liSearchRestrictionRadius" />
                     <asp:ListItem Text="None" Value="None" resourcekey="liSearchRestrictionNone" />
                 </asp:RadioButtonList>
             </div>
             <div>
-                <asp:Label ID="lblOptionalInst" CssClass="Normal" runat="server" resourceKey="lblOptionalInst" />
+                <asp:Label ID="lblOptionalInst" CssClass="normal" runat="server" resourceKey="lblOptionalInst" />
             </div>
         </td>
     </tr>

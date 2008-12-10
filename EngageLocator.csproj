@@ -50,9 +50,11 @@
       <HintPath>..\..\..\Assemblies\DNN 4.5.1\DotNetNuke.WebUtility.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Engage.Dnn.Framework, Version=1.0.1.19018, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Engage.Dnn.UserFeedback, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="Engage.Framework, Version=2.0.5.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
@@ -76,6 +78,7 @@
     <Compile Include="AttributeDefinitions.ascx.designer.cs">
       <DependentUpon>AttributeDefinitions.ascx</DependentUpon>
     </Compile>
+    <Compile Include="JavaScript\Location.cs" />
     <Compile Include="ManageComments.ascx.cs">
       <DependentUpon>ManageComments.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -143,6 +146,9 @@
     </Compile>
     <Compile Include="Components\DataImportScheduler.cs" />
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
+    <Compile Include="Providers\MapProviders\YahooProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SearchUtility.cs" />
     <Compile Include="Services\WebServices.asmx.cs">
       <DependentUpon>WebServices.asmx</DependentUpon>
@@ -155,7 +161,6 @@
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Utility.cs" />
     <Compile Include="EditAttributeDefinition.ascx.cs">
       <DependentUpon>EditAttributeDefinition.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -163,7 +168,6 @@
     <Compile Include="EditAttributeDefinition.ascx.designer.cs">
       <DependentUpon>EditAttributeDefinition.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Providers\MapProviders\YahooProvider.cs" />
     <Compile Include="MainDisplay.ascx.cs">
       <DependentUpon>MainDisplay.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -171,6 +175,7 @@
     <Compile Include="MainDisplay.ascx.designer.cs">
       <DependentUpon>MainDisplay.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MainDisplay.ascx" />
@@ -308,7 +313,14 @@
     <Content Include="Images\update.gif" />
     <Content Include="Images\updateBt.gif" />
     <Content Include="Images\updateBtDisabled.gif" />
-    <EmbeddedResource Include="JavaScript\locator.js" />
+    <EmbeddedResource Include="JavaScript\GoogleLocator.js" />
+    <Content Include="References\AjaxControlToolkit.dll" />
+    <Content Include="References\DotNetNuke.dll" />
+    <Content Include="References\DotNetNuke.WebUtility.dll" />
+    <Content Include="References\Engage.Dnn.Framework.dll" />
+    <Content Include="References\Engage.Dnn.UserFeedback.dll" />
+    <Content Include="References\Engage.Framework.dll" />
+    <Content Include="References\Microsoft.ApplicationBlocks.Data.dll" />
     <Content Include="Services\WebServices.asmx" />
     <Content Include="Settings.ascx" />
   </ItemGroup>

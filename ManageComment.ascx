@@ -11,7 +11,7 @@
             <asp:Label ID="lblLocation" runat="server" CssClass="SubHead" resourcekey="lblLocation" />
         </td>
         <td>
-            <asp:Label ID="lblLocationTitle" runat="server" CssClass="Normal" />
+            <asp:Label ID="lblLocationTitle" runat="server" CssClass="normal" />
         </td>
     </tr>
     <tr>
@@ -19,7 +19,7 @@
             <asp:Label ID="lblComment" runat="server" CssClass="SubHead" resourcekey="lblComment" />
         </td>
         <td>
-            <asp:TextBox ID="txtComment" runat="server" CssClass="Normal" TextMode="multiLine" Rows="5" MaxLength="200" />
+            <asp:TextBox ID="txtComment" runat="server" CssClass="normal" TextMode="multiLine" Rows="5" MaxLength="200" />
         </td>
     </tr>
     <tr>
@@ -27,7 +27,7 @@
             <asp:Label ID="lbltxtSubmittedBy" runat="server" CssClass="SubHead" resourcekey="lblSubmittedBy" />
         </td>
         <td>
-            <asp:TextBox ID="txtSubmittedBy" runat="server" CssClass="Normal" />
+            <asp:TextBox ID="txtSubmittedBy" runat="server" CssClass="normal" />
         </td>
     </tr>
     <tr>
@@ -35,8 +35,8 @@
             <asp:Label ID="lblApproved" runat="server" CssClass="SubHead" resourcekey="lblApproved" />
         </td>
         <td>
-            <asp:RadioButton ID="rbWaitingForApproval" runat="server" GroupName="rbCommentStatus" CssClass="Normal" resourcekey="rbWaitingForApproval" />
-            <asp:RadioButton ID="rbApproved" runat="server" GroupName="rbCommentStatus" CssClass="Normal" resourcekey="rbApproved" />            
+            <asp:RadioButton ID="rbWaitingForApproval" runat="server" GroupName="rbCommentStatus" CssClass="normal" resourcekey="rbWaitingForApproval" />
+            <asp:RadioButton ID="rbApproved" runat="server" GroupName="rbCommentStatus" CssClass="normal" resourcekey="rbApproved" />            
         </td>
     </tr>
     <tr>

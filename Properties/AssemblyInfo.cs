@@ -11,6 +11,7 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Web.UI;
 
 [assembly: AssemblyTitle("EngageLocator")]
 [assembly: AssemblyDescription("The Locator Module from Engage Software for DotNetNuke")]
@@ -26,3 +27,5 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("01.03.04.*")]
 [assembly: AssemblyFileVersion("01.03.04.00")]
+
+[assembly: WebResource("Engage.Dnn.Locator.JavaScript.GoogleLocator.js", "text/javascript")]
