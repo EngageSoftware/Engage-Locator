@@ -22,7 +22,6 @@ namespace Engage.Dnn.Locator
     using Data;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -38,28 +37,13 @@ namespace Engage.Dnn.Locator
         /// </summary>
         private bool loadDefault;
 
-        protected int DisplayTabId
-        {
-            get
-            {
-                return Dnn.Utility.GetIntSetting(this.Settings, "DisplayResultsTab", this.TabId);
-            }
-        }
-
+        /// <summary>
+        /// Gets a value indicating whether to allow the user to restrict their search by country.
+        /// </summary>
+        /// <value><c>true</c> if the search can be restricted by country; otherwise, <c>false</c>.</value>
         protected bool ShowCountry
         {
-            get
-            {
-                return Dnn.Utility.GetBoolSetting(this.Settings, "Country", false);
-            }
-        }
-
-        protected bool ShowDefaultDisplay
-        {
-            get
-            {
-                return Dnn.Utility.GetBoolSetting(this.Settings, "ShowDefaultDisplay", false);
-            }
+            get { return Dnn.Utility.GetBoolSetting(this.Settings, "Country", false); }
         }
 
         /// <summary>
@@ -68,26 +52,44 @@ namespace Engage.Dnn.Locator
         /// <value>How to display the location details.</value>
         protected string ShowLocationDetails
         {
-            get
-            {
-                return Dnn.Utility.GetStringSetting(this.Settings, "ShowLocationDetails", "False");
-            }
+            get { return Dnn.Utility.GetStringSetting(this.Settings, "ShowLocationDetails", "False"); }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether to allow the user to choose a radius when searching.
+        /// </summary>
+        /// <value><c>true</c> if the user can choose a search radius; otherwise, <c>false</c>.</value>
         protected bool ShowRadius
         {
-            get
-            {
-                return Dnn.Utility.GetBoolSetting(this.Settings, "Radius", true);
-            }
+            get { return Dnn.Utility.GetBoolSetting(this.Settings, "Radius", true); }
         }
 
+        /// <summary>
+        /// Gets the ID of the page on which search results should be displayed
+        /// </summary>
+        /// <value>The display tab ID.</value>
+        private int DisplayTabId
+        {
+            get { return Dnn.Utility.GetIntSetting(this.Settings, "DisplayResultsTab", this.TabId); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the default view for this module is to show a list of locations.
+        /// </summary>
+        /// <value><c>true</c> if this module should show a list of locations by default; otherwise, <c>false</c>.</value>
+        private bool ShowDefaultDisplay
+        {
+            get { return Dnn.Utility.GetBoolSetting(this.Settings, "ShowDefaultDisplay", false); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether to show the map by default.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the default display for this module is to show the map; otherwise, <c>false</c>.</value>
         private bool ShowMapDefaultDisplay
         {
-            get
-            {
-                return Dnn.Utility.GetBoolSetting(this.Settings, "ShowMapDefaultDisplay", false);
-            }
+            get { return Dnn.Utility.GetBoolSetting(this.Settings, "ShowMapDefaultDisplay", false); }
         }
 
         /// <summary>
@@ -96,10 +98,7 @@ namespace Engage.Dnn.Locator
         /// <value>The type of the map.</value>
         private MapType MapType
         {
-            get
-            {
-                return Dnn.Utility.GetEnumSetting(this.Settings, "MapType", MapType.Normal);
-            }
+            get { return Dnn.Utility.GetEnumSetting(this.Settings, "MapType", MapType.Normal); }
         }
 
         /// <summary>
@@ -128,7 +127,7 @@ namespace Engage.Dnn.Locator
                 error = "No API Key Entered.";
                 return false;
             }
-            
+
             MapProvider mp = MapProvider.CreateInstance(className);
             if (!mp.IsKeyValid(apiKey))
             {
@@ -147,13 +146,13 @@ namespace Engage.Dnn.Locator
                 error = "Display Setting \"Show Location Details\" not set.";
                 return false;
             }
-            
+
             if (!Dnn.Utility.GetIntSetting(settings, "DisplayResultsTabId").HasValue)
             {
                 error = "Display Results not set.";
                 return false;
             }
-            
+
             return true;
         }
 
@@ -201,7 +200,7 @@ namespace Engage.Dnn.Locator
             {
                 this.ddlCountry.SelectedValue = Localization.GetString("UnlimitedMiles", this.LocalResourceFile);
             }
-            
+
             this.pnlError.Visible = false;
 
             this.divMap.Style[HtmlTextWriterStyle.Display] = "none";
@@ -284,11 +283,13 @@ namespace Engage.Dnn.Locator
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void Page_Load(Object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                string title = this.Settings["SearchTitle"] != null ? this.Settings["SearchTitle"].ToString() : Localization.GetString("lblHeader", this.LocalResourceFile);
+                string title = this.Settings["SearchTitle"] != null
+                                       ? this.Settings["SearchTitle"].ToString()
+                                       : Localization.GetString("lblHeader", this.LocalResourceFile);
 
                 this.lblHeader.Text = title;
 
@@ -345,8 +346,8 @@ namespace Engage.Dnn.Locator
 
                         this.SetSearchDisplay();
 
-                        if (this.Settings["Country"] != null && this.Settings["Country"].ToString() == "False"
-                            && this.Settings["Radius"] != null && this.Settings["Radius"].ToString() == "False")
+                        if (this.Settings["Country"] != null && this.Settings["Country"].ToString() == "False" && this.Settings["Radius"] != null
+                            && this.Settings["Radius"].ToString() == "False")
                         {
                             this.btn_ShowAll.Visible = false;
                         }
@@ -388,7 +389,8 @@ namespace Engage.Dnn.Locator
                     {
                         HyperLink lnkShowLocationDetails = (HyperLink)e.Item.FindControl("lnkShowLocationDetails");
                         lnkShowLocationDetails.Visible = true;
-                        lnkShowLocationDetails.NavigateUrl = Globals.NavigateURL(this.TabId, "Details", "mid=" + this.ModuleId + "&lid=" + location.LocationId);
+                        lnkShowLocationDetails.NavigateUrl = Globals.NavigateURL(
+                                this.TabId, "Details", "mid=" + this.ModuleId + "&lid=" + location.LocationId);
                         lnkShowLocationDetails.Text = Localization.GetString("lnkShowLocationDetails", this.LocalResourceFile);
                     }
 
@@ -396,14 +398,17 @@ namespace Engage.Dnn.Locator
 
                     if (lblLocationsGridDistance.Visible)
                     {
-                        lblLocationsGridDistance.Text = location.Distance.Value.ToString("#.00", CultureInfo.CurrentCulture) + Localization.GetString("Miles", this.LocalResourceFile);
+                        lblLocationsGridDistance.Text = location.Distance.Value.ToString("#.00", CultureInfo.CurrentCulture)
+                                                        + Localization.GetString("Miles", this.LocalResourceFile);
                     }
+
+                    HyperLink lnkSite = (HyperLink)e.Item.FindControl("lbSiteLink");
+                    lnkSite.Text = string.IsNullOrEmpty(location.Website)
+                                           ? Localization.GetString("Closed", this.LocalResourceFile)
+                                           : Localization.GetString("Open", this.LocalResourceFile);
+
+                    l.Text = location.FullAddress;
                 }
-
-                HyperLink lnkSite = (HyperLink)e.Item.FindControl("lbSiteLink");
-                lnkSite.Text = string.IsNullOrEmpty(location.Website) ? Localization.GetString("Closed", this.LocalResourceFile) : Localization.GetString("Open", this.LocalResourceFile);
-
-                l.Text = location.FullAddress;
             }
         }
 
@@ -476,8 +481,9 @@ namespace Engage.Dnn.Locator
 
             this.mvwLocator.SetActiveView(this.vwResults);
 
-            this.lblNumClosest.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lblNumClosest", this.LocalResourceFile), locations.Count);
-            
+            this.lblNumClosest.Text = String.Format(
+                    CultureInfo.CurrentCulture, Localization.GetString("lblNumClosest", this.LocalResourceFile), locations.Count);
+
             this.rptLocations.DataSource = locations;
             this.rptLocations.DataBind();
 
@@ -513,13 +519,18 @@ namespace Engage.Dnn.Locator
                 }
                 else
                 {
-                    locations = Location.GetClosestLocationsByRadius(latitude, longitude, int.Parse(this.ddlDistance.SelectedValue, CultureInfo.InvariantCulture), this.PortalId, locationTypeIds);
+                    locations = Location.GetClosestLocationsByRadius(
+                            latitude,
+                            longitude,
+                            int.Parse(this.ddlDistance.SelectedValue, CultureInfo.InvariantCulture),
+                            this.PortalId,
+                            locationTypeIds);
                 }
 
                 this.ViewState["UserLocation"] = new Pair(latitude, longitude);
                 return locations;
             }
-            
+
             this.lblErrorMessage.Text = "An unknown error occurred.";
             switch (yahooResult.statusCode)
             {
@@ -527,10 +538,12 @@ namespace Engage.Dnn.Locator
                     this.lblErrorMessage.Text = "The entered location could not be found.";
                     break;
                 case YahooStatusCode.Forbidden: // 403
-                    this.lblErrorMessage.Text = "The provided Yahoo! Maps API key is not working, or the rate limit has been reached.  Please try again later.";
+                    this.lblErrorMessage.Text =
+                            "The provided Yahoo! Maps API key is not working, or the rate limit has been reached.  Please try again later.";
                     break;
                 case YahooStatusCode.ServiceUnavailable: // 503
-                    this.lblErrorMessage.Text = "The locator service is temporarily unavailable.  We apologize for the inconvenience.  Please try again.";
+                    this.lblErrorMessage.Text =
+                            "The locator service is temporarily unavailable.  We apologize for the inconvenience.  Please try again.";
                     break;
             }
 
@@ -550,32 +563,34 @@ namespace Engage.Dnn.Locator
             this.lnkViewMap.Visible = false;
         }
 
+        /// <summary>
+        /// Fills the drop down list of countries.
+        /// </summary>
         private void FillCountry()
         {
             // Check if we have any countries yet
-            DataTable dt = DataProvider.Instance().GetCountriesList(this.PortalId);
-            if (dt.Rows.Count > 0)
+            DataTable countriesTable = DataProvider.Instance().GetCountriesList(this.PortalId);
+            if (countriesTable.Rows.Count > 0)
             {
-                this.ddlCountry.DataSource = dt;
+                this.ddlCountry.DataSource = countriesTable;
                 this.ddlCountry.DataTextField = "Text";
                 this.ddlCountry.DataValueField = "EntryId";
                 this.ddlCountry.DataBind();
                 this.ddlCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
 
-                // if we don't have US don't remove and add
-
-                string countryId = this.Settings["ShowLocationDetails"].ToString();
-
-                ListItem defaultCountryListItem = this.ddlCountry.Items.FindByValue(countryId);
+                ListItem defaultCountryListItem = this.ddlCountry.Items.FindByValue(Dnn.Utility.GetStringSetting(this.Settings, "ShowLocationDetails"));
                 if (defaultCountryListItem != null)
                 {
                     // remove default country and add it back at the top of the list
-                    this.ddlCountry.Items.Remove(defaultCountryListItem); 
+                    this.ddlCountry.Items.Remove(defaultCountryListItem);
                     this.ddlCountry.Items.Insert(1, defaultCountryListItem);
                 }
             }
         }
 
+        /// <summary>
+        /// Fills the drop down lists on the search form.  Also shows or hides them based on the module's settings
+        /// </summary>
         private void FillDropDowns()
         {
             if (this.Settings.Contains("SearchTitle"))
@@ -608,8 +623,8 @@ namespace Engage.Dnn.Locator
             this.ddlDistance.SelectedIndex = this.ddlDistance.Items.IndexOf(this.ddlDistance.Items.FindByText(Localization.GetString("UnlimitedMiles", this.LocalResourceFile)));
 
             // Load the state list based on country
-            ListController controller = new ListController();
-            ListEntryInfoCollection states = controller.GetListEntryInfoCollection("Region");
+            ListController listController = new ListController();
+            ListEntryInfoCollection states = listController.GetListEntryInfoCollection("Region");
 
             this.ddlLocationRegion.DataSource = states;
             this.ddlLocationRegion.DataTextField = "Text";
@@ -618,7 +633,7 @@ namespace Engage.Dnn.Locator
             this.ddlLocationRegion.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
 
             // fill the country dropdown
-            ListEntryInfoCollection countries = new ListController().GetListEntryInfoCollection("Country");
+            ListEntryInfoCollection countries = listController.GetListEntryInfoCollection("Country");
 
             this.ddlLocatorCountry.DataSource = countries;
             this.ddlLocatorCountry.DataTextField = "Text";
@@ -631,7 +646,6 @@ namespace Engage.Dnn.Locator
             {
                 this.ddlDistance.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
                 this.ddlDistance.SelectedIndex = 0;
-
             }
 
             if (this.ShowCountry)
@@ -640,6 +654,10 @@ namespace Engage.Dnn.Locator
             }
         }
 
+        /// <summary>
+        /// Gets the default list of all locations.
+        /// </summary>
+        /// <returns>The default lis tof all locations</returns>
         private List<Location> GetDefaultLocations()
         {
             string displayTypes = Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes");
@@ -650,6 +668,7 @@ namespace Engage.Dnn.Locator
         /// This method generates a string formatted like ...... and returns it!!!! John.
         /// </summary>
         /// <returns>
+        /// The search criteria submitted
         /// </returns>
         private string GetSearchCriteria()
         {
@@ -702,19 +721,41 @@ namespace Engage.Dnn.Locator
             return criteria.ToString();
         }
 
+        /// <summary>
+        /// Registers the scripts to show the map correctly.
+        /// </summary>
+        /// <param name="mp">The map provider.</param>
+        /// <param name="apiKey">The API key.</param>
+        /// <param name="locations">The list of locations being displayed.</param>
         private void RegisterMapScripts(MapProvider mp, string apiKey, List<Location> locations)
         {
-            mp.RegisterMapScript(ScriptManager.GetCurrent(this.Page), apiKey, this.MapType, this.divMap.ClientID, this.CurrentLocationLabel.ClientID, this.lblLocatorMapLabel.ClientID, this.lblScrollToViewMore.ClientID, this.DrivingDirectionsLink.ClientID, this.MapLinkPanel.ClientID, locations);
+            mp.RegisterMapScript(
+                    ScriptManager.GetCurrent(this.Page),
+                    apiKey,
+                    this.MapType,
+                    this.divMap.ClientID,
+                    this.CurrentLocationLabel.ClientID,
+                    this.lblLocatorMapLabel.ClientID,
+                    this.lblScrollToViewMore.ClientID,
+                    this.DrivingDirectionsLink.ClientID,
+                    this.MapLinkPanel.ClientID,
+                    locations);
         }
 
+        /// <summary>
+        /// Sets the visibility of the search components, based on this module's settings
+        /// </summary>
         private void SetSearchDisplay()
         {
-            this.addressFirstLine.Visible = this.Settings["SearchAddress"] != null && Convert.ToBoolean(this.Settings["SearchAddress"], CultureInfo.InvariantCulture);
-            this.ltCity.Visible = this.ltRegion.Visible = this.Settings["SearchCityRegion"] != null && Convert.ToBoolean(this.Settings["SearchCityRegion"], CultureInfo.InvariantCulture);
-            this.ltPostalcode.Visible = this.Settings["SearchPostalCode"] == null || Convert.ToBoolean(this.Settings["SearchPostalCode"], CultureInfo.InvariantCulture);
-            this.ltCountry.Visible = this.Settings["SearchCountry"] != null && Convert.ToBoolean(this.Settings["SearchCountry"], CultureInfo.InvariantCulture);
+            this.addressFirstLine.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchAddress", false);
+            this.ltCity.Visible = this.ltRegion.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchCityRegion", false);
+            this.ltPostalcode.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchPostalCode", true);
+            this.ltCountry.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchCountry", false);
         }
 
+        /// <summary>
+        /// Makes the map elements visible.
+        /// </summary>
         private void ShowMaps()
         {
             this.divMap.Visible = this.lnkViewMap.Visible = true;
