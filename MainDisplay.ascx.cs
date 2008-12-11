@@ -166,8 +166,8 @@ namespace Engage.Dnn.Locator
                     break;
                 case "YAHOO":
                     mp = MapProvider.CreateInstance(MapProviderType.YahooMaps);
-                    mp.LatLong = this.ViewState["UserLocation"] as Pair;
-                    mp.SearchCriteria = this.GetSearchCriteria();
+                    ////mp.LatLong = this.ViewState["UserLocation"] as Pair;
+                    ////mp.SearchCriteria = this.GetSearchCriteria();
                     break;
                 default:
                     mp = MapProvider.CreateInstance(MapProviderType.GoogleMaps);
@@ -175,6 +175,93 @@ namespace Engage.Dnn.Locator
             }
 
             return mp;
+        }
+
+        /// <summary>
+        /// Handles the Load event of the Page control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                string title = this.Settings["SearchTitle"] != null
+                                       ? this.Settings["SearchTitle"].ToString()
+                                       : Localization.GetString("lblHeader", this.LocalResourceFile);
+
+                this.lblHeader.Text = title;
+
+                if (!this.SubmissionsEnabled)
+                {
+                    this.lnkSubmitLocation.Visible = false;
+                }
+
+                if (!this.SubmissionsEnabled)
+                {
+                    this.lnkSubmitLocationSearch.Visible = false;
+                }
+
+                this.lbSettings.Visible = this.IsEditable;
+                this.lbImportFile.Visible = this.IsEditable;
+                this.lbManageComments.Visible = this.IsEditable;
+                this.lbManageLocations.Visible = this.IsEditable;
+                this.lbLocationTypes.Visible = this.IsEditable;
+
+                string error = String.Empty;
+                this.lnkViewMap.OnClientClick = "showAllLocations(); return false;";
+                if (!IsConfigured(this.TabModuleId, ref error))
+                {
+                    this.mvwLocator.SetActiveView(this.vwSetup);
+                    if (this.UserInfo.IsInRole(this.PortalSettings.ActiveTab.AdministratorRoles))
+                    {
+                        // "Please setup module through the Module Settings page.<br>Required Items: <br/><br/>" + error;
+                        this.lblSetupText.Text = Localization.GetString("SetupText_Admin", this.LocalResourceFile) + error;
+                    }
+                    else
+                    {
+                        // "This page is not configured. Please contact an Administrator.";
+                        this.lblSetupText.Text = Localization.GetString("SetupText_NonAdmin", this.LocalResourceFile);
+                    }
+                }
+                else
+                {
+                    this.mvwLocator.SetActiveView(this.vwLocator);
+                    if (!this.IsPostBack)
+                    {
+                        this.FillDropDowns();
+
+                        if (this.Request.QueryString["srch"] != null)
+                        {
+                            this.DoWork(this.Request.QueryString["srch"]);
+                        }
+                        else
+                        {
+                            if (this.ShowDefaultDisplay || this.ShowMapDefaultDisplay)
+                            {
+                                this.DoWork(null);
+                            }
+                        }
+
+                        this.SetSearchDisplay();
+
+                        if (this.Settings["Country"] != null && this.Settings["Country"].ToString() == "False" && this.Settings["Radius"] != null
+                            && this.Settings["Radius"].ToString() == "False")
+                        {
+                            this.btn_ShowAll.Visible = false;
+                        }
+
+                        if (this.SubmissionsEnabled)
+                        {
+                            this.lnkSubmitLocation.Visible = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
         }
 
         /// <summary>
@@ -276,93 +363,6 @@ namespace Engage.Dnn.Locator
         protected void lnkSubmitLocations_Click(object sender, EventArgs e)
         {
             this.Response.Redirect(Globals.NavigateURL(this.TabId, "ManageLocation", "mid=" + this.ModuleId));
-        }
-
-        /// <summary>
-        /// Handles the Load event of the Page control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                string title = this.Settings["SearchTitle"] != null
-                                       ? this.Settings["SearchTitle"].ToString()
-                                       : Localization.GetString("lblHeader", this.LocalResourceFile);
-
-                this.lblHeader.Text = title;
-
-                if (!this.SubmissionsEnabled)
-                {
-                    this.lnkSubmitLocation.Visible = false;
-                }
-
-                if (!this.SubmissionsEnabled)
-                {
-                    this.lnkSubmitLocationSearch.Visible = false;
-                }
-
-                this.lbSettings.Visible = this.IsEditable;
-                this.lbImportFile.Visible = this.IsEditable;
-                this.lbManageComments.Visible = this.IsEditable;
-                this.lbManageLocations.Visible = this.IsEditable;
-                this.lbLocationTypes.Visible = this.IsEditable;
-
-                string error = String.Empty;
-                this.lnkViewMap.OnClientClick = "showAllLocations(); return false;";
-                if (!IsConfigured(this.TabModuleId, ref error))
-                {
-                    this.mvwLocator.SetActiveView(this.vwSetup);
-                    if (this.UserInfo.IsInRole(this.PortalSettings.ActiveTab.AdministratorRoles))
-                    {
-                        // "Please setup module through the Module Settings page.<br>Required Items: <br/><br/>" + error;
-                        this.lblSetupText.Text = Localization.GetString("SetupText_Admin", this.LocalResourceFile) + error;
-                    }
-                    else
-                    {
-                        // "This page is not configured. Please contact an Administrator.";
-                        this.lblSetupText.Text = Localization.GetString("SetupText_NonAdmin", this.LocalResourceFile);
-                    }
-                }
-                else
-                {
-                    this.mvwLocator.SetActiveView(this.vwLocator);
-                    if (!this.IsPostBack)
-                    {
-                        this.FillDropDowns();
-
-                        if (this.Request.QueryString["srch"] != null)
-                        {
-                            this.DoWork(this.Request.QueryString["srch"]);
-                        }
-                        else
-                        {
-                            if (this.ShowDefaultDisplay || this.ShowMapDefaultDisplay)
-                            {
-                                this.DoWork(null);
-                            }
-                        }
-
-                        this.SetSearchDisplay();
-
-                        if (this.Settings["Country"] != null && this.Settings["Country"].ToString() == "False" && this.Settings["Radius"] != null
-                            && this.Settings["Radius"].ToString() == "False")
-                        {
-                            this.btn_ShowAll.Visible = false;
-                        }
-
-                        if (this.SubmissionsEnabled)
-                        {
-                            this.lnkSubmitLocation.Visible = true;
-                        }
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
         }
 
         /// <summary>

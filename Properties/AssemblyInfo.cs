@@ -28,4 +28,6 @@ using System.Web.UI;
 [assembly: AssemblyVersion("01.03.04.*")]
 [assembly: AssemblyFileVersion("01.03.04.00")]
 
+[assembly: WebResource("Engage.Dnn.Locator.JavaScript.BaseLocator.js", "text/javascript")]
 [assembly: WebResource("Engage.Dnn.Locator.JavaScript.GoogleLocator.js", "text/javascript")]
+[assembly: WebResource("Engage.Dnn.Locator.JavaScript.YahooLocator.js", "text/javascript")]

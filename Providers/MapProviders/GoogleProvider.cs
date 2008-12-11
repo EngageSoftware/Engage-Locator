@@ -42,16 +42,6 @@ namespace Engage.Dnn.Locator
             get {return  "http://maps.google.com/maps/geo?output=csv";}
         }
 
-        public override string Url
-        {
-            get { return SearchUrl; }
-        }
-
-        public override string MapProviderUrl
-        {
-            get { return "http://maps.google.com/maps?f=q&hl=en&geocode=&q="; }
-        }
-
         public override string GenerateMiniMapScriptCore()
         {
             throw new NotImplementedException();
@@ -66,6 +56,7 @@ namespace Engage.Dnn.Locator
             string mapParameters = string.Format(CultureInfo.InvariantCulture, "currentLocationSpan: {0}, noLocationSpan: {1}, instructionSpan: {2}, directionsLink: {3}, directionsSection: {4}, mapType: {5}, locationsArray: {6}", GetElementJavaScript(currentLocationSpanId), GetElementJavaScript(noLocationSpanId), GetElementJavaScript(instructionSpanId), GetElementJavaScript(directionsLinkId), GetElementJavaScript(directionsSectionId), ConvertMapType(mapType), new JavaScriptSerializer().Serialize(locationsAsJson));
 
             scriptManager.Scripts.Add(new ScriptReference(GetLoaderUrl(apiKey)));
+            scriptManager.Scripts.Add(new ScriptReference("Engage.Dnn.Locator.JavaScript.BaseLocator.js", "EngageLocator"));
             scriptManager.Scripts.Add(new ScriptReference("Engage.Dnn.Locator.JavaScript.GoogleLocator.js", "EngageLocator"));
             ScriptManager.RegisterStartupScript(
                     scriptManager.Page,
@@ -109,16 +100,6 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
-        /// Returns the JavaScript to select the element with the given ID.
-        /// </summary>
-        /// <param name="elementId">The ID of the element to get.</param>
-        /// <returns>The JavaScript to select the element with the given ID</returns>
-        private static string GetElementJavaScript(string elementId)
-        {
-            return "jQuery('#" + elementId + "')";
-        }
-
-        /// <summary>
         /// Gets the URL for the Google Ajax API Loader.
         /// </summary>
         /// <param name="apiKey">The API key.</param>
@@ -147,7 +128,7 @@ namespace Engage.Dnn.Locator
     internal enum GoogleMapType
     {
         /// <summary>
-        /// normal Map
+        /// Normal Map
         /// </summary>
         G_NORMAL_MAP,
 

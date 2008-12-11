@@ -81,11 +81,11 @@ namespace Engage.Dnn.Locator
                         resultsReader.ReadStartElement("Result");
 
                         resultsReader.ReadStartElement("Latitude");
-                        result.Latitude = double.Parse(resultsReader.ReadString());
+                        result.Latitude = resultsReader.ReadContentAsDouble();
                         resultsReader.ReadEndElement();
 
                         resultsReader.ReadStartElement("Longitude");
-                        result.Longitude = double.Parse(resultsReader.ReadString());
+                        result.Longitude = resultsReader.ReadContentAsDouble();
 
                         result.StatusCode = YahooStatusCode.Success;
                     }

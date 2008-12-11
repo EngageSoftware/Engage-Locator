@@ -314,6 +314,8 @@
     <Content Include="Images\updateBt.gif" />
     <Content Include="Images\updateBtDisabled.gif" />
     <EmbeddedResource Include="JavaScript\GoogleLocator.js" />
+    <EmbeddedResource Include="JavaScript\BaseLocator.js" />
+    <EmbeddedResource Include="JavaScript\YahooLocator.js" />
     <Content Include="References\AjaxControlToolkit.dll" />
     <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.WebUtility.dll" />

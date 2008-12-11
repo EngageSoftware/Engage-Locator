@@ -12,88 +12,10 @@ namespace Engage.Dnn.Locator.Maps
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
-    using System.Web.UI.WebControls;
 
     public abstract class MapProvider
     {
-        /// <summary>
-        /// Backing field for <see cref="LatLong"/>
-        /// </summary>
-        private Pair _latLong;
-
-        /// <summary>
-        /// Backing field for <see cref="LocationCount"/>
-        /// </summary>
-        private int _locationCount;
-
-        /// <summary>
-        /// Backing field for <see cref="LocatorMapLabel"/>
-        /// </summary>
-        private WebControl _locatorMapLabel;
-
-        private HtmlGenericControl _mapDiv;
-
-        private Repeater _rptLocations;
-
-        private WebControl _scrollToViewMore;
-
-        private string _searchCriteria;
-
-        public Pair LatLong
-        {
-            set { this._latLong = value; }
-            get { return this._latLong; }
-        }
-
-        public int LocationCount
-        {
-            get { return this._locationCount; }
-            protected set { this._locationCount = value; }
-        }
-
-        public WebControl LocatorMapLabel
-        {
-            set { this._locatorMapLabel = value; }
-            get { return this._locatorMapLabel; }
-        }
-
-        public HtmlGenericControl MapDiv
-        {
-            set { this._mapDiv = value; }
-            get { return this._mapDiv; }
-        }
-
-        public abstract string MapProviderUrl
-        {
-            get;
-        }
-
-        public Repeater RptLocations
-        {
-            set { this._rptLocations = value; }
-            get { return this._rptLocations; }
-        }
-
-        public WebControl ScrollToViewMore
-        {
-            set { this._scrollToViewMore = value; }
-            get { return this._scrollToViewMore; }
-        }
-
-        public string SearchCriteria
-        {
-            set { this._searchCriteria = value; }
-            get { return this._searchCriteria; }
-        }
-
-        public abstract string Url
-        {
-            get;
-        }
-
         public static MapProvider CreateInstance(MapProviderType mapType)
         {
             return CreateInstance(mapType.ClassName);
@@ -121,6 +43,16 @@ namespace Engage.Dnn.Locator.Maps
         public abstract string GenerateMiniMapScriptCore();
 
         public abstract bool IsKeyValid(string apiKey);
+
+        /// <summary>
+        /// Returns the JavaScript to select the element with the given ID.
+        /// </summary>
+        /// <param name="elementId">The ID of the element to get.</param>
+        /// <returns>The JavaScript to select the element with the given ID</returns>
+        protected static string GetElementJavaScript(string elementId)
+        {
+            return "jQuery('#" + elementId + "')";
+        }
     }
 
     /// <summary>
