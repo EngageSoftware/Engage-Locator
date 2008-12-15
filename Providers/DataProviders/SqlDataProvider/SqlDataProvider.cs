@@ -16,43 +16,34 @@ namespace Engage.Dnn.Locator.Data
     using System.Data.SqlClient;
     using System.Globalization;
     using System.Text;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Providers;
     using Microsoft.ApplicationBlocks.Data;
 
+    /// <summary>
+    /// A concrete implementation of <see cref="DataProvider"/> for SQL Server (2000+ compatible)
+    /// </summary>
     public class SqlDataProvider : DataProvider
     {
         public const string CacheKey = "AttributeDefinitions{0}";
 
         public const int CacheTimeOut = 20;
 
-        private const string providerType = "data";
-
         /// <summary>
         /// The default size of a varchar parameter in the database
         /// </summary>
         private const int DefaultVarcharSize = 255;
 
-        private readonly string connectionString;
-
         private readonly string databaseOwner;
 
         private readonly string objectQualifier;
 
-        private readonly ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(providerType);
+        private readonly ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
 
         private readonly string providerPath;
 
         public SqlDataProvider()
         {
             Provider provider = ((Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider]);
-
-            this.connectionString = Config.GetConnectionString();
-
-            if (string.IsNullOrEmpty(this.connectionString))
-            {
-                this.connectionString = provider.Attributes["connectionString"];
-            }
 
             this.providerPath = provider.Attributes["providerPath"];
 
@@ -67,11 +58,6 @@ namespace Engage.Dnn.Locator.Data
             {
                 this.databaseOwner += ".";
             }
-        }
-
-        public string ConnectionString
-        {
-            get { return this.connectionString; }
         }
 
         public string DatabaseOwner
@@ -139,7 +125,7 @@ namespace Engage.Dnn.Locator.Data
             StringBuilder sql = new StringBuilder(250);
             sql.AppendFormat(CultureInfo.InvariantCulture, "Truncate table {0}TempLocation ", this.NamePrefix);
 
-            SqlHelper.ExecuteNonQuery(this.ConnectionString, CommandType.Text, sql.ToString());
+            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.Text, sql.ToString());
         }
 
         public override string CopyData()
@@ -175,7 +161,7 @@ namespace Engage.Dnn.Locator.Data
             StringBuilder sql = new StringBuilder(500);
             sql.AppendFormat(CultureInfo.InvariantCulture, "Delete from {0}LocationType where LocationTypeId = @locationTypeId", this.NamePrefix);
 
-            SqlHelper.ExecuteNonQuery(this.ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@locationTypeId", locationTypeId));
+            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@locationTypeId", locationTypeId));
         }
 
         public override DataTable GetAllLocations(int portalId, bool approved, string sortColumn, int index, int pageSize)
@@ -210,8 +196,7 @@ namespace Engage.Dnn.Locator.Data
                 {
                     if (i == 0)
                     {
-                        sql.AppendFormat(
-                                CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
+                        sql.AppendFormat(CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
                     }
                     else
                     {
@@ -224,11 +209,10 @@ namespace Engage.Dnn.Locator.Data
                 sql.AppendFormat(CultureInfo.InvariantCulture, ")");
             }
 
-            sql.AppendFormat(
-                    CultureInfo.InvariantCulture, " ORDER BY {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) ", this.NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) ", this.NamePrefix);
 
             return SqlHelper.ExecuteReader(
-                    this.connectionString,
+                    ConnectionString,
                     CommandType.Text,
                     sql.ToString(),
                     Engage.Utility.CreateDoubleParam("@Latitude", latitude),
@@ -257,15 +241,15 @@ namespace Engage.Dnn.Locator.Data
                     {
                         sql.AppendFormat(
                                 CultureInfo.InvariantCulture,
-                                " AND ( Type = '"
-                                + LocationType.GetLocationTypeName(Convert.ToInt32(s, CultureInfo.InvariantCulture)).Replace("'", "''") + "'");
+                                " AND ( Type = '{0}'",
+                                LocationType.GetLocationTypeName(Convert.ToInt32(s, CultureInfo.InvariantCulture)).Replace("'", "''"));
                     }
                     else
                     {
                         sql.AppendFormat(
                                 CultureInfo.InvariantCulture,
-                                " OR Type = '" + LocationType.GetLocationTypeName(Convert.ToInt32(s, CultureInfo.InvariantCulture)).Replace("'", "''")
-                                + "'");
+                                " OR Type = '{0}'", 
+                                LocationType.GetLocationTypeName(Convert.ToInt32(s, CultureInfo.InvariantCulture)).Replace("'", "''"));
                     }
 
                     i++;
@@ -277,7 +261,7 @@ namespace Engage.Dnn.Locator.Data
             sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY LocationId ");
 
             return SqlHelper.ExecuteReader(
-                    this.connectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@PortalId", portalId));
+                    ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@PortalId", portalId));
         }
 
         public override IDataReader GetAttributeDefinition(int attributeDefinitionId)
@@ -343,8 +327,7 @@ namespace Engage.Dnn.Locator.Data
                 {
                     if (i == 0)
                     {
-                        sql.AppendFormat(
-                                CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
+                        sql.AppendFormat(CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
                     }
                     else
                     {
@@ -357,11 +340,10 @@ namespace Engage.Dnn.Locator.Data
                 sql.AppendFormat(CultureInfo.InvariantCulture, ")");
             }
 
-            sql.AppendFormat(
-                    CultureInfo.InvariantCulture, " ORDER BY {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) ", this.NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) ", this.NamePrefix);
 
             return SqlHelper.ExecuteReader(
-                    this.connectionString,
+                    ConnectionString,
                     CommandType.Text,
                     sql.ToString(),
                     Engage.Utility.CreateDoubleParam("@Latitude", latitude),
@@ -408,8 +390,7 @@ namespace Engage.Dnn.Locator.Data
 
             return
                     SqlHelper.ExecuteDataset(
-                            this.connectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@PortalId", portalId)).Tables[
-                            0];
+                            ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@PortalId", portalId)).Tables[0];
         }
 
         public override DataTable GetEmailByFileId(int fileId)
@@ -422,8 +403,7 @@ namespace Engage.Dnn.Locator.Data
             sql.AppendFormat(CultureInfo.InvariantCulture, " Where FileId = @FileId ");
 
             return
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@FileId", fileId)).Tables[0];
+                    SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@FileId", fileId)).Tables[0];
         }
 
         public override DataTable GetEngageLocatorTabModules(int portalId)
@@ -447,7 +427,7 @@ namespace Engage.Dnn.Locator.Data
             sql.AppendFormat(CultureInfo.InvariantCulture, " Select max(CSVLineNumber) ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " From {0}TempLocation", this.NamePrefix);
 
-            object value = SqlHelper.ExecuteScalar(this.connectionString, CommandType.Text, sql.ToString());
+            object value = SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString());
             if (value == DBNull.Value)
             {
                 return 0;
@@ -465,12 +445,7 @@ namespace Engage.Dnn.Locator.Data
                     this.NamePrefix);
 
             return
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString,
-                            CommandType.Text,
-                            sql.ToString(),
-                            Engage.Utility.CreateVarcharParam("@address", address, DefaultVarcharSize),
-                            Engage.Utility.CreateVarcharParam("@city", city, DefaultVarcharSize)).Tables[0];
+                    SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateVarcharParam("@address", address, DefaultVarcharSize), Engage.Utility.CreateVarcharParam("@city", city, DefaultVarcharSize)).Tables[0];
         }
 
         public override IDataReader GetLocation(int locationId)
@@ -482,8 +457,7 @@ namespace Engage.Dnn.Locator.Data
             sql.AppendFormat(CultureInfo.InvariantCulture, "FROM {0}vLocations ", this.NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE LocationId = @LocationId ");
 
-            return SqlHelper.ExecuteReader(
-                    this.connectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@LocationId", locationId));
+            return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@LocationId", locationId));
         }
 
         public override DataTable GetLocations(int typeId, int portalId)
@@ -497,13 +471,7 @@ namespace Engage.Dnn.Locator.Data
             sql.AppendFormat(CultureInfo.InvariantCulture, " AND PortalId = @PortalId ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY Name ");
 
-            return
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString,
-                            CommandType.Text,
-                            sql.ToString(),
-                            Engage.Utility.CreateIntegerParam("@LocationTypeId", typeId),
-                            Engage.Utility.CreateIntegerParam("@PortalId", portalId)).Tables[0];
+            return SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@LocationTypeId", typeId), Engage.Utility.CreateIntegerParam("@PortalId", portalId)).Tables[0];
         }
 
         public override IDataReader GetLocationsByCountry(int countryId, int portalId)
@@ -518,7 +486,7 @@ namespace Engage.Dnn.Locator.Data
             sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY City ");
 
             return SqlHelper.ExecuteReader(
-                    this.connectionString,
+                    ConnectionString,
                     CommandType.Text,
                     sql.ToString(),
                     Engage.Utility.CreateIntegerParam("@CountryId", countryId),
@@ -541,10 +509,7 @@ namespace Engage.Dnn.Locator.Data
 
         public override DataTable GetLocationTypeName(int id)
         {
-            return
-                    this.ExecuteDataset(
-                            "GetLocationType",
-                            Engage.Utility.CreateIntegerParam("@LocationTypeId", id)).Tables[0];
+            return this.ExecuteDataset("GetLocationType", Engage.Utility.CreateIntegerParam("@LocationTypeId", id)).Tables[0];
         }
 
         public override DataTable GetLocationTypes()
@@ -554,27 +519,27 @@ namespace Engage.Dnn.Locator.Data
             sql.AppendFormat(CultureInfo.InvariantCulture, " Select LocationTypeID, LocationTypeName ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " From {0}LocationType ", this.NamePrefix);
 
-            return SqlHelper.ExecuteDataset(this.connectionString, CommandType.Text, sql.ToString()).Tables[0];
+            return SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString()).Tables[0];
         }
 
         /// <summary>
-        /// Gets the N closest locations.
+        /// Gets the <paramref name="count"/> closest locations.
         /// </summary>
         /// <param name="latitude">The latitude.</param>
         /// <param name="longitude">The longitude.</param>
-        /// <param name="N">The number of locations to return.</param>
+        /// <param name="count">The number of locations to return.</param>
         /// <param name="portalId">The portal id.</param>
         /// <returns>
         /// A list of location records as well as their distance from the given location.
         /// </returns>
-        public override DataTable GetNClosestLocations(double latitude, double longitude, int N, int portalId)
+        public override DataTable GetNClosestLocations(double latitude, double longitude, int count, int portalId)
         {
             StringBuilder sql = new StringBuilder(500);
             sql.AppendFormat(
                     CultureInfo.InvariantCulture,
                     "SELECT TOP {1} LocationId, Id, LocationTypeId, Name, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, PostalCode, Phone, LocationDetails, [Type], {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ",
                     this.NamePrefix,
-                    N);
+                    count);
             sql.AppendFormat(CultureInfo.InvariantCulture, " FROM {0}vLocations ", this.NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE PortalId = @PortalId ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " AND IsSearchable = 1 ");
@@ -583,22 +548,15 @@ namespace Engage.Dnn.Locator.Data
                     CultureInfo.InvariantCulture, " ORDER BY {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude)", this.NamePrefix);
 
             return
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString,
-                            CommandType.Text,
-                            sql.ToString(),
-                            Engage.Utility.CreateDoubleParam("@Latitude", latitude),
-                            Engage.Utility.CreateDoubleParam("@Longitude", longitude),
-                            Engage.Utility.CreateIntegerParam("@PortalId", portalId)).Tables[0];
+                    SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateDoubleParam("@Latitude", latitude), Engage.Utility.CreateDoubleParam("@Longitude", longitude), Engage.Utility.CreateIntegerParam("@PortalId", portalId)).Tables[0];
         }
 
         public override DataTable GetNewSubmittedComments(int portalId, bool approved)
         {
-            return
-                    this.ExecuteDataset(
-                            "GetNewSubmittedComments",
-                            Engage.Utility.CreateIntegerParam("@portalId", portalId),
-                            Engage.Utility.CreateIntegerParam("@approved", Convert.ToInt32(approved))).Tables[0];
+            return this.ExecuteDataset(
+                "GetNewSubmittedComments",
+                Engage.Utility.CreateIntegerParam("@portalId", portalId),
+                Engage.Utility.CreateIntegerParam("@approved", Convert.ToInt32(approved))).Tables[0];
         }
 
         public override int GetTabModuleIdByFileId(int fileId)
@@ -611,17 +569,17 @@ namespace Engage.Dnn.Locator.Data
             return
                     Convert.ToInt32(
                             SqlHelper.ExecuteScalar(
-                                    this.connectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@FileId", fileId)),
+                                    ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@FileId", fileId)),
                             CultureInfo.InvariantCulture);
         }
 
-        public override void InsertComment(int locationId, string text, string submittteBy, bool approved)
+        public override void InsertComment(int locationId, string text, string submittedBy, bool approved)
         {
             this.ExecuteNonQuery(
                     "InsertComment",
                     Engage.Utility.CreateIntegerParam("@locationId", locationId),
                     Engage.Utility.CreateTextParam("@text", text),
-                    Engage.Utility.CreateVarcharParam("@submittedBy", submittteBy, 50),
+                    Engage.Utility.CreateVarcharParam("@submittedBy", submittedBy, 50),
                     Engage.Utility.CreateIntegerParam("@approved", Convert.ToInt32(approved)));
         }
 
@@ -643,15 +601,15 @@ namespace Engage.Dnn.Locator.Data
             StringBuilder sql = new StringBuilder(500);
             sql.AppendFormat(
                     CultureInfo.InvariantCulture, "insert into {0}LocationType (LocationTypeName) values (@locationTypeName) ", this.NamePrefix);
-            //sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT @@IDENTITY");
+            ////sql.AppendFormat(CultureInfo.InvariantCulture, "SELECT @@IDENTITY");
 
-            return
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteNonQuery(
-                                    this.ConnectionString,
-                                    CommandType.Text,
-                                    sql.ToString(),
-                                    Engage.Utility.CreateVarcharParam("@locationTypeName", locationTypeName, 50)));
+            return Convert.ToInt32(
+                SqlHelper.ExecuteNonQuery(
+                    ConnectionString,
+                    CommandType.Text,
+                    sql.ToString(),
+                    Engage.Utility.CreateVarcharParam("@locationTypeName", locationTypeName, 50)),
+                CultureInfo.InvariantCulture);
         }
 
         public override void SaveComment(Comment myComment)
@@ -791,7 +749,7 @@ namespace Engage.Dnn.Locator.Data
                     this.NamePrefix);
 
             SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString,
+                    ConnectionString,
                     CommandType.Text,
                     sql.ToString(),
                     Engage.Utility.CreateIntegerParam("@locationTypeId", locationTypeId),
@@ -807,7 +765,7 @@ namespace Engage.Dnn.Locator.Data
         private int ExecuteNonQuery(string storedProcedureName, params SqlParameter[] parameters)
         {
             return SqlHelper.ExecuteNonQuery(
-                this.ConnectionString,
+                ConnectionString,
                 CommandType.StoredProcedure,
                 this.NamePrefix + "sp" + storedProcedureName,
                 parameters);
@@ -822,7 +780,7 @@ namespace Engage.Dnn.Locator.Data
         private DataSet ExecuteDataset(string storedProcedureName, params SqlParameter[] parameters)
         {
             return SqlHelper.ExecuteDataset(
-                this.ConnectionString,
+                ConnectionString,
                 CommandType.StoredProcedure,
                 this.NamePrefix + "sp" + storedProcedureName,
                 parameters);
@@ -837,7 +795,7 @@ namespace Engage.Dnn.Locator.Data
         private SqlDataReader ExecuteReader(string storedProcedureName, params SqlParameter[] parameters)
         {
             return SqlHelper.ExecuteReader(
-                this.ConnectionString,
+                ConnectionString,
                 CommandType.StoredProcedure,
                 this.NamePrefix + "sp" + storedProcedureName,
                 parameters);
@@ -852,7 +810,7 @@ namespace Engage.Dnn.Locator.Data
         private object ExecuteScalar(string storedProcedureName, params SqlParameter[] parameters)
         {
             return SqlHelper.ExecuteScalar(
-                this.ConnectionString,
+                ConnectionString,
                 CommandType.StoredProcedure,
                 this.NamePrefix + "sp" + storedProcedureName,
                 parameters);
