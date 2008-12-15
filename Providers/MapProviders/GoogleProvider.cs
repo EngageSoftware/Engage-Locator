@@ -62,7 +62,7 @@ namespace Engage.Dnn.Locator
                     scriptManager.Page,
                     typeof(GoogleProvider),
                     "Initialize",
-                    "google.setOnLoadCallback(function(){ jQuery.noConflict(); $create(Engage.Dnn.Locator.GoogleMap, {" + mapParameters + "}, {}, {}, $get('" + mapSectionId + "')); });",
+                    "google.setOnLoadCallback(jQuery(function(){ jQuery.noConflict(); $create(Engage.Dnn.Locator.GoogleMap, {" + mapParameters + "}, {}, {}, $get('" + mapSectionId + "')); }));",
                     true);
 
             if (showAllLocationsOnLoad)
@@ -71,7 +71,7 @@ namespace Engage.Dnn.Locator
                         scriptManager.Page,
                         typeof(GoogleProvider),
                         "showAllLocations",
-                        "google.setOnLoadCallback(function(){ $find('" + mapSectionId + "$GoogleMap').showAllLocations(); });",
+                        "google.setOnLoadCallback(jQuery(function(){ $find('" + mapSectionId + "$GoogleMap').showAllLocations(); }));",
                         true);
             }
         }
