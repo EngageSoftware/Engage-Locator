@@ -115,7 +115,7 @@ namespace Engage.Dnn.Locator.Data
         #region Custom Attributes Methods
 
         public abstract IDataReader GetAttributeDefinitionsById(int locationTypeId);
-        public abstract int AddAttributeDefinition(int portalId, int LocationTypeId, int dataType, string defaultValue, string attributeName, bool required, string validationExpression, int viewOrder, bool visible, int length);
+        public abstract int AddAttributeDefinition(int portalId, int locationTypeId, int dataType, string defaultValue, string attributeName, bool required, string validationExpression, int viewOrder, bool visible, int length);
         public abstract void DeleteAttributeDefinition(int definitionId);
         public abstract IDataReader GetAttributeDefinition(int definitionId);
         public abstract IDataReader GetAttributeDefinitionByName(int locationTypeId,  string name);

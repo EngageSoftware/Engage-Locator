@@ -1,11 +1,13 @@
-//Copyright (c) 2004-2007
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
+// <copyright file="SqlDataProvider.cs" company="Engage Software">
+// Engage: Locator - http://www.engagemodules.com
+// Copyright (c) 2004-2008
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Locator.Data
 {
@@ -14,10 +16,8 @@ namespace Engage.Dnn.Locator.Data
     using System.Data.SqlClient;
     using System.Globalization;
     using System.Text;
-
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Providers;
-
     using Microsoft.ApplicationBlocks.Data;
 
     public class SqlDataProvider : DataProvider
@@ -27,6 +27,11 @@ namespace Engage.Dnn.Locator.Data
         public const int CacheTimeOut = 20;
 
         private const string providerType = "data";
+
+        /// <summary>
+        /// The default size of a varchar parameter in the database
+        /// </summary>
+        private const int DefaultVarcharSize = 255;
 
         private readonly string connectionString;
 
@@ -91,10 +96,8 @@ namespace Engage.Dnn.Locator.Data
 
         public override void AddAttribute(int attributeDefinitionId, int locationId, string attributeValue)
         {
-            SqlHelper.ExecuteNonQuery(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spAddLocationAttribute",
+            this.ExecuteNonQuery(
+                    "AddLocationAttribute",
                     Engage.Utility.CreateIntegerParam("@attributeDefinitionId", attributeDefinitionId),
                     Engage.Utility.CreateIntegerParam("@locationId", locationId),
                     Engage.Utility.CreateTextParam("@attributeValue", attributeValue));
@@ -102,7 +105,7 @@ namespace Engage.Dnn.Locator.Data
 
         public override int AddAttributeDefinition(
                 int portalId,
-                int LocationTypeId,
+                int locationTypeId,
                 int dataType,
                 string defaultValue,
                 string attributeName,
@@ -112,30 +115,23 @@ namespace Engage.Dnn.Locator.Data
                 bool visible,
                 int length)
         {
-            return SqlHelper.ExecuteNonQuery(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spAddAttributeDefinition",
-                    new SqlParameter("@PortalId", portalId),
-                    new SqlParameter("@LocationTypeId", LocationTypeId),
-                    new SqlParameter("@DataType", dataType),
-                    new SqlParameter("@DefaultValue", defaultValue),
-                    new SqlParameter("@AttributeName", attributeName),
-                    new SqlParameter("@Required", required),
-                    new SqlParameter("@ValidationExpression", validationExpression),
-                    new SqlParameter("@ViewOrder", viewOrder),
-                    new SqlParameter("@Visible", visible),
-                    new SqlParameter("@Length", length));
+            return this.ExecuteNonQuery(
+                    "AddAttributeDefinition",
+                    Engage.Utility.CreateIntegerParam("@PortalId", portalId),
+                    Engage.Utility.CreateIntegerParam("@LocationTypeId", locationTypeId),
+                    Engage.Utility.CreateIntegerParam("@DataType", dataType),
+                    Engage.Utility.CreateTextParam("@DefaultValue", defaultValue),
+                    Engage.Utility.CreateVarcharParam("@AttributeName", attributeName, DefaultVarcharSize),
+                    Engage.Utility.CreateBitParam("@Required", required),
+                    Engage.Utility.CreateVarcharParam("@ValidationExpression", validationExpression, DefaultVarcharSize),
+                    Engage.Utility.CreateIntegerParam("@ViewOrder", viewOrder),
+                    Engage.Utility.CreateBitParam("@Visible", visible),
+                    Engage.Utility.CreateIntegerParam("@Length", length));
         }
 
         public override void ClearLocations(int portalId)
         {
-            StringBuilder sql = new StringBuilder(250);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "EXEC {0}spDeleteLocations ", this.NamePrefix);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "@PortalId");
-
-            SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@PortalId", portalId));
+            this.ExecuteNonQuery("DeleteLocations", Engage.Utility.CreateIntegerParam("@PortalId", portalId));
         }
 
         public override void ClearTempLocations()
@@ -150,9 +146,7 @@ namespace Engage.Dnn.Locator.Data
         {
             try
             {
-                StringBuilder sql = new StringBuilder(500);
-                sql.AppendFormat(CultureInfo.InvariantCulture, "EXEC {0}spCopyLocation", this.NamePrefix);
-                SqlHelper.ExecuteNonQuery(this.ConnectionString, CommandType.Text, sql.ToString());
+                this.ExecuteNonQuery("CopyLocation");
                 return "Data Import Successful";
             }
             catch
@@ -163,29 +157,17 @@ namespace Engage.Dnn.Locator.Data
 
         public override void DeleteAttributeDefinition(int attributeDefinitionId)
         {
-            SqlHelper.ExecuteNonQuery(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spDeleteAttributeDefinition",
-                    new SqlParameter("@AttributeDefinitionId", attributeDefinitionId));
+            this.ExecuteNonQuery("DeleteAttributeDefinition", Engage.Utility.CreateIntegerParam("@AttributeDefinitionId", attributeDefinitionId));
         }
 
         public override void DeleteComment(int commentId)
         {
-            SqlHelper.ExecuteNonQuery(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spDeleteComment",
-                    Engage.Utility.CreateIntegerParam("@commentId", commentId));
+            this.ExecuteNonQuery("DeleteComment", Engage.Utility.CreateIntegerParam("@commentId", commentId));
         }
 
         public override void DeleteLocation(int locationId)
         {
-            StringBuilder sql = new StringBuilder(98);
-            sql.AppendFormat(CultureInfo.InvariantCulture, "Delete from {0}Location where LocationId = @locationId", this.NamePrefix);
-
-            SqlHelper.ExecuteNonQuery(
-                    this.connectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@locationId", locationId));
+            this.ExecuteNonQuery("DeleteLocation", Engage.Utility.CreateIntegerParam("@locationId", locationId));
         }
 
         public override void DeleteLocationType(int locationTypeId)
@@ -193,22 +175,18 @@ namespace Engage.Dnn.Locator.Data
             StringBuilder sql = new StringBuilder(500);
             sql.AppendFormat(CultureInfo.InvariantCulture, "Delete from {0}LocationType where LocationTypeId = @locationTypeId", this.NamePrefix);
 
-            SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@locationTypeId", locationTypeId));
+            SqlHelper.ExecuteNonQuery(this.ConnectionString, CommandType.Text, sql.ToString(), Engage.Utility.CreateIntegerParam("@locationTypeId", locationTypeId));
         }
 
         public override DataTable GetAllLocations(int portalId, bool approved, string sortColumn, int index, int pageSize)
         {
-            return
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString,
-                            CommandType.StoredProcedure,
-                            this.NamePrefix + "spGetAllLocations",
-                            Engage.Utility.CreateIntegerParam("@PortalId", portalId),
-                            Engage.Utility.CreateBitParam("@approved", approved),
-                            Engage.Utility.CreateVarcharParam("@sortColumn", sortColumn, 200),
-                            Engage.Utility.CreateIntegerParam("@index", index),
-                            Engage.Utility.CreateIntegerParam("@pagesize", pageSize)).Tables[0];
+            return this.ExecuteDataset(
+                "GetAllLocations",
+                Engage.Utility.CreateIntegerParam("@PortalId", portalId),
+                Engage.Utility.CreateBitParam("@approved", approved),
+                Engage.Utility.CreateVarcharParam("@sortColumn", sortColumn, 200),
+                Engage.Utility.CreateIntegerParam("@index", index),
+                Engage.Utility.CreateIntegerParam("@pagesize", pageSize)).Tables[0];
         }
 
         public override IDataReader GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds)
@@ -304,50 +282,30 @@ namespace Engage.Dnn.Locator.Data
 
         public override IDataReader GetAttributeDefinition(int attributeDefinitionId)
         {
-            return SqlHelper.ExecuteReader(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spGetAttributeDefinition",
-                    new SqlParameter("@AttributeDefinitionId", attributeDefinitionId));
+            return this.ExecuteReader("GetAttributeDefinition", Engage.Utility.CreateIntegerParam("@AttributeDefinitionId", attributeDefinitionId));
         }
 
         public override IDataReader GetAttributeDefinitionByName(int locationTypeId, string name)
         {
-            return SqlHelper.ExecuteReader(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spGetAttributeDefinitionByName",
-                    new SqlParameter("@locationTypeId", locationTypeId),
-                    new SqlParameter("@Name", name));
+            return this.ExecuteReader(
+                    "GetAttributeDefinitionByName",
+                    Engage.Utility.CreateIntegerParam("@locationTypeId", locationTypeId),
+                    Engage.Utility.CreateVarcharParam("@Name", name));
         }
 
         public override DataTable GetAttributeDefinitions(int locationTypeId)
         {
-            return
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString,
-                            CommandType.StoredProcedure,
-                            this.NamePrefix + "spGetLocationAttributeDefinitions",
-                            Engage.Utility.CreateIntegerParam("@locationTypeId", locationTypeId)).Tables[0];
+            return this.ExecuteDataset("GetLocationAttributeDefinitions", Engage.Utility.CreateIntegerParam("@locationTypeId", locationTypeId)).Tables[0];
         }
 
         public override IDataReader GetAttributeDefinitionsById(int locationTypeId)
         {
-            return SqlHelper.ExecuteReader(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spGetAttributeDefinitionsById",
-                    new SqlParameter("@LocationTypeId", locationTypeId));
+            return this.ExecuteReader("GetAttributeDefinitionsById", Engage.Utility.CreateIntegerParam("@LocationTypeId", locationTypeId));
         }
 
         public override DataTable GetAttributeValues(int locationId)
         {
-            return
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString,
-                            CommandType.StoredProcedure,
-                            this.NamePrefix + "spGetLocationAttributeValues",
-                            Engage.Utility.CreateIntegerParam("@locationId", locationId)).Tables[0];
+            return this.ExecuteDataset("GetLocationAttributeValues", Engage.Utility.CreateIntegerParam("@locationId", locationId)).Tables[0];
         }
 
         /// <summary>
@@ -414,28 +372,27 @@ namespace Engage.Dnn.Locator.Data
 
         public override Comment GetComment(int commentId)
         {
-            DataTable comment =
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString,
-                            CommandType.StoredProcedure,
-                            this.NamePrefix + "spGetComment",
-                            Engage.Utility.CreateIntegerParam("@commentId", commentId)).Tables[0];
-            Comment c = new Comment();
-            c.CommentId = Convert.ToInt32(comment.Rows[0]["CommentId"], CultureInfo.InvariantCulture);
-            c.Text = comment.Rows[0]["Text"].ToString();
-            c.Approved = Convert.ToBoolean(comment.Rows[0]["Approved"], CultureInfo.InvariantCulture);
-            c.SubmittedBy = comment.Rows[0]["Author"].ToString();
-            c.LocationName = comment.Rows[0]["Name"].ToString();
+            using (IDataReader comment = this.ExecuteReader("GetComment", Engage.Utility.CreateIntegerParam("@commentId", commentId)))
+            {
+                if (comment.Read())
+                {
+                    Comment c = new Comment();
+                    c.CommentId = Convert.ToInt32(comment["CommentId"], CultureInfo.InvariantCulture);
+                    c.Text = comment["Text"].ToString();
+                    c.Approved = Convert.ToBoolean(comment["Approved"], CultureInfo.InvariantCulture);
+                    c.SubmittedBy = comment["Author"].ToString();
+                    c.LocationName = comment["Name"].ToString();
+                    return c;
+                }
 
-            return c;
+                return null;
+            }
         }
 
         public override DataSet GetComments(int locationId, bool approved)
         {
-            return SqlHelper.ExecuteDataset(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spGetComments",
+            return this.ExecuteDataset(
+                    "GetComments",
                     Engage.Utility.CreateIntegerParam("@locationId", locationId),
                     Engage.Utility.CreateIntegerParam("@approved", Convert.ToInt32(approved)));
         }
@@ -471,27 +428,17 @@ namespace Engage.Dnn.Locator.Data
 
         public override DataTable GetEngageLocatorTabModules(int portalId)
         {
-            return
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString,
-                            CommandType.StoredProcedure,
-                            this.NamePrefix + "spGetEngageLocatorTabModules",
-                            Engage.Utility.CreateIntegerParam("@portalId", portalId)).Tables[0];
+            return this.ExecuteDataset("GetEngageLocatorTabModules", Engage.Utility.CreateIntegerParam("@portalId", portalId)).Tables[0];
         }
 
         public override DataTable GetFilesToImport()
         {
-            return SqlHelper.ExecuteDataset(this.connectionString, CommandType.StoredProcedure, this.NamePrefix + "spGetFilesToImport").Tables[0];
+            return this.ExecuteDataset("GetFilesToImport").Tables[0];
         }
 
         public override DataTable GetImportedLocationStatistics(int portalId)
         {
-            return
-                    SqlHelper.ExecuteDataset(
-                            this.connectionString,
-                            CommandType.StoredProcedure,
-                            this.NamePrefix + "spGetImportedLocationStatistics",
-                            Engage.Utility.CreateIntegerParam("@portalId", portalId)).Tables[0];
+            return this.ExecuteDataset("GetImportedLocationStatistics", Engage.Utility.CreateIntegerParam("@portalId", portalId)).Tables[0];
         }
 
         public override int GetLastImportIndex()
@@ -522,8 +469,8 @@ namespace Engage.Dnn.Locator.Data
                             this.connectionString,
                             CommandType.Text,
                             sql.ToString(),
-                            Engage.Utility.CreateVarcharParam("@address", address, 255),
-                            Engage.Utility.CreateVarcharParam("@city", city, 255)).Tables[0];
+                            Engage.Utility.CreateVarcharParam("@address", address, DefaultVarcharSize),
+                            Engage.Utility.CreateVarcharParam("@city", city, DefaultVarcharSize)).Tables[0];
         }
 
         public override IDataReader GetLocation(int locationId)
@@ -580,38 +527,24 @@ namespace Engage.Dnn.Locator.Data
 
         public override DataTable GetLocationType(int id)
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@LocationTypeId";
-            param.Value = id;
-
-            return
-                    SqlHelper.ExecuteDataset(this.connectionString, CommandType.StoredProcedure, this.NamePrefix + "spGetLocationType", param).Tables[
-                            0];
+            return this.ExecuteDataset("GetLocationType", Engage.Utility.CreateIntegerParam("@LocationTypeId", id)).Tables[0];
         }
 
         public override int GetLocationTypeCount(string type)
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@LocationType";
-            param.Value = type;
-
-            int count =
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteScalar(
-                                    this.connectionString, CommandType.StoredProcedure, this.NamePrefix + "spGetLocationTypeCount", param),
-                            CultureInfo.InvariantCulture);
-            return count;
+            return Convert.ToInt32(
+                    this.ExecuteScalar(
+                        "GetLocationTypeCount", 
+                        Engage.Utility.CreateVarcharParam("@LocationType", type)), 
+                    CultureInfo.InvariantCulture);
         }
 
         public override DataTable GetLocationTypeName(int id)
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@LocationTypeId";
-            param.Value = id;
-
             return
-                    SqlHelper.ExecuteDataset(this.connectionString, CommandType.StoredProcedure, this.NamePrefix + "spGetLocationType", param).Tables[
-                            0];
+                    this.ExecuteDataset(
+                            "GetLocationType",
+                            Engage.Utility.CreateIntegerParam("@LocationTypeId", id)).Tables[0];
         }
 
         public override DataTable GetLocationTypes()
@@ -661,13 +594,11 @@ namespace Engage.Dnn.Locator.Data
 
         public override DataTable GetNewSubmittedComments(int portalId, bool approved)
         {
-            DataSet comments = SqlHelper.ExecuteDataset(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spGetNewSubmittedComments",
-                    Engage.Utility.CreateIntegerParam("@portalId", portalId),
-                    Engage.Utility.CreateIntegerParam("@approved", Convert.ToInt32(approved)));
-            return comments.Tables[0];
+            return
+                    this.ExecuteDataset(
+                            "GetNewSubmittedComments",
+                            Engage.Utility.CreateIntegerParam("@portalId", portalId),
+                            Engage.Utility.CreateIntegerParam("@approved", Convert.ToInt32(approved))).Tables[0];
         }
 
         public override int GetTabModuleIdByFileId(int fileId)
@@ -686,25 +617,18 @@ namespace Engage.Dnn.Locator.Data
 
         public override void InsertComment(int locationId, string text, string submittteBy, bool approved)
         {
-            SqlHelper.ExecuteNonQuery(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spInsertComment",
+            this.ExecuteNonQuery(
+                    "InsertComment",
                     Engage.Utility.CreateIntegerParam("@locationId", locationId),
                     Engage.Utility.CreateTextParam("@text", text),
                     Engage.Utility.CreateVarcharParam("@submittedBy", submittteBy, 50),
                     Engage.Utility.CreateIntegerParam("@approved", Convert.ToInt32(approved)));
         }
 
-        public override void InsertFileInfo(
-                int fileId, int userId, int tabModuleId, int portalId, DateTime uploadDate, bool succeeded, bool processed)
+        public override void InsertFileInfo(int fileId, int userId, int tabModuleId, int portalId, DateTime uploadDate, bool succeeded, bool processed)
         {
-            StringBuilder sql = new StringBuilder(500);
-
-            SqlHelper.ExecuteScalar(
-                    this.ConnectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spInsertFileInfo",
+            this.ExecuteNonQuery(
+                    "InsertFileInfo",
                     Engage.Utility.CreateIntegerParam("@FileId", fileId),
                     Engage.Utility.CreateIntegerParam("@UserId", userId),
                     Engage.Utility.CreateIntegerParam("@TabModuleId", tabModuleId),
@@ -732,10 +656,8 @@ namespace Engage.Dnn.Locator.Data
 
         public override void SaveComment(Comment myComment)
         {
-            SqlHelper.ExecuteNonQuery(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spSaveComment",
+            this.ExecuteNonQuery(
+                    "SaveComment",
                     Engage.Utility.CreateIntegerParam("@commentId", myComment.CommentId),
                     Engage.Utility.CreateTextParam("@text", myComment.Text),
                     Engage.Utility.CreateVarcharParam("@submittedBy", myComment.SubmittedBy, 50),
@@ -744,41 +666,36 @@ namespace Engage.Dnn.Locator.Data
 
         public override int SaveLocation(Location loc)
         {
-            return
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteScalar(
-                                    this.ConnectionString,
-                                    CommandType.StoredProcedure,
-                                    this.NamePrefix + "spInsertLocation",
-                                    Engage.Utility.CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100),
-                                    Engage.Utility.CreateVarcharParam("@Name", loc.Name, 100),
-                                    Engage.Utility.CreateVarcharParam("@Website", loc.Website, 255),
-                                    Engage.Utility.CreateDoubleParam("@Latitude", loc.Latitude),
-                                    Engage.Utility.CreateDoubleParam("@Longitude", loc.Longitude),
-                                    Engage.Utility.CreateIntegerParam("@CountryId", loc.CountryId),
-                                    Engage.Utility.CreateIntegerParam("@RegionId", loc.RegionId),
-                                    Engage.Utility.CreateVarcharParam("@City", loc.City, 100),
-                                    Engage.Utility.CreateVarcharParam("@Address", loc.Address, 510),
-                                    Engage.Utility.CreateVarcharParam("@Address2", loc.Address2, 510),
-                                    Engage.Utility.CreateVarcharParam("@PostalCode", loc.PostalCode, 100),
-                                    Engage.Utility.CreateVarcharParam("@Phone", loc.Phone, 100),
-                                    Engage.Utility.CreateTextParam("@LocationDetails", loc.LocationDetails),
-                                    Engage.Utility.CreateIntegerParam("@LocationTypeId", loc.LocationTypeId),
-                                    Engage.Utility.CreateIntegerParam("@CsvLineNumber", 0),
-                                    Engage.Utility.CreateIntegerParam("@PortalId", loc.PortalId),
-                                    Engage.Utility.CreateBitParam("@approved", loc.Approved)),
-                            CultureInfo.InvariantCulture);
+            return Convert.ToInt32(
+                    this.ExecuteScalar(
+                            "InsertLocation",
+                            Engage.Utility.CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100),
+                            Engage.Utility.CreateVarcharParam("@Name", loc.Name, 100),
+                            Engage.Utility.CreateVarcharParam("@Website", loc.Website, DefaultVarcharSize),
+                            Engage.Utility.CreateDoubleParam("@Latitude", loc.Latitude),
+                            Engage.Utility.CreateDoubleParam("@Longitude", loc.Longitude),
+                            Engage.Utility.CreateIntegerParam("@CountryId", loc.CountryId),
+                            Engage.Utility.CreateIntegerParam("@RegionId", loc.RegionId),
+                            Engage.Utility.CreateVarcharParam("@City", loc.City, 100),
+                            Engage.Utility.CreateVarcharParam("@Address", loc.Address, 510),
+                            Engage.Utility.CreateVarcharParam("@Address2", loc.Address2, 510),
+                            Engage.Utility.CreateVarcharParam("@PostalCode", loc.PostalCode, 100),
+                            Engage.Utility.CreateVarcharParam("@Phone", loc.Phone, 100),
+                            Engage.Utility.CreateTextParam("@LocationDetails", loc.LocationDetails),
+                            Engage.Utility.CreateIntegerParam("@LocationTypeId", loc.LocationTypeId),
+                            Engage.Utility.CreateIntegerParam("@CsvLineNumber", 0),
+                            Engage.Utility.CreateIntegerParam("@PortalId", loc.PortalId),
+                            Engage.Utility.CreateBitParam("@approved", loc.Approved)),
+                    CultureInfo.InvariantCulture);
         }
 
         public override int SaveTempLocation(Location loc, bool successful)
         {
-            return SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spInsertTempLocation",
+            return this.ExecuteNonQuery(
+                    "InsertTempLocation",
                     Engage.Utility.CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100),
                     Engage.Utility.CreateVarcharParam("@Name", loc.Name, 100),
-                    Engage.Utility.CreateVarcharParam("@Website", loc.Website, 255),
+                    Engage.Utility.CreateVarcharParam("@Website", loc.Website, DefaultVarcharSize),
                     Engage.Utility.CreateDoubleParam("@Latitude", loc.Latitude),
                     Engage.Utility.CreateDoubleParam("@Longitude", loc.Longitude),
                     Engage.Utility.CreateIntegerParam("@CountryId", loc.CountryId),
@@ -793,17 +710,14 @@ namespace Engage.Dnn.Locator.Data
                     Engage.Utility.CreateIntegerParam("@PortalId", loc.PortalId),
                     Engage.Utility.CreateIntegerParam("@CSVLineNumber", loc.CsvLineNumber),
                     // TODO: change this stored procedure to just take a bit parameter and remove this useless casting
-                    Engage.Utility.CreateVarcharParam(
-                            "@successful", Convert.ToInt32(successful, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture), 25),
+                    Engage.Utility.CreateVarcharParam("@successful", Convert.ToInt32(successful, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture), 25),
                     Engage.Utility.CreateBitParam("@approved", loc.Approved));
         }
 
         public override void UpdateAttribute(int locationAttributeId, int locationId, string attributeValue)
         {
-            SqlHelper.ExecuteNonQuery(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spUpdateLocationAttribute",
+            this.ExecuteNonQuery(
+                    "UpdateLocationAttribute",
                     Engage.Utility.CreateIntegerParam("@locationAttributeId", locationAttributeId),
                     Engage.Utility.CreateIntegerParam("@locationId", locationId),
                     Engage.Utility.CreateTextParam("@attributeValue", attributeValue));
@@ -820,46 +734,39 @@ namespace Engage.Dnn.Locator.Data
                 bool visible,
                 int length)
         {
-            return SqlHelper.ExecuteNonQuery(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spUpdateAttributeDefinition",
-                    new SqlParameter("@AttributeDefinitionId", attributeDefinitionId),
-                    new SqlParameter("@DataType", dataType),
-                    new SqlParameter("@DefaultValue", defaultValue),
-                    new SqlParameter("@AttributeName", attributeName),
-                    new SqlParameter("@Required", required),
-                    new SqlParameter("@ValidationExpression", validationExpression),
-                    new SqlParameter("@ViewOrder", viewOrder),
-                    new SqlParameter("@Visible", visible),
-                    new SqlParameter("@Length", length));
+            return this.ExecuteNonQuery(
+                    "UpdateAttributeDefinition",
+                    Engage.Utility.CreateIntegerParam("@AttributeDefinitionId", attributeDefinitionId),
+                    Engage.Utility.CreateIntegerParam("@DataType", dataType),
+                    Engage.Utility.CreateTextParam("@DefaultValue", defaultValue),
+                    Engage.Utility.CreateVarcharParam("@AttributeName", attributeName, DefaultVarcharSize),
+                    Engage.Utility.CreateBitParam("@Required", required),
+                    Engage.Utility.CreateVarcharParam("@ValidationExpression", validationExpression, DefaultVarcharSize),
+                    Engage.Utility.CreateIntegerParam("@ViewOrder", viewOrder),
+                    Engage.Utility.CreateBitParam("@Visible", visible),
+                    Engage.Utility.CreateIntegerParam("@Length", length));
         }
 
+        /// <exception cref="NotImplementedException">The method or operation is not implemented.</exception>
         public override void UpdateComment(int locationId, string comment, string submittedBy, bool approved, int userId)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         public override void UpdateImportedLocationRow(int fileId)
         {
-            SqlHelper.ExecuteNonQuery(
-                    this.connectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spUpdateImportedLocationRow",
-                    Engage.Utility.CreateIntegerParam("@FileId", fileId));
+            this.ExecuteNonQuery("UpdateImportedLocationRow", Engage.Utility.CreateIntegerParam("@FileId", fileId));
         }
 
         public override int UpdateLocation(Location loc)
         {
-            return SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString,
-                    CommandType.StoredProcedure,
-                    this.NamePrefix + "spUpdateLocation",
+            return this.ExecuteNonQuery(
+                    "UpdateLocation",
                     Engage.Utility.CreateIntegerParam("@LocationId", loc.LocationId),
                     Engage.Utility.CreateVarcharParam("@ExternalIdentifier", loc.ExternalIdentifier, 100),
                     Engage.Utility.CreateIntegerParam("@LocationTypeId", loc.LocationTypeId),
                     Engage.Utility.CreateVarcharParam("@Name", loc.Name, 100),
-                    Engage.Utility.CreateVarcharParam("@Website", loc.Website, 255),
+                    Engage.Utility.CreateVarcharParam("@Website", loc.Website, DefaultVarcharSize),
                     Engage.Utility.CreateDoubleParam("@Latitude", loc.Latitude),
                     Engage.Utility.CreateDoubleParam("@Longitude", loc.Longitude),
                     Engage.Utility.CreateIntegerParam("@CountryId", loc.CountryId),
@@ -889,6 +796,66 @@ namespace Engage.Dnn.Locator.Data
                     sql.ToString(),
                     Engage.Utility.CreateIntegerParam("@locationTypeId", locationTypeId),
                     Engage.Utility.CreateVarcharParam("@locationTypeName", locationTypeName, 50));
+        }
+
+        /// <summary>
+        /// Executes a SQL stored procedure without returning any value.
+        /// </summary>
+        /// <param name="storedProcedureName">Name of the stored procedure.  Does not include any prefix, for example "InsertLocation" is translated to "dnn_EngageLocator_spInsertLocation."</param>
+        /// <param name="parameters">The parameters for this query.</param>
+        /// <returns>The number of rows affected by the given stored procedure</returns>
+        private int ExecuteNonQuery(string storedProcedureName, params SqlParameter[] parameters)
+        {
+            return SqlHelper.ExecuteNonQuery(
+                this.ConnectionString,
+                CommandType.StoredProcedure,
+                this.NamePrefix + "sp" + storedProcedureName,
+                parameters);
+        }
+
+        /// <summary>
+        /// Executes a SQL stored procedure, returning the results as a <see cref="DataSet"/>.
+        /// </summary>
+        /// <param name="storedProcedureName">Name of the stored procedure.  Does not include any prefix, for example "GetLocations" is translated to "dnn_EngageEmployment_spGetLocations."</param>
+        /// <param name="parameters">The parameters for this query.</param>
+        /// <returns>The result set of the given stored procedure as a <see cref="DataSet"/>.</returns>
+        private DataSet ExecuteDataset(string storedProcedureName, params SqlParameter[] parameters)
+        {
+            return SqlHelper.ExecuteDataset(
+                this.ConnectionString,
+                CommandType.StoredProcedure,
+                this.NamePrefix + "sp" + storedProcedureName,
+                parameters);
+        }
+
+        /// <summary>
+        /// Executes a SQL stored procedure, returning the results as a <see cref="SqlDataReader"/>.
+        /// </summary>
+        /// <param name="storedProcedureName">Name of the stored procedure.  Does not include any prefix, for example "GetLocations" is translated to "dnn_EngageEmployment_spGetLocations."</param>
+        /// <param name="parameters">The parameters for this query.</param>
+        /// <returns>The result set of the given stored procedure as a <see cref="SqlDataReader"/>.</returns>
+        private SqlDataReader ExecuteReader(string storedProcedureName, params SqlParameter[] parameters)
+        {
+            return SqlHelper.ExecuteReader(
+                this.ConnectionString,
+                CommandType.StoredProcedure,
+                this.NamePrefix + "sp" + storedProcedureName,
+                parameters);
+        }
+
+        /// <summary>
+        /// Executes a SQL stored procedure, returning a single value.
+        /// </summary>
+        /// <param name="storedProcedureName">Name of the stored procedure.  Does not include any prefix, for example "InsertLocation" is translated to "dnn_EngageEmployment_spInsertLocation."</param>
+        /// <param name="parameters">The parameters for this query.</param>
+        /// <returns>The single return value from the execution of the given stored procedure</returns>
+        private object ExecuteScalar(string storedProcedureName, params SqlParameter[] parameters)
+        {
+            return SqlHelper.ExecuteScalar(
+                this.ConnectionString,
+                CommandType.StoredProcedure,
+                this.NamePrefix + "sp" + storedProcedureName,
+                parameters);
         }
     }
 }

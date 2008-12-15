@@ -1,0 +1,12 @@
+﻿IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocation]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocation]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocation]
+	@LocationId int
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}EngageLocator_Comment WHERE LocationId = @LocationId
+	DELETE FROM {databaseOwner}{objectQualifier}EngageLocator_LocationAttribute WHERE LocationId = @LocationId
+	DELETE FROM {databaseOwner}{objectQualifier}EngageLocator_Location WHERE LocationId = @LocationId
+GO
+
