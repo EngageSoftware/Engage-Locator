@@ -59,13 +59,13 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Label lblApiMapProvider;
         
         /// <summary>
-        /// cvProviderType control.
+        /// ProviderTypeValidator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvProviderType;
+        protected global::System.Web.UI.WebControls.CustomValidator ProviderTypeValidator;
         
         /// <summary>
         /// lblAPIKey control.
@@ -95,13 +95,13 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Label lblApiInstructions;
         
         /// <summary>
-        /// CustomValidator1 control.
+        /// ApiKeyValidator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator CustomValidator1;
+        protected global::System.Web.UI.WebControls.CustomValidator ApiKeyValidator;
         
         /// <summary>
         /// lblLocatorCountry control.
@@ -122,13 +122,13 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.DropDownList ddlLocatorCountry;
         
         /// <summary>
-        /// cvLocatorCountry control.
+        /// LocatorCountryValidator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvLocatorCountry;
+        protected global::System.Web.UI.WebControls.CustomValidator LocatorCountryValidator;
         
         /// <summary>
         /// dshDisplaySetting control.
@@ -383,13 +383,13 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.GridView gvTabModules;
         
         /// <summary>
-        /// cvLocatorModules control.
+        /// SearchResultsModuleValidator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvLocatorModules;
+        protected global::System.Web.UI.WebControls.CustomValidator SearchResultsModuleValidator;
         
         /// <summary>
         /// lblSearchOptions control.
@@ -437,13 +437,13 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.CheckBox chkCountry;
         
         /// <summary>
-        /// cvSearchOptions control.
+        /// SearchOptionsValidator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvSearchOptions;
+        protected global::System.Web.UI.WebControls.CustomValidator SearchOptionsValidator;
         
         /// <summary>
         /// lblOptional control.

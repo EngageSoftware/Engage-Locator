@@ -321,4 +321,16 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
   <data name="lblLocationRating.Text" xml:space="preserve">
     <value>Allow Location Ratings</value>
   </data>
+  <data name="ApiKeyValidator.Text" xml:space="preserve">
+    <value>API key is invalid</value>
+  </data>
+  <data name="LocatorCountryValidator.Text" xml:space="preserve">
+    <value>Please select a default country.</value>
+  </data>
+  <data name="ProviderTypeValidator.Text" xml:space="preserve">
+    <value>Please select a map provider.</value>
+  </data>
+  <data name="SearchResultsModuleValidator.Text" xml:space="preserve">
+    <value>Please select a results display module.</value>
+  </data>
 </root>

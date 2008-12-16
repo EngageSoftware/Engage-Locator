@@ -335,11 +335,11 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
-        /// Handles the OnServerValidate event of the cvLocatorCountry control.
+        /// Handles the OnServerValidate event of the LocatorCountryValidator control.
         /// </summary>
         /// <param name="source">The source of the event.</param>
-        /// <param name="args">The. <see cref="!:T:System.Web.UI.WebControls.ServerValidateEventArgs" /> Instance containing the event data.</param>
-        protected void cvLocatorCountry_OnServerValidate(object source, ServerValidateEventArgs args)
+        /// <param name="args">The. <see cref="System.Web.UI.WebControls.ServerValidateEventArgs" /> Instance containing the event data.</param>
+        protected void LocatorCountryValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
             if (this.ddlLocatorCountry.SelectedIndex > 0)
             {
@@ -353,11 +353,11 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
-        /// Handles the ServerValidate event of the cvLocatorModules control.
+        /// Handles the ServerValidate event of the SearchResultsModuleValidator control.
         /// </summary>
         /// <param name="source">The source of the event.</param>
-        /// <param name="args">The. <see cref="!:T:System.Web.UI.WebControls.ServerValidateEventArgs" /> Instance containing the event data.</param>
-        protected void cvLocatorModules_ServerValidate(object source, ServerValidateEventArgs args)
+        /// <param name="args">The. <see cref="System.Web.UI.WebControls.ServerValidateEventArgs" /> Instance containing the event data.</param>
+        protected void SearchResultsModuleValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
             string tabId = string.Empty;
             foreach (GridViewRow row in this.gvTabModules.Rows)
@@ -383,11 +383,11 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
-        /// Handles the ServerValidate event of the cvProviderType control.
+        /// Handles the ServerValidate event of the ProviderTypeValidator control.
         /// </summary>
         /// <param name="source">The source of the event.</param>
         /// <param name="args">The. <see cref="!:T:System.Web.UI.WebControls.ServerValidateEventArgs" /> Instance containing the event data.</param>
-        protected void cvProviderType_ServerValidate(object source, ServerValidateEventArgs args)
+        protected void ProviderTypeValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
             if (this.rblProviderType.SelectedItem == null)
             {
@@ -397,11 +397,11 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
-        /// Handles the ServerValidate event of the cvSearchOptions control.
+        /// Handles the ServerValidate event of the SearchOptionsValidator control.
         /// </summary>
         /// <param name="source">The source of the event.</param>
         /// <param name="args">The. <see cref="!:T:System.Web.UI.WebControls.ServerValidateEventArgs" /> Instance containing the event data.</param>
-        protected void cvSearchOptions_ServerValidate(object source, ServerValidateEventArgs args)
+        protected void SearchOptionsValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
             if (this.chkAddress.Checked || this.chkCityRegion.Checked || this.chkPostalCode.Checked || this.chkPostalCode.Checked
                 || this.chkCountry.Checked)
