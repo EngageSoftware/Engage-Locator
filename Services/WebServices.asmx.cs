@@ -36,12 +36,12 @@
             if (providerType == MapProviderType.GoogleMaps)
             {
                 GoogleGeocodeResult result = SearchUtility.SearchGoogle(postalCode, apiKey);
-                matches = Location.GetClosestLocationsByRadius(result.latitude, result.longitude, radius, portalId, locationTypeIds);
+                matches = Location.GetAllLocationsByDistance(result.latitude, result.longitude, radius, portalId, locationTypeIds);
             }
             else
             {
                 YahooGeocodeResult result = SearchUtility.SearchYahoo(string.Empty, string.Empty, string.Empty, string.Empty, postalCode, apiKey);
-                matches = Location.GetClosestLocationsByRadius(result.Latitude, result.Longitude, radius, portalId, locationTypeIds);
+                matches = Location.GetAllLocationsByDistance(result.Latitude, result.Longitude, radius, portalId, locationTypeIds);
             }
 
             return matches;

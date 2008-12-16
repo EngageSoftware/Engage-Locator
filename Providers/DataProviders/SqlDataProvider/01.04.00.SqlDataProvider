@@ -1,12 +1,94 @@
 ﻿IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocation]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocation]
 GO
-
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spDeleteLocation]
 	@LocationId int
 AS
 	DELETE FROM {databaseOwner}{objectQualifier}EngageLocator_Comment WHERE LocationId = @LocationId
 	DELETE FROM {databaseOwner}{objectQualifier}EngageLocator_LocationAttribute WHERE LocationId = @LocationId
 	DELETE FROM {databaseOwner}{objectQualifier}EngageLocator_Location WHERE LocationId = @LocationId
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocations]
+	@PortalId int,
+	@approved bit,
+	@sortColumn nvarchar(200), 
+	@index int, 
+	@pageSize int
+AS
+
+	CREATE TABLE #results 
+	(
+		Id int NOT NULL IDENTITY(1,1),
+		LocationId int,
+		TotalRecords int
+	)
+
+	EXEC('INSERT INTO #results ([LocationId]) SELECT LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations] WHERE PortalId = ' + @PortalID + ' AND Approved = ' + @approved + ' ORDER BY ' + @sortColumn)
+	UPDATE #results SET TotalRecords = @@RowCount
+
+	IF (@PageSize IS NULL OR @Index IS NULL)
+		BEGIN
+	 		SELECT r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName AS Country, CountryId, RegionId, City, Address, Address2, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
+			FROM #results r
+			JOIN {databaseOwner}[{objectQualifier}EngageLocator_vLocations] l ON (r.LocationId = l.LocationId)
+	 	END
+	ELSE
+	 	BEGIN
+	 		SELECT r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName AS Country, CountryId, RegionId, City, Address, Address2, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
+			FROM #results r
+			JOIN {databaseOwner}[{objectQualifier}EngageLocator_vLocations] l ON (r.LocationId = l.LocationId)
+	 		WHERE id >= @index * @PageSize + 1
+	 		 AND id < @index * @PageSize + @PageSize + 1
+	 	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetLocationsByCountry]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationsByCountry]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetLocationsByCountry]
+	@PortalId int,
+	@CountryId int,
+	@pageIndex int, 
+	@pageSize int
+AS
+
+	CREATE TABLE #results 
+	(
+		Id int NOT NULL IDENTITY(1,1),
+		LocationId int,
+		TotalRecords int
+	)
+
+	INSERT INTO #results (LocationId)
+	SELECT LocationId
+	FROM {objectQualifier}EngageLocator_vLocations
+	WHERE CountryId = @CountryId
+	 AND PortalId = @PortalId
+	ORDER BY City
+	
+	UPDATE #results SET TotalRecords = @@RowCount
+	
+	IF (@PageSize IS NULL OR @Index IS NULL)
+		BEGIN
+	 		SELECT r.LocationId, LocationTypeId, ExternalIdentifier, [Name], Website, Latitude, Longitude, 
+				   Abbreviation, CountryName, City, Address, Address2, Phone, RegionId, LocationDetails, 
+				   [Type], PostalCode, Approved, AverageRating, r.TotalRecords
+			FROM #results r
+			JOIN {databaseOwner}[{objectQualifier}EngageLocator_vLocations] l ON (r.LocationId = l.LocationId)
+	 	END
+	ELSE
+	 	BEGIN
+	 		SELECT r.LocationId, LocationTypeId, ExternalIdentifier, [Name], Website, Latitude, Longitude, 
+				   Abbreviation, CountryName, City, Address, Address2, Phone, RegionId, LocationDetails, 
+				   [Type], PostalCode, Approved, AverageRating, r.TotalRecords
+			FROM #results r
+			JOIN {databaseOwner}[{objectQualifier}EngageLocator_vLocations] l ON (r.LocationId = l.LocationId)
+	 		WHERE id >= @index * @PageSize + 1
+	 		 AND id < @index * @PageSize + @PageSize + 1
+	 	END
 GO
 

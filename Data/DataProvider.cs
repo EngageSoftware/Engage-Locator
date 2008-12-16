@@ -65,25 +65,21 @@ namespace Engage.Dnn.Locator.Data
             return instance;
         }
 
-        /// <summary>
-        /// Gets the configured connection string for this site's data provider.
-        /// </summary>
-        /// <returns>The connection string for this site's data provider</returns>
-        private static string GetConnectionString()
-        {
-            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-            Provider objProvider = ((Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider]);
-
-            string configuredConnectionString = Config.GetConnectionString();
-            return !string.IsNullOrEmpty(configuredConnectionString) ? configuredConnectionString : objProvider.Attributes["connectionString"];
-        }
-
         public abstract DataTable GetNClosestLocations(double latitude, double longitude, int count, int portalId);
 
         public abstract IDataReader GetClosestLocationsByRadius(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds);
         public abstract IDataReader GetLocation(int locationId);
-        public abstract IDataReader GetLocationsByCountry(int countryId, int portalId);
-        public abstract DataTable GetAllLocations(int portalId, bool approved, string sortColumn, int index, int pageSize);
+        
+        /// <summary>
+        /// Gets the locations in a given country.
+        /// </summary>
+        /// <param name="countryId">The country ID.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="pageIndex">Index of the page, or <c>null</c> if not paging.</param>
+        /// <param name="pageSize">Size of the page, or <c>null</c> if not paging.</param>
+        /// <returns>A list of locations</returns>
+        public abstract IDataReader GetLocationsByCountry(int countryId, int portalId, int? pageIndex, int? pageSize);
+        public abstract DataTable GetAllLocations(int portalId, bool approved, string sortColumn, int? index, int? pageSize);
         public abstract void DeleteLocation(int locationId);
         public abstract string CopyData();
         public abstract void ClearLocations(int portalId);
@@ -108,7 +104,16 @@ namespace Engage.Dnn.Locator.Data
         public abstract DataTable GetFilesToImport();
         public abstract void UpdateImportedLocationRow(int fileId);
         public abstract IDataReader GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds);
-        public abstract IDataReader GetAllLocationsByType(int portalId, string[] types);
+
+        /// <summary>
+        /// Gets a list of the locations in the given <paramref name="locationTypeIds"/>.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="locationTypeIds">The IDs of the types of locations to retrieve.</param>
+        /// <param name="pageIndex">Index of the page, or <c>null</c> if not paging.</param>
+        /// <param name="pageSize">Size of the page, or <c>null</c> if not paging.</param>
+        /// <returns>A list of locations</returns>
+        public abstract IDataReader GetAllLocationsByType(int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize);
         public abstract DataTable GetImportedLocationStatistics(int portalId);
         public abstract DataTable GetEngageLocatorTabModules(int portalId);
         public abstract void InsertComment(int locationId, string comment, string submittedBy, bool approved);
@@ -130,5 +135,18 @@ namespace Engage.Dnn.Locator.Data
         public abstract IDataReader GetAttributeDefinition(int definitionId);
         public abstract IDataReader GetAttributeDefinitionByName(int locationTypeId,  string name);
         public abstract int UpdateAttributeDefinition(int definitionId, int dataType, string defaultValue, string attributeName, bool required, string validationExpression, int viewOrder, bool visible, int length);
+
+        /// <summary>
+        /// Gets the configured connection string for this site's data provider.
+        /// </summary>
+        /// <returns>The connection string for this site's data provider</returns>
+        private static string GetConnectionString()
+        {
+            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
+            Provider objProvider = ((Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider]);
+
+            string configuredConnectionString = Config.GetConnectionString();
+            return !string.IsNullOrEmpty(configuredConnectionString) ? configuredConnectionString : objProvider.Attributes["connectionString"];
+        }
     }
 }

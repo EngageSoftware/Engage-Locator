@@ -156,6 +156,9 @@ namespace Engage.Dnn.Locator
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string website;
 
+        /// <summary>
+        /// Backing field for <see cref="Distance"/>
+        /// </summary>
         private double? distance;
 
         /// <summary>
@@ -478,6 +481,11 @@ namespace Engage.Dnn.Locator
             DataProvider.Instance().UpdateImportedLocationRow(fileId);
         }
 
+        /// <summary>
+        /// Gets the location with the given ID.
+        /// </summary>
+        /// <param name="locationId">The location ID.</param>
+        /// <returns>The location with the given ID, or <c>null</c> if no location with that ID exists</returns>
         public static Location GetLocation(int locationId)
         {
             using (IDataReader reader = DataProvider.Instance().GetLocation(locationId))
@@ -491,11 +499,46 @@ namespace Engage.Dnn.Locator
             return null;
         }
 
-        public static DataTable GetLocations(int portalId, bool approved, string sortColumn, int index, int pageSize)
+        /// <summary>
+        /// Gets a list of locations in the given portal.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="approvedOnly">if set to <c>true</c>, the list only includes approved locations; otherwise, the list includes approved and unapproved locations.</param>
+        /// <returns>A list of <see cref="Location"/>s</returns>
+        public static List<Location> GetLocations(int portalId, bool approvedOnly)
         {
-            return DataProvider.Instance().GetAllLocations(portalId, approved, sortColumn, index, pageSize);
+            // TODO: Refactor this so it doesn't go to the database for each location!
+            List<Location> locations = new List<Location>();
+            foreach (DataRow row in GetLocations(portalId, approvedOnly, "Name", null, null).Rows)
+            {
+                locations.Add(GetLocation(Convert.ToInt32(row["LocationId"], CultureInfo.InvariantCulture)));
+            }
+
+            return locations;
         }
 
+        /// <summary>
+        /// Gets a list of locations in the given portal.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="approvedOnly">if set to <c>true</c>, the list only includes approved locations; otherwise, the list includes approved and unapproved locations.</param>
+        /// <param name="sortColumn">The name of the column by which the results should be sorted.</param>
+        /// <param name="pageIndex">The index.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>A list of <see cref="Location"/>s</returns>
+        public static DataTable GetLocations(int portalId, bool approvedOnly, string sortColumn, int? pageIndex, int? pageSize)
+        {
+            return DataProvider.Instance().GetAllLocations(portalId, approvedOnly, sortColumn, pageIndex, pageSize);
+        }
+
+        /// <summary>
+        /// Gets a list of the locations ordered by their distance from a given location.
+        /// </summary>
+        /// <param name="latitude">The latitude of the search location.</param>
+        /// <param name="longitude">The longitude of the search location.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="locationTypeIds">An array of IDs of the types of locations to include in the results.</param>
+        /// <returns>A list of <see cref="Location"/>s</returns>
         public static List<Location> GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds)
         {
             using (IDataReader reader = DataProvider.Instance().GetAllLocationsByDistance(latitude, longitude, portalId, locationTypeIds))
@@ -510,7 +553,16 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        public static List<Location> GetClosestLocationsByRadius(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds)
+        /// <summary>
+        /// Gets a list of the locations within a given mile radius, ordered by their distance from a given location.
+        /// </summary>
+        /// <param name="latitude">The latitude of the search location.</param>
+        /// <param name="longitude">The longitude of the search location.</param>
+        /// <param name="radius">The radius (in miles) around the search location for which to return results.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="locationTypeIds">An array of IDs of the types of locations to include in the results.</param>
+        /// <returns>A list of <see cref="Location"/>s</returns>
+        public static List<Location> GetAllLocationsByDistance(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds)
         {
             using (IDataReader reader = DataProvider.Instance().GetClosestLocationsByRadius(latitude, longitude, radius, portalId, locationTypeIds))
             {
@@ -524,9 +576,28 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        public static List<Location> GetAllLocationsByType(int portalId, string[] types)
+        /// <summary>
+        /// Gets all of the locations in the given list of type.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="locationTypeIds">An array of IDs of the types of locations to include in the results.</param>
+        /// <returns>A list of <see cref="Location"/>s</returns>
+        public static List<Location> GetAllLocationsByType(int portalId, int[] locationTypeIds)
         {
-            using (IDataReader reader = DataProvider.Instance().GetAllLocationsByType(portalId, types))
+            return GetAllLocationsByType(portalId, locationTypeIds, null, null);
+        }
+
+        /// <summary>
+        /// Gets all of the locations in the given list of type.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="locationTypeIds">An array of IDs of the types of locations to include in the results.</param>
+        /// <param name="pageIndex">Index of the page, if returning a partial list; otherwise <c>null</c>.</param>
+        /// <param name="pageSize">Size of the page, if returning a partial list; otherwise <c>null</c>.</param>
+        /// <returns>A list of <see cref="Location"/>s</returns>
+        public static List<Location> GetAllLocationsByType(int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
+        {
+            using (IDataReader reader = DataProvider.Instance().GetAllLocationsByType(portalId, locationTypeIds, pageIndex, pageSize))
             {
                 List<Location> locations = new List<Location>();
                 while (reader.Read())
@@ -538,9 +609,28 @@ namespace Engage.Dnn.Locator
             }
         }
 
+        /// <summary>
+        /// Gets all of the locations located in a given country.
+        /// </summary>
+        /// <param name="countryId">The country ID.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A list of all the <see cref="Location"/>s in the given country</returns>
         public static List<Location> GetLocationsByCountry(int countryId, int portalId)
         {
-            using (IDataReader reader = DataProvider.Instance().GetLocationsByCountry(countryId, portalId))
+            return GetLocationsByCountry(countryId, portalId, null, null);
+        }
+
+        /// <summary>
+        /// Gets all of the locations located in a given country.
+        /// </summary>
+        /// <param name="countryId">The country ID.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="pageIndex">Index of the page, if returning a partial list; otherwise <c>null</c>.</param>
+        /// <param name="pageSize">Size of the page, if returning a partial list; otherwise <c>null</c>.</param>
+        /// <returns>A list of all the <see cref="Location"/>s in the given country</returns>
+        public static List<Location> GetLocationsByCountry(int countryId, int portalId, int? pageIndex, int? pageSize)
+        {
+            using (IDataReader reader = DataProvider.Instance().GetLocationsByCountry(countryId, portalId, pageIndex, pageSize))
             {
                 List<Location> locations = new List<Location>();
                 while (reader.Read())
@@ -552,24 +642,22 @@ namespace Engage.Dnn.Locator
             }
         }
 
+        /// <summary>
+        /// Deletes a location.
+        /// </summary>
+        /// <param name="locationId">The location ID.</param>
         public static void DeleteLocation(int locationId)
         {
             DataProvider.Instance().DeleteLocation(locationId);
         }
 
-        public static List<Location> GetSearchLocations(int portalId, bool approved)
-        {
-            DataTable locationsTable = DataProvider.Instance().GetAllLocations(portalId, approved, "Name", 0, 0);
-            List<Location> locations = new List<Location>();
-            foreach (DataRow row in locationsTable.Rows)
-            {
-                Location loc = GetLocation(Convert.ToInt32(row["LocationId"], CultureInfo.InvariantCulture));
-                locations.Add(loc);
-            }
-
-            return locations;
-        }
-
+        /// <summary>
+        /// Adds the given <paramref name="comment"/> to the location with the given ID.
+        /// </summary>
+        /// <param name="locationId">The location ID.</param>
+        /// <param name="comment">The comment text.</param>
+        /// <param name="submittedBy">The user ID of the commenter.</param>
+        /// <param name="approved">if set to <c>true</c> the comment is approved; otherwise it is waiting for approval.</param>
         public static void InsertComment(int locationId, string comment, string submittedBy, bool approved)
         {
             DataProvider.Instance().InsertComment(locationId, comment, submittedBy, approved);
@@ -587,7 +675,7 @@ namespace Engage.Dnn.Locator
         /// <returns>A <see cref="Location"/> instance instantiated from the given <paramref name="row"/></returns>
         public static Location Load(IDataReader row)
         {
-            return Load(row, row.GetSchemaTable().Columns.Contains("Distance"));
+            return Load(row, row.GetSchemaTable().Select("ColumnName = 'Distance'").Length == 1);
         }
 
         /// <summary>
@@ -623,6 +711,9 @@ namespace Engage.Dnn.Locator
             return loc;
         }
 
+        /// <summary>
+        /// Saves this instance.
+        /// </summary>
         public void Save()
         {
             if (this.locationId == -1)
@@ -631,6 +722,10 @@ namespace Engage.Dnn.Locator
             }
         }
 
+        /// <summary>
+        /// Saves this instance as a temp location.  This is only used when importing locations.
+        /// </summary>
+        /// <param name="successful">if set to <c>true</c> the import for this location was successful.</param>
         public void SaveTemp(bool successful)
         {
             if (this.locationId != -1)
@@ -639,6 +734,9 @@ namespace Engage.Dnn.Locator
             }
         }
 
+        /// <summary>
+        /// Updates this instance.
+        /// </summary>
         public void Update()
         {
             if (this.locationId != -1)
@@ -647,11 +745,20 @@ namespace Engage.Dnn.Locator
             }
         }
 
+        /// <summary>
+        /// Gets the comments for this instance.
+        /// </summary>
+        /// <param name="onlyApproved">if set to <c>true</c> only gets the approved comments; otherwise gets approved and unapproved.</param>
+        /// <returns>A list of comments</returns>
         public DataSet GetComments(bool onlyApproved)
         {
             return DataProvider.Instance().GetComments(this.locationId, onlyApproved);
         }
 
+        /// <summary>
+        /// Gets the attributes for this instance.
+        /// </summary>
+        /// <returns>A list of <see cref="Attribute"/>s</returns>
         public List<Attribute> GetAttributes()
         {
             return Attribute.GetAttributes(this.locationTypeId, this.locationId);

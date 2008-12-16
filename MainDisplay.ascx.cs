@@ -519,7 +519,7 @@ namespace Engage.Dnn.Locator
                 }
                 else
                 {
-                    locations = Location.GetClosestLocationsByRadius(
+                    locations = Location.GetAllLocationsByDistance(
                             latitude,
                             longitude,
                             int.Parse(this.ddlDistance.SelectedValue, CultureInfo.InvariantCulture),
@@ -652,11 +652,10 @@ namespace Engage.Dnn.Locator
         /// <summary>
         /// Gets the default list of all locations.
         /// </summary>
-        /// <returns>The default lis tof all locations</returns>
+        /// <returns>The default list of all locations</returns>
         private List<Location> GetDefaultLocations()
         {
-            string displayTypes = Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes");
-            return Location.GetAllLocationsByType(this.PortalId, displayTypes.Split(','));
+            return Location.GetAllLocationsByType(this.PortalId, Engage.Utility.ParseIntegerList(Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes").Split(','), CultureInfo.InvariantCulture).ToArray());
         }
 
         /// <summary>
