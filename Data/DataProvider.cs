@@ -67,7 +67,6 @@ namespace Engage.Dnn.Locator.Data
 
         public abstract DataTable GetNClosestLocations(double latitude, double longitude, int count, int portalId);
 
-        public abstract IDataReader GetClosestLocationsByRadius(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds);
         public abstract IDataReader GetLocation(int locationId);
         
         /// <summary>
@@ -103,7 +102,18 @@ namespace Engage.Dnn.Locator.Data
         public abstract int GetTabModuleIdByFileId(int fileId);
         public abstract DataTable GetFilesToImport();
         public abstract void UpdateImportedLocationRow(int fileId);
-        public abstract IDataReader GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds);
+
+        /// <summary>
+        /// Gets a list of the locations in the given <paramref name="locationTypeIds"/>, ordered by their distance from the given coordinates
+        /// </summary>
+        /// <param name="latitude">The latitude of the search location.</param>
+        /// <param name="longitude">The longitude of the search location.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="locationTypeIds">The IDs of the types of locations to retrieve.</param>
+        /// <param name="pageIndex">Index of the page, or <c>null</c> if not paging.</param>
+        /// <param name="pageSize">Size of the page, or <c>null</c> if not paging.</param>
+        /// <returns>A list of locations</returns>
+        public abstract IDataReader GetAllLocationsByDistance(double latitude, double longitude, int? radius, int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize);
 
         /// <summary>
         /// Gets a list of the locations in the given <paramref name="locationTypeIds"/>.

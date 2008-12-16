@@ -523,8 +523,8 @@ namespace Engage.Dnn.Locator
         /// <param name="portalId">The portal ID.</param>
         /// <param name="approvedOnly">if set to <c>true</c>, the list only includes approved locations; otherwise, the list includes approved and unapproved locations.</param>
         /// <param name="sortColumn">The name of the column by which the results should be sorted.</param>
-        /// <param name="pageIndex">The index.</param>
-        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="pageIndex">Index of the page, if returning a partial list; otherwise <c>null</c>.</param>
+        /// <param name="pageSize">Size of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <returns>A list of <see cref="Location"/>s</returns>
         public static DataTable GetLocations(int portalId, bool approvedOnly, string sortColumn, int? pageIndex, int? pageSize)
         {
@@ -538,19 +538,12 @@ namespace Engage.Dnn.Locator
         /// <param name="longitude">The longitude of the search location.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="locationTypeIds">An array of IDs of the types of locations to include in the results.</param>
+        /// <param name="pageIndex">Index of the page, if returning a partial list; otherwise <c>null</c>.</param>
+        /// <param name="pageSize">Size of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <returns>A list of <see cref="Location"/>s</returns>
-        public static List<Location> GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds)
+        public static List<Location> GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
         {
-            using (IDataReader reader = DataProvider.Instance().GetAllLocationsByDistance(latitude, longitude, portalId, locationTypeIds))
-            {
-                List<Location> locations = new List<Location>();
-                while (reader.Read())
-                {
-                    locations.Add(Load(reader));
-                }
-
-                return locations;
-            }
+            return GetAllLocationsByDistance(latitude, longitude, null, portalId, locationTypeIds, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -561,10 +554,12 @@ namespace Engage.Dnn.Locator
         /// <param name="radius">The radius (in miles) around the search location for which to return results.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="locationTypeIds">An array of IDs of the types of locations to include in the results.</param>
+        /// <param name="pageIndex">Index of the page, if returning a partial list; otherwise <c>null</c>.</param>
+        /// <param name="pageSize">Size of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <returns>A list of <see cref="Location"/>s</returns>
-        public static List<Location> GetAllLocationsByDistance(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds)
+        public static List<Location> GetAllLocationsByDistance(double latitude, double longitude, int? radius, int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
         {
-            using (IDataReader reader = DataProvider.Instance().GetClosestLocationsByRadius(latitude, longitude, radius, portalId, locationTypeIds))
+            using (IDataReader reader = DataProvider.Instance().GetAllLocationsByDistance(latitude, longitude, radius, portalId, locationTypeIds, pageIndex, pageSize))
             {
                 List<Location> locations = new List<Location>();
                 while (reader.Read())

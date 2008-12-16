@@ -176,51 +176,6 @@ namespace Engage.Dnn.Locator.Data
                 Engage.Utility.CreateIntegerParam("@pageSize", pageSize)).Tables[0];
         }
 
-        public override IDataReader GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds)
-        {
-            StringBuilder sql = new StringBuilder(512);
-            sql.AppendFormat(
-                    CultureInfo.InvariantCulture,
-                    "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, RegionId, StateName, Phone, LocationDetails, [Type], PostalCode, Approved, AverageRating, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ",
-                    this.NamePrefix);
-            sql.AppendFormat(CultureInfo.InvariantCulture, " FROM {0}vLocations ", this.NamePrefix);
-            ////sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) <= @Radius ", NamePrefix);
-            sql.AppendFormat(CultureInfo.InvariantCulture, " WHERE PortalId = @PortalId ");
-            ////sql.AppendFormat(CultureInfo.InvariantCulture, " AND IsSearchable = 1 ");
-            sql.AppendFormat(CultureInfo.InvariantCulture, " AND Latitude IS NOT NULL ");
-            sql.AppendFormat(CultureInfo.InvariantCulture, " AND Longitude IS NOT NULL ");
-            int i = 0;
-
-            if (locationTypeIds != null)
-            {
-                foreach (int id in locationTypeIds)
-                {
-                    if (i == 0)
-                    {
-                        sql.AppendFormat(CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
-                    }
-                    else
-                    {
-                        sql.AppendFormat(CultureInfo.InvariantCulture, " OR Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
-                    }
-
-                    i++;
-                }
-
-                sql.AppendFormat(CultureInfo.InvariantCulture, ")");
-            }
-
-            sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) ", this.NamePrefix);
-
-            return SqlHelper.ExecuteReader(
-                    ConnectionString,
-                    CommandType.Text,
-                    sql.ToString(),
-                    Engage.Utility.CreateDoubleParam("@Latitude", latitude),
-                    Engage.Utility.CreateDoubleParam("@Longitude", longitude),
-                    Engage.Utility.CreateIntegerParam("@PortalId", portalId));
-        }
-
         /// <summary>
         /// Gets a list of the locations in the given <paramref name="locationTypeIds"/>.
         /// </summary>
@@ -247,7 +202,7 @@ namespace Engage.Dnn.Locator.Data
             {
                 for (int i = 0; i < locationTypeIds.Length; i++)
                 {
-                    string parameterName = "@typeName" + i.ToString(CultureInfo.InvariantCulture);
+                    string parameterName = "@locationTypeId" + i.ToString(CultureInfo.InvariantCulture);
                     sql.Append(i == 0 ? " AND (" : " OR ")
                         .AppendFormat(CultureInfo.InvariantCulture, " LocationTypeId = {0} ", parameterName);
                     parameters.Add(Engage.Utility.CreateIntegerParam(parameterName, locationTypeIds[i]));
@@ -256,14 +211,13 @@ namespace Engage.Dnn.Locator.Data
                 sql.Append(") ");
             }
 
-            sql.Append(" ORDER BY LocationId ")
+            sql.Append(" ORDER BY Name ")
                 .Append(" UPDATE #results SET TotalRecords = @@RowCount ");
 
             StringBuilder subQuery = new StringBuilder(256)
-                .Append(" SELECT r.LocationId, l.LocationTypeId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Address2, Latitude, Longitude, Phone, LocationDetails, Approved, AverageRating, lt.LocationTypeName, PostalCode, r.TotalRecords ")
+                .Append(" SELECT r.LocationId, l.LocationTypeId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Address2, Latitude, Longitude, Phone, LocationDetails, Approved, AverageRating, [Type], PostalCode, r.TotalRecords ")
                 .Append("  FROM #results r ")
-                .AppendFormat(CultureInfo.InvariantCulture, " JOIN {0}vLocations l ON (r.LocationId = l.LocationId) ", this.NamePrefix)
-                .AppendFormat(CultureInfo.InvariantCulture, " JOIN {0}LocationType lt ON (l.LocationTypeId = lt.LocationTypeId) ", this.NamePrefix);
+                .AppendFormat(CultureInfo.InvariantCulture, " JOIN {0}vLocations l ON (r.LocationId = l.LocationId) ", this.NamePrefix);
 
             sql.Append(" IF (@PageSize IS NULL OR @PageIndex IS NULL) ")
                 .Append(" BEGIN ")
@@ -312,63 +266,72 @@ namespace Engage.Dnn.Locator.Data
         }
 
         /// <summary>
-        /// Gets the closest locations within a given radius.
+        /// Gets a list of the locations in the given <paramref name="locationTypeIds"/>, ordered by their distance from the given coordinates, within the given mile radius
         /// </summary>
-        /// <param name="latitude">The latitude.</param>
-        /// <param name="longitude">The longitude.</param>
+        /// <param name="latitude">The latitude of the search location.</param>
+        /// <param name="longitude">The longitude of the search location.</param>
         /// <param name="radius">The radius in miles.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="locationTypeIds">IDs of the types of locations available.</param>
-        /// <returns>
-        /// A list of location records as well as their distance from the given location.
-        /// </returns>
-        public override IDataReader GetClosestLocationsByRadius(double latitude, double longitude, int radius, int portalId, int[] locationTypeIds)
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="locationTypeIds">The IDs of the types of locations to retrieve.</param>
+        /// <param name="pageIndex">Index of the page, or <c>null</c> if not paging.</param>
+        /// <param name="pageSize">Size of the page, or <c>null</c> if not paging.</param>
+        /// <returns>A list of locations</returns>
+        public override IDataReader GetAllLocationsByDistance(double latitude, double longitude, int? radius, int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
         {
-            StringBuilder sql = new StringBuilder(500);
-            sql.AppendFormat(
-                    CultureInfo.InvariantCulture,
-                    "SELECT LocationId, LocationTypeId, ExternalIdentifier, Name, StateName, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, Phone, RegionId, LocationDetails, [Type], PostalCode, Approved, AverageRating, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ",
-                    this.NamePrefix);
-            sql.AppendFormat(CultureInfo.InvariantCulture, " FROM {0}vLocations ", this.NamePrefix);
-            sql.AppendFormat(
-                    CultureInfo.InvariantCulture,
-                    " WHERE {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) <= @Radius ",
-                    this.NamePrefix);
-            sql.AppendFormat(CultureInfo.InvariantCulture, " AND PortalId = @PortalId ");
-            ////sql.AppendFormat(CultureInfo.InvariantCulture, " AND IsSearchable = 1 ");
-            sql.AppendFormat(CultureInfo.InvariantCulture, " AND Latitude IS NOT NULL ");
-            sql.AppendFormat(CultureInfo.InvariantCulture, " AND Longitude IS NOT NULL ");
-            int i = 0;
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            StringBuilder sql = new StringBuilder(1024)
+                .Append(" CREATE TABLE #results ( ")
+                .Append("  Id int NOT NULL IDENTITY(1,1),")
+                .Append("  LocationId int,")
+                .Append("  TotalRecords int")
+                .Append(")")
+                .Append(" INSERT INTO #results (LocationId) ")
+                .Append("SELECT LocationId ")
+                .AppendFormat(CultureInfo.InvariantCulture, " FROM {0}vLocations ", this.NamePrefix)
+                .Append(" WHERE PortalId = @PortalId ")
+                .Append(" AND Approved = 1 ")
+                .Append(" AND Latitude IS NOT NULL ")
+                .Append(" AND Longitude IS NOT NULL ");
 
-            if (locationTypeIds != null)
+            if (locationTypeIds != null && locationTypeIds.Length > 0)
             {
-                foreach (int id in locationTypeIds)
+                for (int i = 0; i < locationTypeIds.Length; i++)
                 {
-                    if (i == 0)
-                    {
-                        sql.AppendFormat(CultureInfo.InvariantCulture, " AND ( Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
-                    }
-                    else
-                    {
-                        sql.AppendFormat(CultureInfo.InvariantCulture, " OR Type = '" + LocationType.GetLocationTypeName(id).Replace("'", "''") + "'");
-                    }
-
-                    i++;
+                    string parameterName = "@locationTypeId" + i.ToString(CultureInfo.InvariantCulture);
+                    sql.Append(i == 0 ? " AND (" : " OR ")
+                        .AppendFormat(CultureInfo.InvariantCulture, " LocationTypeId = {0} ", parameterName);
+                    parameters.Add(Engage.Utility.CreateIntegerParam(parameterName, locationTypeIds[i]));
                 }
 
-                sql.AppendFormat(CultureInfo.InvariantCulture, ")");
+                sql.Append(") ");
             }
 
-            sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) ", this.NamePrefix);
+            sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) ", this.NamePrefix)
+                .Append(" UPDATE #results SET TotalRecords = @@RowCount ");
 
-            return SqlHelper.ExecuteReader(
-                    ConnectionString,
-                    CommandType.Text,
-                    sql.ToString(),
-                    Engage.Utility.CreateDoubleParam("@Latitude", latitude),
-                    Engage.Utility.CreateDoubleParam("@Longitude", longitude),
-                    Engage.Utility.CreateIntegerParam("@Radius", radius),
-                    Engage.Utility.CreateIntegerParam("@PortalId", portalId));
+            StringBuilder subQuery = new StringBuilder(256)
+                .AppendFormat(CultureInfo.InvariantCulture, " SELECT r.LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, RegionId, StateName, Phone, LocationDetails, [Type], PostalCode, Approved, AverageRating, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance, r.TotalRecords ", this.NamePrefix)
+                .Append("  FROM #results r ")
+                .AppendFormat(CultureInfo.InvariantCulture, " JOIN {0}vLocations l ON (r.LocationId = l.LocationId) ", this.NamePrefix);
+
+            sql.Append(" IF (@PageSize IS NULL OR @PageIndex IS NULL) ")
+                .Append(" BEGIN ")
+                .Append(subQuery)
+                .Append(" END ")
+                .Append(" ELSE ")
+                .Append(" BEGIN ")
+                .Append(subQuery)
+                .Append("  WHERE id >= @PageIndex * @PageSize + 1 ")
+                .Append("   AND id < @PageIndex * @PageSize + @PageSize + 1 ")
+                .Append(" END ");
+
+            parameters.Add(Engage.Utility.CreateIntegerParam("@PortalId", portalId));
+            parameters.Add(Engage.Utility.CreateDoubleParam("@Latitude", latitude));
+            parameters.Add(Engage.Utility.CreateDoubleParam("@Longitude", longitude));
+            parameters.Add(Engage.Utility.CreateIntegerParam("@PageIndex", pageIndex));
+            parameters.Add(Engage.Utility.CreateIntegerParam("@PageSize", pageSize));
+
+            return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, sql.ToString(), parameters.ToArray());
         }
 
         public override Comment GetComment(int commentId)

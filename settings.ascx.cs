@@ -1,6 +1,7 @@
 namespace Engage.Dnn.Locator
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
     using System.Web.UI.WebControls;
@@ -213,9 +214,7 @@ namespace Engage.Dnn.Locator
                 hsc.UpdateHostSetting("LocatorAllowSubmissions" + this.PortalId, this.chkAllowLocations.Checked.ToString(CultureInfo.InvariantCulture));
                 hsc.UpdateHostSetting("LocatorSubmissionModeration" + this.PortalId, this.chkModerateLocations.Checked.ToString(CultureInfo.InvariantCulture));
 
-                string locationTypeList = this.GetLocationTypeList();
-
-                objModules.UpdateTabModuleSetting(this.TabModuleId, "DisplayTypes", locationTypeList);
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "DisplayTypes", this.GetLocationTypeList());
 
                 if (this.rbNoDetails.Checked)
                 {
@@ -524,30 +523,27 @@ namespace Engage.Dnn.Locator
             }
         }
 
+        /// <summary>
+        /// Gets a comma-delimited list of the IDs of the selected location types.
+        /// </summary>
+        /// <returns>A comma-delimited list of the IDs of the selected location types.</returns>
         private string GetLocationTypeList()
         {
-            string locationTypeList = "";
+            List<string> locationTypeIds = new List<string>();
             foreach (ListItem li in this.lbLocationType.Items)
             {
                 if (li.Selected)
                 {
-                    if (locationTypeList.Length == 0)
-                    {
-                        locationTypeList = li.Value;
-                    }
-                    else
-                    {
-                        locationTypeList = locationTypeList + "," + li.Value;
-                    }
+                    locationTypeIds.Add(li.Value);
                 }
             }
 
-            if (locationTypeList.Length == 0)
+            if (locationTypeIds.Count == 0)
             {
-                locationTypeList = this.lbLocationType.Items[0].Value;
+                locationTypeIds.Add(this.lbLocationType.Items[0].Value);
             }
 
-            return locationTypeList;
+            return string.Join(",", locationTypeIds.ToArray());
         }
     }
 }

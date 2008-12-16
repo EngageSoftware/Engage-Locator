@@ -101,6 +101,16 @@ namespace Engage.Dnn.Locator
             get { return Dnn.Utility.GetEnumSetting(this.Settings, "MapType", MapType.Normal); }
         }
 
+        private int? PageSize
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        private int? PageIndex
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         /// <summary>
         /// Determines whether the instance with the specified TabModuleId is configured.
         /// </summary>
@@ -158,23 +168,13 @@ namespace Engage.Dnn.Locator
 
         public MapProvider GetProvider()
         {
-            MapProvider mp;
             switch (Dnn.Utility.GetStringSetting(this.Settings, "DisplayProvider").ToUpperInvariant())
             {
-                case "GOOGLE":
-                    mp = MapProvider.CreateInstance(MapProviderType.GoogleMaps);
-                    break;
                 case "YAHOO":
-                    mp = MapProvider.CreateInstance(MapProviderType.YahooMaps);
-                    ////mp.LatLong = this.ViewState["UserLocation"] as Pair;
-                    ////mp.SearchCriteria = this.GetSearchCriteria();
-                    break;
+                    return MapProvider.CreateInstance(MapProviderType.YahooMaps);
                 default:
-                    mp = MapProvider.CreateInstance(MapProviderType.GoogleMaps);
-                    break;
+                    return MapProvider.CreateInstance(MapProviderType.GoogleMaps);
             }
-
-            return mp;
         }
 
         /// <summary>
@@ -508,27 +508,15 @@ namespace Engage.Dnn.Locator
                     longitude = googleResult.longitude;
                 }
 
-                string locationTypes = Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes");
-                string[] values = locationTypes.Split(',');
-                int[] locationTypeIds = Array.ConvertAll(values, delegate(string s) { return int.Parse(s, CultureInfo.InvariantCulture); });
-
-                List<Location> locations;
-                if (this.ddlDistance.SelectedValue == Localization.GetString("UnlimitedMiles", this.LocalResourceFile))
+                int parsedRadius;
+                int? radius = null;
+                if (int.TryParse(this.ddlDistance.SelectedValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsedRadius))
                 {
-                    locations = Location.GetAllLocationsByDistance(latitude, longitude, this.PortalId, locationTypeIds);
-                }
-                else
-                {
-                    locations = Location.GetAllLocationsByDistance(
-                            latitude,
-                            longitude,
-                            int.Parse(this.ddlDistance.SelectedValue, CultureInfo.InvariantCulture),
-                            this.PortalId,
-                            locationTypeIds);
+                    radius = parsedRadius;
                 }
 
-                this.ViewState["UserLocation"] = new Pair(latitude, longitude);
-                return locations;
+                int[] locationTypeIds = Engage.Utility.ParseIntegerList(Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes").Split(','), CultureInfo.InvariantCulture).ToArray();
+                return Location.GetAllLocationsByDistance(latitude, longitude, radius, this.PortalId, locationTypeIds, this.PageIndex, this.PageSize);
             }
 
             this.lblErrorMessage.Text = "An unknown error occurred.";
@@ -587,65 +575,48 @@ namespace Engage.Dnn.Locator
         /// </summary>
         private void FillDropDowns()
         {
-            if (this.Settings.Contains("SearchTitle"))
-            {
-                this.lblSearchTitle.Text = this.Settings["SearchTitle"].ToString();
-            }
-
-            if (this.Settings.Contains("Address"))
-            {
-                this.pnlAddress.Visible = Convert.ToBoolean(this.Settings["Address"], CultureInfo.InvariantCulture);
-            }
-
-            if (this.Settings.Contains("Country"))
-            {
-                this.pnlCountry.Visible = Convert.ToBoolean(this.Settings["Country"], CultureInfo.InvariantCulture);
-            }
-
-            if (this.Settings.Contains("Radius"))
-            {
-                this.pnlDistance.Visible = Convert.ToBoolean(this.Settings["Radius"], CultureInfo.InvariantCulture);
-            }
+            this.lblSearchTitle.Text = Dnn.Utility.GetStringSetting(this.Settings, "SearchTitle", Localization.GetString("lblSearchTitle", this.LocalResourceFile));
+            this.pnlAddress.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "Address", true);
+            this.pnlCountry.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "Country", true);
+            this.pnlDistance.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "Radius", true);
 
             foreach (ListItem li in this.ddlDistance.Items)
             {
+                // li.Value becomes li.Text if you don't explicitly reset it, as below.  BD
                 li.Value = li.Value;
                 li.Text = String.Format(CultureInfo.CurrentCulture, "{0} {1}", li.Value, Localization.GetString("Miles", this.LocalResourceFile));
             }
 
-            this.ddlDistance.Items.Add(Localization.GetString("UnlimitedMiles", this.LocalResourceFile));
-            this.ddlDistance.DataBind();
-            this.ddlDistance.SelectedIndex = this.ddlDistance.Items.IndexOf(this.ddlDistance.Items.FindByText(Localization.GetString("UnlimitedMiles", this.LocalResourceFile)));
+            this.ddlDistance.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", this.LocalResourceFile), string.Empty));
+            this.ddlDistance.SelectedValue = string.Empty;
 
-            // Load the state list based on country
             ListController listController = new ListController();
-            ListEntryInfoCollection states = listController.GetListEntryInfoCollection("Region");
 
-            this.ddlLocationRegion.DataSource = states;
+            // Load the state list
+            this.ddlLocationRegion.DataSource = listController.GetListEntryInfoCollection("Region");
             this.ddlLocationRegion.DataTextField = "Text";
             this.ddlLocationRegion.DataValueField = "EntryID";
             this.ddlLocationRegion.DataBind();
-            this.ddlLocationRegion.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
+            this.ddlLocationRegion.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
 
             // fill the country dropdown
-            ListEntryInfoCollection countries = listController.GetListEntryInfoCollection("Country");
-
-            this.ddlLocatorCountry.DataSource = countries;
+            this.ddlLocatorCountry.DataSource = listController.GetListEntryInfoCollection("Country");
             this.ddlLocatorCountry.DataTextField = "Text";
             this.ddlLocatorCountry.DataValueField = "EntryId";
             this.ddlLocatorCountry.DataBind();
-            this.ddlLocatorCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
+            this.ddlLocatorCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
             this.ddlLocatorCountry.SelectedIndex = 0;
-
-            if (this.ShowRadius && this.ShowCountry)
-            {
-                this.ddlDistance.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
-                this.ddlDistance.SelectedIndex = 0;
-            }
 
             if (this.ShowCountry)
             {
                 this.FillCountry();
+
+                ////if (this.ShowRadius)
+                ////{
+                ////    this.ddlDistance.ClearSelection();
+                ////    this.ddlDistance.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
+                ////    this.ddlDistance.SelectedIndex = 0;
+                ////}
             }
         }
 

@@ -30,7 +30,7 @@
                     <asp:Label ID="lblErrorMessage" runat="server" CssClass="NormalRed" />
                 </div>
             </asp:Panel>
-                <asp:Label ID="lblSearchTitle" runat="server" CssClass="SubHead" resourcekey="lblSearchTitle" />
+                <asp:Label ID="lblSearchTitle" runat="server" CssClass="SubHead" />
                 <div class="b001">
                     <div class="f02">
                         <asp:Panel ID="pnlAddress" runat="server" CssClass="addressPanel">
