@@ -16,7 +16,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetAllLocation
 	@PortalId int,
 	@approved bit,
 	@sortColumn nvarchar(200), 
-	@index int, 
+	@PageIndex int, 
 	@pageSize int
 AS
 
@@ -30,7 +30,7 @@ AS
 	EXEC('INSERT INTO #results ([LocationId]) SELECT LocationId FROM {databaseOwner}[{objectQualifier}EngageLocator_vLocations] WHERE PortalId = ' + @PortalID + ' AND Approved = ' + @approved + ' ORDER BY ' + @sortColumn)
 	UPDATE #results SET TotalRecords = @@RowCount
 
-	IF (@PageSize IS NULL OR @Index IS NULL)
+	IF (@PageSize IS NULL OR @PageIndex IS NULL)
 		BEGIN
 	 		SELECT r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName AS Country, CountryId, RegionId, City, Address, Address2, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
 			FROM #results r
@@ -41,8 +41,8 @@ AS
 	 		SELECT r.LocationId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName AS Country, CountryId, RegionId, City, Address, Address2, Latitude, Longitude, Phone, LocationDetails, [Type], PostalCode, Approved, r.TotalRecords 
 			FROM #results r
 			JOIN {databaseOwner}[{objectQualifier}EngageLocator_vLocations] l ON (r.LocationId = l.LocationId)
-	 		WHERE id >= @index * @PageSize + 1
-	 		 AND id < @index * @PageSize + @PageSize + 1
+	 		WHERE id >= @PageIndex * @PageSize + 1
+	 		 AND id < @PageIndex * @PageSize + @PageSize + 1
 	 	END
 GO
 
@@ -59,8 +59,7 @@ AS
 	CREATE TABLE #results 
 	(
 		Id int NOT NULL IDENTITY(1,1),
-		LocationId int,
-		TotalRecords int
+		LocationId int
 	)
 
 	INSERT INTO #results (LocationId)
@@ -70,25 +69,27 @@ AS
 	 AND PortalId = @PortalId
 	ORDER BY City
 	
-	UPDATE #results SET TotalRecords = @@RowCount
+	SELECT @@RowCount AS TotalRecords
 	
-	IF (@PageSize IS NULL OR @Index IS NULL)
+	IF (@PageSize IS NULL OR @PageIndex IS NULL)
 		BEGIN
-	 		SELECT r.LocationId, LocationTypeId, ExternalIdentifier, [Name], Website, Latitude, Longitude, 
-				   Abbreviation, CountryName, City, Address, Address2, Phone, RegionId, LocationDetails, 
-				   [Type], PostalCode, Approved, AverageRating, r.TotalRecords
+	 		SELECT Id AS [Index], r.LocationId, LocationTypeId, ExternalIdentifier, [Name], Website, Latitude, Longitude, 
+				   Abbreviation, CountryName, City, Address, Address2, Phone, StateName, Abbreviation, RegionId, LocationDetails, 
+				   [Type], PostalCode, Approved, AverageRating
 			FROM #results r
 			JOIN {databaseOwner}[{objectQualifier}EngageLocator_vLocations] l ON (r.LocationId = l.LocationId)
+			ORDER BY Id, City
 	 	END
 	ELSE
 	 	BEGIN
-	 		SELECT r.LocationId, LocationTypeId, ExternalIdentifier, [Name], Website, Latitude, Longitude, 
-				   Abbreviation, CountryName, City, Address, Address2, Phone, RegionId, LocationDetails, 
-				   [Type], PostalCode, Approved, AverageRating, r.TotalRecords
+	 		SELECT Id AS [Index], r.LocationId, LocationTypeId, ExternalIdentifier, [Name], Website, Latitude, Longitude, 
+				   Abbreviation, CountryName, City, Address, Address2, Phone, StateName, Abbreviation, RegionId, LocationDetails, 
+				   [Type], PostalCode, Approved, AverageRating
 			FROM #results r
 			JOIN {databaseOwner}[{objectQualifier}EngageLocator_vLocations] l ON (r.LocationId = l.LocationId)
-	 		WHERE id >= @index * @PageSize + 1
-	 		 AND id < @index * @PageSize + @PageSize + 1
+	 		WHERE Id >= @PageIndex * @PageSize + 1
+	 		 AND Id < @PageIndex * @PageSize + @PageSize + 1
+	 		ORDER BY Id, City
 	 	END
 GO
 

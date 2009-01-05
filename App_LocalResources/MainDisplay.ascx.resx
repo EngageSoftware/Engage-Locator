@@ -282,4 +282,14 @@
   <data name="lblLocatorCountry.Text" xml:space="preserve">
     <value>Country</value>
   </data>
+  <data name="CurrentPageLabel.Text" xml:space="preserve">
+    <value>Page {0} of {1}</value>
+    <comment>{0} is replaced with the current page number, {1} is replaced with the total number of pages</comment>
+  </data>
+  <data name="NextPageLink.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="PreviousPageLink.Text" xml:space="preserve">
+    <value>Previous</value>
+  </data>
 </root>

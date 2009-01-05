@@ -12,16 +12,23 @@
 namespace Engage.Dnn.Locator.Components
 {
     using System;
-    using System.Collections.Generic;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Search;
 
-    public class FeaturesController: ISearchable
+    /// <summary>
+    /// Controls which DNN features are available for this module.
+    /// </summary>
+    public class FeaturesController : ISearchable
     {
+        /// <summary>
+        /// Gets a list of search items to populate the DNN search index for the given module instance
+        /// </summary>
+        /// <param name="ModInfo">The mod info.</param>
+        /// <returns>A list of search result information for the DNN search index</returns>
         public SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
         {
             SearchItemInfoCollection searchItemCollection = new SearchItemInfoCollection();
-            List<Location> colLocations = Location.GetLocations(ModInfo.PortalID, true);
+            LocationCollection colLocations = Location.GetLocations(ModInfo.PortalID, true);
             foreach (Location location in colLocations)
             {
                 searchItemCollection.Add(new SearchItemInfo(

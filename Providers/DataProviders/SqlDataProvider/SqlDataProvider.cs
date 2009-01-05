@@ -190,8 +190,7 @@ namespace Engage.Dnn.Locator.Data
             StringBuilder sql = new StringBuilder(1024)
                 .Append(" CREATE TABLE #results ( ")
                 .Append("  Id int NOT NULL IDENTITY(1,1),")
-                .Append("  LocationId int,")
-                .Append("  TotalRecords int")
+                .Append("  LocationId int")
                 .Append(")")
                 .Append(" INSERT INTO #results (LocationId) ")
                 .Append("SELECT LocationId ")
@@ -212,22 +211,26 @@ namespace Engage.Dnn.Locator.Data
             }
 
             sql.Append(" ORDER BY Name ")
-                .Append(" UPDATE #results SET TotalRecords = @@RowCount ");
+                .Append(" SELECT @@RowCount AS TotalRecords ");
 
             StringBuilder subQuery = new StringBuilder(256)
-                .Append(" SELECT r.LocationId, l.LocationTypeId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Address2, Latitude, Longitude, Phone, LocationDetails, Approved, AverageRating, [Type], PostalCode, r.TotalRecords ")
+                .Append(" SELECT Id AS [Index], r.LocationId, l.LocationTypeId, ExternalIdentifier, Name, WebSite, Abbreviation, StateName, CountryName as Country, CountryId, RegionId, City, Address, Address2, Latitude, Longitude, Phone, LocationDetails, Approved, AverageRating, [Type], PostalCode ")
                 .Append("  FROM #results r ")
                 .AppendFormat(CultureInfo.InvariantCulture, " JOIN {0}vLocations l ON (r.LocationId = l.LocationId) ", this.NamePrefix);
+
+            const string SubQueryOrderByClause = "  ORDER BY Id, Name ";
 
             sql.Append(" IF (@PageSize IS NULL OR @PageIndex IS NULL) ")
                 .Append(" BEGIN ")
                 .Append(subQuery)
+                .Append(SubQueryOrderByClause)
                 .Append(" END ")
                 .Append(" ELSE ")
                 .Append(" BEGIN ")
                 .Append(subQuery)
                 .Append("  WHERE id >= @PageIndex * @PageSize + 1 ")
                 .Append("   AND id < @PageIndex * @PageSize + @PageSize + 1 ")
+                .Append(SubQueryOrderByClause)
                 .Append(" END ");
 
             parameters.Add(Engage.Utility.CreateIntegerParam("@PortalId", portalId));
@@ -282,8 +285,7 @@ namespace Engage.Dnn.Locator.Data
             StringBuilder sql = new StringBuilder(1024)
                 .Append(" CREATE TABLE #results ( ")
                 .Append("  Id int NOT NULL IDENTITY(1,1),")
-                .Append("  LocationId int,")
-                .Append("  TotalRecords int")
+                .Append("  LocationId int")
                 .Append(")")
                 .Append(" INSERT INTO #results (LocationId) ")
                 .Append("SELECT LocationId ")
@@ -292,6 +294,11 @@ namespace Engage.Dnn.Locator.Data
                 .Append(" AND Approved = 1 ")
                 .Append(" AND Latitude IS NOT NULL ")
                 .Append(" AND Longitude IS NOT NULL ");
+
+            if (radius.HasValue)
+            {
+                sql.AppendFormat(CultureInfo.InvariantCulture, " AND {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) <= @Radius ", this.NamePrefix);
+            }
 
             if (locationTypeIds != null && locationTypeIds.Length > 0)
             {
@@ -307,27 +314,33 @@ namespace Engage.Dnn.Locator.Data
             }
 
             sql.AppendFormat(CultureInfo.InvariantCulture, " ORDER BY {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) ", this.NamePrefix)
-                .Append(" UPDATE #results SET TotalRecords = @@RowCount ");
+                .Append(" SELECT @@RowCount AS TotalRecords ");
 
             StringBuilder subQuery = new StringBuilder(256)
-                .AppendFormat(CultureInfo.InvariantCulture, " SELECT r.LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, RegionId, StateName, Phone, LocationDetails, [Type], PostalCode, Approved, AverageRating, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance, r.TotalRecords ", this.NamePrefix)
+                .AppendFormat(CultureInfo.InvariantCulture, " SELECT Id AS [Index], r.LocationId, LocationTypeId, ExternalIdentifier, Name, Website, Latitude, Longitude, Abbreviation, CountryName, City, Address, Address2, RegionId, StateName, Phone, LocationDetails, [Type], PostalCode, Approved, AverageRating, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) AS Distance ", this.NamePrefix)
                 .Append("  FROM #results r ")
                 .AppendFormat(CultureInfo.InvariantCulture, " JOIN {0}vLocations l ON (r.LocationId = l.LocationId) ", this.NamePrefix);
+
+            string subQueryOrderByClause = string.Format(
+                    CultureInfo.InvariantCulture, " ORDER BY Id, {0}fnDistanceBetween(@Latitude, @Longitude, Latitude, Longitude) ", this.NamePrefix);
 
             sql.Append(" IF (@PageSize IS NULL OR @PageIndex IS NULL) ")
                 .Append(" BEGIN ")
                 .Append(subQuery)
+                .Append(subQueryOrderByClause)
                 .Append(" END ")
                 .Append(" ELSE ")
                 .Append(" BEGIN ")
                 .Append(subQuery)
                 .Append("  WHERE id >= @PageIndex * @PageSize + 1 ")
                 .Append("   AND id < @PageIndex * @PageSize + @PageSize + 1 ")
+                .Append(subQueryOrderByClause)
                 .Append(" END ");
 
             parameters.Add(Engage.Utility.CreateIntegerParam("@PortalId", portalId));
             parameters.Add(Engage.Utility.CreateDoubleParam("@Latitude", latitude));
             parameters.Add(Engage.Utility.CreateDoubleParam("@Longitude", longitude));
+            parameters.Add(Engage.Utility.CreateIntegerParam("@Radius", radius));
             parameters.Add(Engage.Utility.CreateIntegerParam("@PageIndex", pageIndex));
             parameters.Add(Engage.Utility.CreateIntegerParam("@PageSize", pageSize));
 

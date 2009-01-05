@@ -78,6 +78,7 @@
     <Compile Include="AttributeDefinitions.ascx.designer.cs">
       <DependentUpon>AttributeDefinitions.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Components\LocationCollection.cs" />
     <Compile Include="JavaScript\Location.cs" />
     <Compile Include="ManageComments.ascx.cs">
       <DependentUpon>ManageComments.ascx</DependentUpon>

@@ -144,7 +144,6 @@
         </div>
         <br />
         <div class="locationsGridWrapper">
-
             <table class="titleHeading">
                 <asp:Repeater ID="rptLocations" runat="server" OnItemDataBound="rptLocations_ItemDataBound">
                     <HeaderTemplate>
@@ -161,7 +160,7 @@
                                 <table class="mdLocationDetailTable">
                                     <tr>
                                         <td class="mdLocationNumber">
-                                            <p><asp:Label ID="lblLocationMapNumber" CssClass="NormalBold" runat="server" /></p>
+                                            <p><asp:Label ID="lblLocationMapNumber" CssClass="NormalBold" runat="server" Text='<%#Eval("QueryIndex") ?? Container.ItemIndex %>' /></p>
                                         </td>
                                         <td class="mdLocationInfo">
                                             <p><asp:Hyperlink ID="lnkLocationName" runat="server" CssClass="SubHead locatorName" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "Website").ToString() %>'><%# Server.HtmlEncode(DataBinder.Eval(Container.DataItem, "Name").ToString())%></asp:Hyperlink></p>
@@ -198,6 +197,11 @@
                     </ItemTemplate>
                 </asp:Repeater>
             </table>
+        </div>
+        <div class="locationsGridPaging Normal">
+            <asp:HyperLink ID="PreviousPageLink" runat="server" CssClass="PreviousPage" ResourceKey="PreviousPageLink.Text" />
+            <asp:Label ID="CurrentPageLabel" runat="server" CssClass="CurrentPage" />
+            <asp:HyperLink ID="NextPageLink" runat="server" CssClass="NextPage" ResourceKey="NextPageLink.Text" />
         </div>
     </asp:View>
 </asp:MultiView>

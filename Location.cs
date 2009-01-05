@@ -15,9 +15,11 @@ namespace Engage.Dnn.Locator
     using System.Data;
     using System.Diagnostics;
     using System.Globalization;
-    using Data;
+
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
+
+    using Engage.Data;
 
     /// <summary>
     /// Represents a location, the main component in Engage: Locator
@@ -160,6 +162,11 @@ namespace Engage.Dnn.Locator
         /// Backing field for <see cref="Distance"/>
         /// </summary>
         private double? distance;
+
+        /// <summary>
+        /// Backing field for <see cref="QueryIndex"/>
+        /// </summary>
+        private int? queryIndex;
 
         /// <summary>
         /// Gets or sets the location id.
@@ -466,19 +473,29 @@ namespace Engage.Dnn.Locator
             get { return this.distance; }
         }
 
+        /// <summary>
+        /// Gets the index of this location within the search query, or <c>null</c> is this location was not returned by a search query.
+        /// </summary>
+        /// <value>The index of this location within the search query.</value>
+        public double? QueryIndex
+        {
+            [DebuggerStepThrough]
+            get { return this.queryIndex; }
+        }
+
         public static DataTable GetCountriesList(int portalId)
         {
-            return DataProvider.Instance().GetCountriesList(portalId);
+            return Data.DataProvider.Instance().GetCountriesList(portalId);
         }
 
         public static DataTable GetFilesToImport()
         {
-            return DataProvider.Instance().GetFilesToImport();
+            return Data.DataProvider.Instance().GetFilesToImport();
         }
 
         public static void UpdateImportedLocationRow(int fileId)
         {
-            DataProvider.Instance().UpdateImportedLocationRow(fileId);
+            Data.DataProvider.Instance().UpdateImportedLocationRow(fileId);
         }
 
         /// <summary>
@@ -488,7 +505,7 @@ namespace Engage.Dnn.Locator
         /// <returns>The location with the given ID, or <c>null</c> if no location with that ID exists</returns>
         public static Location GetLocation(int locationId)
         {
-            using (IDataReader reader = DataProvider.Instance().GetLocation(locationId))
+            using (IDataReader reader = Data.DataProvider.Instance().GetLocation(locationId))
             {
                 if (reader.Read())
                 {
@@ -505,10 +522,10 @@ namespace Engage.Dnn.Locator
         /// <param name="portalId">The portal ID.</param>
         /// <param name="approvedOnly">if set to <c>true</c>, the list only includes approved locations; otherwise, the list includes approved and unapproved locations.</param>
         /// <returns>A list of <see cref="Location"/>s</returns>
-        public static List<Location> GetLocations(int portalId, bool approvedOnly)
+        public static LocationCollection GetLocations(int portalId, bool approvedOnly)
         {
             // TODO: Refactor this so it doesn't go to the database for each location!
-            List<Location> locations = new List<Location>();
+            LocationCollection locations = new LocationCollection();
             foreach (DataRow row in GetLocations(portalId, approvedOnly, "Name", null, null).Rows)
             {
                 locations.Add(GetLocation(Convert.ToInt32(row["LocationId"], CultureInfo.InvariantCulture)));
@@ -528,7 +545,7 @@ namespace Engage.Dnn.Locator
         /// <returns>A list of <see cref="Location"/>s</returns>
         public static DataTable GetLocations(int portalId, bool approvedOnly, string sortColumn, int? pageIndex, int? pageSize)
         {
-            return DataProvider.Instance().GetAllLocations(portalId, approvedOnly, sortColumn, pageIndex, pageSize);
+            return Data.DataProvider.Instance().GetAllLocations(portalId, approvedOnly, sortColumn, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -541,7 +558,7 @@ namespace Engage.Dnn.Locator
         /// <param name="pageIndex">Index of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <param name="pageSize">Size of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <returns>A list of <see cref="Location"/>s</returns>
-        public static List<Location> GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
+        public static LocationCollection GetAllLocationsByDistance(double latitude, double longitude, int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
         {
             return GetAllLocationsByDistance(latitude, longitude, null, portalId, locationTypeIds, pageIndex, pageSize);
         }
@@ -557,17 +574,12 @@ namespace Engage.Dnn.Locator
         /// <param name="pageIndex">Index of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <param name="pageSize">Size of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <returns>A list of <see cref="Location"/>s</returns>
-        public static List<Location> GetAllLocationsByDistance(double latitude, double longitude, int? radius, int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
+        /// <exception cref="DBException">Data reader did not have the expected structure.  An error must have occurred in the query.</exception>
+        public static LocationCollection GetAllLocationsByDistance(double latitude, double longitude, int? radius, int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
         {
-            using (IDataReader reader = DataProvider.Instance().GetAllLocationsByDistance(latitude, longitude, radius, portalId, locationTypeIds, pageIndex, pageSize))
+            using (IDataReader reader = Data.DataProvider.Instance().GetAllLocationsByDistance(latitude, longitude, radius, portalId, locationTypeIds, pageIndex, pageSize))
             {
-                List<Location> locations = new List<Location>();
-                while (reader.Read())
-                {
-                    locations.Add(Load(reader));
-                }
-
-                return locations;
+                return FillPagedCollection(reader);
             }
         }
 
@@ -577,7 +589,7 @@ namespace Engage.Dnn.Locator
         /// <param name="portalId">The portal ID.</param>
         /// <param name="locationTypeIds">An array of IDs of the types of locations to include in the results.</param>
         /// <returns>A list of <see cref="Location"/>s</returns>
-        public static List<Location> GetAllLocationsByType(int portalId, int[] locationTypeIds)
+        public static LocationCollection GetAllLocationsByType(int portalId, int[] locationTypeIds)
         {
             return GetAllLocationsByType(portalId, locationTypeIds, null, null);
         }
@@ -590,17 +602,11 @@ namespace Engage.Dnn.Locator
         /// <param name="pageIndex">Index of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <param name="pageSize">Size of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <returns>A list of <see cref="Location"/>s</returns>
-        public static List<Location> GetAllLocationsByType(int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
+        public static LocationCollection GetAllLocationsByType(int portalId, int[] locationTypeIds, int? pageIndex, int? pageSize)
         {
-            using (IDataReader reader = DataProvider.Instance().GetAllLocationsByType(portalId, locationTypeIds, pageIndex, pageSize))
+            using (IDataReader reader = Data.DataProvider.Instance().GetAllLocationsByType(portalId, locationTypeIds, pageIndex, pageSize))
             {
-                List<Location> locations = new List<Location>();
-                while (reader.Read())
-                {
-                    locations.Add(Load(reader));
-                }
-
-                return locations;
+                return FillPagedCollection(reader);
             }
         }
 
@@ -610,7 +616,7 @@ namespace Engage.Dnn.Locator
         /// <param name="countryId">The country ID.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>A list of all the <see cref="Location"/>s in the given country</returns>
-        public static List<Location> GetLocationsByCountry(int countryId, int portalId)
+        public static LocationCollection GetLocationsByCountry(int countryId, int portalId)
         {
             return GetLocationsByCountry(countryId, portalId, null, null);
         }
@@ -623,17 +629,11 @@ namespace Engage.Dnn.Locator
         /// <param name="pageIndex">Index of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <param name="pageSize">Size of the page, if returning a partial list; otherwise <c>null</c>.</param>
         /// <returns>A list of all the <see cref="Location"/>s in the given country</returns>
-        public static List<Location> GetLocationsByCountry(int countryId, int portalId, int? pageIndex, int? pageSize)
+        public static LocationCollection GetLocationsByCountry(int countryId, int portalId, int? pageIndex, int? pageSize)
         {
-            using (IDataReader reader = DataProvider.Instance().GetLocationsByCountry(countryId, portalId, pageIndex, pageSize))
+            using (IDataReader reader = Data.DataProvider.Instance().GetLocationsByCountry(countryId, portalId, pageIndex, pageSize))
             {
-                List<Location> locations = new List<Location>();
-                while (reader.Read())
-                {
-                    locations.Add(Load(reader));
-                }
-
-                return locations;
+                return FillPagedCollection(reader);
             }
         }
 
@@ -643,7 +643,7 @@ namespace Engage.Dnn.Locator
         /// <param name="locationId">The location ID.</param>
         public static void DeleteLocation(int locationId)
         {
-            DataProvider.Instance().DeleteLocation(locationId);
+            Data.DataProvider.Instance().DeleteLocation(locationId);
         }
 
         /// <summary>
@@ -655,12 +655,12 @@ namespace Engage.Dnn.Locator
         /// <param name="approved">if set to <c>true</c> the comment is approved; otherwise it is waiting for approval.</param>
         public static void InsertComment(int locationId, string comment, string submittedBy, bool approved)
         {
-            DataProvider.Instance().InsertComment(locationId, comment, submittedBy, approved);
+            Data.DataProvider.Instance().InsertComment(locationId, comment, submittedBy, approved);
         }
 
         public static DataTable GetNewSubmittedComments(int portalId, bool approved)
         {
-            return DataProvider.Instance().GetNewSubmittedComments(portalId, approved);
+            return Data.DataProvider.Instance().GetNewSubmittedComments(portalId, approved);
         }
 
         /// <summary>
@@ -670,7 +670,7 @@ namespace Engage.Dnn.Locator
         /// <returns>A <see cref="Location"/> instance instantiated from the given <paramref name="row"/></returns>
         public static Location Load(IDataReader row)
         {
-            return Load(row, row.GetSchemaTable().Select("ColumnName = 'Distance'").Length == 1);
+            return Load(row, row.GetSchemaTable().Select("ColumnName = 'Distance'").Length == 1, row.GetSchemaTable().Select("ColumnName = 'Index'").Length == 1);
         }
 
         /// <summary>
@@ -678,8 +678,11 @@ namespace Engage.Dnn.Locator
         /// </summary>
         /// <param name="row">The data record for the <see cref="Location"/> instance.</param>
         /// <param name="containsDistanceColumn">if set to <c>true</c> <paramref name="row"/> contains the Distance column.</param>
-        /// <returns>A <see cref="Location"/> instance instantiated from the given <paramref name="row"/></returns>
-        public static Location Load(IDataRecord row, bool containsDistanceColumn)
+        /// <param name="containsIndexColumn">if set to <c>true</c> <paramref name="row"/> contains the Index column.</param>
+        /// <returns>
+        /// A <see cref="Location"/> instance instantiated from the given <paramref name="row"/>
+        /// </returns>
+        public static Location Load(IDataRecord row, bool containsDistanceColumn, bool containsIndexColumn)
         {
             Location loc = new Location();
 
@@ -702,6 +705,7 @@ namespace Engage.Dnn.Locator
             loc.approved = Convert.ToBoolean(row["Approved"].ToString(), CultureInfo.InvariantCulture);
             loc.averageRating = row["AverageRating"] is DBNull ? 0 : Convert.ToSingle(row["AverageRating"], CultureInfo.InvariantCulture);
             loc.distance = containsDistanceColumn ? (double?)row["Distance"] : null;
+            loc.queryIndex = containsIndexColumn ? (int?)row["Index"] : null;
 
             return loc;
         }
@@ -713,7 +717,7 @@ namespace Engage.Dnn.Locator
         {
             if (this.locationId == -1)
             {
-                this.locationId = DataProvider.Instance().SaveLocation(this);
+                this.locationId = Data.DataProvider.Instance().SaveLocation(this);
             }
         }
 
@@ -725,7 +729,7 @@ namespace Engage.Dnn.Locator
         {
             if (this.locationId != -1)
             {
-                this.locationId = DataProvider.Instance().SaveTempLocation(this, successful);
+                this.locationId = Data.DataProvider.Instance().SaveTempLocation(this, successful);
             }
         }
 
@@ -736,7 +740,7 @@ namespace Engage.Dnn.Locator
         {
             if (this.locationId != -1)
             {
-                this.locationId = DataProvider.Instance().UpdateLocation(this);
+                this.locationId = Data.DataProvider.Instance().UpdateLocation(this);
             }
         }
 
@@ -747,7 +751,7 @@ namespace Engage.Dnn.Locator
         /// <returns>A list of comments</returns>
         public DataSet GetComments(bool onlyApproved)
         {
-            return DataProvider.Instance().GetComments(this.locationId, onlyApproved);
+            return Data.DataProvider.Instance().GetComments(this.locationId, onlyApproved);
         }
 
         /// <summary>
@@ -757,6 +761,49 @@ namespace Engage.Dnn.Locator
         public List<Attribute> GetAttributes()
         {
             return Attribute.GetAttributes(this.locationTypeId, this.locationId);
+        }
+
+        /// <summary>
+        /// Fills a <see cref="LocationCollection"/> using the given <paramref name="reader"/>, for queries that contain the total records as the first result.
+        /// </summary>
+        /// <param name="reader">A representation of the list of locations returned by a query.</param>
+        /// <returns>A list of locations as represented by the given <paramref name="reader"/></returns>
+        /// <exception cref="DBException">Data reader did not have the expected structure.  An error must have occurred in the query.</exception>
+        private static LocationCollection FillPagedCollection(IDataReader reader)
+        {
+            if (reader.Read())
+            {
+                LocationCollection locations = new LocationCollection(reader.GetInt32(0));
+
+                if (reader.NextResult())
+                {
+                    return FillCollection(reader, locations);
+                }
+            }
+
+            throw new DBException("Data reader did not have the expected structure.  An error must have occurred in the query.");
+        }
+
+        /// <summary>
+        /// Fills the given <see cref="LocationCollection"/> with the given <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">A representation of the list of locations returned by a query.</param>
+        /// <param name="locations">The list of locations to fill, instantiated and with its <see cref="LocationCollection.TotalRecords"/> property set, if necessary.</param>
+        /// <returns>A list of locations as represented by the given <paramref name="reader"/></returns>
+        /// <exception cref="ArgumentNullException"><c>locations</c> is null.</exception>
+        private static LocationCollection FillCollection(IDataReader reader, LocationCollection locations)
+        {
+            if (locations == null)
+            {
+                throw new ArgumentNullException("locations");
+            }
+
+            while (reader.Read())
+            {
+                locations.Add(Load(reader));
+            }
+
+            return locations;
         }
     }
 }

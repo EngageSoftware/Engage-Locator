@@ -25,6 +25,9 @@ namespace Engage.Dnn.Locator
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+
+    using Framework.Templating;
+
     using Maps;
 
     /// <summary>
@@ -105,7 +108,7 @@ namespace Engage.Dnn.Locator
         /// Gets the number of locations to display on one page of location listings.
         /// </summary>
         /// <value>The size of the page.</value>
-        private int? PageSize
+        private int PageSize
         {
             get { return Dnn.Utility.GetIntSetting(this.Settings, "LocationsPerPage", 10); }
         }
@@ -114,9 +117,9 @@ namespace Engage.Dnn.Locator
         /// Gets the index of the page.
         /// </summary>
         /// <value>The index of the page.</value>
-        private int? PageIndex
+        private int PageIndex
         {
-            get 
+            get
             { 
                 int pageIndex;
                 if (int.TryParse(this.Request.QueryString["PageIndex"], NumberStyles.Integer, CultureInfo.InvariantCulture, out pageIndex))
@@ -394,11 +397,9 @@ namespace Engage.Dnn.Locator
                 Location location = (Location)e.Item.DataItem;
                 Label lblLocationsGridDistance = (Label)e.Item.FindControl("lblLocationsGridDistance");
                 Label lblLocationDetails = (Label)e.Item.FindControl("lblLocationDetails");
-                Label lblLocationMapNumber = (Label)e.Item.FindControl("lblLocationMapNumber");
                 Label l = (Label)e.Item.FindControl("lblLocationsGridAddress");
 
                 lblLocationDetails.Visible = (this.ShowLocationDetails == "SamePage" || this.ShowLocationDetails == "True");
-                lblLocationMapNumber.Text = Convert.ToString(e.Item.ItemIndex + 1, CultureInfo.CurrentCulture) + ") ";
 
                 if (location != null)
                 {
@@ -429,9 +430,83 @@ namespace Engage.Dnn.Locator
             }
         }
 
+        /// <summary>
+        /// Disables the paging link.
+        /// </summary>
+        /// <param name="pageLink">The page link.</param>
+        private static void DisablePagingLink(HyperLink pageLink)
+        {
+            pageLink.Enabled = false;
+            pageLink.CssClass = Engage.Utility.AddCssClass(pageLink.CssClass, "NormalDisabled");
+        }
+
+        /// <summary>
+        /// Configures the paging, setting the links to the previous and next buttons, setting label text, etc.
+        /// </summary>
+        /// <param name="pagingState">Current state of the paging.</param>
+        private void ConfigurePaging(ItemPagingState pagingState)
+        {
+            if (pagingState.CurrentPage > 1)
+            {
+                this.PreviousPageLink.NavigateUrl = this.GenerateUrlForPage(pagingState.Previous().CurrentPage);
+            }
+            else
+            {
+                DisablePagingLink(this.PreviousPageLink);
+            }
+
+            if (pagingState.CurrentPage < pagingState.TotalPages)
+            {
+                this.NextPageLink.NavigateUrl = this.GenerateUrlForPage(pagingState.Next().CurrentPage);
+            }
+            else
+            {
+                DisablePagingLink(this.NextPageLink);
+            }
+
+            this.CurrentPageLabel.Text = string.Format(
+                    CultureInfo.CurrentCulture,
+                    Localization.GetString("CurrentPageLabel.Text", this.LocalResourceFile),
+                    pagingState.CurrentPage,
+                    pagingState.TotalPages);
+        }
+
+        /// <summary>
+        /// Generates the URL for the listing.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <returns>A URL to the given page of this list</returns>
+        private string GenerateUrlForPage(int pageIndex)
+        {
+            List<string> parameters = new List<string>();
+            parameters.Add("PageIndex=" + pageIndex.ToString(CultureInfo.InvariantCulture));
+            this.AddParameter(parameters, "Address");
+            this.AddParameter(parameters, "City");
+            this.AddParameter(parameters, "Region");
+            this.AddParameter(parameters, "Zip");
+            this.AddParameter(parameters, "Country");
+            this.AddParameter(parameters, "Distance");
+
+            return Globals.NavigateURL(this.TabId, string.Empty, parameters.ToArray());
+        }
+
+        /// <summary>
+        /// Adds the QueryString parameter with the given <paramref name="key"/> to the list of parameters, if it is already on the QueryString.
+        /// </summary>
+        /// <param name="parameters">The list of parameters.</param>
+        /// <param name="key">The key of the value in the QueryString.</param>
+        private void AddParameter(ICollection<string> parameters, string key)
+        {
+            string value = this.Request.QueryString[key];
+            if (!string.IsNullOrEmpty(value))
+            {
+                parameters.Add(key + "=" + value);
+            }
+        }
+
         private void BindData(string parameters, string apiKey)
         {
-            List<Location> locations = null;
+            LocationCollection locations = null;
             string searchCriteria = string.IsNullOrEmpty(parameters) ? this.GetSearchCriteria() : parameters;
 
             MapProvider mp = this.GetProvider();
@@ -498,17 +573,18 @@ namespace Engage.Dnn.Locator
 
             this.mvwLocator.SetActiveView(this.vwResults);
 
-            this.lblNumClosest.Text = String.Format(
-                    CultureInfo.CurrentCulture, Localization.GetString("lblNumClosest", this.LocalResourceFile), locations.Count);
+            this.lblNumClosest.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lblNumClosest", this.LocalResourceFile), locations.Count);
 
             this.rptLocations.DataSource = locations;
             this.rptLocations.DataBind();
+
+            this.ConfigurePaging(new ItemPagingState(this.PageIndex + 1, locations.TotalRecords, this.PageSize));
 
             this.RegisterMapScripts(this.GetProvider(), apiKey, locations);
             this.ShowMaps();
         }
 
-        private List<Location> CompareProviders(YahooGeocodeResult yahooResult, GoogleGeocodeResult googleResult)
+        private LocationCollection CompareProviders(YahooGeocodeResult yahooResult, GoogleGeocodeResult googleResult)
         {
             if (yahooResult.StatusCode == YahooStatusCode.Success || googleResult.statusCode == GoogleStatusCode.Success)
             {
@@ -641,7 +717,7 @@ namespace Engage.Dnn.Locator
         /// Gets the default list of all locations.
         /// </summary>
         /// <returns>The default list of all locations</returns>
-        private List<Location> GetDefaultLocations()
+        private LocationCollection GetDefaultLocations()
         {
             return Location.GetAllLocationsByType(this.PortalId, Engage.Utility.ParseIntegerList(Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes").Split(','), CultureInfo.InvariantCulture).ToArray(), this.PageIndex, this.PageSize);
         }
@@ -709,7 +785,7 @@ namespace Engage.Dnn.Locator
         /// <param name="mp">The map provider.</param>
         /// <param name="apiKey">The API key.</param>
         /// <param name="locations">The list of locations being displayed.</param>
-        private void RegisterMapScripts(MapProvider mp, string apiKey, List<Location> locations)
+        private void RegisterMapScripts(MapProvider mp, string apiKey, LocationCollection locations)
         {
             mp.RegisterMapScript(
                     ScriptManager.GetCurrent(this.Page),
