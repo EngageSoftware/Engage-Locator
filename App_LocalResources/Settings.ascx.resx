@@ -324,6 +324,12 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
   <data name="ApiKeyValidator.Text" xml:space="preserve">
     <value>API key is invalid</value>
   </data>
+  <data name="lblLocationsPerPage.Help" xml:space="preserve">
+    <value>Choose how many locations to display per page when displaying a list of locations</value>
+  </data>
+  <data name="lblLocationsPerPage.Text" xml:space="preserve">
+    <value>Locations Per Page</value>
+  </data>
   <data name="LocatorCountryValidator.Text" xml:space="preserve">
     <value>Please select a default country.</value>
   </data>
@@ -332,5 +338,8 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
   </data>
   <data name="SearchResultsModuleValidator.Text" xml:space="preserve">
     <value>Please select a results display module.</value>
+  </data>
+  <data name="LocationsPerPageIntegerValidator.Text" xml:space="preserve">
+    <value>Locations Per Page must be a whole number</value>
   </data>
 </root>

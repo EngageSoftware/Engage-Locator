@@ -248,6 +248,24 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.RadioButton rbNoDetails;
         
         /// <summary>
+        /// LocationsPerPageLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl LocationsPerPageLabel;
+        
+        /// <summary>
+        /// LocationsPerPageTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox LocationsPerPageTextBox;
+        
+        /// <summary>
         /// lblLocationRating control.
         /// </summary>
         /// <remarks>

@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="True" Inherits="Engage.Dnn.Locator.Settings" CodeBehind="Settings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="sectionhead" Src="~/controls/sectionheadcontrol.ascx" %>
+<%@ Register TagPrefix="ajaxToolkit" Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" %>
 <%-- TODO: Localize table summaries --%>
 <dnn:sectionhead ID="dshMapProvider" runat="Server" CssClass="Head" Section="tblMapProvider" ResourceKey="dshMapProvider" IsExpanded="True" IncludeRule="true" />
 <table id="tblMapProvider" runat="server" cellspacing="0" cellpadding="0" style="padding-bottom: 20px;" border="0" summary="Module Mode">
@@ -82,6 +83,15 @@
         </td>
     </tr>
     <tr>
+        <td class="SubHead" width="150" valign="top">
+            <dnn:label ID="LocationsPerPageLabel" runat="server" ResourceKey="lblLocationsPerPage" />
+        </td>
+        <td width="350">
+            <asp:TextBox ID="LocationsPerPageTextBox" runat="server" CssClass="NormalTextBox" />
+            <asp:CompareValidator runat="server" ControlToValidate="LocationsPerPageTextBox" CssClass="Normal" ResourceKey="LocationsPerPageIntegerValidator" Type="Integer" Operator="DataTypeCheck" />
+        </td>
+    </tr>    
+    <tr>
         <td class="SubHead">
             <dnn:label ID="lblLocationRating" runat="server" ResourceKey="lblLocationRating" />
         </td>
@@ -111,7 +121,7 @@
         </td>
         <td width="350">
             <asp:RadioButtonList ID="rblMapDisplayType" runat="server" CssClass="Normal" RepeatDirection="horizontal">
-                <asp:ListItem Value="Normal" resourcekey="rbMapDisplayNormal" Selected="True" />
+                <asp:ListItem Value="Normal" resourcekey="rbMapDisplayNormal" />
                 <asp:ListItem Value="Satellite" resourcekey="rbMapDisplaySatellite" />
                 <asp:ListItem Value="Hybrid" resourcekey="rbMapDisplayHybrid" />
             </asp:RadioButtonList>
@@ -139,7 +149,7 @@
                 <Columns>
                     <asp:TemplateField HeaderText="Page Title" ControlStyle-Width="60px">
                         <ItemTemplate>
-                            <asp:RadioButton ID="rbLocatorModule" runat="server" AutoPostBack="true" GroupName="rbLocatorModules" OnCheckedChanged="rbLocatorModules_CheckChanged" CssClass="Normal" Text='<%# Eval("Title") %>' />
+                            <asp:RadioButton ID="LocatorModuleRadioButton" runat="server" AutoPostBack="true" GroupName="LocatorModuleRadioButtons" OnCheckedChanged="LocatorModuleRadioButtons_CheckChanged" CssClass="Normal" Text='<%# Eval("Title") %>' />
                         </ItemTemplate>
                         <ItemStyle CssClass="Normal" />
                     </asp:TemplateField>
