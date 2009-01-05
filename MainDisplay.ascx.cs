@@ -101,14 +101,31 @@ namespace Engage.Dnn.Locator
             get { return Dnn.Utility.GetEnumSetting(this.Settings, "MapType", MapType.Normal); }
         }
 
+        /// <summary>
+        /// Gets the number of locations to display on one page of location listings.
+        /// </summary>
+        /// <value>The size of the page.</value>
         private int? PageSize
         {
-            get { throw new NotImplementedException(); }
+            get { return Dnn.Utility.GetIntSetting(this.Settings, "LocationsPerPage", 10); }
         }
 
+        /// <summary>
+        /// Gets the index of the page.
+        /// </summary>
+        /// <value>The index of the page.</value>
         private int? PageIndex
         {
-            get { throw new NotImplementedException(); }
+            get 
+            { 
+                int pageIndex;
+                if (int.TryParse(this.Request.QueryString["PageIndex"], NumberStyles.Integer, CultureInfo.InvariantCulture, out pageIndex))
+                {
+                    return pageIndex - 1;
+                }
+
+                return 0;
+            }
         }
 
         /// <summary>
@@ -424,10 +441,10 @@ namespace Engage.Dnn.Locator
             {
                 if (this.ddlCountry.Items.Count > 0)
                 {
-                    if ((this.ddlCountry.SelectedValue != "-1") || (this.ddlCountry.SelectedValue == String.Empty))
+                    if (!string.IsNullOrEmpty(this.ddlCountry.SelectedValue))
                     {
                         int countryId = int.Parse(this.ddlCountry.SelectedValue, CultureInfo.InvariantCulture);
-                        locations = Location.GetLocationsByCountry(countryId, this.PortalId);
+                        locations = Location.GetLocationsByCountry(countryId, this.PortalId, this.PageIndex, this.PageSize);
                     }
                     else
                     {
@@ -558,7 +575,7 @@ namespace Engage.Dnn.Locator
                 this.ddlCountry.DataTextField = "Text";
                 this.ddlCountry.DataValueField = "EntryId";
                 this.ddlCountry.DataBind();
-                this.ddlCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
+                this.ddlCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
 
                 ListItem defaultCountryListItem = this.ddlCountry.Items.FindByValue(Dnn.Utility.GetStringSetting(this.Settings, "ShowLocationDetails"));
                 if (defaultCountryListItem != null)
@@ -626,7 +643,7 @@ namespace Engage.Dnn.Locator
         /// <returns>The default list of all locations</returns>
         private List<Location> GetDefaultLocations()
         {
-            return Location.GetAllLocationsByType(this.PortalId, Engage.Utility.ParseIntegerList(Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes").Split(','), CultureInfo.InvariantCulture).ToArray());
+            return Location.GetAllLocationsByType(this.PortalId, Engage.Utility.ParseIntegerList(Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes").Split(','), CultureInfo.InvariantCulture).ToArray(), this.PageIndex, this.PageSize);
         }
 
         /// <summary>
