@@ -29,7 +29,7 @@ namespace Engage.Dnn.Locator
             get { return "http://api.local.yahoo.com/MapsService/V1/geocode?output=xml"; }
         }
 
-        public override void GenerateMapScriptCore(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, List<Location> locations, bool showAllLocationsOnLoad)
+        public override void GenerateMapScriptCore(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, LocationCollection locations, bool showAllLocationsOnLoad)
         {
             ////////if (SearchCriteria == null)
             ////////{
@@ -202,10 +202,7 @@ namespace Engage.Dnn.Locator
             ////        break;
             ////}
              
-            List<JavaScript.Location> locationsAsJson = locations.ConvertAll(delegate(Location location)
-                {
-                    return new JavaScript.Location(location.Latitude, location.Longitude, location.FullAddress + Environment.NewLine + location.Address3);
-                });
+            ICollection<JavaScript.Location> locationsAsJson = locations.AsJson();
             string mapParameters = string.Format(CultureInfo.InvariantCulture, "currentLocationSpan: {0}, noLocationSpan: {1}, instructionSpan: {2}, directionsLink: {3}, directionsSection: {4}, mapType: {5}, locationsArray: {6}", GetElementJavaScript(currentLocationSpanId), GetElementJavaScript(noLocationSpanId), GetElementJavaScript(instructionSpanId), GetElementJavaScript(directionsLinkId), GetElementJavaScript(directionsSectionId), ConvertMapType(mapType), new JavaScriptSerializer().Serialize(locationsAsJson));
 
             scriptManager.Scripts.Add(new ScriptReference("http://api.maps.yahoo.com/ajaxymap?v=3.8&appid=" + apiKey));
