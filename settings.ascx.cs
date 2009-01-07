@@ -236,8 +236,8 @@ namespace Engage.Dnn.Locator
         {
             if (this.rblProviderType.SelectedItem != null)
             {
-                MapProvider mp = MapProvider.CreateInstance(this.rblProviderType.SelectedValue);
-                args.IsValid = mp.IsKeyValid(this.txtApiKey.Text);
+                MapProvider mp = MapProvider.CreateInstance(this.rblProviderType.SelectedValue, this.txtApiKey.Text);
+                args.IsValid = mp.IsKeyValid();
             }
             else
             {

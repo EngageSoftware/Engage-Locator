@@ -17,6 +17,8 @@ namespace Engage.Dnn.Locator
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
 
+    using Maps;
+
     /// <summary>
     /// The base class for all control in the Engage: Locator module
     /// </summary>
@@ -97,6 +99,20 @@ namespace Engage.Dnn.Locator
             {
                 return Utility.GetBooleanPortalSetting("LocatorSubmissionModeration", PortalId, false);
             }
+        }
+
+        /// <summary>
+        /// Gets the map provider for this module.
+        /// </summary>
+        /// <returns>The map provider for this module</returns>
+        public MapProvider GetMapProvider()
+        {
+            MapProviderType providerType = Dnn.Utility.GetStringSetting(this.Settings, "DisplayProvider").ToUpperInvariant() == "YAHOO"
+                                                   ? MapProviderType.YahooMaps
+                                                   : MapProviderType.GoogleMaps;
+
+            string apiKey = Dnn.Utility.GetStringSetting(this.Settings, providerType.ClassName + ".ApiKey");
+            return MapProvider.CreateInstance(providerType, apiKey);
         }
 
         /// <summary>

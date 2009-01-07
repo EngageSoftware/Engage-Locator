@@ -16,196 +16,45 @@ namespace Engage.Dnn.Locator
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Net;
+    using System.Text;
+    using System.Web;
     using System.Web.Script.Serialization;
     using System.Web.UI;
+    using System.Xml;
+
     using Maps;
 
+    /// <summary>
+    /// A <see cref="MapProvider"/> for Yahoo! Maps
+    /// </summary>
     public class YahooProvider : MapProvider
     {
-        #region MapProvider Members
+        /// <summary>
+        /// The base URL to use to geocode an address.  Add QueryString parameters <c>&amp;location</c> for the location address and <c>&amp;appid</c> for the API key.  
+        /// Alternatively, you can specify <c>&amp;street</c>, <c>&amp;city</c>, <c>&amp;state</c>, and <c>&amp;zip</c> parameters in the place of <c>&amp;location</c>.
+        /// </summary>
+        public const string SearchUrl = "http://local.yahooapis.com/MapsService/V1/geocode?output=xml";
 
-        public static string SearchUrl
+        /// <summary>
+        /// Registers the JavaScript to display the map.
+        /// </summary>
+        /// <param name="scriptManager">The page's script manager.</param>
+        /// <param name="mapType">Type of the map.</param>
+        /// <param name="mapSectionId">The ID of the section (div) on the page in which the map should be created.</param>
+        /// <param name="currentLocationSpanId">The ID of the span showing the current location text.</param>
+        /// <param name="noLocationSpanId">The ID of the span shown when no location is selected.</param>
+        /// <param name="instructionSpanId">The ID of the span with driving directions, etc.</param>
+        /// <param name="directionsLinkId">The ID of the link to driving directions.</param>
+        /// <param name="directionsSectionId">The ID of the section (div) with driving directions text.</param>
+        /// <param name="locations">The list of locations to display.</param>
+        /// <param name="showAllLocationsOnLoad">if set to <c>true</c> shows the map with all locations on it by default.</param>
+        public override void GenerateMapScriptCore(ScriptManager scriptManager, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, LocationCollection locations, bool showAllLocationsOnLoad)
         {
-            get { return "http://api.local.yahoo.com/MapsService/V1/geocode?output=xml"; }
-        }
-
-        public override void GenerateMapScriptCore(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, LocationCollection locations, bool showAllLocationsOnLoad)
-        {
-            ////////if (SearchCriteria == null)
-            ////////{
-            ////////    throw new InvalidOperationException("Search Criteria is not defined");
-            ////////}
-
-            ////StringBuilder script = new StringBuilder(2000);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "function createCenterMarker(latitude, longitude) {{ {0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var myPoint = new YGeoPoint(latitude, longitude);{0}", Environment.NewLine);
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var myImage = new YImage();{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "myImage.src = '{1}';{0}", Environment.NewLine, Globals.ResolveUrl("~/images/ratingminus.gif"));
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "myImage.size = new YSize(18,18);{0}", Environment.NewLine);
-
-            ////// Create a marker positioned at a lat/lon
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var marker = new YMarker(myPoint, myImage);{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "return marker;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "function createLocationMarker(latitude, longitude, index, address) {{ {0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var myPoint = new YGeoPoint(latitude, longitude);{0}", Environment.NewLine);
-            
-            ////// Create a marker positioned at a lat/lon
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var marker = new YMarker(myPoint);{0}", Environment.NewLine);
-            
-            ////// Add a label to the marker
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "marker.addLabel(index);{0}", Environment.NewLine);
-
-            ////// Add auto expand
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "marker.addAutoExpand(address.replace(\"%%\", \"<br />\"));{0}", Environment.NewLine);
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "return marker;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
-
-            ////// function to show all locations on one map
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "function showAllLocations() {{ {0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "displayMap(); {0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var marker;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var arr = new Array();{0}", Environment.NewLine);
-
-            ////int arrIndex = 0;
-            ////////if (LatLong != null)
-            ////////{
-            ////////    script.AppendFormat(CultureInfo.InvariantCulture, "marker = createCenterMarker({1}, {2});{0}", Environment.NewLine, LatLong.First, LatLong.Second);
-            ////////    script.AppendFormat(CultureInfo.InvariantCulture, "map.addOverlay(marker);{0}", Environment.NewLine);
-            ////////    script.AppendFormat(CultureInfo.InvariantCulture, "arr[{1}] = marker.YGeoPoint;{0}", Environment.NewLine, arrIndex++);
-            ////////}
-
-
-            ////foreach (Location row in locations)
-            ////{
-            ////        script.AppendFormat(CultureInfo.InvariantCulture, "marker = createLocationMarker({1}, {2}, {3}, '{4}<br/>{5}<br/>{6}');{0}", Environment.NewLine, row.Latitude, row.Longitude, arrIndex, row.Name.Replace("'", "\\'"), row.Address.Replace("'", "\\'"), row.City.Replace("'", "\\'"));
-            ////        script.AppendFormat(CultureInfo.InvariantCulture, "map.addOverlay(marker);{0}", Environment.NewLine);
-            ////        script.AppendFormat(CultureInfo.InvariantCulture, "arr[{1}] = marker.YGeoPoint;{0}", Environment.NewLine, arrIndex++);
-            ////        ////LocationCount++;
-            ////}
-
-            ////// Display the map centered on a latitude and longitude
-            ////////if (LatLong != null)
-            ////////{
-            ////////    script.AppendFormat(CultureInfo.InvariantCulture, "var zoomLevel = map.getZoomLevel(arr);{0}", Environment.NewLine);
-            ////////    script.AppendFormat(CultureInfo.InvariantCulture, "map.drawZoomAndCenter(arr[0], zoomLevel + 1);{0}", Environment.NewLine);
-            ////////}
-            ////////else 
-            ////////    if (arrIndex > 0)
-            ////////{
-            ////    script.AppendFormat(CultureInfo.InvariantCulture, "var bestZoom = map.getBestZoomAndCenter(arr);{0}", Environment.NewLine);
-            ////    script.AppendFormat(CultureInfo.InvariantCulture, "map.drawZoomAndCenter(bestZoom.YGeoPoint, bestZoom.zoomLevel);{0}", Environment.NewLine);
-            ////////}
-            ////////else
-            ////////{
-            ////////    script.AppendFormat(CultureInfo.InvariantCulture, "map.drawZoomAndCenter('{1}', 10);{0}", Environment.NewLine, SearchCriteria);
-            ////////}
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var allLabel = document.getElementById('{1}');{0}", Environment.NewLine, noLocationSpanId);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "allLabel.style.display = '';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var label = document.getElementById('locatorMapLabel');{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "label.style.display = 'none';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var scrollLabel = document.getElementById('{1}');{0}", Environment.NewLine, instructionSpanId);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "scrollLabel.style.display = 'none';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var mapLink = document.getElementById('lblMapLink');{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "mapLink.style.display = 'none';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var currentlyMappedLabels = getElementsByClassName('currentlyMapped', 'span', document.getElementById('{1}'));{0}", Environment.NewLine, "rpt");
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var length = currentlyMappedLabels.length;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "for (var i = 0; i < length; i++) {{{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "currentlyMappedLabels[i].className = 'hideCurrentlyMapped';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
-
-            ////// function for individual location map
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "function showLocation(latitude, longitude, index, address, title, labelId) {{ {0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "displayMap(); {0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "map.removeMarkersAll(); {0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var marker;{0}", Environment.NewLine);
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "marker = createLocationMarker(latitude, longitude, index, title + '<br />' + address);{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "map.addOverlay(marker);{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var myPoint = marker.YGeoPoint;{0}", Environment.NewLine);
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "map.drawZoomAndCenter(myPoint, 6);{0}", Environment.NewLine);
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var allLabel = document.getElementById('{1}');{0}", Environment.NewLine, noLocationSpanId);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "allLabel.style.display = 'none';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var label = document.getElementById('locatorMapLabel');{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "label.style.display = '';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "label.innerHTML = title + '<br />' + address.replace(\"%%\", \"<br />\");{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var scrollLabel = document.getElementById('{1}');{0}", Environment.NewLine, instructionSpanId);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "scrollLabel.style.display = '';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var mapLink = document.getElementById('lblMapLink');{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "mapLink.style.display = '';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var lnkDrivingDirections = document.getElementById('lnkDrivingDirections');{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var mapLoc = 'http://maps.yahoo.com/broadband#q1=' + address;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "lnkDrivingDirections.href = mapLoc.replace(\"%%\", \" \");{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var currentlyMappedLabel = document.getElementById(labelId);{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var currentlyMappedLabels = getElementsByClassName('currentlyMapped', 'span', document.getElementById('{1}'));{0}", Environment.NewLine, "rpt");
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var length = currentlyMappedLabels.length;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "for (var i = 0; i < length; i++) {{{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "currentlyMappedLabels[i].className = 'hideCurrentlyMapped';{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "currentlyMappedLabel.className = 'currentlyMapped';{0}", Environment.NewLine);
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
-
-            ////// function for individual location map
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "function displayMap() {{ {0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var mapDiv = document.getElementById('{1}');{0}", Environment.NewLine, mapSectionId);
-            ////////script.AppendFormat(CultureInfo.InvariantCulture, "var mapLink = document.getElementById('{1}');{0}", Environment.NewLine, lblViewMap.ClientID);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "mapDiv.style.display = '' ;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "document.location = '#map';{0}", Environment.NewLine);
-            ////////script.AppendFormat(CultureInfo.InvariantCulture, "mapLink.style.display = 'none' ;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
-
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "function getElementsByClassName(className, tag, elm){{{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var testClass = new RegExp(\"(^|\\s)\" + className + \"(\\s|$)\");{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var tag = tag || \"*\";{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var elm = elm || document;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var elements = (tag == \"*\" && elm.all)? elm.all : elm.getElementsByTagName(tag);{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var returnElements = [];{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var current;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var length = elements.length;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "for(var i=0; i<length; i++){{{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "current = elements[i];{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "if(testClass.test(current.className)){{{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "returnElements.push(current);{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "return returnElements;{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "}}");
-
-            ////// Create a map object
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "var map = new YMap(document.getElementById('{1}'));{0}", Environment.NewLine, mapSectionId);
-            
-            ////// Add map type control
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "map.addTypeControl();{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "map.addPanControl();{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "map.addZoomLong();{0}", Environment.NewLine);
-
-            ////// Set map type to either of: YAHOO_MAP_SAT YAHOO_MAP_HYB YAHOO_MAP_REG
-            ////switch (mapType)
-            ////{
-            ////    case MapType.Hybrid:
-            ////        script.AppendFormat(CultureInfo.InvariantCulture, "map.setMapType(YAHOO_MAP_HYB);{0}", Environment.NewLine);
-            ////        break;
-            ////    case MapType.Satellite:
-            ////        script.AppendFormat(CultureInfo.InvariantCulture, "map.setMapType(YAHOO_MAP_SAT);{0}", Environment.NewLine);
-            ////        break;
-            ////    default:
-            ////        script.AppendFormat(CultureInfo.InvariantCulture, "map.setMapType(YAHOO_MAP_REG);{0}", Environment.NewLine);
-            ////        break;
-            ////}
-             
             ICollection<JavaScript.Location> locationsAsJson = locations.AsJson();
-            string mapParameters = string.Format(CultureInfo.InvariantCulture, "currentLocationSpan: {0}, noLocationSpan: {1}, instructionSpan: {2}, directionsLink: {3}, directionsSection: {4}, mapType: {5}, locationsArray: {6}", GetElementJavaScript(currentLocationSpanId), GetElementJavaScript(noLocationSpanId), GetElementJavaScript(instructionSpanId), GetElementJavaScript(directionsLinkId), GetElementJavaScript(directionsSectionId), ConvertMapType(mapType), new JavaScriptSerializer().Serialize(locationsAsJson));
+            string mapParameters = String.Format(CultureInfo.InvariantCulture, "currentLocationSpan: {0}, noLocationSpan: {1}, instructionSpan: {2}, directionsLink: {3}, directionsSection: {4}, mapType: {5}, locationsArray: {6}", GetElementJavaScript(currentLocationSpanId), GetElementJavaScript(noLocationSpanId), GetElementJavaScript(instructionSpanId), GetElementJavaScript(directionsLinkId), GetElementJavaScript(directionsSectionId), ConvertMapType(mapType), new JavaScriptSerializer().Serialize(locationsAsJson));
 
-            scriptManager.Scripts.Add(new ScriptReference("http://api.maps.yahoo.com/ajaxymap?v=3.8&appid=" + apiKey));
+            scriptManager.Scripts.Add(new ScriptReference("http://api.maps.yahoo.com/ajaxymap?v=3.8&appid=" + this.ApiKey));
             scriptManager.Scripts.Add(new ScriptReference("http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"));
             scriptManager.Scripts.Add(new ScriptReference("Engage.Dnn.Locator.JavaScript.BaseLocator.js", "EngageLocator"));
             scriptManager.Scripts.Add(new ScriptReference("Engage.Dnn.Locator.JavaScript.YahooLocator.js", "EngageLocator"));
@@ -227,29 +76,19 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        public override string GenerateMiniMapScriptCore()
+        /// <summary>
+        /// Determines whether this provider's <see name="ApiKey"/> is in a valid format.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if this provider's <see name="ApiKey"/> is in a valid format; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool IsKeyValid()
         {
-            throw new NotImplementedException();
-            ////StringBuilder script = new StringBuilder(3000);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, @"<script type=""text/javascript"">{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "//<![CDATA[{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, @"var map = new GMap2(document.getElementById(""{1}""));{0}", Environment.NewLine, mapSectionId);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "map.addControl(new GSmallMapControl());{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "map.addControl(new GMapTypeControl());{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "//]]>{0}", Environment.NewLine);
-            ////script.AppendFormat(CultureInfo.InvariantCulture, "</script>");
-            ////return script.ToString();
+            return this.ApiKey != null && this.ApiKey.Length > 64 && this.ApiKey.Length < 74;
         }
-
-        public override bool IsKeyValid(string apiKey)
-        {
-            return apiKey != null && apiKey.Length > 64 && apiKey.Length < 74;
-        }
-
-        #endregion
 
         /// <summary>
-        /// Converts <paramref name="mapType"/> into its Google Maps enumeration value.
+        /// Converts <paramref name="mapType"/> into its Yahoo! Maps enumeration value.
         /// </summary>
         /// <param name="mapType">Type of the map.</param>
         /// <returns>The value of the map type for Google Maps</returns>
@@ -265,129 +104,149 @@ namespace Engage.Dnn.Locator
                     return YahooMapType.YAHOO_MAP_REG.ToString();
             }
         }
-    }
-
-    /// <summary>
-    /// The type of Yahoo! map to initially display
-    /// </summary>
-    internal enum YahooMapType
-    {
-        /// <summary>
-        /// Normal Map
-        /// </summary>
-        YAHOO_MAP_REG, 
 
         /// <summary>
-        /// Sattelite Map
+        /// Gets the latitude and longitude of the given location.
         /// </summary>
-        YAHOO_MAP_SAT,
+        /// <param name="street">The street of the address.</param>
+        /// <param name="city">The city of the address.</param>
+        /// <param name="state">The state of the address.</param>
+        /// <param name="zip">The zip code of the address.</param>
+        /// <returns>The geocoding result</returns>
+        public override GeocodeResult GeocodeLocation(string street, string city, string state, string zip)
+        {
+            if (this.IsKeyValid())
+            {
+                return SearchYahoo(GetCityStateParams(street, city, state, zip), this.ApiKey);
+            }
 
-        /// <summary>
-        /// Hybrid Map
-        /// </summary>
-        YAHOO_MAP_HYB
-    }
+            return GeocodeResult.Empty;
+        }
 
-    /// <summary>
-    /// The possible values of status code returned from the Yahoo geocoding service
-    /// </summary>
-    public enum YahooStatusCode
-    {
-        /// <summary>
-        /// A successful request
-        /// </summary>
-        Success = 200,
+        private static YahooGeocodeResult SearchYahoo(string queryParams, string apiKey)
+        {
+            double latitude = double.NaN;
+            double longitude = double.NaN;
+            YahooAccuracyCode accuracyCode;
+            YahooStatusCode statusCode;
 
-        /// <summary>
-        /// The parameters passed to the service did not match as expected. The Message should tell you what was missing or incorrect.
-        /// </summary>
-        BadRequest = 400,
+            Uri searchUrl = new Uri(SearchUrl + queryParams + "&appid=" + apiKey);
+            try
+            {
+                using (XmlReader resultsReader = XmlReader.Create(searchUrl.ToString()))
+                {
+                    resultsReader.Read();
+                    if (resultsReader.IsStartElement("ResultSet"))
+                    {
+                        resultsReader.ReadStartElement("ResultSet");
 
-        /// <summary>
-        /// You do not have permission to access this resource, or are over your rate limit.
-        /// </summary>
-        Forbidden = 403,
+                        accuracyCode = GetYahooAccuracyCode(resultsReader.GetAttribute("precision"));
+                        resultsReader.ReadStartElement("Result");
 
-        /// <summary>
-        /// An internal problem prevented us from returning data to you.
-        /// </summary>
-        ServiceUnavailable = 503
-    }
+                        resultsReader.ReadStartElement("Latitude");
+                        latitude = resultsReader.ReadContentAsDouble();
+                        resultsReader.ReadEndElement();
 
-    /// <summary>
-    /// The accuracy of a <see cref="YahooGeocodeResult"/>
-    /// </summary>
-    public enum YahooAccuracyCode
-    {
-        /// <summary>
-        /// Could not be found
-        /// </summary>
-        Unknown = 0,
+                        resultsReader.ReadStartElement("Longitude");
+                        longitude = resultsReader.ReadContentAsDouble();
+                    }
+                    else
+                    {
+                        accuracyCode = YahooAccuracyCode.Unknown;
+                    }
 
-        /// <summary>
-        /// Could only find country
-        /// </summary>
-        Country = 1,
+                    statusCode = YahooStatusCode.Success;
+                }
+            }
+            catch (WebException exc)
+            {
+                accuracyCode = YahooAccuracyCode.Unknown;
+                statusCode = YahooStatusCode.ServiceUnavailable;
+                if (exc.Status == WebExceptionStatus.ProtocolError)
+                {
+                    HttpWebResponse response = (HttpWebResponse)exc.Response;
+                    switch (response.StatusCode)
+                    {
+                        // 400
+                        case HttpStatusCode.BadRequest:
+                            statusCode = YahooStatusCode.BadRequest;
+                            break;
 
-        /// <summary>
-        /// Accurate to the region level
-        /// </summary>
-        State = 2,
+                        // 403
+                        case HttpStatusCode.Forbidden:
+                            statusCode = YahooStatusCode.Forbidden;
+                            break;
 
-        /// <summary>
-        /// Accurate to the city level
-        /// </summary>
-        City = 4,
+                        // 503
+                        case HttpStatusCode.ServiceUnavailable: 
+                            statusCode = YahooStatusCode.ServiceUnavailable;
+                            break;
+                    }
+                }
+            }
 
-        /// <summary>
-        /// Accurate to the postal code
-        /// </summary>
-        Zip = 5,
+            return new YahooGeocodeResult(latitude, longitude, accuracyCode, statusCode);
+        }
 
-        /// <summary>
-        /// Accurate to the postal code+2
-        /// </summary>
-        ZipPlus2 = -1,
+        private static YahooAccuracyCode GetYahooAccuracyCode(string accuracyValue)
+        {
+            YahooAccuracyCode accuracyCode;
+            switch (accuracyValue)
+            {
+                case "country":
+                    accuracyCode = YahooAccuracyCode.Country;
+                    break;
+                case "state":
+                    accuracyCode = YahooAccuracyCode.State;
+                    break;
+                case "city":
+                    accuracyCode = YahooAccuracyCode.City;
+                    break;
+                case "zip":
+                    accuracyCode = YahooAccuracyCode.Zip;
+                    break;
+                case "zip+2":
+                    accuracyCode = YahooAccuracyCode.ZipPlus2;
+                    break;
+                case "zip+4":
+                    accuracyCode = YahooAccuracyCode.ZipPlus4;
+                    break;
+                case "street":
+                    accuracyCode = YahooAccuracyCode.Street;
+                    break;
+                case "address":
+                    accuracyCode = YahooAccuracyCode.Address;
+                    break;
+                default:
+                    accuracyCode = YahooAccuracyCode.Unknown;
+                    break;
+            }
 
-        /// <summary>
-        /// Accurate to the postal code +4
-        /// </summary>
-        ZipPlus4 = -2,
+            return accuracyCode;
+        }
 
-        /// <summary>
-        /// Accurate to the street
-        /// </summary>
-        Street = 6,
+        private static string GetCityStateParams(string street, string city, string state, string zip)
+        {
+            StringBuilder queryParams = new StringBuilder();
 
-        /// <summary>
-        /// Accurate to the address
-        /// </summary>
-        Address = 8
-    }
+            if (!String.IsNullOrEmpty(street))
+            {
+                queryParams.Append("&street=" + HttpUtility.UrlEncode(street));
+            }
+            if (!String.IsNullOrEmpty(city))
+            {
+                queryParams.Append("&city=" + HttpUtility.UrlEncode(city));
+            }
+            if (!String.IsNullOrEmpty(state))
+            {
+                queryParams.Append("&state=" + HttpUtility.UrlEncode(state));
+            }
+            if (!String.IsNullOrEmpty(zip))
+            {
+                queryParams.Append("&zip=" + HttpUtility.UrlEncode(zip));
+            }
 
-    /// <summary>
-    /// The result of a geocoding request to Yahoo!
-    /// </summary>
-    public struct YahooGeocodeResult
-    {
-        /// <summary>
-        /// The latitude of the result
-        /// </summary>
-        public double Latitude;
-
-        /// <summary>
-        /// The longitude of the result
-        /// </summary>
-        public double Longitude;
-
-        /// <summary>
-        /// The accuracy of the geocode result
-        /// </summary>
-        public YahooAccuracyCode AccuracyCode;
-
-        /// <summary>
-        /// The status of the geocode request
-        /// </summary>
-        public YahooStatusCode StatusCode;
+            return queryParams.ToString();
+        }
     }
 }

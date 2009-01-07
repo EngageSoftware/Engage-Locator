@@ -36,23 +36,10 @@ namespace Engage.Dnn.Locator.Services
 
         private static LocationCollection SearchLocationsByZip(string mapProviderTypeName, string apiKey, int radius, string postalCode, int[] locationTypeIds, int portalId)
         {
-            // use reflection to construct the provider class.
             MapProviderType providerType = MapProviderType.GetFromName(mapProviderTypeName, typeof(MapProviderType));
-            //// MapProvider provider = MapProvider.CreateInstance(providerType);
 
-            LocationCollection matches;
-
-            // figure out which method to call based on provider.
-            if (providerType == MapProviderType.GoogleMaps)
-            {
-                GoogleGeocodeResult result = SearchUtility.SearchGoogle(postalCode, apiKey);
-                matches = Location.GetAllLocationsByDistance(result.latitude, result.longitude, radius, portalId, locationTypeIds, null, null);
-            }
-            else
-            {
-                YahooGeocodeResult result = SearchUtility.SearchYahoo(string.Empty, string.Empty, string.Empty, string.Empty, postalCode, apiKey);
-                matches = Location.GetAllLocationsByDistance(result.Latitude, result.Longitude, radius, portalId, locationTypeIds, null, null);
-            }
+            GeocodeResult result = MapProvider.CreateInstance(providerType, apiKey).GeocodeLocation(string.Empty, string.Empty, string.Empty, postalCode);
+            LocationCollection matches = Location.GetAllLocationsByDistance(result.Latitude, result.Longitude, radius, portalId, locationTypeIds, null, null);
 
             return matches;
         }

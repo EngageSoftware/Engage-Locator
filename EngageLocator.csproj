@@ -79,6 +79,7 @@
       <DependentUpon>AttributeDefinitions.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\LocationCollection.cs" />
+    <Compile Include="Components\ManualGeocodeResult.cs" />
     <Compile Include="JavaScript\Location.cs" />
     <Compile Include="ManageComments.ascx.cs">
       <DependentUpon>ManageComments.ascx</DependentUpon>
@@ -132,12 +133,18 @@
       <DependentUpon>ManageLocation.ascx</DependentUpon>
     </Compile>
     <Compile Include="Maps\MapProviderType.cs" />
+    <Compile Include="Maps\MapType.cs" />
     <Compile Include="ModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="LocationType.cs" />
+    <Compile Include="Providers\MapProviders\EmptyGeocodeResult.cs" />
+    <Compile Include="Providers\MapProviders\GeocodeResult.cs" />
+    <Compile Include="Providers\MapProviders\GoogleAccuracyCode.cs" />
+    <Compile Include="Providers\MapProviders\GoogleGeocodeResult.cs" />
+    <Compile Include="Providers\MapProviders\GoogleMapType.cs" />
     <Compile Include="Providers\MapProviders\GoogleProvider.cs" />
     <Compile Include="Maps\MapProvider.cs" />
     <Compile Include="Location.cs" />
@@ -147,10 +154,14 @@
     </Compile>
     <Compile Include="Components\DataImportScheduler.cs" />
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
+    <Compile Include="Providers\MapProviders\GoogleStatusCode.cs" />
+    <Compile Include="Providers\MapProviders\YahooAccuracyCode.cs" />
+    <Compile Include="Providers\MapProviders\YahooGeocodeResult.cs" />
+    <Compile Include="Providers\MapProviders\YahooMapType.cs" />
     <Compile Include="Providers\MapProviders\YahooProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SearchUtility.cs" />
+    <Compile Include="Providers\MapProviders\YahooStatusCode.cs" />
     <Compile Include="Services\WebServices.asmx.cs">
       <DependentUpon>WebServices.asmx</DependentUpon>
       <SubType>Component</SubType>

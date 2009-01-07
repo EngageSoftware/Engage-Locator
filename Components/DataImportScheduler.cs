@@ -34,7 +34,7 @@ namespace Engage.Dnn.Locator.Components
         private const string WorkingFolderName = "Location Import/Working/";
         private const string CompletedFolderName = "Location Import/Completed/";
         private const string ErrorFolderName = "Location Import/Error/";
-        private int _portalId;
+        private int portalId;
 
         public DataImportScheduler(DotNetNuke.Services.Scheduling.ScheduleHistoryItem scheduleHistoryItem)
         {
@@ -51,13 +51,13 @@ namespace Engage.Dnn.Locator.Components
 
                     foreach (DataRow file in files.Rows)
                     {
-                        _portalId = Convert.ToInt32(file["PortalId"], CultureInfo.InvariantCulture);
+                        this.portalId = Convert.ToInt32(file["PortalId"], CultureInfo.InvariantCulture);
 
-                        FolderInfo fiLocation = FileSystemUtils.GetFolder(_portalId, ImportFolderName);
-                        ArrayList filesLocation = FileSystemUtils.GetFilesByFolder(_portalId, fiLocation.FolderID);
+                        FolderInfo fiLocation = FileSystemUtils.GetFolder(this.portalId, ImportFolderName);
+                        ArrayList filesLocation = FileSystemUtils.GetFilesByFolder(this.portalId, fiLocation.FolderID);
 
-                        FolderInfo fiLocationWorking = FileSystemUtils.GetFolder(_portalId, WorkingFolderName);
-                        ArrayList filesLocationWorking = FileSystemUtils.GetFilesByFolder(_portalId, fiLocationWorking.FolderID);
+                        FolderInfo fiLocationWorking = FileSystemUtils.GetFolder(this.portalId, WorkingFolderName);
+                        ArrayList filesLocationWorking = FileSystemUtils.GetFilesByFolder(this.portalId, fiLocationWorking.FolderID);
 
                         int index = DataProvider.Instance().GetLastImportIndex();
 
@@ -68,11 +68,11 @@ namespace Engage.Dnn.Locator.Components
                                 File.Delete(fileInfo.PhysicalPath);
                             }
                             StageData(filesLocation, fiLocationWorking);
-                            CollectData(fiLocationWorking, index, _portalId);
+                            CollectData(fiLocationWorking, index, this.portalId);
                         }
                         else if (filesLocationWorking.Count > 0)
                         {
-                            CollectData(fiLocationWorking, index, _portalId);
+                            CollectData(fiLocationWorking, index, this.portalId);
                         }
 
                         int id = Convert.ToInt32(file["FileId"], CultureInfo.InvariantCulture);
@@ -130,7 +130,7 @@ namespace Engage.Dnn.Locator.Components
                     ParseCSV(fileInfo, startIndex);
                 }
             }
-            ImportData(_portalId);
+            ImportData(this.portalId);
         }
 
         public void ParseCSV(DotNetNuke.Services.FileSystem.FileInfo fileInfo, int startIndex)
@@ -156,24 +156,25 @@ namespace Engage.Dnn.Locator.Components
                     {
                         lineNumber++;
                         Location location = new Location();
-
-                        string address1, address2, state, country;
                         location.LocationId = Convert.ToInt32(GetValue(reader, "UNIQUE_KEY"), CultureInfo.InvariantCulture);
                         location.ExternalIdentifier = GetValue(reader, "EXTERNAL_IDENTIFIER");
                         location.Name = GetValue(reader, "LOCATION_NAME");
-                        address1 = GetValue(reader, "ADDRESS1");
-                        address2 = GetValue(reader, "ADDRESS2");
+                        string address1 = GetValue(reader, "ADDRESS1");
+                        string address2 = GetValue(reader, "ADDRESS2");
                         location.City = GetValue(reader, "CITY");
-                        state = GetValue(reader, "STATE");
+                        string state = GetValue(reader, "STATE");
                         location.PostalCode = GetValue(reader, "ZIP");
                         location.Phone = GetValue(reader, "PHONE_NUMBER");
                         location.LocationDetails = GetValue(reader, "LOCATION_DETAILS");
                         location.Website = GetValue(reader, "WEBSITE");
-                        location.PortalId = _portalId;
+                        location.PortalId = this.portalId;
                         string locationType = GetValue(reader, "TYPE_OF_LOCATION");
                         if (locationType == string.Empty)
+                        {
                             locationType = "Default";
-                        country = GetValue(reader, "COUNTRY");
+                        }
+
+                        string country = GetValue(reader, "COUNTRY");
                         DataTable dt = DataProvider.Instance().GetLocationTypes();
                         int locationTypeId = -1;
 
@@ -206,162 +207,94 @@ namespace Engage.Dnn.Locator.Components
                         }
 
                         location.CsvLineNumber = lineNumber;
-
-                        double? latitude;
-                        double? longitude;
-                        string error;
-                        location.Address = GetGeoCoordinates(tabModuleId, address1, location.City, state, country, location.PostalCode, out latitude, out longitude, out error);
+                        location.Address = address1;
                         
                         // Address2 is informational only - See Pat Renner.
                         location.Address2 = address2;
 
-                        location.Latitude = Convert.ToDouble(latitude, CultureInfo.InvariantCulture);
-                        location.Longitude = Convert.ToDouble(longitude, CultureInfo.InvariantCulture);
+                        GeocodeResult geocodeResult = GetGeoCoordinates(tabModuleId, address1, location.City, state, location.PostalCode);
+                        if (geocodeResult.Successful)
+                        {
+                            location.Latitude = geocodeResult.Latitude;
+                            location.Longitude = geocodeResult.Longitude;
+                        }
+
                         location.Approved = true;
 
-                        if (latitude == 0 && longitude == 0)
+                        try
                         {
-                            try
-                            {
-                                location.SaveTemp(false);
-                            }
-                            catch (SqlException ex)
-                            {
-                                Exceptions.LogException(ex);
-                            }
+                            location.SaveTemp(geocodeResult.Successful);
                         }
-                        else
+                        catch (SqlException ex)
                         {
-                            try
-                            {
-                                location.SaveTemp(true);
-                            }
-                            catch (SqlException exc)
-                            {
-                                Exceptions.LogException(exc);
-                            }
+                            Exceptions.LogException(ex);
                         }
                     }
                 }
                 catch (ArgumentException exc)
                 {
                     Exceptions.LogException(exc);
-                    FileMove(false);
+                    this.FileMove(false);
                 }
 
                 if (lineNumber == 0)
                 {
-                    FileMove(false);
+                    this.FileMove(false);
                 }
             }
         }
 
-        public static string GetGeoCoordinates(int tabModuleId, string address1, string city, string state, string country, string zip, out double? latitude, out double? longitude, out string error)
+        public static GeocodeResult GetGeoCoordinates(int tabModuleId, string address1, string city, string state, string zip)
         {
-            string address;
-
-            StringBuilder location = GetLocation(address1, ref city, state, country, out address);
-
-            DataTable existingLatitudeLongitude = DataProvider.Instance().GetLatitudeLongitude(address, city);
-            error = string.Empty;
+            DataTable existingLatitudeLongitude = DataProvider.Instance().GetLatitudeLongitude(address1, city);
             if (existingLatitudeLongitude.Rows.Count == 0)
             {
-                GetGeoCodeResults(tabModuleId, city, state, zip, address, out latitude, out longitude, out error, location.ToString());
+                return GetGeoCodeResults(tabModuleId, address1, city, state, zip);
+            }
+
+            double? latitude, longitude;
+            if (existingLatitudeLongitude.Rows[0]["Latitude"].ToString() == string.Empty)
+            {
+                latitude = null;
             }
             else
             {
-                if (existingLatitudeLongitude.Rows[0]["Latitude"].ToString() == string.Empty)
-                {
-                    latitude = null;
-                }
-                else
-                {
-                    latitude = Convert.ToDouble(existingLatitudeLongitude.Rows[0]["Latitude"], CultureInfo.InvariantCulture);
-                }
-
-                if (existingLatitudeLongitude.Rows[0]["Longitude"].ToString() == string.Empty)
-                {
-                    longitude = null;
-                }
-                else
-                {
-                    longitude = Convert.ToDouble(existingLatitudeLongitude.Rows[0]["Longitude"], CultureInfo.InvariantCulture);
-                }
+                latitude = Convert.ToDouble(existingLatitudeLongitude.Rows[0]["Latitude"], CultureInfo.InvariantCulture);
             }
 
-            return address;
-        }
-
-        private static StringBuilder GetLocation(string address1, ref string city, string state, string country, out string address)
-        {
-            StringBuilder location = new StringBuilder(address1);
-            //if (!String.IsNullOrEmpty(address2))
-            //{
-            //    location.Append(", " + address2);
-            //}
-
-            address = location.ToString();
-
-            if (!String.IsNullOrEmpty(city))
+            if (existingLatitudeLongitude.Rows[0]["Longitude"].ToString() == string.Empty)
             {
-                location.Append(", " + city);
+                longitude = null;
             }
             else
             {
-                city = "No City";
+                longitude = Convert.ToDouble(existingLatitudeLongitude.Rows[0]["Longitude"], CultureInfo.InvariantCulture);
             }
-            if (!String.IsNullOrEmpty(state))
-            {
-                location.Append(", " + state);
-            }
-            if (!String.IsNullOrEmpty(country))
-            {
-                location.Append(", " + country);
-            }
-            return location;
+
+            return new ManualGeocodeResult(latitude, longitude);
         }
 
-        private static void GetGeoCodeResults(int tabModuleId, string city, string state, string zip, string address, out double? latitude, out double? longitude, out string error, string location)
+        private static GeocodeResult GetGeoCodeResults(int tabModuleId, string address, string city, string state, string zip)
         {
-            YahooGeocodeResult yahoo = new YahooGeocodeResult();
-            GoogleGeocodeResult google = new GoogleGeocodeResult();
-            yahoo.AccuracyCode = YahooAccuracyCode.Unknown;
+            MapProvider mapProvider = null;
+            Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(tabModuleId);
 
-            string apiKey = String.Empty;
-            ModuleController mc = new ModuleController();
-            Hashtable tabModuleSettings = mc.GetTabModuleSettings(tabModuleId);
-
-            string displayProvider = Convert.ToString(tabModuleSettings["DisplayProvider"], CultureInfo.InvariantCulture);
-            ReadOnlyCollection<MapProviderType> mpType = MapProviderType.GetMapProviderTypes();
-            foreach (MapProviderType type in mpType)
+            string displayProvider = Dnn.Utility.GetStringSetting(tabModuleSettings, "DisplayProvider");
+            foreach (MapProviderType type in MapProviderType.GetMapProviderTypes())
             {
                 if (type.ClassName.Contains(displayProvider))
                 {
-                    apiKey = Dnn.Utility.GetStringSetting(tabModuleSettings, type.ClassName + ".ApiKey");
+                    mapProvider = MapProvider.CreateInstance(type.ClassName, Dnn.Utility.GetStringSetting(tabModuleSettings, type.ClassName + ".ApiKey"));
                     break;
                 }
             }
 
-            if (displayProvider == "Yahoo")
+            if (mapProvider != null)
             {
-                yahoo = SearchUtility.SearchYahoo(location, address, city, state, zip, apiKey);
-                latitude = yahoo.Latitude;
-                longitude = yahoo.Longitude;
-                error = yahoo.StatusCode.ToString();
+                return mapProvider.GeocodeLocation(address, city, state, zip);
             }
-            else if (displayProvider == "Google")
-            {
-                google = SearchUtility.SearchGoogle(location, apiKey);
-                latitude = google.latitude;
-                longitude = google.longitude;
-                error = google.statusCode.ToString();
-            }
-            else
-            {
-                latitude = null;
-                longitude = null;
-                error = google.statusCode + " - " + yahoo.StatusCode;
-            }
+
+            return GeocodeResult.Empty;
         }
 
         private void ImportData(int portalId)
@@ -387,6 +320,7 @@ namespace Engage.Dnn.Locator.Components
                     unsuccessfulLocations.Append(row["Name"] + "<br />");
                 }
             }
+
             if (unsuccessfulCount > 0)
             {
                 emailBody.Append("There were " + successfulCount + " out of " + locations.Rows.Count + " locations imported successfully. <br />");
@@ -406,7 +340,7 @@ namespace Engage.Dnn.Locator.Components
             DataProvider.Instance().CopyData();
             DataProvider.Instance().ClearTempLocations();
 
-            string emailSubject = "Engage: Locator Import Succeeded";
+            const string emailSubject = "Engage: Locator Import Succeeded";
 
             foreach (DotNetNuke.Services.FileSystem.FileInfo fileInfo in files)
             {
@@ -429,7 +363,7 @@ namespace Engage.Dnn.Locator.Components
                 }
             }
 
-            FileMove(true);
+            this.FileMove(true);
         }
 
         private static string GetValue(CsvReader reader, string colName)
@@ -438,6 +372,7 @@ namespace Engage.Dnn.Locator.Components
             {
                 return reader[colName];
             }
+
             return string.Empty;
         }
 
@@ -445,25 +380,25 @@ namespace Engage.Dnn.Locator.Components
         {
             try
             {
-                FolderInfo fiLocationCompleted = FileSystemUtils.GetFolder(_portalId, CompletedFolderName);
+                FolderInfo fiLocationCompleted = FileSystemUtils.GetFolder(this.portalId, CompletedFolderName);
 
                 if (fiLocationCompleted != null)
                 {
-                    ArrayList filesLocationCompleted = FileSystemUtils.GetFilesByFolder(_portalId, fiLocationCompleted.FolderID);
+                    ArrayList filesLocationCompleted = FileSystemUtils.GetFilesByFolder(this.portalId, fiLocationCompleted.FolderID);
                     foreach (DotNetNuke.Services.FileSystem.FileInfo fileInfo in filesLocationCompleted)
                     {
                         File.Delete(fileInfo.PhysicalPath);
                     }
 
-                    FolderInfo fiLocationError = FileSystemUtils.GetFolder(_portalId, ErrorFolderName);
-                    ArrayList filesLocationError = FileSystemUtils.GetFilesByFolder(_portalId, fiLocationError.FolderID);
+                    FolderInfo fiLocationError = FileSystemUtils.GetFolder(this.portalId, ErrorFolderName);
+                    ArrayList filesLocationError = FileSystemUtils.GetFilesByFolder(this.portalId, fiLocationError.FolderID);
                     foreach (DotNetNuke.Services.FileSystem.FileInfo fileInfo in filesLocationError)
                     {
                         File.Delete(fileInfo.PhysicalPath);
                     }
 
-                    FolderInfo fiLocationWorking = FileSystemUtils.GetFolder(_portalId, WorkingFolderName);
-                    ArrayList filesLocationWorking = FileSystemUtils.GetFilesByFolder(_portalId, fiLocationWorking.FolderID);
+                    FolderInfo fiLocationWorking = FileSystemUtils.GetFolder(this.portalId, WorkingFolderName);
+                    ArrayList filesLocationWorking = FileSystemUtils.GetFilesByFolder(this.portalId, fiLocationWorking.FolderID);
                     foreach (DotNetNuke.Services.FileSystem.FileInfo fileInfo in filesLocationWorking)
                     {
                         if (success)
@@ -486,6 +421,7 @@ namespace Engage.Dnn.Locator.Components
                 Exceptions.LogException(exc);
                 return false;
             }
+
             return true;
         }
 
@@ -531,9 +467,7 @@ namespace Engage.Dnn.Locator.Components
             get
             {
                 DataTable dt = Location.GetFilesToImport();
-                if (dt.Rows.Count > 0)
-                    return true;
-                else return false;
+                return dt.Rows.Count > 0;
             }
         }
     }

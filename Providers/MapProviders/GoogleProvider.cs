@@ -16,9 +16,10 @@ namespace Engage.Dnn.Locator
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Net;
+    using System.Web;
     using System.Web.Script.Serialization;
     using System.Web.UI;
-
     using Maps;
 
     /// <summary>
@@ -27,32 +28,29 @@ namespace Engage.Dnn.Locator
     public class GoogleProvider : MapProvider
     {
         /// <summary>
-        /// Backing field for <see cref="LocatorTabModuleId"/>
+        /// The base URL to use to geocode an address.  Add QueryString parameters <c>&amp;q</c> for the location address and <c>&amp;key</c> for the API key.
         /// </summary>
-        private int locatorTabModuleId;
+        private const string SearchUrl = "http://maps.google.com/maps/geo?output=csv&sensor=false";
 
-        public int LocatorTabModuleId
-        {
-            get { return this.locatorTabModuleId; }
-            set { this.locatorTabModuleId = value; }
-        }
-
-        public static string SearchUrl
-        {
-            get {return  "http://maps.google.com/maps/geo?output=csv";}
-        }
-
-        public override string GenerateMiniMapScriptCore()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void GenerateMapScriptCore(ScriptManager scriptManager, string apiKey, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, LocationCollection locations, bool showAllLocationsOnLoad)
+        /// <summary>
+        /// Registers the JavaScript to display the map.
+        /// </summary>
+        /// <param name="scriptManager">The page's script manager.</param>
+        /// <param name="mapType">Type of the map.</param>
+        /// <param name="mapSectionId">The ID of the section (div) on the page in which the map should be created.</param>
+        /// <param name="currentLocationSpanId">The ID of the span showing the current location text.</param>
+        /// <param name="noLocationSpanId">The ID of the span shown when no location is selected.</param>
+        /// <param name="instructionSpanId">The ID of the span with driving directions, etc.</param>
+        /// <param name="directionsLinkId">The ID of the link to driving directions.</param>
+        /// <param name="directionsSectionId">The ID of the section (div) with driving directions text.</param>
+        /// <param name="locations">The list of locations to display.</param>
+        /// <param name="showAllLocationsOnLoad">if set to <c>true</c> shows the map with all locations on it by default.</param>
+        public override void GenerateMapScriptCore(ScriptManager scriptManager, MapType mapType, string mapSectionId, string currentLocationSpanId, string noLocationSpanId, string instructionSpanId, string directionsLinkId, string directionsSectionId, LocationCollection locations, bool showAllLocationsOnLoad)
         {
             ICollection<JavaScript.Location> locationsAsJson = locations.AsJson();
-            string mapParameters = string.Format(CultureInfo.InvariantCulture, "currentLocationSpan: {0}, noLocationSpan: {1}, instructionSpan: {2}, directionsLink: {3}, directionsSection: {4}, mapType: {5}, locationsArray: {6}", GetElementJavaScript(currentLocationSpanId), GetElementJavaScript(noLocationSpanId), GetElementJavaScript(instructionSpanId), GetElementJavaScript(directionsLinkId), GetElementJavaScript(directionsSectionId), ConvertMapType(mapType), new JavaScriptSerializer().Serialize(locationsAsJson));
+            string mapParameters = String.Format(CultureInfo.InvariantCulture, "currentLocationSpan: {0}, noLocationSpan: {1}, instructionSpan: {2}, directionsLink: {3}, directionsSection: {4}, mapType: {5}, locationsArray: {6}", GetElementJavaScript(currentLocationSpanId), GetElementJavaScript(noLocationSpanId), GetElementJavaScript(instructionSpanId), GetElementJavaScript(directionsLinkId), GetElementJavaScript(directionsSectionId), ConvertMapType(mapType), new JavaScriptSerializer().Serialize(locationsAsJson));
 
-            scriptManager.Scripts.Add(new ScriptReference(GetLoaderUrl(apiKey)));
+            scriptManager.Scripts.Add(new ScriptReference(GetLoaderUrl(this.ApiKey)));
             scriptManager.Scripts.Add(new ScriptReference("Engage.Dnn.Locator.JavaScript.BaseLocator.js", "EngageLocator"));
             scriptManager.Scripts.Add(new ScriptReference("Engage.Dnn.Locator.JavaScript.GoogleLocator.js", "EngageLocator"));
             ScriptManager.RegisterStartupScript(
@@ -73,9 +71,47 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        public override bool IsKeyValid(string apiKey)
+        /// <summary>
+        /// Determines whether this provider's <see name="ApiKey"/> is in a valid format.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if this provider's <see name="ApiKey"/> is in a valid format; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool IsKeyValid()
         {
-            return apiKey != null && apiKey.Length == 86;
+            return this.ApiKey != null && this.ApiKey.Length == 86;
+        }
+
+        /// <summary>
+        /// Gets the latitude and longitude of the given location.
+        /// </summary>
+        /// <param name="street">The street of the address.</param>
+        /// <param name="city">The city of the address.</param>
+        /// <param name="state">The state of the address.</param>
+        /// <param name="zip">The zip code of the address.</param>
+        /// <returns>The geocoding result</returns>
+        public override GeocodeResult GeocodeLocation(string street, string city, string state, string zip)
+        {
+            if (this.IsKeyValid())
+            {
+                try
+                {
+                    string location = street + " " + city + " " + state + " " + zip;
+                    string[] csvResults = new WebClient().DownloadString(SearchUrl + "&q=" + HttpUtility.UrlEncode(location) + "&key=" + this.ApiKey).Split(',');
+
+                    return new GoogleGeocodeResult(
+                        double.Parse(csvResults[2], CultureInfo.InvariantCulture),
+                        double.Parse(csvResults[3], CultureInfo.InvariantCulture),
+                        (GoogleAccuracyCode)int.Parse(csvResults[1], CultureInfo.InvariantCulture),
+                        (GoogleStatusCode)int.Parse(csvResults[0], CultureInfo.InvariantCulture));
+                }
+                catch (WebException)
+                {
+                    return new GoogleGeocodeResult(double.NaN, double.NaN, GoogleAccuracyCode.Unknown, GoogleStatusCode.ServerError);
+                }
+            }
+
+            return GeocodeResult.Empty;
         }
 
         /// <summary>
@@ -117,76 +153,5 @@ namespace Engage.Dnn.Locator
 
             return "http://www.google.com/jsapi?key=" + apiKey;
         }
-    }
-
-    /// <summary>
-    /// The type of Google map to initially display
-    /// </summary>
-    internal enum GoogleMapType
-    {
-        /// <summary>
-        /// Normal Map
-        /// </summary>
-        G_NORMAL_MAP,
-
-        /// <summary>
-        /// Sattelite Map
-        /// </summary>
-        G_SATELLITE_MAP,
-
-        /// <summary>
-        /// Hybrid Map
-        /// </summary>
-        G_HYBRID_MAP
-    }
-
-    public struct GoogleGeocodeResult
-    {
-        public double latitude;
-        public double longitude;
-
-        public GoogleAccuracyCode accuracyCode;
-        public GoogleStatusCode statusCode;
-    }
-
-    public enum GoogleStatusCode
-    {
-        /// <summary>
-        /// No errors occurred; the address was successfully parsed and its geocode has been returned.
-        /// </summary>
-        Success = 200,
-        /// <summary>
-        /// A geocoding request could not be successfully processed, yet the exact reason for the failure is not known.
-        /// </summary>
-        ServerError = 500,
-        /// <summary>
-        /// The HTTP q parameter was either missing or had no value.
-        /// </summary>
-        MissingAddress = 601,
-        /// <summary>
-        /// No corresponding geographic location could be found for the specified address. This may be due to the fact that the address is relatively new, or it may be incorrect.
-        /// </summary>
-        UnknownAddress = 602,
-        /// <summary>
-        /// The geocode for the given address cannot be returned due to legal or contractual reasons.
-        /// </summary>
-        UnavailableAddress = 603,
-        /// <summary>
-        /// The given key is either invalid or does not match the domain for which it was given.
-        /// </summary>
-        BadKey = 610
-    }
-
-    public enum GoogleAccuracyCode
-    {
-        Unknown = 0,
-        Country = 1,
-        Region = 2,
-        Subregion = 3,
-        Town = 4,
-        PostalCode = 5,
-        Street = 6,
-        Intersection = 7,
-        Address = 8
     }
 }

@@ -364,7 +364,6 @@ namespace Engage.Dnn.Locator
             currentLocation.PortalId = PortalId;
             currentLocation.Website = txtWebsite.Text;
             currentLocation.LastUpdateDate = DateTime.Now;
-            string location = txtAddress1.Text + ", " + currentLocation.City + ", " + currentLocation.RegionName + ", " + currentLocation.PostalCode;
 
             double inputLatitude = Convert.ToDouble(this.txtLatitude.Text, CultureInfo.CurrentCulture);
             double inputLongitude = Convert.ToDouble(this.txtLongitude.Text, CultureInfo.CurrentCulture);
@@ -376,14 +375,17 @@ namespace Engage.Dnn.Locator
             }
             else
             {
-                double? geoCodeLatitude;
-                double? geoCodeLongitude;
-                this.GetGeoCodeResults(txtCity.Text, ddlState.SelectedItem.ToString(), txtZip.Text, txtAddress1.Text, out geoCodeLatitude, out geoCodeLongitude, out error, location);
+                GeocodeResult geocodeResult = this.GetMapProvider().GeocodeLocation(txtAddress1.Text, txtCity.Text, ddlState.SelectedItem.ToString(), txtZip.Text);
 
-                if (geoCodeLatitude.HasValue && geoCodeLongitude.HasValue)
+                if (geocodeResult.Successful)
                 {
-                    currentLocation.Latitude = geoCodeLatitude.Value;
-                    currentLocation.Longitude = geoCodeLongitude.Value;
+                    currentLocation.Latitude = geocodeResult.Latitude;
+                    currentLocation.Longitude = geocodeResult.Longitude;
+                    error = "Success";
+                }
+                else
+                {
+                    error = geocodeResult.ErrorMessage;
                 }
             }
 
@@ -479,12 +481,17 @@ namespace Engage.Dnn.Locator
             }
             else
             {
-                double? latitude;
-                double? longitude;
-                string location = txtAddress1.Text + ", " + newLocation.City + ", " + newLocation.RegionName + ", " + newLocation.PostalCode;
-                this.GetGeoCodeResults(city, ddlState.SelectedItem.ToString(), txtZip.Text, txtAddress1.Text, out latitude, out longitude, out error, location);
-                newLocation.Latitude = Convert.ToDouble(latitude, CultureInfo.InvariantCulture);
-                newLocation.Longitude = Convert.ToDouble(longitude, CultureInfo.InvariantCulture);
+                GeocodeResult geocodeResult = this.GetMapProvider().GeocodeLocation(txtAddress1.Text, city, ddlState.SelectedItem.ToString(), txtZip.Text);
+                if (geocodeResult.Successful)
+                {
+                    newLocation.Latitude = geocodeResult.Latitude;
+                    newLocation.Longitude = geocodeResult.Longitude;
+                    error = "Success";
+                }
+                else
+                {
+                    error = geocodeResult.ErrorMessage;
+                }
             }
 
             // settings are set to moderate and the user is logged in as admin
@@ -525,44 +532,6 @@ namespace Engage.Dnn.Locator
             {
                 lblError.Text = error + " - Please try submitting your location again.";
                 singleDivError.Visible = true;
-            }
-        }
-
-        private void GetGeoCodeResults(string city, string state, string zip, string address, out double? latitude, out double? longitude, out string error, string location)
-        {
-            string apiKey = String.Empty;
-            string displayProvider = Dnn.Utility.GetStringSetting(this.Settings, "DisplayProvider");
-            ReadOnlyCollection<MapProviderType> mpType = MapProviderType.GetMapProviderTypes();
-            foreach (MapProviderType type in mpType)
-            {
-                if (type.ClassName.Contains(displayProvider))
-                {
-                    apiKey = Dnn.Utility.GetStringSetting(this.Settings, type.ClassName + ".ApiKey");
-                    break;
-                }
-            }
-
-            if (displayProvider.Contains("Google"))
-            {
-                GoogleGeocodeResult google = SearchUtility.SearchGoogle(location, apiKey);
-                latitude = google.latitude;
-                longitude = google.longitude;
-                error = google.statusCode.ToString();
-            }
-            else if (displayProvider.Contains("Yahoo"))
-            {
-                YahooGeocodeResult yahoo;
-                yahoo.AccuracyCode = YahooAccuracyCode.Unknown;
-                yahoo = SearchUtility.SearchYahoo(location, address, city, state, zip, apiKey);
-                latitude = yahoo.Latitude;
-                longitude = yahoo.Longitude;
-                error = yahoo.StatusCode.ToString();
-            }
-            else
-            {
-                latitude = null;
-                longitude = null;
-                error = "No Geo Code Information Available";
             }
         }
 
