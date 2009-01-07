@@ -17,9 +17,13 @@ namespace Engage.Dnn.Locator
     using System.Collections.Generic;
     using System.Globalization;
     using System.Net;
+    using System.Text;
     using System.Web;
     using System.Web.Script.Serialization;
     using System.Web.UI;
+
+    using DotNetNuke.Common.Lists;
+
     using Maps;
 
     /// <summary>
@@ -87,17 +91,37 @@ namespace Engage.Dnn.Locator
         /// </summary>
         /// <param name="street">The street of the address.</param>
         /// <param name="city">The city of the address.</param>
-        /// <param name="state">The state of the address.</param>
+        /// <param name="regionId">The ID of the region of the address.</param>
         /// <param name="zip">The zip code of the address.</param>
+        /// <param name="countryId">The ID of the country of the address</param>
         /// <returns>The geocoding result</returns>
-        public override GeocodeResult GeocodeLocation(string street, string city, string state, string zip)
+        public override GeocodeResult GeocodeLocation(string street, string city, int? regionId, string zip, int? countryId)
         {
             if (this.IsKeyValid())
             {
                 try
                 {
-                    string location = street + " " + city + " " + state + " " + zip;
-                    string[] csvResults = new WebClient().DownloadString(SearchUrl + "&q=" + HttpUtility.UrlEncode(location) + "&key=" + this.ApiKey).Split(',');
+                    StringBuilder queryUrl = new StringBuilder();
+                    queryUrl.Append(SearchUrl)
+                        .Append("&q=")
+                        .Append(HttpUtility.UrlEncode(street))
+                        .Append(HttpUtility.UrlEncode(" "))
+                        .Append(HttpUtility.UrlEncode(city))
+                        .Append(HttpUtility.UrlEncode(" "))
+                        .Append(HttpUtility.UrlEncode(GetRegionAbbreviation(regionId)))
+                        .Append(HttpUtility.UrlEncode(" "))
+                        .Append(HttpUtility.UrlEncode(zip))
+                        .Append("&key=")
+                        .Append(HttpUtility.UrlEncode(this.ApiKey));
+
+                    string countryAbbreviation = GetCountryAbbreviation(countryId.Value);
+                    if (!string.IsNullOrEmpty(countryAbbreviation))
+                    {
+                        queryUrl.Append("&gl=")
+                            .Append(countryAbbreviation);
+                    }
+
+                    string[] csvResults = new WebClient().DownloadString(queryUrl.ToString()).Split(',');
 
                     return new GoogleGeocodeResult(
                         double.Parse(csvResults[2], CultureInfo.InvariantCulture),
@@ -130,6 +154,26 @@ namespace Engage.Dnn.Locator
                 default:
                     return GoogleMapType.G_NORMAL_MAP.ToString();
             }
+        }
+
+        /// <summary>
+        /// Gets the ccTLD (country top-level domain) abbreviation for the country with the given ID.
+        /// </summary>
+        /// <param name="countryId">The country ID.</param>
+        /// <returns>The abbreviation for the given country</returns>
+        private static string GetCountryAbbreviation(int? countryId)
+        {
+            if (countryId.HasValue)
+            {
+                ListEntryInfo countryEntry = new ListController().GetListEntryInfo(countryId.Value);
+
+                if (countryEntry != null)
+                {
+                    return countryEntry.Value;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

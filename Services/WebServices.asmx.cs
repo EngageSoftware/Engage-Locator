@@ -38,7 +38,7 @@ namespace Engage.Dnn.Locator.Services
         {
             MapProviderType providerType = MapProviderType.GetFromName(mapProviderTypeName, typeof(MapProviderType));
 
-            GeocodeResult result = MapProvider.CreateInstance(providerType, apiKey).GeocodeLocation(string.Empty, string.Empty, string.Empty, postalCode);
+            GeocodeResult result = MapProvider.CreateInstance(providerType, apiKey).GeocodeLocation(string.Empty, string.Empty, null, postalCode, null);
             LocationCollection matches = Location.GetAllLocationsByDistance(result.Latitude, result.Longitude, radius, portalId, locationTypeIds, null, null);
 
             return matches;

@@ -23,6 +23,8 @@ namespace Engage.Dnn.Locator
     using System.Web.UI;
     using System.Xml;
 
+    using DotNetNuke.Common.Lists;
+
     using Maps;
 
     /// <summary>
@@ -88,52 +90,65 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
-        /// Converts <paramref name="mapType"/> into its Yahoo! Maps enumeration value.
-        /// </summary>
-        /// <param name="mapType">Type of the map.</param>
-        /// <returns>The value of the map type for Google Maps</returns>
-        private static string ConvertMapType(MapType mapType)
-        {
-            switch (mapType)
-            {
-                case MapType.Hybrid:
-                    return YahooMapType.YAHOO_MAP_HYB.ToString();
-                case MapType.Satellite:
-                    return YahooMapType.YAHOO_MAP_SAT.ToString();
-                default:
-                    return YahooMapType.YAHOO_MAP_REG.ToString();
-            }
-        }
-
-        /// <summary>
         /// Gets the latitude and longitude of the given location.
         /// </summary>
         /// <param name="street">The street of the address.</param>
         /// <param name="city">The city of the address.</param>
-        /// <param name="state">The state of the address.</param>
+        /// <param name="regionId">The ID of the region of the address.</param>
         /// <param name="zip">The zip code of the address.</param>
+        /// <param name="countryId">The ID of the country of the address</param>
         /// <returns>The geocoding result</returns>
-        public override GeocodeResult GeocodeLocation(string street, string city, string state, string zip)
+        public override GeocodeResult GeocodeLocation(string street, string city, int? regionId, string zip, int? countryId)
         {
             if (this.IsKeyValid())
             {
-                return SearchYahoo(GetCityStateParams(street, city, state, zip), this.ApiKey);
+                string regionAbbreviation = GetRegionAbbreviation(regionId);
+                string countryName = GetCountryName(countryId);
+
+                YahooGeocodeResult parameterizedResult = GeocodeLocation(GetCityStateParams(street, city, regionAbbreviation, zip), this.ApiKey);
+                if (parameterizedResult.Successful && parameterizedResult.AccuracyCode >= YahooAccuracyCode.Address)
+                {
+                    return parameterizedResult;
+                }
+
+                YahooGeocodeResult freeformResult = GeocodeLocation(GetFreeformParam(street, city, regionAbbreviation, zip, countryName), this.ApiKey);
+                if (!freeformResult.Successful || !parameterizedResult.Successful)
+                {
+                    if (freeformResult.Successful)
+                    {
+                        return freeformResult;
+                    }
+
+                    return parameterizedResult;
+                }
+
+                if (freeformResult.AccuracyCode > parameterizedResult.AccuracyCode)
+                {
+                    return freeformResult;
+                }
+
+                return parameterizedResult;
             }
 
             return GeocodeResult.Empty;
         }
 
-        private static YahooGeocodeResult SearchYahoo(string queryParams, string apiKey)
+        /// <summary>
+        /// Gets the geocode result for the given <paramref name="queryParams"/>
+        /// </summary>
+        /// <param name="queryParams">The query paramters for the location to geocode.</param>
+        /// <param name="apiKey">The API key.</param>
+        /// <returns>The geocode result from the request to </returns>
+        private static YahooGeocodeResult GeocodeLocation(string queryParams, string apiKey)
         {
             double latitude = double.NaN;
             double longitude = double.NaN;
             YahooAccuracyCode accuracyCode;
             YahooStatusCode statusCode;
 
-            Uri searchUrl = new Uri(SearchUrl + queryParams + "&appid=" + apiKey);
             try
             {
-                using (XmlReader resultsReader = XmlReader.Create(searchUrl.ToString()))
+                using (XmlReader resultsReader = XmlReader.Create(SearchUrl + queryParams + "&appid=" + apiKey))
                 {
                     resultsReader.Read();
                     if (resultsReader.IsStartElement("ResultSet"))
@@ -167,17 +182,17 @@ namespace Engage.Dnn.Locator
                     HttpWebResponse response = (HttpWebResponse)exc.Response;
                     switch (response.StatusCode)
                     {
-                        // 400
+                            // 400
                         case HttpStatusCode.BadRequest:
                             statusCode = YahooStatusCode.BadRequest;
                             break;
 
-                        // 403
+                            // 403
                         case HttpStatusCode.Forbidden:
                             statusCode = YahooStatusCode.Forbidden;
                             break;
 
-                        // 503
+                            // 503
                         case HttpStatusCode.ServiceUnavailable: 
                             statusCode = YahooStatusCode.ServiceUnavailable;
                             break;
@@ -188,6 +203,39 @@ namespace Engage.Dnn.Locator
             return new YahooGeocodeResult(latitude, longitude, accuracyCode, statusCode);
         }
 
+        /// <summary>
+        /// Converts <paramref name="mapType"/> into its Yahoo! Maps enumeration value.
+        /// </summary>
+        /// <param name="mapType">Type of the map.</param>
+        /// <returns>The value of the map type for Google Maps</returns>
+        private static string ConvertMapType(MapType mapType)
+        {
+            switch (mapType)
+            {
+                case MapType.Hybrid:
+                    return YahooMapType.YAHOO_MAP_HYB.ToString();
+                case MapType.Satellite:
+                    return YahooMapType.YAHOO_MAP_SAT.ToString();
+                default:
+                    return YahooMapType.YAHOO_MAP_REG.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the country with the given ID.
+        /// </summary>
+        /// <param name="countryId">The country ID.</param>
+        /// <returns>The name of the country, or <c>null</c> if <paramref name="countryId"/> is <c>null</c></returns>
+        private static string GetCountryName(int? countryId)
+        {
+            return countryId.HasValue ? new ListController().GetListEntryInfo(countryId.Value).Text : null;
+        }
+
+        /// <summary>
+        /// Converts the given accuracy code into a <see cref="YahooAccuracyCode"/> value
+        /// </summary>
+        /// <param name="accuracyValue">The accuracy value returned from the web service.</param>
+        /// <returns>The <see cref="YahooAccuracyCode"/> value represented by <paramref name="accuracyValue"/></returns>
         private static YahooAccuracyCode GetYahooAccuracyCode(string accuracyValue)
         {
             YahooAccuracyCode accuracyCode;
@@ -225,28 +273,80 @@ namespace Engage.Dnn.Locator
             return accuracyCode;
         }
 
-        private static string GetCityStateParams(string street, string city, string state, string zip)
+        /// <summary>
+        /// Gets the QueryString parameters for the given location as a collection of structured parameters.
+        /// </summary>
+        /// <param name="street">The street address of the location.</param>
+        /// <param name="city">The city of the location.</param>
+        /// <param name="regionAbbreviation">The abbreviation of the region for the location.</param>
+        /// <param name="zip">The postal code of the location.</param>
+        /// <returns>The QueryString parameters for the given location</returns>
+        private static string GetCityStateParams(string street, string city, string regionAbbreviation, string zip)
         {
             StringBuilder queryParams = new StringBuilder();
 
-            if (!String.IsNullOrEmpty(street))
+            if (!string.IsNullOrEmpty(street))
             {
                 queryParams.Append("&street=" + HttpUtility.UrlEncode(street));
             }
-            if (!String.IsNullOrEmpty(city))
+
+            if (!string.IsNullOrEmpty(city))
             {
                 queryParams.Append("&city=" + HttpUtility.UrlEncode(city));
             }
-            if (!String.IsNullOrEmpty(state))
+
+            if (!string.IsNullOrEmpty(regionAbbreviation))
             {
-                queryParams.Append("&state=" + HttpUtility.UrlEncode(state));
+                queryParams.Append("&state=" + HttpUtility.UrlEncode(regionAbbreviation));
             }
-            if (!String.IsNullOrEmpty(zip))
+
+            if (!string.IsNullOrEmpty(zip))
             {
                 queryParams.Append("&zip=" + HttpUtility.UrlEncode(zip));
             }
 
             return queryParams.ToString();
+        }
+
+        /// <summary>
+        /// Gets the QueryString parameter for the given location as a single, unstructured value.
+        /// </summary>
+        /// <param name="street">The street address of the location.</param>
+        /// <param name="city">The city of the location.</param>
+        /// <param name="regionAbbreviation">The abbreviation of the region for the location.</param>
+        /// <param name="zip">The postal code of the location.</param>
+        /// <param name="countryName">The country of the location.</param>
+        /// <returns>The QueryString parameter for the given location</returns>
+        private static string GetFreeformParam(string street, string city, string regionAbbreviation, string zip, string countryName)
+        {
+            StringBuilder queryParam = new StringBuilder("&location=");
+
+            if (!string.IsNullOrEmpty(street))
+            {
+                queryParam.Append(HttpUtility.UrlEncode(street + ", "));
+            }
+
+            if (!string.IsNullOrEmpty(city))
+            {
+                queryParam.Append(HttpUtility.UrlEncode(city + ", "));
+            }
+
+            if (!string.IsNullOrEmpty(regionAbbreviation))
+            {
+                queryParam.Append(HttpUtility.UrlEncode(regionAbbreviation + ", "));
+            }
+
+            if (!string.IsNullOrEmpty(zip))
+            {
+                queryParam.Append(HttpUtility.UrlEncode(zip + ", "));
+            }
+
+            if (!string.IsNullOrEmpty(countryName))
+            {
+                queryParam.Append(HttpUtility.UrlEncode(countryName));
+            }
+
+            return queryParam.ToString();
         }
     }
 }

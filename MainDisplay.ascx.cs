@@ -406,16 +406,6 @@ namespace Engage.Dnn.Locator
             return Globals.NavigateURL(this.TabId, string.Empty, parameters.ToArray());
         }
 
-        /// <summary>
-        /// Gets the region 
-        /// </summary>
-        /// <param name="regionId">The region id.</param>
-        /// <returns></returns>
-        private static string ResolveRegionId(int? regionId)
-        {
-            return regionId.HasValue ? new ListController().GetListEntryInfo(regionId.Value).Value : null;
-        }
-
         private void DisplayLocationList()
         {
             LocationCollection locations = null;
@@ -427,8 +417,7 @@ namespace Engage.Dnn.Locator
             }
             else if (this.HasSearchCriteria())
             {
-                System.Diagnostics.Debug.Fail("Get values from drop downs");
-                GeocodeResult geocodeResult = mapProvider.GeocodeLocation(this.SearchAddress, this.SearchCity, ResolveRegionId(this.SearchRegionId), this.SearchPostalCode);
+                GeocodeResult geocodeResult = mapProvider.GeocodeLocation(this.SearchAddress, this.SearchCity, this.SearchRegionId, this.SearchPostalCode, this.SearchCountryId);
 
                 if (geocodeResult.Successful)
                 {

@@ -212,7 +212,7 @@ namespace Engage.Dnn.Locator.Components
                         // Address2 is informational only - See Pat Renner.
                         location.Address2 = address2;
 
-                        GeocodeResult geocodeResult = GetGeoCoordinates(tabModuleId, address1, location.City, state, location.PostalCode);
+                        GeocodeResult geocodeResult = GetGeoCoordinates(tabModuleId, address1, location.City, location.RegionId, location.PostalCode, location.CountryId);
                         if (geocodeResult.Successful)
                         {
                             location.Latitude = geocodeResult.Latitude;
@@ -244,12 +244,12 @@ namespace Engage.Dnn.Locator.Components
             }
         }
 
-        public static GeocodeResult GetGeoCoordinates(int tabModuleId, string address1, string city, string state, string zip)
+        public static GeocodeResult GetGeoCoordinates(int tabModuleId, string address1, string city, int regionId, string zip, int countryId)
         {
             DataTable existingLatitudeLongitude = DataProvider.Instance().GetLatitudeLongitude(address1, city);
             if (existingLatitudeLongitude.Rows.Count == 0)
             {
-                return GetGeoCodeResults(tabModuleId, address1, city, state, zip);
+                return GetGeoCodeResults(tabModuleId, address1, city, regionId, zip, countryId);
             }
 
             double? latitude, longitude;
@@ -274,7 +274,7 @@ namespace Engage.Dnn.Locator.Components
             return new ManualGeocodeResult(latitude, longitude);
         }
 
-        private static GeocodeResult GetGeoCodeResults(int tabModuleId, string address, string city, string state, string zip)
+        private static GeocodeResult GetGeoCodeResults(int tabModuleId, string address, string city, int regionId, string zip, int countryId)
         {
             MapProvider mapProvider = null;
             Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(tabModuleId);
@@ -291,7 +291,7 @@ namespace Engage.Dnn.Locator.Components
 
             if (mapProvider != null)
             {
-                return mapProvider.GeocodeLocation(address, city, state, zip);
+                return mapProvider.GeocodeLocation(address, city, regionId, zip, countryId);
             }
 
             return GeocodeResult.Empty;

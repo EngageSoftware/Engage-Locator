@@ -14,6 +14,8 @@ namespace Engage.Dnn.Locator.Maps
     using System;
     using System.Web.UI;
 
+    using DotNetNuke.Common.Lists;
+
     /// <summary>
     /// An abstract base class for map providers, including the ability to display maps in HTML and JavaScript, and the ability to geocode locations.
     /// </summary>
@@ -67,10 +69,11 @@ namespace Engage.Dnn.Locator.Maps
         /// </summary>
         /// <param name="street">The street of the address.</param>
         /// <param name="city">The city of the address.</param>
-        /// <param name="state">The state of the address.</param>
+        /// <param name="regionId">The ID of the region of the address.</param>
         /// <param name="zip">The zip code of the address.</param>
+        /// <param name="countryId">The ID of the country of the address</param>
         /// <returns>The geocoding result</returns>
-        public abstract GeocodeResult GeocodeLocation(string street, string city, string state, string zip);
+        public abstract GeocodeResult GeocodeLocation(string street, string city, int? regionId, string zip, int? countryId);
 
         /// <summary>
         /// Registers the JavaScript to display the map.
@@ -121,6 +124,25 @@ namespace Engage.Dnn.Locator.Maps
         protected static string GetElementJavaScript(string elementId)
         {
             return "jQuery('#" + elementId + "')";
+        }
+
+        /// <summary>
+        /// Gets the abbreviation for the region with the given ID.
+        /// </summary>
+        /// <param name="regionId">The region id.</param>
+        /// <returns>The abbreviation for the region, or <c>null</c> if <paramref name="regionId"/> is <c>null</c></returns>
+        protected static string GetRegionAbbreviation(int? regionId)
+        {
+            if (regionId.HasValue)
+            {
+                ListEntryInfo regionEntry = new ListController().GetListEntryInfo(regionId.Value);
+                if (regionEntry != null)
+                {
+                    return regionEntry.Value;
+                }
+            }
+            
+            return null;
         }
     }
 }

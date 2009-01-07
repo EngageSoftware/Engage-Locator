@@ -375,7 +375,7 @@ namespace Engage.Dnn.Locator
             }
             else
             {
-                GeocodeResult geocodeResult = this.GetMapProvider().GeocodeLocation(txtAddress1.Text, txtCity.Text, ddlState.SelectedItem.ToString(), txtZip.Text);
+                GeocodeResult geocodeResult = this.GetMapProvider().GeocodeLocation(txtAddress1.Text, txtCity.Text, currentLocation.RegionId, txtZip.Text, currentLocation.CountryId);
 
                 if (geocodeResult.Successful)
                 {
@@ -481,7 +481,7 @@ namespace Engage.Dnn.Locator
             }
             else
             {
-                GeocodeResult geocodeResult = this.GetMapProvider().GeocodeLocation(txtAddress1.Text, city, ddlState.SelectedItem.ToString(), txtZip.Text);
+                GeocodeResult geocodeResult = this.GetMapProvider().GeocodeLocation(txtAddress1.Text, city, newLocation.RegionId, txtZip.Text, newLocation.CountryId);
                 if (geocodeResult.Successful)
                 {
                     newLocation.Latitude = geocodeResult.Latitude;
