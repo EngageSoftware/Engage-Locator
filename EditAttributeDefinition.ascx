@@ -12,13 +12,13 @@
 <fieldset>
     <legend class="Head" id="lgDefinitions" runat="server">Attribute Definition</legend>
         <div id="div_Name" class="eadLabel">
-            <p><asp:Label ID="lblName" runat="server" resourceKey="lblName" CssClass="normal" /></p>
+            <p><asp:Label ID="lblName" runat="server" resourceKey="lblName" CssClass="Normal" /></p>
         </div>
         <div id="div_Name_TextBox" class="eadTextBox">
                 <p><asp:TextBox ID="txtName" runat="server" CssClass="NormalTextBox" /><asp:RequiredFieldValidator ID="rfvName" CssClass="NormalRed" runat="server" ControlToValidate="txtName" ErrorMessage="Name is required" /></p>
         </div>
         <div id="div_DefaultValue" class="eadLabel">
-            <p><asp:Label ID="lblDefaultValue" runat="server" resourceKey="lblDefaultValue" CssClass="normal" /></p>
+            <p><asp:Label ID="lblDefaultValue" runat="server" resourceKey="lblDefaultValue" CssClass="Normal" /></p>
         </div>
         <div id="div_DefaultValue_TextBox" class="eadTextBox">
             <p><asp:TextBox ID="txtDefaultValue" runat="server" CssClass="NormalTextBox" /></p>

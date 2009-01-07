@@ -59,382 +59,364 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.ImageButton lbLocationTypes;
         
         /// <summary>
-        /// lblHeader control.
+        /// HeaderLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHeader;
+        protected global::System.Web.UI.WebControls.Label HeaderLabel;
         
         /// <summary>
-        /// mvwLocator control.
+        /// LocatorDisplayMultiView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.MultiView mvwLocator;
+        protected global::System.Web.UI.WebControls.MultiView LocatorDisplayMultiView;
         
         /// <summary>
-        /// vwSetup control.
+        /// SetupView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View vwSetup;
+        protected global::System.Web.UI.WebControls.View SetupView;
         
         /// <summary>
-        /// pnlSetup control.
+        /// SetupPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlSetup;
+        protected global::System.Web.UI.WebControls.Panel SetupPanel;
         
         /// <summary>
-        /// lblSetupText control.
+        /// SetupLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSetupText;
+        protected global::System.Web.UI.WebControls.Label SetupLabel;
         
         /// <summary>
-        /// vwLocator control.
+        /// SearchView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View vwLocator;
+        protected global::System.Web.UI.WebControls.View SearchView;
         
         /// <summary>
-        /// pnlLocator control.
+        /// SearchPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlLocator;
+        protected global::System.Web.UI.WebControls.Panel SearchPanel;
         
         /// <summary>
-        /// pnlError control.
+        /// SearchErrorPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlError;
+        protected global::System.Web.UI.WebControls.Panel SearchErrorPanel;
         
         /// <summary>
-        /// lblErrorMessage control.
+        /// ErrorMessageLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorMessage;
+        protected global::System.Web.UI.WebControls.Label ErrorMessageLabel;
         
         /// <summary>
-        /// lblSearchTitle control.
+        /// SearchTitleLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSearchTitle;
+        protected global::System.Web.UI.WebControls.Label SearchTitleLabel;
         
         /// <summary>
-        /// pnlAddress control.
+        /// SearchAddressPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlAddress;
+        protected global::System.Web.UI.WebControls.Panel SearchAddressPanel;
         
         /// <summary>
-        /// addressFirstLine control.
+        /// AddressFirstLineSection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl addressFirstLine;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AddressFirstLineSection;
         
         /// <summary>
-        /// ltAddress control.
+        /// SearchAddressLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ltAddress;
+        protected global::System.Web.UI.WebControls.Label SearchAddressLabel;
         
         /// <summary>
-        /// lblLocationAddress control.
+        /// SearchAddressTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationAddress;
+        protected global::System.Web.UI.WebControls.TextBox SearchAddressTextBox;
         
         /// <summary>
-        /// txtLocationAddress control.
+        /// SearchCitySection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLocationAddress;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SearchCitySection;
         
         /// <summary>
-        /// ltCity control.
+        /// SearchCityLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ltCity;
+        protected global::System.Web.UI.WebControls.Label SearchCityLabel;
         
         /// <summary>
-        /// lblLocationCity control.
+        /// SearchCityTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationCity;
+        protected global::System.Web.UI.WebControls.TextBox SearchCityTextBox;
         
         /// <summary>
-        /// txtLocationCity control.
+        /// SearchRegionSection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLocationCity;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SearchRegionSection;
         
         /// <summary>
-        /// ltRegion control.
+        /// SearchRegionLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ltRegion;
+        protected global::System.Web.UI.WebControls.Label SearchRegionLabel;
         
         /// <summary>
-        /// lblLocationState control.
+        /// SearchRegionDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationState;
+        protected global::System.Web.UI.WebControls.DropDownList SearchRegionDropDownList;
         
         /// <summary>
-        /// ddlLocationRegion control.
+        /// SearchPostalCodeSection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLocationRegion;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SearchPostalCodeSection;
         
         /// <summary>
-        /// ltPostalcode control.
+        /// SearchPostalCodeLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ltPostalcode;
+        protected global::System.Web.UI.WebControls.Label SearchPostalCodeLabel;
         
         /// <summary>
-        /// lblLocationPostalCode control.
+        /// SearchPostalCodeTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocationPostalCode;
+        protected global::System.Web.UI.WebControls.TextBox SearchPostalCodeTextBox;
         
         /// <summary>
-        /// txtLocationPostalCode control.
+        /// SearchCountrySection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLocationPostalCode;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SearchCountrySection;
         
         /// <summary>
-        /// ltCountry control.
+        /// SearchCountryLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ltCountry;
+        protected global::System.Web.UI.WebControls.Label SearchCountryLabel;
         
         /// <summary>
-        /// lblLocatorCountry control.
+        /// SearchCountryDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocatorCountry;
+        protected global::System.Web.UI.WebControls.DropDownList SearchCountryDropDownList;
         
         /// <summary>
-        /// ddlLocatorCountry control.
+        /// SearchRadiusPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLocatorCountry;
+        protected global::System.Web.UI.WebControls.Panel SearchRadiusPanel;
         
         /// <summary>
-        /// pnlDistance control.
+        /// SearchRadiusLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlDistance;
+        protected global::System.Web.UI.WebControls.Label SearchRadiusLabel;
         
         /// <summary>
-        /// lblDistance control.
+        /// SearchRadiusDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDistance;
+        protected global::System.Web.UI.WebControls.DropDownList SearchRadiusDropDownList;
         
         /// <summary>
-        /// ddlDistance control.
+        /// FilterCountryPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDistance;
+        protected global::System.Web.UI.WebControls.Panel FilterCountryPanel;
         
         /// <summary>
-        /// lblOr control.
+        /// FilterCountryLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOr;
+        protected global::System.Web.UI.WebControls.Label FilterCountryLabel;
         
         /// <summary>
-        /// pnlCountry control.
+        /// FilterCountryDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlCountry;
+        protected global::System.Web.UI.WebControls.DropDownList FilterCountryDropDownList;
         
         /// <summary>
-        /// lblCountry control.
+        /// SearchSubmitButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCountry;
+        protected global::System.Web.UI.WebControls.Button SearchSubmitButton;
         
         /// <summary>
-        /// ddlCountry control.
+        /// SubmitLocationFromSearchButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCountry;
+        protected global::System.Web.UI.WebControls.Button SubmitLocationFromSearchButton;
         
         /// <summary>
-        /// btnSubmit control.
+        /// LocationsListView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
+        protected global::System.Web.UI.WebControls.View LocationsListView;
         
         /// <summary>
-        /// lnkSubmitLocationSearch control.
+        /// NewSearchButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button lnkSubmitLocationSearch;
+        protected global::System.Web.UI.WebControls.Button NewSearchButton;
         
         /// <summary>
-        /// vwResults control.
+        /// ShowAllLocationsButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View vwResults;
+        protected global::System.Web.UI.WebControls.Button ShowAllLocationsButton;
         
         /// <summary>
-        /// btnBack2 control.
+        /// SubmitLocationFromListButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBack2;
+        protected global::System.Web.UI.WebControls.Button SubmitLocationFromListButton;
         
         /// <summary>
-        /// btn_ShowAll control.
+        /// CurrentLocationsLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_ShowAll;
+        protected global::System.Web.UI.WebControls.Label CurrentLocationsLabel;
         
         /// <summary>
-        /// lnkSubmitLocation control.
+        /// LocatorMapLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button lnkSubmitLocation;
-        
-        /// <summary>
-        /// lblNumClosest control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNumClosest;
-        
-        /// <summary>
-        /// lblLocatorMapLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLocatorMapLabel;
+        protected global::System.Web.UI.WebControls.Label LocatorMapLabel;
         
         /// <summary>
         /// CurrentLocationLabel control.
@@ -446,40 +428,22 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.Label CurrentLocationLabel;
         
         /// <summary>
-        /// Label1 control.
+        /// MapSection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl MapSection;
         
         /// <summary>
-        /// Label2 control.
+        /// ScrollToViewMoreLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
-        
-        /// <summary>
-        /// divMap control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMap;
-        
-        /// <summary>
-        /// lblScrollToViewMore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblScrollToViewMore;
+        protected global::System.Web.UI.WebControls.Label ScrollToViewMoreLabel;
         
         /// <summary>
         /// MapLinkPanel control.
@@ -500,31 +464,31 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.HyperLink DrivingDirectionsLink;
         
         /// <summary>
-        /// lblMapLinkMapName control.
+        /// MapLinkMapNameLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMapLinkMapName;
+        protected global::System.Web.UI.WebControls.Label MapLinkMapNameLabel;
         
         /// <summary>
-        /// lblMapLinkDrivingDirections control.
+        /// MapLinkDrivingDirectionsLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMapLinkDrivingDirections;
+        protected global::System.Web.UI.WebControls.Label MapLinkDrivingDirectionsLabel;
         
         /// <summary>
-        /// rptLocations control.
+        /// LocationsListRepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptLocations;
+        protected global::System.Web.UI.WebControls.Repeater LocationsListRepeater;
         
         /// <summary>
         /// PreviousPageLink control.

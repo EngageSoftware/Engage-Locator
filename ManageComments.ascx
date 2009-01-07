@@ -9,17 +9,17 @@
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lbManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" CausesValidation="false" />
 </div>
 
-<asp:Label ID="lblConfigured" runat="server" CssClass="locatorInstruction normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations."  Visible="False" resourcekey="lblConfigured"></asp:Label>
-<asp:Label ID="lblNoPending" runat="server" Text="No Pending Comments" CssClass="normal" resourceKey="lblNoPending"></asp:Label>
+<asp:Label ID="lblConfigured" runat="server" CssClass="locatorInstruction Normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations."  Visible="False" resourcekey="lblConfigured"></asp:Label>
+<asp:Label ID="lblNoPending" runat="server" Text="No Pending Comments" CssClass="Normal" resourceKey="lblNoPending"></asp:Label>
 <div class="divPanelTab" id="divPanelTab" runat="server">
-    <asp:Label ID="lblSuccess" runat="server" CssClass="normal"></asp:Label>
+    <asp:Label ID="lblSuccess" runat="server" CssClass="Normal"></asp:Label>
     <div>
         <asp:DataGrid ID="dgSubmittedComments" runat="server" CssClass="DataGrid_Container" GridLines="Vertical"
             AllowPaging="True" AutoGenerateColumns="False" 
             OnDeleteCommand="dgComments_DeleteCommand" OnItemCreated="dgComments_ItemCreated">
-            <FooterStyle CssClass="normal DataGrid_Footer" />
-            <PagerStyle CssClass="normal PagingTable" HorizontalAlign="Center" Mode="NumericPages" />
-            <HeaderStyle CssClass="normal DataGrid_Header" />
+            <FooterStyle CssClass="Normal DataGrid_Footer" />
+            <PagerStyle CssClass="Normal PagingTable" HorizontalAlign="Center" Mode="NumericPages" />
+            <HeaderStyle CssClass="Normal DataGrid_Header" />
             <Columns>
                 <asp:TemplateColumn HeaderText="ID" Visible="False">
                     <ItemTemplate>
@@ -48,9 +48,9 @@
                     </ItemTemplate>
                 </asp:TemplateColumn>
             </Columns>
-                    <SelectedItemStyle CssClass="normal DataGrid_SelectedItem" />
-                    <AlternatingItemStyle CssClass="normal DataGrid_AlternatingItem" />
-                    <ItemStyle CssClass="normal DataGrid_Item" />        
+                    <SelectedItemStyle CssClass="Normal DataGrid_SelectedItem" />
+                    <AlternatingItemStyle CssClass="Normal DataGrid_AlternatingItem" />
+                    <ItemStyle CssClass="Normal DataGrid_Item" />        
         </asp:DataGrid>
     </div>
     <br />

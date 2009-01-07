@@ -292,4 +292,7 @@
   <data name="PreviousPageLink.Text" xml:space="preserve">
     <value>Previous</value>
   </data>
+  <data name="Please refine your search.Text" xml:space="preserve">
+    <value>Please refine your search.</value>
+  </data>
 </root>

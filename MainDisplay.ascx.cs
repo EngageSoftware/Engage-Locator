@@ -16,7 +16,6 @@ namespace Engage.Dnn.Locator
     using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
-    using System.Text;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -129,12 +128,12 @@ namespace Engage.Dnn.Locator
         /// Gets the ID of the country to which search results are to be restricted.
         /// </summary>
         /// <value>The ID of the country for which results should be displayed.</value>
-        private int? CountryRestrictId
+        private int? FilterCountryId
         {
             get
             {
                 int countryId;
-                if (int.TryParse(this.Request.QueryString["CountryRestrict"], NumberStyles.Integer, CultureInfo.InvariantCulture, out countryId))
+                if (int.TryParse(this.Request.QueryString["FilterCountry"], NumberStyles.Integer, CultureInfo.InvariantCulture, out countryId))
                 {
                     return countryId;
                 }
@@ -147,7 +146,7 @@ namespace Engage.Dnn.Locator
         /// Gets the address used for search criteria.
         /// </summary>
         /// <value>The search criteria address.</value>
-        private string Address
+        private string SearchAddress
         {
             get
             {
@@ -159,7 +158,7 @@ namespace Engage.Dnn.Locator
         /// Gets the city used for search criteria
         /// </summary>
         /// <value>The search criteria city.</value>
-        private string City
+        private string SearchCity
         {
             get
             {
@@ -171,7 +170,7 @@ namespace Engage.Dnn.Locator
         /// Gets the postal code used for search criteria.
         /// </summary>
         /// <value>The search criteria postal code.</value>
-        private string PostalCode
+        private string SearchPostalCode
         {
             get
             {
@@ -183,7 +182,7 @@ namespace Engage.Dnn.Locator
         /// Gets the ID of the region used for search criteria.
         /// </summary>
         /// <value>The ID of the region used for search criteria.</value>
-        private int? RegionId
+        private int? SearchRegionId
         {
             get
             {
@@ -201,7 +200,7 @@ namespace Engage.Dnn.Locator
         /// Gets the ID of the country used for search criteria.
         /// </summary>
         /// <value>The ID of the country used for search criteria.</value>
-        private int? CountryId
+        private int? SearchCountryId
         {
             get
             {
@@ -307,220 +306,20 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
-        /// Handles the Load event of the Page control.
+        /// Raises the <see cref="Control.Init"/> event.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
-            try
-            {
-                string title = this.Settings["SearchTitle"] != null
-                                       ? this.Settings["SearchTitle"].ToString()
-                                       : Localization.GetString("lblHeader", this.LocalResourceFile);
+            base.OnInit(e);
 
-                this.lblHeader.Text = title;
-
-                if (!this.SubmissionsEnabled)
-                {
-                    this.lnkSubmitLocation.Visible = false;
-                }
-
-                if (!this.SubmissionsEnabled)
-                {
-                    this.lnkSubmitLocationSearch.Visible = false;
-                }
-
-                this.lbSettings.Visible = this.IsEditable;
-                this.lbImportFile.Visible = this.IsEditable;
-                this.lbManageComments.Visible = this.IsEditable;
-                this.lbManageLocations.Visible = this.IsEditable;
-                this.lbLocationTypes.Visible = this.IsEditable;
-
-                string error = String.Empty;
-                if (!IsConfigured(this.TabModuleId, ref error))
-                {
-                    this.mvwLocator.SetActiveView(this.vwSetup);
-                    if (this.UserInfo.IsInRole(this.PortalSettings.ActiveTab.AdministratorRoles))
-                    {
-                        // "Please setup module through the Module Settings page.<br>Required Items: <br/><br/>" + error;
-                        this.lblSetupText.Text = Localization.GetString("SetupText_Admin", this.LocalResourceFile) + error;
-                    }
-                    else
-                    {
-                        // "This page is not configured. Please contact an Administrator.";
-                        this.lblSetupText.Text = Localization.GetString("SetupText_NonAdmin", this.LocalResourceFile);
-                    }
-                }
-                else
-                {
-                    this.mvwLocator.SetActiveView(this.vwLocator);
-                    if (!this.IsPostBack)
-                    {
-                        this.FillDropDowns();
-
-                        if (this.HasSearchCriteria() || this.ShowDefaultDisplay || this.ShowMapDefaultDisplay || this.ShowAll || this.CountryRestrictId.HasValue)
-                        {
-                            this.DisplayLocationList();
-                        }
-
-                        this.SetSearchDisplay();
-
-                        if (!this.ShowCountry && !this.ShowRadius)
-                        {
-                            this.btn_ShowAll.Visible = false;
-                        }
-
-                        if (this.SubmissionsEnabled)
-                        {
-                            this.lnkSubmitLocation.Visible = true;
-                        }
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnBack control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void btnBack_Click(object sender, EventArgs e)
-        {
-            this.mvwLocator.SetActiveView(this.vwLocator);
-
-            this.txtLocationAddress.Text = string.Empty;
-            this.txtLocationCity.Text = string.Empty;
-            this.ddlLocationRegion.SelectedIndex = 0;
-            this.txtLocationPostalCode.Text = string.Empty;
-            this.ddlLocatorCountry.SelectedIndex = 0;
-            if (this.ShowCountry)
-            {
-                this.ddlCountry.SelectedIndex = 0;
-                this.ddlDistance.SelectedIndex = 0;
-            }
-            else
-            {
-                this.ddlCountry.SelectedValue = Localization.GetString("UnlimitedMiles", this.LocalResourceFile);
-            }
-
-            this.pnlError.Visible = false;
-
-            this.divMap.Style[HtmlTextWriterStyle.Display] = "none";
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnShowAll control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void btnShowAll_Click(object sender, EventArgs e)
-        {
-            this.Response.Redirect(Globals.NavigateURL(this.TabId, string.Empty, "All=" + true.ToString(CultureInfo.InvariantCulture)));
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnSubmit control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void btnSubmit_Click(object sender, EventArgs e)
-        {
-            List<string> parameters = new List<string>();
-            AddParameter(parameters, "Address", this.txtLocationAddress.Visible ? this.txtLocationAddress.Text : null);
-            AddParameter(parameters, "City", this.txtLocationCity.Visible ? this.txtLocationCity.Text : null);
-            AddParameter(parameters, "Region", this.ddlLocationRegion.Visible ? this.ddlLocationRegion.SelectedValue : null);
-            AddParameter(parameters, "Zip", this.txtLocationPostalCode.Visible ? this.txtLocationPostalCode.Text : null);
-            AddParameter(parameters, "Country", this.ddlLocatorCountry.Visible ? this.ddlLocatorCountry.SelectedValue : null);
-            AddParameter(parameters, "Distance", this.ddlDistance.Visible ? this.ddlDistance.SelectedValue : null);
-            AddParameter(parameters, "CountryRestrict", this.ddlCountry.Visible ? this.ddlCountry.SelectedValue : null);
-
-            this.Response.Redirect(Globals.NavigateURL(this.DisplayTabId, string.Empty, parameters.ToArray()));
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the ddlCountry control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void ddlCountry_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.ShowRadius)
-            {
-                this.ddlDistance.SelectedIndex = 0;
-            }
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the ddlDistance control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void ddlDistance_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.ShowCountry)
-            {
-                this.ddlCountry.SelectedIndex = 0;
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the lnkSubmitLocations control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void lnkSubmitLocations_Click(object sender, EventArgs e)
-        {
-            this.Response.Redirect(Globals.NavigateURL(this.TabId, "ManageLocation", "mid=" + this.ModuleId));
-        }
-
-        /// <summary>
-        /// Handles the ItemDataBound event of the rptLocations control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Web.UI.WebControls.RepeaterItemEventArgs"/> instance containing the event data.</param>
-        protected void rptLocations_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
-            {
-                Location location = (Location)e.Item.DataItem;
-                Label lblLocationsGridDistance = (Label)e.Item.FindControl("lblLocationsGridDistance");
-                Label lblLocationDetails = (Label)e.Item.FindControl("lblLocationDetails");
-                Label l = (Label)e.Item.FindControl("lblLocationsGridAddress");
-
-                lblLocationDetails.Visible = (this.ShowLocationDetails == "SamePage" || this.ShowLocationDetails == "True");
-
-                if (location != null)
-                {
-                    if (this.ShowLocationDetails == "DetailsPage")
-                    {
-                        HyperLink lnkShowLocationDetails = (HyperLink)e.Item.FindControl("lnkShowLocationDetails");
-                        lnkShowLocationDetails.Visible = true;
-                        lnkShowLocationDetails.NavigateUrl = Globals.NavigateURL(
-                                this.TabId, "Details", "mid=" + this.ModuleId + "&lid=" + location.LocationId);
-                        lnkShowLocationDetails.Text = Localization.GetString("lnkShowLocationDetails", this.LocalResourceFile);
-                    }
-
-                    lblLocationsGridDistance.Visible = location.Distance.HasValue;
-
-                    if (lblLocationsGridDistance.Visible)
-                    {
-                        lblLocationsGridDistance.Text = location.Distance.Value.ToString("#.00", CultureInfo.CurrentCulture)
-                                                        + Localization.GetString("Miles", this.LocalResourceFile);
-                    }
-
-                    HyperLink lnkSite = (HyperLink)e.Item.FindControl("lbSiteLink");
-                    lnkSite.Text = string.IsNullOrEmpty(location.Website)
-                                           ? Localization.GetString("Closed", this.LocalResourceFile)
-                                           : Localization.GetString("Open", this.LocalResourceFile);
-
-                    l.Text = location.FullAddress;
-                }
-            }
+            this.Load += this.Page_Load;
+            this.NewSearchButton.Click += this.NewSearchButton_Click;
+            this.ShowAllLocationsButton.Click += this.ShowAllLocationsButton_Click;
+            this.SearchSubmitButton.Click += this.SearchSubmitButton_Click;
+            this.SubmitLocationFromListButton.Click += this.SubmitLocationButton_Click;
+            this.SubmitLocationFromSearchButton.Click += this.SubmitLocationButton_Click;
+            this.LocationsListRepeater.ItemDataBound += this.LocationsListRepeater_ItemDataBound;
         }
 
         /// <summary>
@@ -607,6 +406,11 @@ namespace Engage.Dnn.Locator
             return Globals.NavigateURL(this.TabId, string.Empty, parameters.ToArray());
         }
 
+        /// <summary>
+        /// Gets the region 
+        /// </summary>
+        /// <param name="regionId">The region id.</param>
+        /// <returns></returns>
         private static string ResolveRegionId(int? regionId)
         {
             return regionId.HasValue ? new ListController().GetListEntryInfo(regionId.Value).Value : null;
@@ -617,14 +421,14 @@ namespace Engage.Dnn.Locator
             LocationCollection locations = null;
             MapProvider mapProvider = this.GetMapProvider();
 
-            if (this.CountryRestrictId.HasValue)
+            if (this.FilterCountryId.HasValue)
             {
-                locations = Location.GetLocationsByCountry(this.CountryRestrictId.Value, this.PortalId, this.PageIndex, this.PageSize);
+                locations = Location.GetLocationsByCountry(this.FilterCountryId.Value, this.PortalId, this.PageIndex, this.PageSize);
             }
             else if (this.HasSearchCriteria())
             {
                 System.Diagnostics.Debug.Fail("Get values from drop downs");
-                GeocodeResult geocodeResult = mapProvider.GeocodeLocation(this.Address, this.City, ResolveRegionId(this.RegionId), this.PostalCode);
+                GeocodeResult geocodeResult = mapProvider.GeocodeLocation(this.SearchAddress, this.SearchCity, ResolveRegionId(this.SearchRegionId), this.SearchPostalCode);
 
                 if (geocodeResult.Successful)
                 {
@@ -633,7 +437,7 @@ namespace Engage.Dnn.Locator
                 }
                 else
                 {
-                    this.lblErrorMessage.Text = geocodeResult.ErrorMessage;
+                    this.ErrorMessageLabel.Text = geocodeResult.ErrorMessage;
                 }
             }
             else if (this.ShowDefaultDisplay || this.ShowMapDefaultDisplay || this.ShowAll)
@@ -642,23 +446,23 @@ namespace Engage.Dnn.Locator
             }
             else
             {
-                this.lblErrorMessage.Text = Localization.GetString("lblErrorMessage", this.LocalResourceFile);
+                this.ErrorMessageLabel.Text = Localization.GetString("lblErrorMessage", this.LocalResourceFile);
             }
 
             if (locations == null || locations.Count < 1)
             {
-                this.lblErrorMessage.Text = Localization.GetString("NoLocationsFound", this.LocalResourceFile);
-                this.pnlError.Visible = true;
+                this.ErrorMessageLabel.Text = Localization.GetString("NoLocationsFound", this.LocalResourceFile);
+                this.SearchErrorPanel.Visible = true;
             }
             else
             {
-                this.mvwLocator.SetActiveView(this.vwResults);
+                this.LocatorDisplayMultiView.SetActiveView(this.LocationsListView);
 
-                this.lblNumClosest.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lblNumClosest", this.LocalResourceFile), locations.TotalRecords);
+                this.CurrentLocationsLabel.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lblNumClosest", this.LocalResourceFile), locations.TotalRecords);
                 this.ConfigurePaging(new ItemPagingState(this.PageIndex + 1, locations.TotalRecords, this.PageSize));
 
-                this.rptLocations.DataSource = locations;
-                this.rptLocations.DataBind();
+                this.LocationsListRepeater.DataSource = locations;
+                this.LocationsListRepeater.DataBind();
 
                 this.ShowMaps(locations);
             }
@@ -675,18 +479,18 @@ namespace Engage.Dnn.Locator
             DataTable countriesTable = DataProvider.Instance().GetCountriesList(this.PortalId);
             if (countriesTable.Rows.Count > 0)
             {
-                this.ddlCountry.DataSource = countriesTable;
-                this.ddlCountry.DataTextField = "Text";
-                this.ddlCountry.DataValueField = "EntryId";
-                this.ddlCountry.DataBind();
-                this.ddlCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
+                this.FilterCountryDropDownList.DataSource = countriesTable;
+                this.FilterCountryDropDownList.DataTextField = "Text";
+                this.FilterCountryDropDownList.DataValueField = "EntryId";
+                this.FilterCountryDropDownList.DataBind();
+                this.FilterCountryDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
 
-                ListItem defaultCountryListItem = this.ddlCountry.Items.FindByValue(Dnn.Utility.GetStringSetting(this.Settings, "ShowLocationDetails"));
+                ListItem defaultCountryListItem = this.FilterCountryDropDownList.Items.FindByValue(Dnn.Utility.GetStringSetting(this.Settings, "ShowLocationDetails"));
                 if (defaultCountryListItem != null)
                 {
                     // remove default country and add it back at the top of the list
-                    this.ddlCountry.Items.Remove(defaultCountryListItem);
-                    this.ddlCountry.Items.Insert(1, defaultCountryListItem);
+                    this.FilterCountryDropDownList.Items.Remove(defaultCountryListItem);
+                    this.FilterCountryDropDownList.Items.Insert(1, defaultCountryListItem);
                 }
             }
         }
@@ -696,37 +500,37 @@ namespace Engage.Dnn.Locator
         /// </summary>
         private void FillDropDowns()
         {
-            this.lblSearchTitle.Text = Dnn.Utility.GetStringSetting(this.Settings, "SearchTitle", Localization.GetString("lblSearchTitle", this.LocalResourceFile));
-            this.pnlAddress.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "Address", true);
-            this.pnlCountry.Visible = this.ShowCountry;
-            this.pnlDistance.Visible = this.ShowRadius;
+            this.SearchTitleLabel.Text = Dnn.Utility.GetStringSetting(this.Settings, "SearchTitle", Localization.GetString("lblSearchTitle", this.LocalResourceFile));
+            this.SearchAddressPanel.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "Address", true);
+            this.FilterCountryPanel.Visible = this.ShowCountry;
+            this.SearchRadiusPanel.Visible = this.ShowRadius;
 
-            foreach (ListItem li in this.ddlDistance.Items)
+            foreach (ListItem li in this.SearchRadiusDropDownList.Items)
             {
                 // li.Value becomes li.Text if you don't explicitly reset it, as below.  BD
                 li.Value = li.Value;
                 li.Text = String.Format(CultureInfo.CurrentCulture, "{0} {1}", li.Value, Localization.GetString("Miles", this.LocalResourceFile));
             }
 
-            this.ddlDistance.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", this.LocalResourceFile), string.Empty));
-            this.ddlDistance.SelectedValue = string.Empty;
+            this.SearchRadiusDropDownList.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", this.LocalResourceFile), string.Empty));
+            this.SearchRadiusDropDownList.SelectedValue = string.Empty;
 
             ListController listController = new ListController();
 
             // Load the state list
-            this.ddlLocationRegion.DataSource = listController.GetListEntryInfoCollection("Region");
-            this.ddlLocationRegion.DataTextField = "Text";
-            this.ddlLocationRegion.DataValueField = "EntryID";
-            this.ddlLocationRegion.DataBind();
-            this.ddlLocationRegion.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
+            this.SearchRegionDropDownList.DataSource = listController.GetListEntryInfoCollection("Region");
+            this.SearchRegionDropDownList.DataTextField = "Text";
+            this.SearchRegionDropDownList.DataValueField = "EntryID";
+            this.SearchRegionDropDownList.DataBind();
+            this.SearchRegionDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
 
             // fill the country dropdown
-            this.ddlLocatorCountry.DataSource = listController.GetListEntryInfoCollection("Country");
-            this.ddlLocatorCountry.DataTextField = "Text";
-            this.ddlLocatorCountry.DataValueField = "EntryId";
-            this.ddlLocatorCountry.DataBind();
-            this.ddlLocatorCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
-            this.ddlLocatorCountry.SelectedIndex = 0;
+            this.SearchCountryDropDownList.DataSource = listController.GetListEntryInfoCollection("Country");
+            this.SearchCountryDropDownList.DataTextField = "Text";
+            this.SearchCountryDropDownList.DataValueField = "EntryId";
+            this.SearchCountryDropDownList.DataBind();
+            this.SearchCountryDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
+            this.SearchCountryDropDownList.SelectedIndex = 0;
 
             if (this.ShowCountry)
             {
@@ -734,9 +538,9 @@ namespace Engage.Dnn.Locator
 
                 ////if (this.ShowRadius)
                 ////{
-                ////    this.ddlDistance.ClearSelection();
-                ////    this.ddlDistance.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
-                ////    this.ddlDistance.SelectedIndex = 0;
+                ////    this.SearchRadiusDropDownList.ClearSelection();
+                ////    this.SearchRadiusDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
+                ////    this.SearchRadiusDropDownList.SelectedIndex = 0;
                 ////}
             }
         }
@@ -758,9 +562,9 @@ namespace Engage.Dnn.Locator
         /// </returns>
         private bool HasSearchCriteria()
         {
-            return !string.IsNullOrEmpty(this.Address) || !string.IsNullOrEmpty(this.City)
-                   || this.RegionId.HasValue || !string.IsNullOrEmpty(this.PostalCode)
-                   || this.CountryId.HasValue;
+            return !string.IsNullOrEmpty(this.SearchAddress) || !string.IsNullOrEmpty(this.SearchCity)
+                   || this.SearchRegionId.HasValue || !string.IsNullOrEmpty(this.SearchPostalCode)
+                   || this.SearchCountryId.HasValue;
         }
 
         /// <summary>
@@ -768,10 +572,10 @@ namespace Engage.Dnn.Locator
         /// </summary>
         private void SetSearchDisplay()
         {
-            this.addressFirstLine.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchAddress", false);
-            this.ltCity.Visible = this.ltRegion.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchCityRegion", false);
-            this.ltPostalcode.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchPostalCode", true);
-            this.ltCountry.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchCountry", false);
+            this.AddressFirstLineSection.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchAddress", false);
+            this.SearchCitySection.Visible = this.SearchRegionSection.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchCityRegion", false);
+            this.SearchPostalCodeSection.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchPostalCode", true);
+            this.SearchCountrySection.Visible = Dnn.Utility.GetBoolSetting(this.Settings, "SearchCountry", false);
         }
 
         /// <summary>
@@ -780,19 +584,207 @@ namespace Engage.Dnn.Locator
         /// <param name="locations">The list of locations being displayed.</param>
         private void ShowMaps(LocationCollection locations)
         {
-            this.divMap.Visible = /*this.lnkViewMap.Visible =*/ true;
+            this.MapSection.Visible = /*this.lnkViewMap.Visible =*/ true;
 
             this.GetMapProvider().RegisterMapScript(
-                ScriptManager.GetCurrent(this.Page),
-                this.MapType,
-                this.divMap.ClientID,
-                this.CurrentLocationLabel.ClientID,
-                this.lblLocatorMapLabel.ClientID,
-                this.lblScrollToViewMore.ClientID,
-                this.DrivingDirectionsLink.ClientID,
-                this.MapLinkPanel.ClientID,
-                locations,
-                this.ShowMapDefaultDisplay || this.ShowAll);
+                    ScriptManager.GetCurrent(this.Page),
+                    this.MapType,
+                    this.MapSection.ClientID,
+                    this.CurrentLocationLabel.ClientID,
+                    this.LocatorMapLabel.ClientID,
+                    this.ScrollToViewMoreLabel.ClientID,
+                    this.DrivingDirectionsLink.ClientID,
+                    this.MapLinkPanel.ClientID,
+                    locations,
+                    this.ShowMapDefaultDisplay || this.ShowAll);
+        }
+
+        /// <summary>
+        /// Handles the Load event of the Page control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                string title = this.Settings["SearchTitle"] != null
+                                       ? this.Settings["SearchTitle"].ToString()
+                                       : Localization.GetString("lblHeader", this.LocalResourceFile);
+
+                this.HeaderLabel.Text = title;
+
+                if (!this.SubmissionsEnabled)
+                {
+                    this.SubmitLocationFromListButton.Visible = false;
+                }
+
+                if (!this.SubmissionsEnabled)
+                {
+                    this.SubmitLocationFromSearchButton.Visible = false;
+                }
+
+                this.lbSettings.Visible = this.IsEditable;
+                this.lbImportFile.Visible = this.IsEditable;
+                this.lbManageComments.Visible = this.IsEditable;
+                this.lbManageLocations.Visible = this.IsEditable;
+                this.lbLocationTypes.Visible = this.IsEditable;
+
+                string error = String.Empty;
+                if (!IsConfigured(this.TabModuleId, ref error))
+                {
+                    this.LocatorDisplayMultiView.SetActiveView(this.SetupView);
+                    if (this.UserInfo.IsInRole(this.PortalSettings.ActiveTab.AdministratorRoles))
+                    {
+                        // "Please setup module through the Module Settings page.<br>Required Items: <br/><br/>" + error;
+                        this.SetupLabel.Text = Localization.GetString("SetupText_Admin", this.LocalResourceFile) + error;
+                    }
+                    else
+                    {
+                        // "This page is not configured. Please contact an Administrator.";
+                        this.SetupLabel.Text = Localization.GetString("SetupText_NonAdmin", this.LocalResourceFile);
+                    }
+                }
+                else
+                {
+                    this.LocatorDisplayMultiView.SetActiveView(this.SearchView);
+                    if (!this.IsPostBack)
+                    {
+                        this.FillDropDowns();
+
+                        if (this.HasSearchCriteria() || this.ShowDefaultDisplay || this.ShowMapDefaultDisplay || this.ShowAll || this.FilterCountryId.HasValue)
+                        {
+                            this.DisplayLocationList();
+                        }
+
+                        this.SetSearchDisplay();
+
+                        if (!this.ShowCountry && !this.ShowRadius)
+                        {
+                            this.ShowAllLocationsButton.Visible = false;
+                        }
+
+                        if (this.SubmissionsEnabled)
+                        {
+                            this.SubmitLocationFromListButton.Visible = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the NewSearchButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void NewSearchButton_Click(object sender, EventArgs e)
+        {
+            this.LocatorDisplayMultiView.SetActiveView(this.SearchView);
+
+            this.SearchAddressTextBox.Text = string.Empty;
+            this.SearchCityTextBox.Text = string.Empty;
+            this.SearchRegionDropDownList.SelectedIndex = 0;
+            this.SearchPostalCodeTextBox.Text = string.Empty;
+            this.SearchCountryDropDownList.SelectedIndex = 0;
+            if (this.ShowCountry)
+            {
+                this.FilterCountryDropDownList.SelectedIndex = 0;
+                this.SearchRadiusDropDownList.SelectedIndex = 0;
+            }
+            else
+            {
+                this.FilterCountryDropDownList.SelectedValue = Localization.GetString("UnlimitedMiles", this.LocalResourceFile);
+            }
+
+            this.SearchErrorPanel.Visible = false;
+
+            this.MapSection.Style[HtmlTextWriterStyle.Display] = "none";
+        }
+
+        /// <summary>
+        /// Handles the Click event of the ShowAllLocationsButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void ShowAllLocationsButton_Click(object sender, EventArgs e)
+        {
+            this.Response.Redirect(Globals.NavigateURL(this.TabId, string.Empty, "All=" + true.ToString(CultureInfo.InvariantCulture)));
+        }
+
+        /// <summary>
+        /// Handles the Click event of the SearchSubmitButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void SearchSubmitButton_Click(object sender, EventArgs e)
+        {
+            List<string> parameters = new List<string>();
+            AddParameter(parameters, "Address", this.SearchAddressTextBox.Visible ? this.SearchAddressTextBox.Text : null);
+            AddParameter(parameters, "City", this.SearchCityTextBox.Visible ? this.SearchCityTextBox.Text : null);
+            AddParameter(parameters, "Region", this.SearchRegionDropDownList.Visible ? this.SearchRegionDropDownList.SelectedValue : null);
+            AddParameter(parameters, "Zip", this.SearchPostalCodeTextBox.Visible ? this.SearchPostalCodeTextBox.Text : null);
+            AddParameter(parameters, "Country", this.SearchCountryDropDownList.Visible ? this.SearchCountryDropDownList.SelectedValue : null);
+            AddParameter(parameters, "Distance", this.SearchRadiusDropDownList.Visible ? this.SearchRadiusDropDownList.SelectedValue : null);
+            AddParameter(parameters, "FilterCountry", this.FilterCountryDropDownList.Visible ? this.FilterCountryDropDownList.SelectedValue : null);
+
+            this.Response.Redirect(Globals.NavigateURL(this.DisplayTabId, string.Empty, parameters.ToArray()));
+        }
+
+        /// <summary>
+        /// Handles the Click event of the SubmitLocationFromSearchButton and SubmitLocationFromListButton controls.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void SubmitLocationButton_Click(object sender, EventArgs e)
+        {
+            this.Response.Redirect(Globals.NavigateURL(this.TabId, "ManageLocation", "mid=" + this.ModuleId));
+        }
+
+        /// <summary>
+        /// Handles the ItemDataBound event of the LocationsListRepeater control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Web.UI.WebControls.RepeaterItemEventArgs"/> instance containing the event data.</param>
+        private void LocationsListRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
+            {
+                Location location = (Location)e.Item.DataItem;
+                Label locationsGridDistanceLabel = (Label)e.Item.FindControl("LocationsGridDistanceLabel");
+                Label locationDetailsLabel = (Label)e.Item.FindControl("LocationDetailsLabel");
+                Label locationsGridAddressLabel = (Label)e.Item.FindControl("LocationsGridAddressLabel");
+
+                locationDetailsLabel.Visible = (this.ShowLocationDetails == "SamePage" || this.ShowLocationDetails == "True");
+
+                if (location != null)
+                {
+                    if (this.ShowLocationDetails == "DetailsPage")
+                    {
+                        HyperLink showLocationDetailsLink = (HyperLink)e.Item.FindControl("ShowLocationDetailsLink");
+                        showLocationDetailsLink.Visible = true;
+                        showLocationDetailsLink.NavigateUrl = this.EditUrl("lid", location.LocationId.ToString(CultureInfo.InvariantCulture), "Details");
+                    }
+
+                    locationsGridDistanceLabel.Visible = location.Distance.HasValue;
+
+                    if (locationsGridDistanceLabel.Visible)
+                    {
+                        locationsGridDistanceLabel.Text = location.Distance.Value.ToString("#.00", CultureInfo.CurrentCulture) + Localization.GetString("Miles", this.LocalResourceFile);
+                    }
+
+                    ////HyperLink siteLink = (HyperLink)e.Item.FindControl("SiteLink");
+                    ////siteLink.Text = string.IsNullOrEmpty(location.Website)
+                    ////                       ? Localization.GetString("Closed", this.LocalResourceFile)
+                    ////                       : Localization.GetString("Open", this.LocalResourceFile);
+
+                    locationsGridAddressLabel.Text = location.FullAddress;
+                }
+            }
         }
     }
 }

@@ -10,23 +10,23 @@
     <asp:ImageButton ID="lbLocationTypes" CssClass="CommandButton" runat="server" AlternateText="Location Types" OnClick="lbManageTypes_OnClick" ImageUrl="~/desktopmodules/EngageLocator/images/locationTypesBt.gif" CausesValidation="false" />
 </div>
 
-<asp:Label ID="lblConfigured" runat="server" CssClass="locatorInstruction normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations." Visible="False" resourcekey="lblConfigured"></asp:Label>
+<asp:Label ID="lblConfigured" runat="server" CssClass="locatorInstruction Normal" Text="Module is not Configured. Please go to Module Settings and configure module before managing locations." Visible="False" resourcekey="lblConfigured"></asp:Label>
 
 <div class="divPanelTab" id="divPanelTab" runat="server">
     <asp:ImageButton runat="server" ID="btnAddLocation" CssClass="CommandButton" AlternateText="Add New Location" OnClick="btnAddLocation_Click" ImageUrl="~/desktopmodules/EngageLocator/images/caCreateNew.gif" />
     <br />
-    <asp:Label ID="lblSuccess" runat="server" CssClass="normal"></asp:Label>
+    <asp:Label ID="lblSuccess" runat="server" CssClass="Normal"></asp:Label>
     <br />
-    <asp:Label runat="server" CssClass="normal" ID="lblEditLocations" resourcekey="lblEditLocations" Visible="false">Edit Locations</asp:Label>
+    <asp:Label runat="server" CssClass="Normal" ID="lblEditLocations" resourcekey="lblEditLocations" Visible="false">Edit Locations</asp:Label>
     <asp:UpdatePanel ID="upDataImport" runat="server">
         <ContentTemplate>
             <div id="editDiv" runat="server">
                 <div id="divApproval" runat="server" class="div_approval">
                     <asp:RadioButton ID="rbApproved" runat="server" GroupName="approval"
-                        resourcekey="rbApproved" CssClass="normal" OnCheckedChanged="rbApproved_CheckChanged"
+                        resourcekey="rbApproved" CssClass="Normal" OnCheckedChanged="rbApproved_CheckChanged"
                         AutoPostBack="true" />
                     <asp:RadioButton ID="rbWaitingForApproval" runat="server" GroupName="approval"
-                        resourcekey="rbWaitingForApproval" CssClass="normal" OnCheckedChanged="rbApproved_CheckChanged"
+                        resourcekey="rbWaitingForApproval" CssClass="Normal" OnCheckedChanged="rbApproved_CheckChanged"
                         AutoPostBack="true" />
                 </div>
                 <dnn:PagingControl ID="pager" runat="server"></dnn:PagingControl>
@@ -40,9 +40,9 @@
                     AllowSorting="True" 
                     DataKeyField="LocationId" 
                     onsortcommand="dgLocations_SortCommand">
-                    <FooterStyle CssClass="normal DataGrid_Footer" />
-                    <PagerStyle CssClass="normal PagingTable" HorizontalAlign="Center" Mode="NumericPages" />
-                    <HeaderStyle CssClass="normal DataGrid_Header" />
+                    <FooterStyle CssClass="Normal DataGrid_Footer" />
+                    <PagerStyle CssClass="Normal PagingTable" HorizontalAlign="Center" Mode="NumericPages" />
+                    <HeaderStyle CssClass="Normal DataGrid_Header" />
                     <Columns>
                         <asp:TemplateColumn HeaderText="ID" Visible="False">
                             <ItemTemplate>
@@ -114,9 +114,9 @@
                         </asp:TemplateColumn>
                         <asp:EditCommandColumn CancelText="Cancel" EditText="Edit" UpdateText="Update"></asp:EditCommandColumn>
                     </Columns>
-                    <SelectedItemStyle CssClass="normal DataGrid_SelectedItem" />
-                    <AlternatingItemStyle CssClass="normal DataGrid_AlternatingItem" />
-                    <ItemStyle CssClass="normal DataGrid_Item" />
+                    <SelectedItemStyle CssClass="Normal DataGrid_SelectedItem" />
+                    <AlternatingItemStyle CssClass="Normal DataGrid_AlternatingItem" />
+                    <ItemStyle CssClass="Normal DataGrid_Item" />
                 </asp:DataGrid>
             </div>
             <br />
