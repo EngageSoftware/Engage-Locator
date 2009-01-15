@@ -122,7 +122,7 @@ namespace Engage.Dnn.Locator
                     Label lblLocationId = (Label)row.FindControl("lblLocationId");
                     Location location = Location.GetLocation(Convert.ToInt32(lblLocationId.Text, CultureInfo.InvariantCulture));
                     location.Approved = true;
-                    location.Update();
+                    location.Save();
                 }
             }
 

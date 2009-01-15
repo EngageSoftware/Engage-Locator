@@ -244,7 +244,7 @@ namespace Engage.Dnn.Locator.Components
             }
         }
 
-        public static GeocodeResult GetGeoCoordinates(int tabModuleId, string address1, string city, int regionId, string zip, int countryId)
+        public static GeocodeResult GetGeoCoordinates(int tabModuleId, string address1, string city, int? regionId, string zip, int countryId)
         {
             DataTable existingLatitudeLongitude = DataProvider.Instance().GetLatitudeLongitude(address1, city);
             if (existingLatitudeLongitude.Rows.Count == 0)
@@ -274,7 +274,7 @@ namespace Engage.Dnn.Locator.Components
             return new ManualGeocodeResult(latitude, longitude);
         }
 
-        private static GeocodeResult GetGeoCodeResults(int tabModuleId, string address, string city, int regionId, string zip, int countryId)
+        private static GeocodeResult GetGeoCodeResults(int tabModuleId, string address, string city, int? regionId, string zip, int countryId)
         {
             MapProvider mapProvider = null;
             Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(tabModuleId);

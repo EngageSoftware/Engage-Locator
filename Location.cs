@@ -138,7 +138,7 @@ namespace Engage.Dnn.Locator
         /// Backing field for <see cref="RegionId"/>
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int regionId;
+        private int? regionId;
 
         /// <summary>
         /// Backing field for <see cref="RegionAbbreviation"/>
@@ -244,7 +244,7 @@ namespace Engage.Dnn.Locator
         /// Gets or sets the region id.
         /// </summary>
         /// <value>The region id.</value>
-        public int RegionId
+        public int? RegionId
         {
             [DebuggerStepThrough]
             get { return this.regionId; }
@@ -316,12 +316,8 @@ namespace Engage.Dnn.Locator
         {
             get
             {
-                ListEntryInfo region = new ListController().GetListEntryInfo(this.RegionId);
-                return this.City + ", " 
-                    + (!Null.IsNull(region) 
-                        ? region.Value + " " 
-                        : string.Empty) 
-                    + this.PostalCode;
+                ListEntryInfo region = this.RegionId.HasValue ? new ListController().GetListEntryInfo(this.RegionId.Value) : null;
+                return string.Format("{0}, {1}{2}", this.City, (region != null ? region.Value + " " : string.Empty), this.PostalCode);
             }
         }
 
@@ -692,17 +688,17 @@ namespace Engage.Dnn.Locator
             loc.locationDetails = row["LocationDetails"].ToString();
             loc.externalIdentifier = row["ExternalIdentifier"].ToString();
             loc.latitude = Convert.ToDouble(row["Latitude"], CultureInfo.InvariantCulture);
-            loc.locationId = Convert.ToInt32(row["LocationId"], CultureInfo.InvariantCulture);
-            loc.locationTypeId = Convert.ToInt32(row["LocationTypeId"], CultureInfo.InvariantCulture);
             loc.longitude = Convert.ToDouble(row["Longitude"], CultureInfo.InvariantCulture);
+            loc.locationId = (int)row["LocationId"];
+            loc.locationTypeId = (int)row["LocationTypeId"];
             loc.name = row["Name"].ToString();
             loc.website = row["Website"].ToString();
             loc.phone = row["Phone"].ToString();
             loc.postalCode = row["PostalCode"].ToString();
             loc.regionName = row["StateName"].ToString();
             loc.regionAbbreviation = row["Abbreviation"].ToString();
-            loc.regionId = Convert.ToInt32(row["RegionId"].ToString(), CultureInfo.InvariantCulture);
-            loc.approved = Convert.ToBoolean(row["Approved"].ToString(), CultureInfo.InvariantCulture);
+            loc.regionId = row["RegionId"] as int?;
+            loc.approved = (bool)row["Approved"];
             loc.averageRating = row["AverageRating"] is DBNull ? 0 : Convert.ToSingle(row["AverageRating"], CultureInfo.InvariantCulture);
             loc.distance = containsDistanceColumn ? (double?)row["Distance"] : null;
             loc.queryIndex = containsIndexColumn ? (int?)row["Index"] : null;
@@ -715,9 +711,15 @@ namespace Engage.Dnn.Locator
         /// </summary>
         public void Save()
         {
+            this.lastUpdateDate = DateTime.Now;
+
             if (this.locationId == -1)
             {
                 this.locationId = Data.DataProvider.Instance().SaveLocation(this);
+            }
+            else
+            {
+                this.locationId = Data.DataProvider.Instance().UpdateLocation(this);                
             }
         }
 
@@ -730,17 +732,6 @@ namespace Engage.Dnn.Locator
             if (this.locationId != -1)
             {
                 this.locationId = Data.DataProvider.Instance().SaveTempLocation(this, successful);
-            }
-        }
-
-        /// <summary>
-        /// Updates this instance.
-        /// </summary>
-        public void Update()
-        {
-            if (this.locationId != -1)
-            {
-                this.locationId = Data.DataProvider.Instance().UpdateLocation(this);
             }
         }
 

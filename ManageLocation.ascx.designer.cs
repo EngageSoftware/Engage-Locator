@@ -248,22 +248,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblState;
         
         /// <summary>
-        /// ddlState control.
+        /// RegionDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlState;
-        
-        /// <summary>
-        /// cvState control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator cvState;
+        protected global::System.Web.UI.WebControls.DropDownList RegionDropDownList;
         
         /// <summary>
         /// lblZip control.
@@ -302,13 +293,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblCountry;
         
         /// <summary>
-        /// ddlCountry control.
+        /// CountryDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCountry;
+        protected global::System.Web.UI.WebControls.DropDownList CountryDropDownList;
         
         /// <summary>
         /// cvCountry control.
@@ -338,6 +329,15 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.TextBox txtLatitude;
         
         /// <summary>
+        /// LatitideRangeValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator LatitideRangeValidator;
+        
+        /// <summary>
         /// lblLongitude control.
         /// </summary>
         /// <remarks>
@@ -354,6 +354,15 @@ namespace Engage.Dnn.Locator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtLongitude;
+        
+        /// <summary>
+        /// LongitudeRangeValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator LongitudeRangeValidator;
         
         /// <summary>
         /// lblPhone control.

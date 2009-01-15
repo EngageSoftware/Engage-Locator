@@ -67,20 +67,17 @@
                             <dnn:label id="lblCity" runat="server" text="City:" />
                         </td>
                         <td>
-                            <asp:TextBox ID="txtCity" CssClass="Normal" runat="server" TabIndex="6"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvCity" runat="server" ErrorMessage="Please select a City"
-                                ControlToValidate="txtCity" ValidationGroup="addLocation">*</asp:RequiredFieldValidator></td>
+                            <asp:TextBox ID="txtCity" CssClass="Normal" runat="server" TabIndex="6"/>
+                            <asp:RequiredFieldValidator ID="rfvCity" runat="server" ErrorMessage="Please select a City" ControlToValidate="txtCity" ValidationGroup="addLocation">*</asp:RequiredFieldValidator>
+                        </td>
                     </tr>
                     <tr>
                         <td class="SubHead" style="width: 150px">
                             <dnn:label id="lblState" runat="server" text="State:" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlState" CssClass="Normal" runat="server" 
-                                TabIndex="7">
-                            </asp:DropDownList>
-                            <asp:CompareValidator ID="cvState" runat="server" ControlToValidate="ddlState" ErrorMessage="Please select a State"
-                                Operator="NotEqual" ValueToCompare="-1" ValidationGroup="addLocation">*</asp:CompareValidator></td>
+                            <asp:DropDownList ID="RegionDropDownList" CssClass="Normal" runat="server" TabIndex="7"/>
+                        </td>
                     </tr>
                     <tr>
                         <td class="SubHead" style="width: 150px; height: 47px;">
@@ -88,9 +85,8 @@
                             &nbsp;
                         </td>
                         <td style="height: 47px">
-                            <asp:TextBox ID="txtZip" CssClass="Normal" runat="Server" TabIndex="8"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvZip" runat="server" ErrorMessage="Please select a PostalCode"
-                                ControlToValidate="txtZip" ValidationGroup="addLocation">*</asp:RequiredFieldValidator>
+                            <asp:TextBox ID="txtZip" CssClass="Normal" runat="Server" TabIndex="8"/>
+                            <asp:RequiredFieldValidator ID="rfvZip" runat="server" ErrorMessage="Please select a PostalCode" ControlToValidate="txtZip" ValidationGroup="addLocation">*</asp:RequiredFieldValidator>
                         </td>
                     </tr>        
                     <tr>
@@ -98,9 +94,8 @@
                             <dnn:label id="lblCountry" runat="server" text="Country:" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlCountry" CssClass="Normal" runat="server" TabIndex="9">
-                            </asp:DropDownList>
-                            <asp:CompareValidator ID="cvCountry" runat="server" ControlToValidate="ddlCountry"
+                            <asp:DropDownList ID="CountryDropDownList" CssClass="Normal" runat="server" TabIndex="9"/>
+                            <asp:CompareValidator ID="cvCountry" runat="server" ControlToValidate="CountryDropDownList"
                                 ErrorMessage="Please Select a Country" Operator="NotEqual" ValueToCompare="-1"
                                 ValidationGroup="addLocation">*</asp:CompareValidator>
                         </td>
@@ -111,8 +106,8 @@
                             &nbsp;
                         </td>
                         <td style="height: 47px">
-                            <asp:TextBox ID="txtLatitude" CssClass="Normal" runat="Server" TabIndex="10"></asp:TextBox>
-
+                            <asp:TextBox ID="txtLatitude" CssClass="Normal" runat="Server" TabIndex="10"/>
+                            <asp:RangeValidator ID="LatitideRangeValidator" runat="server" ControlToValidate="txtLatitude" ErrorMessage="Latitude must be between -90 and 90" MinimumValue="-90" MaximumValue="90" Type="Double" ValidationGroup="addLocation">*</asp:RangeValidator>
                         </td>
                     </tr>
                     <tr>
@@ -121,7 +116,8 @@
                             &nbsp;
                         </td>
                         <td style="height: 47px">
-                            <asp:TextBox ID="txtLongitude" CssClass="Normal" runat="Server" TabIndex="11"></asp:TextBox>
+                            <asp:TextBox ID="txtLongitude" CssClass="Normal" runat="Server" TabIndex="11"/>
+                            <asp:RangeValidator ID="LongitudeRangeValidator" runat="server" ControlToValidate="txtLongitude" ErrorMessage="Longitude must be between -180 and 180" MinimumValue="-180" MaximumValue="180" Type="Double" ValidationGroup="addLocation">*</asp:RangeValidator>
                         </td>
                     </tr>
                     <tr>

@@ -1,14 +1,24 @@
+// <copyright file="ManageLocation.ascx.cs" company="Engage Software">
+// Engage: Locator - http://www.engagemodules.com
+// Copyright (c) 2004-2009
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+
 namespace Engage.Dnn.Locator
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Web.UI.WebControls;
     using DotNetNuke.Common.Lists;
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
-    using Maps;
     using Globals = DotNetNuke.Common.Globals;
 
     public partial class ManageLocation : ModuleBase
@@ -23,8 +33,9 @@ namespace Engage.Dnn.Locator
                 {
                     locationId = Convert.ToInt32(this.Request.QueryString["lid"], CultureInfo.InvariantCulture);
                 }
+
                 return locationId;
-            }            
+            }
         }
 
         /// <summary>
@@ -34,9 +45,9 @@ namespace Engage.Dnn.Locator
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            if (DotNetNuke.Framework.AJAX.IsInstalled())
+            if (AJAX.IsInstalled())
             {
-                DotNetNuke.Framework.AJAX.RegisterScriptManager();
+                AJAX.RegisterScriptManager();
             }
         }
 
@@ -47,81 +58,54 @@ namespace Engage.Dnn.Locator
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            lbSettings.Visible = IsEditable;
-            lbImportFile.Visible = IsEditable;
-            lbManageLocations.Visible = IsEditable;
-            lbLocationTypes.Visible = IsEditable;
-            lbManageComments.Visible = IsEditable;
+            this.lbSettings.Visible = this.IsEditable;
+            this.lbImportFile.Visible = this.IsEditable;
+            this.lbManageLocations.Visible = this.IsEditable;
+            this.lbLocationTypes.Visible = this.IsEditable;
+            this.lbManageComments.Visible = this.IsEditable;
 
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
-                FillCountry();
-                FillState();
-                DisplayLocationTypes(ddlType);
-                if (LocationId > 0)
+                this.FillCountry();
+                this.FillState();
+                this.DisplayLocationTypes(this.ddlType);
+                if (this.LocationId > 0)
                 {
-                    LoadLocation();
-                    btnDelete.Visible = true;
+                    this.LoadLocation();
+                    this.btnDelete.Visible = true;
                 }
-                else if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
+                else if (this.UserInfo.IsInRole(this.PortalSettings.ActiveTab.AdministratorRoles))
                 {
-                    ClientAPI.AddButtonConfirm(btnDelete, Localization.GetString("confirmDelete", LocalResourceFile));
-                    rbApprove.Visible = false;
-                    rbWaitingForApproval.Visible = false;
+                    ClientAPI.AddButtonConfirm(this.btnDelete, Localization.GetString("confirmDelete", this.LocalResourceFile));
+                    this.rbApprove.Visible = false;
+                    this.rbWaitingForApproval.Visible = false;
                     this.lblStatus.Visible = false;
-                    btnDelete.Visible = false;
-                    if (SubmissionModerationEnabled)
+                    this.btnDelete.Visible = false;
+                    if (this.SubmissionModerationEnabled)
                     {
                         this.lblStatus.Visible = true;
-                        rbApprove.Visible = true;
-                        rbWaitingForApproval.Visible = true;
-                        rbWaitingForApproval.Checked = true;
+                        this.rbApprove.Visible = true;
+                        this.rbWaitingForApproval.Visible = true;
+                        this.rbWaitingForApproval.Checked = true;
                     }
                     else
                     {
-                        rbApprove.Visible = false;
-                        rbWaitingForApproval.Visible = false;
+                        this.rbApprove.Visible = false;
+                        this.rbWaitingForApproval.Visible = false;
                         this.lblStatus.Visible = false;
                     }
                 }
                 else
                 {
-                    btnDelete.Visible = false;
-                    rbApprove.Visible = false;
-                    rbWaitingForApproval.Visible = false;
+                    this.btnDelete.Visible = false;
+                    this.rbApprove.Visible = false;
+                    this.rbWaitingForApproval.Visible = false;
                     this.lblStatus.Visible = false;
                 }
 
-                LoadCustomAttributes();
+                this.LoadCustomAttributes();
 
-                txtLocationId.Focus();
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnSubmit control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void btnSubmit_Click(object sender, EventArgs e)
-        {
-            if (this.Page.IsValid == false) return;
-
-            try
-            {
-                if (this.LocationId > 0)
-                {
-                    this.UpdateLocation();
-                }
-                else
-                {
-                    this.SaveLocation();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Exceptions.ProcessModuleLoadException(this, ex);
+                this.txtLocationId.Focus();
             }
         }
 
@@ -138,7 +122,7 @@ namespace Engage.Dnn.Locator
             }
             else
             {
-                this.Response.Redirect(Globals.NavigateURL());
+                this.Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
             }
         }
 
@@ -151,6 +135,130 @@ namespace Engage.Dnn.Locator
         {
             Location.DeleteLocation(this.LocationId);
             this.Response.Redirect(this.EditUrl("ManageLocations"));
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnSubmit control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
+
+            try
+            {
+                string errorMessage;
+                Location location = this.LocationId > 0 ? Location.GetLocation(this.LocationId) : new Location();
+
+                location.ExternalIdentifier = this.txtLocationId.Text;
+                location.Name = this.txtName.Text;
+                location.Website = this.txtWebsite.Text;
+                location.Address = this.txtAddress1.Text;
+                location.Address2 = this.txtAddress2.Text;
+                location.City = this.txtCity.Text;
+                location.PostalCode = this.txtZip.Text;
+                location.Phone = this.txtPhone.Text;
+                location.LocationDetails = this.teLocationDetails.Text;
+                location.Website = this.txtWebsite.Text;
+                location.PortalId = this.PortalId;
+
+                location.Approved = !this.SubmissionModerationEnabled || (this.rbApprove.Visible && this.rbApprove.Checked);
+                location.CountryId = Convert.ToInt32(this.CountryDropDownList.SelectedValue, CultureInfo.InvariantCulture);
+                location.LocationTypeId = Convert.ToInt32(this.ddlType.SelectedValue, CultureInfo.InvariantCulture);
+
+                int regionId;
+                if (int.TryParse(this.RegionDropDownList.SelectedValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out regionId))
+                {
+                    location.RegionId = regionId;
+                }
+                else
+                {
+                    location.RegionId = null;
+                }
+
+                // if latitude and longitude are provided (their real numbers, and they've changed from when the page loaded), just use those values
+                // otherwise (re)check the address
+                double latitude, longitude;
+                if (double.TryParse(txtLongitude.Text, NumberStyles.Float, CultureInfo.CurrentCulture, out longitude)
+                    && double.TryParse(txtLatitude.Text, NumberStyles.Float, CultureInfo.CurrentCulture, out latitude)
+                    && (latitude != location.Latitude || longitude != location.Longitude))
+                {
+                    location.Latitude = latitude;
+                    location.Longitude = longitude;
+                    errorMessage = "Success";
+                }
+                else
+                {
+                    GeocodeResult geocodeResult = this.GetMapProvider().GeocodeLocation(
+                            location.Address, location.City, location.RegionId, location.PostalCode, location.CountryId);
+
+                    if (geocodeResult.Successful)
+                    {
+                        location.Latitude = geocodeResult.Latitude;
+                        location.Longitude = geocodeResult.Longitude;
+                        errorMessage = "Success";
+                    }
+                    else
+                    {
+                        errorMessage = geocodeResult.ErrorMessage;
+                    }
+                }
+
+                if (errorMessage == "Success")
+                {
+                    this.lblError.Visible = false;
+
+                    location.Save();
+
+                    foreach (RepeaterItem item in this.rptCustomAttributes.Items)
+                    {
+                        HiddenField hdnLocationAttributeID = (HiddenField)item.FindControl("hdnLocationAttributeID");
+                        HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
+                        TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
+                        int locationAttributeId = Convert.ToInt32(hdnLocationAttributeID.Value, CultureInfo.InvariantCulture);
+                        if (locationAttributeId > 0)
+                        {
+                            Attribute.UpdateAttribute(locationAttributeId, location.LocationId, txtLocationAttributeValue.Text);
+                        }
+                        else
+                        {
+                            int attributeDefinitionId = Convert.ToInt32(hdnAttributeDefinitionId.Value, CultureInfo.InvariantCulture);
+                            Attribute.AddAttribute(attributeDefinitionId, location.LocationId, txtLocationAttributeValue.Text);
+                        }
+                    }
+                    if (this.IsEditable)
+                    {
+                        this.Response.Redirect(this.EditUrl("ManageLocations"), true);
+                    }
+                    else
+                    {
+                        this.Response.Redirect(Globals.NavigateURL(), true);
+                    }
+                }
+                else
+                {
+                    this.singleDivError.Visible = true;
+                    this.lblError.Text = errorMessage + Localization.GetString("Please try submitting your location again.Text", this.LocalResourceFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException(this, ex);
+            }
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the ddlType control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadCustomAttributes();
         }
 
         /// <summary>
@@ -174,73 +282,135 @@ namespace Engage.Dnn.Locator
             }
         }
 
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the ddlType control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
+        private void DisplayLocationTypes(ListControl ddl)
         {
-            this.LoadCustomAttributes();
+            ddl.DataSource = LocationType.GetLocationTypes();
+            ddl.DataTextField = "LocationTypeName";
+            ddl.DataValueField = "LocationTypeId";
+            ddl.DataBind();
+
+            string displayTypes = this.Settings["DisplayTypes"].ToString();
+            string[] displayTypesArray = displayTypes.Split(',');
+
+            ddl.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), "-1"));
+
+            if (ddl.Items.Count == 0)
+            {
+                this.singleError.Visible = true;
+            }
+            else
+            {
+                this.singleError.Visible = false;
+            }
+
+            // If this module has been configured to display only one location and a user is adding a new entry
+            // we are defaulting the locationtype based on the setting. hk
+            if (displayTypes.Length == 1)
+            {
+                string id = displayTypesArray[0];
+                ListItem li = ddl.Items.FindByValue(id);
+                if (li != null)
+                {
+                    li.Selected = true;
+                }
+            }
+        }
+
+        private void FillCountry()
+        {
+            ListController controller = new ListController();
+            ListEntryInfoCollection countries = controller.GetListEntryInfoCollection("Country");
+
+            this.CountryDropDownList.DataSource = countries;
+            this.CountryDropDownList.DataTextField = "Text";
+            this.CountryDropDownList.DataValueField = "EntryId";
+            this.CountryDropDownList.DataBind();
+            this.CountryDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
+            ListItem defaultItem = this.CountryDropDownList.Items.FindByValue(Dnn.Utility.GetStringSetting(this.Settings, "DefaultCountry", string.Empty));
+            this.CountryDropDownList.Items.Remove(defaultItem);
+            this.CountryDropDownList.Items.Insert(1, defaultItem);
+            this.CountryDropDownList.SelectedIndex = 1;
+        }
+
+        private void FillState()
+        {
+            // Load the state list based on country
+            ListController controller = new ListController();
+            ListEntryInfoCollection states = controller.GetListEntryInfoCollection("Region");
+
+            this.RegionDropDownList.DataSource = states;
+            this.RegionDropDownList.DataTextField = "Text";
+            this.RegionDropDownList.DataValueField = "EntryID";
+            this.RegionDropDownList.DataBind();
+            this.RegionDropDownList.Items.Insert(0, new ListItem(Localization.GetString("None", this.LocalResourceFile), string.Empty));
+        }
+
+        private void LoadCustomAttributes()
+        {
+            this.rptCustomAttributes.DataSource = Attribute.GetAttributes(Convert.ToInt32(this.ddlType.SelectedValue, CultureInfo.InvariantCulture), this.LocationId);
+            this.rptCustomAttributes.DataBind();
+
+            if (this.rptCustomAttributes.Items.Count > 0)
+            {
+                this.rptCustomAttributes.Visible = true;
+                this.lblAttributes.Visible = true;
+            }
         }
 
         private void LoadLocation()
         {
-            Location location = Location.GetLocation(LocationId);
-            ////string address2 = string.Empty;
+            Location location = Location.GetLocation(this.LocationId);
 
-            txtLocationId.Text = location.ExternalIdentifier;
-            txtName.Text = location.Name;
-            txtWebsite.Text = location.Website;
-            ////if (location.Address != String.Empty && location.Address.Contains(","))
-            ////{
-            ////    int length = location.Address.IndexOf(',');
-            ////    address2 = location.Address.Remove(0, length);
-            ////}
-            txtAddress1.Text = location.Address;
-            txtAddress2.Text = location.Address2;
-            txtCity.Text = location.City;
-            txtZip.Text = location.PostalCode;
-            txtPhone.Text = location.Phone;
-            teLocationDetails.Text = location.LocationDetails;
-            ddlType.SelectedValue = location.LocationTypeId.ToString(CultureInfo.InvariantCulture);
-            txtWebsite.Text = location.Website;
-            txtLatitude.Text = location.Latitude.ToString(CultureInfo.CurrentCulture);
-            txtLongitude.Text = location.Longitude.ToString(CultureInfo.CurrentCulture);
+            this.txtLocationId.Text = location.ExternalIdentifier;
+            this.txtName.Text = location.Name;
+            this.txtWebsite.Text = location.Website;
+            this.txtAddress1.Text = location.Address;
+            this.txtAddress2.Text = location.Address2;
+            this.txtCity.Text = location.City;
+            this.txtZip.Text = location.PostalCode;
+            this.txtPhone.Text = location.Phone;
+            this.teLocationDetails.Text = location.LocationDetails;
+            this.ddlType.SelectedValue = location.LocationTypeId.ToString(CultureInfo.InvariantCulture);
+            this.txtWebsite.Text = location.Website;
+            this.txtLatitude.Text = location.Latitude.ToString(CultureInfo.CurrentCulture);
+            this.txtLongitude.Text = location.Longitude.ToString(CultureInfo.CurrentCulture);
 
-            if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
+            if (this.UserInfo.IsInRole(this.PortalSettings.ActiveTab.AdministratorRoles))
             {
-                ClientAPI.AddButtonConfirm(btnDelete, Localization.GetString("confirmDelete", LocalResourceFile));
-                btnDelete.Visible = true;
-                if (SubmissionModerationEnabled)
+                ClientAPI.AddButtonConfirm(this.btnDelete, Localization.GetString("confirmDelete", this.LocalResourceFile));
+                this.btnDelete.Visible = true;
+                if (this.SubmissionModerationEnabled)
                 {
                     this.lblStatus.Visible = true;
-                    rbApprove.Visible = true;
-                    rbWaitingForApproval.Visible = true;
+                    this.rbApprove.Visible = true;
+                    this.rbWaitingForApproval.Visible = true;
                     if (location.Approved)
-                        rbApprove.Checked = true;
+                    {
+                        this.rbApprove.Checked = true;
+                    }
                     else
-                        rbWaitingForApproval.Checked = true;
+                    {
+                        this.rbWaitingForApproval.Checked = true;
+                    }
                 }
                 else
                 {
-                    rbApprove.Visible = false;
-                    rbWaitingForApproval.Visible = false;
+                    this.rbApprove.Visible = false;
+                    this.rbWaitingForApproval.Visible = false;
                     this.lblStatus.Visible = false;
                 }
             }
             else
             {
-                btnDelete.Visible = false;
-                rbApprove.Visible = false;
-                rbWaitingForApproval.Visible = false;
+                this.btnDelete.Visible = false;
+                this.rbApprove.Visible = false;
+                this.rbWaitingForApproval.Visible = false;
                 this.lblStatus.Visible = false;
             }
 
-            ddlState.SelectedValue = location.RegionId.ToString(CultureInfo.InvariantCulture);
+            this.RegionDropDownList.SelectedValue = location.RegionId.HasValue ? location.RegionId.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
 
-            ListController controller = new ListController();
-            ListEntryInfoCollection regions = controller.GetListEntryInfoCollection("Region");
+            ListEntryInfoCollection regions = new ListController().GetListEntryInfoCollection("Region");
             int parentId = 0;
             foreach (ListEntryInfo region in regions)
             {
@@ -250,300 +420,15 @@ namespace Engage.Dnn.Locator
                 }
             }
 
-            ddlCountry.SelectedValue = parentId.ToString(CultureInfo.InvariantCulture);
+            this.CountryDropDownList.SelectedValue = parentId.ToString(CultureInfo.InvariantCulture);
 
-            rptCustomAttributes.DataSource = Attribute.GetAttributes(Convert.ToInt32(ddlType.SelectedValue, CultureInfo.InvariantCulture), location.LocationId);
-            rptCustomAttributes.DataBind();
+            this.rptCustomAttributes.DataSource = Attribute.GetAttributes(Convert.ToInt32(this.ddlType.SelectedValue, CultureInfo.InvariantCulture), location.LocationId);
+            this.rptCustomAttributes.DataBind();
 
-            if (rptCustomAttributes.Items.Count > 0)
+            if (this.rptCustomAttributes.Items.Count > 0)
             {
-                rptCustomAttributes.Visible = true;
-                lblAttributes.Visible = true;
-            }
-        }
-
-        private void FillState()
-        {
-            //Load the state list based on country
-            ListController controller = new ListController();
-            ListEntryInfoCollection states = controller.GetListEntryInfoCollection("Region");
-
-            ddlState.DataSource = states;
-            ddlState.DataTextField = "Text";
-            ddlState.DataValueField = "EntryID";
-            ddlState.DataBind();
-            ddlState.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-        }
-
-        private void FillCountry()
-        {
-            ListController controller = new ListController();
-            ListEntryInfoCollection countries = controller.GetListEntryInfoCollection("Country");
-
-            ddlCountry.DataSource = countries;
-            ddlCountry.DataTextField = "Text";
-            ddlCountry.DataValueField = "EntryId";
-            ddlCountry.DataBind();
-            ddlCountry.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-            ListItem liUs = ddlCountry.Items.FindByText("United States");
-            ddlCountry.Items.Remove(liUs);//remove US and add it back at the top of the list
-            ddlCountry.Items.Insert(1, liUs);
-            ddlCountry.SelectedIndex = 1;
-        }
-
-        private void DisplayLocationTypes(ListControl ddl)
-        {
-            
-            ddl.DataSource = LocationType.GetLocationTypes();
-            ddl.DataTextField = "LocationTypeName";
-            ddl.DataValueField = "LocationTypeId";
-            ddl.DataBind();
-
-            string displayTypes = Settings["DisplayTypes"].ToString();
-            string[] displayTypesArray = displayTypes.Split(',');
-
-            //foreach (string s in displayTypesArray)
-            //{
-            //    foreach (ListItem locationItems in ddl.Items)
-            //    {
-            //        if (locationItems.Value == s)
-            //        {
-            //            locationItems.Selected = true;
-            //        }
-            //    }
-            //}
-            ddl.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-
-            if (ddl.Items.Count == 0)
-            {
-                singleError.Visible = true;
-            }
-            else
-            {
-                singleError.Visible = false;
-            }
-
-            //If this module has been configured to display only one location and a user is adding a new entry
-            //we are defaulting the locationtype based on the setting. hk
-            if (displayTypes.Length == 1)
-            {
-                string id = displayTypesArray[0];
-                ListItem li = ddl.Items.FindByValue(id);
-                if (li != null) li.Selected = true;
-            }
-
-        }
-
-        private void UpdateLocation()
-        {
-            Location currentLocation = Location.GetLocation(LocationId);
-            string error;
-            //string address;
-            //string city = txtCity.Text;
-
-            currentLocation.ExternalIdentifier = txtLocationId.Text;
-            currentLocation.Name = txtName.Text;
-            currentLocation.Website = txtWebsite.Text;
-
-            //address = txtAddress1.Text;
-
-            //if (txtAddress2.Text != String.Empty)
-            //{
-            //    address = address + ", " + txtAddress2.Text;
-            //}
-            //currentLocation.Address = address;
-            currentLocation.Address = txtAddress1.Text;
-            currentLocation.Address2 = txtAddress2.Text;
-            currentLocation.City = txtCity.Text;
-            currentLocation.RegionId = Convert.ToInt32(ddlState.SelectedValue, CultureInfo.InvariantCulture);
-            currentLocation.CountryId = Convert.ToInt32(ddlCountry.SelectedValue, CultureInfo.InvariantCulture);
-            currentLocation.PostalCode = txtZip.Text;
-            currentLocation.Phone = txtPhone.Text;
-            currentLocation.LocationDetails = teLocationDetails.Text;
-            currentLocation.LocationTypeId = Convert.ToInt32(ddlType.SelectedValue, CultureInfo.InvariantCulture);
-            currentLocation.PortalId = PortalId;
-            currentLocation.Website = txtWebsite.Text;
-            currentLocation.LastUpdateDate = DateTime.Now;
-
-            double inputLatitude = Convert.ToDouble(this.txtLatitude.Text, CultureInfo.CurrentCulture);
-            double inputLongitude = Convert.ToDouble(this.txtLongitude.Text, CultureInfo.CurrentCulture);
-            if (currentLocation.Latitude != inputLatitude || currentLocation.Longitude != inputLongitude)
-            {
-                currentLocation.Latitude = inputLatitude;
-                currentLocation.Longitude = inputLongitude;
-                error = "Success";
-            }
-            else
-            {
-                GeocodeResult geocodeResult = this.GetMapProvider().GeocodeLocation(txtAddress1.Text, txtCity.Text, currentLocation.RegionId, txtZip.Text, currentLocation.CountryId);
-
-                if (geocodeResult.Successful)
-                {
-                    currentLocation.Latitude = geocodeResult.Latitude;
-                    currentLocation.Longitude = geocodeResult.Longitude;
-                    error = "Success";
-                }
-                else
-                {
-                    error = geocodeResult.ErrorMessage;
-                }
-            }
-
-            if (SubmissionModerationEnabled)
-            {
-                currentLocation.Approved = rbApprove.Checked;
-            }
-            else
-            {
-                currentLocation.Approved = true;
-            }
-
-            if (error == "Success")
-            {
-                foreach (RepeaterItem item in rptCustomAttributes.Items)
-                {
-                    HiddenField hdnLocationAttributeID = (HiddenField)item.FindControl("hdnLocationAttributeID");
-                    HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
-                    TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
-                    int locationAttributeId = Convert.ToInt32(hdnLocationAttributeID.Value, CultureInfo.InvariantCulture);
-                    if (locationAttributeId > 0)
-                    {
-                        Attribute.UpdateAttribute(locationAttributeId, currentLocation.LocationId, txtLocationAttributeValue.Text);
-                    }
-                    else
-                    {
-                        Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value, CultureInfo.InvariantCulture), currentLocation.LocationId, txtLocationAttributeValue.Text);
-                    }
-                }
-
-                currentLocation.Update();
-                if (IsEditable)
-                {
-                    Response.Redirect(EditUrl("ManageLocations"), true);
-                }
-                else
-                {
-                    Response.Redirect(Globals.NavigateURL(), true);
-                }
-            }
-            else
-            {
-                singleDivError.Visible = true;
-                lblError.Text = error + " - Please try submitting your location again.";
-            }
-        }
-
-        private void SaveLocation()
-        {
-            Location newLocation = new Location();
-            string error;
-            //string address;
-            string city = txtCity.Text;
-
-            newLocation.ExternalIdentifier = txtLocationId.Text;
-            newLocation.Name = txtName.Text;
-            newLocation.Website = txtWebsite.Text;
-
-            //address = txtAddress1.Text;
-
-            //if (txtAddress2.Text != String.Empty)
-            //{
-            //    address = address + ", " + txtAddress2.Text;
-            //}
-
-            if (SubmissionModerationEnabled)
-            {
-                if (UserInfo.IsInRole(PortalSettings.ActiveTab.AdministratorRoles))
-                    newLocation.Approved = rbApprove.Checked;
-                else
-                    newLocation.Approved = false;
-            }
-
-            //newLocation.Address = address;
-            newLocation.Address = txtAddress1.Text;
-            newLocation.Address2 = txtAddress2.Text;
-            newLocation.City = city;
-            newLocation.RegionId = Convert.ToInt32(ddlState.SelectedValue, CultureInfo.InvariantCulture);
-            newLocation.CountryId = Convert.ToInt32(ddlCountry.SelectedValue, CultureInfo.InvariantCulture);
-            newLocation.PostalCode = txtZip.Text;
-            newLocation.Phone = txtPhone.Text;
-            newLocation.LocationDetails = teLocationDetails.Text;
-            newLocation.LocationTypeId = Convert.ToInt32(ddlType.SelectedValue, CultureInfo.InvariantCulture);
-            newLocation.PortalId = PortalId;
-            newLocation.Website = txtWebsite.Text;
-            newLocation.LastUpdateDate = DateTime.Now;
-
-            if (txtLatitude.Text != string.Empty || txtLongitude.Text != string.Empty)
-            {
-                newLocation.Latitude = Convert.ToDouble(txtLatitude.Text, CultureInfo.CurrentCulture);
-                newLocation.Longitude = Convert.ToDouble(txtLongitude.Text, CultureInfo.CurrentCulture);
-                error = "Success";
-            }
-            else
-            {
-                GeocodeResult geocodeResult = this.GetMapProvider().GeocodeLocation(txtAddress1.Text, city, newLocation.RegionId, txtZip.Text, newLocation.CountryId);
-                if (geocodeResult.Successful)
-                {
-                    newLocation.Latitude = geocodeResult.Latitude;
-                    newLocation.Longitude = geocodeResult.Longitude;
-                    error = "Success";
-                }
-                else
-                {
-                    error = geocodeResult.ErrorMessage;
-                }
-            }
-
-            // settings are set to moderate and the user is logged in as admin
-            if (SubmissionModerationEnabled)
-            {
-                newLocation.Approved = false;
-            }
-            else
-            {
-                newLocation.Approved = true;
-            }
-
-            if (rbApprove.Visible)
-            {
-                newLocation.Approved = rbApprove.Checked;
-            }
-
-            if (error == "Success")
-            {
-                lblError.Visible = false;
-                newLocation.Save();
-                foreach (RepeaterItem item in rptCustomAttributes.Items)
-                {
-                    HiddenField hdnAttributeDefinitionId = (HiddenField)item.FindControl("hdnAttributeDefinitionId");
-                    TextBox txtLocationAttributeValue = (TextBox)item.FindControl("txtCustomAttribute");
-                    Attribute.AddAttribute(Convert.ToInt32(hdnAttributeDefinitionId.Value, CultureInfo.InvariantCulture), newLocation.LocationId, txtLocationAttributeValue.Text);
-                }
-                if (IsEditable)
-                {
-                    Response.Redirect(EditUrl("ManageLocations"), true);
-                }
-                else
-                {
-                    Response.Redirect(Globals.NavigateURL(), true);
-                }
-            }
-            else
-            {
-                lblError.Text = error + " - Please try submitting your location again.";
-                singleDivError.Visible = true;
-            }
-        }
-
-        private void LoadCustomAttributes()
-        {
-            rptCustomAttributes.DataSource = Attribute.GetAttributes(Convert.ToInt32(ddlType.SelectedValue, CultureInfo.InvariantCulture), LocationId);
-            rptCustomAttributes.DataBind();
-
-            if (rptCustomAttributes.Items.Count > 0)
-            {
-                rptCustomAttributes.Visible = true;
-                lblAttributes.Visible = true;
+                this.rptCustomAttributes.Visible = true;
+                this.lblAttributes.Visible = true;
             }
         }
     }
