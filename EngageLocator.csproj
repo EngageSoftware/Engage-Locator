@@ -79,7 +79,7 @@
       <DependentUpon>AttributeDefinitions.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\LocationCollection.cs" />
-    <Compile Include="Components\ManualGeocodeResult.cs" />
+    <Compile Include="Providers\MapProviders\ManualGeocodeResult.cs" />
     <Compile Include="JavaScript\Location.cs" />
     <Compile Include="ManageComments.ascx.cs">
       <DependentUpon>ManageComments.ascx</DependentUpon>

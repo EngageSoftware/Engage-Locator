@@ -9,7 +9,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
-namespace Engage.Dnn.Locator.Components
+namespace Engage.Dnn.Locator
 {
     /// <summary>
     /// A provided geocode result, not obtained from a web service.
