@@ -67,6 +67,7 @@ AS
 	FROM {objectQualifier}EngageLocator_vLocations
 	WHERE CountryId = @CountryId
 	 AND PortalId = @PortalId
+	 AND Approved = 1
 	ORDER BY City
 	
 	SELECT @@RowCount AS TotalRecords

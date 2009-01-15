@@ -172,8 +172,8 @@ namespace Engage.Dnn.Locator.Data
                 Engage.Utility.CreateIntegerParam("@PortalId", portalId),
                 Engage.Utility.CreateBitParam("@approved", approved),
                 Engage.Utility.CreateVarcharParam("@sortColumn", sortColumn, 200),
-                Engage.Utility.CreateIntegerParam("@index", index),
-                Engage.Utility.CreateIntegerParam("@pageSize", pageSize)).Tables[0];
+                Engage.Utility.CreateIntegerParam("@PageIndex", index),
+                Engage.Utility.CreateIntegerParam("@PageSize", pageSize)).Tables[0];
         }
 
         /// <summary>

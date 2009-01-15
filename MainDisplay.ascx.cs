@@ -401,6 +401,7 @@ namespace Engage.Dnn.Locator
             this.AddParameter(parameters, "Region");
             this.AddParameter(parameters, "Zip");
             this.AddParameter(parameters, "Country");
+            this.AddParameter(parameters, "FilterCountry");
             this.AddParameter(parameters, "Distance");
 
             return Globals.NavigateURL(this.TabId, string.Empty, parameters.ToArray());

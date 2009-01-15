@@ -99,6 +99,8 @@ Engage.Dnn.Locator.BaseMap.hideCurrentlyMappedLabels = function() {
     jQuery('td.mdDistance span.currentlyMapped').removeClass('currentlyMapped').addClass('hideCurrentlyMapped');
 };
 Engage.Dnn.Locator.BaseMap.getRowIndex = function(row) {
-    var rowNumberText = jQuery("td.mdLocationNumber span", row).text();
-    return parseInt(rowNumberText.substring(0, rowNumberText.length - 1), 10) - 1;
+    return Engage.Dnn.Locator.BaseMap.getIndex(jQuery("td.mdLocationNumber span", row).text()) - Engage.Dnn.Locator.BaseMap.getIndex(jQuery('tr.locationEntryTR:first').text());
+};
+Engage.Dnn.Locator.BaseMap.getIndex = function(indexText) {
+    return parseInt(indexText.substring(0, indexText.length - 1), 10);
 };
