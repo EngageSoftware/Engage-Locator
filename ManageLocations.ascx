@@ -36,7 +36,6 @@
                     OnEditCommand="dgLocations_EditCommand" 
                     OnCancelCommand="dgLocations_CancelCommand"
                     OnItemDataBound="dgLocations_ItemDataBound"
-                    OnItemCreated="dgLocations_ItemCreated" 
                     AllowSorting="True" 
                     DataKeyField="LocationId" 
                     onsortcommand="dgLocations_SortCommand">
@@ -112,7 +111,7 @@
                                 <asp:CheckBox ID="chkApproved" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateColumn>
-                        <asp:EditCommandColumn CancelText="Cancel" EditText="Edit" UpdateText="Update"></asp:EditCommandColumn>
+                        <asp:EditCommandColumn CancelText="Cancel" EditText="Edit" UpdateText="Update"/>
                     </Columns>
                     <SelectedItemStyle CssClass="Normal DataGrid_SelectedItem" />
                     <AlternatingItemStyle CssClass="Normal DataGrid_AlternatingItem" />

@@ -226,13 +226,13 @@
     <value>Waiting for Approval</value>
   </data>
   <data name="lblState.Header" xml:space="preserve">
-    <value>State</value>
+    <value>Region</value>
   </data>
   <data name="lblState.Help" xml:space="preserve">
-    <value>Specify the State used to Geo-Code the locations and will be displayed when users are viewing the location(s).</value>
+    <value>Specify the Region used to Geo-Code the locations and will be displayed when users are viewing the location(s).</value>
   </data>
   <data name="lblState.Text" xml:space="preserve">
-    <value>State</value>
+    <value>Region</value>
   </data>
   <data name="lblWebsite.Header" xml:space="preserve">
     <value>Website</value>

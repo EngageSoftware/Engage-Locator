@@ -199,7 +199,7 @@
     <value>Name</value>
   </data>
   <data name="lblState.Text" xml:space="preserve">
-    <value>State Abbreviation</value>
+    <value>Region Abbreviation</value>
   </data>
   <data name="lblTime1.Text" xml:space="preserve">
     <value>Meeting Time 1</value>
@@ -232,7 +232,7 @@
     <value>Zipcode</value>
   </data>
   <data name="Region.Header" xml:space="preserve">
-    <value>State</value>
+    <value>Region</value>
   </data>
   <data name="rfvCity.Text" xml:space="preserve">
     <value>Please Enter City</value>
@@ -241,7 +241,7 @@
     <value>Please select a Zip Code</value>
   </data>
   <data name="cvState.Text" xml:space="preserve">
-    <value>Please Select a State</value>
+    <value>Please Select a Region</value>
   </data>
   <data name="Latitude.Header" xml:space="preserve">
     <value>Latitude</value>
@@ -304,7 +304,7 @@
     <value>Phone</value>
   </data>
   <data name="Website.Header" xml:space="preserve">
-    <value>Webste</value>
+    <value>Website</value>
   </data>
   <data name="Comments.Header" xml:space="preserve">
     <value>Comments</value>

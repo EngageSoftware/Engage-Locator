@@ -114,7 +114,7 @@ namespace Engage.Dnn.Locator
                         .Append("&key=")
                         .Append(HttpUtility.UrlEncode(this.ApiKey));
 
-                    string countryAbbreviation = GetCountryAbbreviation(countryId.Value);
+                    string countryAbbreviation = GetCountryAbbreviation(countryId);
                     if (!string.IsNullOrEmpty(countryAbbreviation))
                     {
                         queryUrl.Append("&gl=")
