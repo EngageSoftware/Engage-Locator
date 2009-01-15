@@ -13,14 +13,14 @@ Engage.Dnn.Locator.YahooMap = function(mapDiv) {
 
             var self = this;
             jQuery('div.viewMapBt a').each(function() {
-                var parentRow = jQuery(this).parents('tr');
+                var parentRow = jQuery(this).parents('tr.locationEntryTR');
                 var locationPoint = self._locationsArray[Engage.Dnn.Locator.BaseMap.getRowIndex(parentRow)].YGeoPoint;
                 if (!locationPoint || (!locationPoint.Lat && !locationPoint.Lon)) {
                     this.hide();
                 }
             }).filter('a:visible').click(function(event) {
                 event.preventDefault();
-                var parentRow = jQuery(this).parents('tr');
+                var parentRow = jQuery(this).parents('tr.locationEntryTR');
                 self.showLocation(self._locationsArray[Engage.Dnn.Locator.BaseMap.getRowIndex(parentRow)], jQuery('td.mdDistance span.hideCurrentlyMapped, td.mdDistance span.currentlyMapped', parentRow));
             });
         },

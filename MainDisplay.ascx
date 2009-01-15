@@ -177,7 +177,7 @@
                                     <tr>
                                         <td class="mdLocationNumber">
                                             <p>
-                                                <asp:Label CssClass="NormalBold" runat="server" Text='<%#Eval("QueryIndex") ?? Container.ItemIndex %>' />
+                                                <asp:Label CssClass="NormalBold" runat="server" Text='<%#(this.Eval("QueryIndex") ?? Container.ItemIndex) + ")" %>' />
                                             </p>
                                         </td>
                                         <td class="mdLocationInfo">

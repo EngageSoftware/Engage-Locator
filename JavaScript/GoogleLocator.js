@@ -23,7 +23,7 @@ Engage.Dnn.Locator.GoogleMap.prototype = {
         var self = this;
         jQuery('div.viewMapBt a')
 			.each(function() {
-			    var parentRow = jQuery(this).parents('tr');
+                var parentRow = jQuery(this).parents('tr.locationEntryTR');
 			    var locationPoint = self._locationsArray[Engage.Dnn.Locator.BaseMap.getRowIndex(parentRow)].getLatLng();
 			    if (!locationPoint || (!locationPoint.lat() && !locationPoint.lng())) {
 			        this.hide();
@@ -33,7 +33,7 @@ Engage.Dnn.Locator.GoogleMap.prototype = {
 			.click(function(event) {
 			    event.preventDefault();
 
-			    var parentRow = jQuery(this).parents('tr');
+			    var parentRow = jQuery(this).parents('tr.locationEntryTR');
 			    self.showLocation(self._locationsArray[Engage.Dnn.Locator.BaseMap.getRowIndex(parentRow)], jQuery('td.mdDistance span.hideCurrentlyMapped, td.mdDistance span.currentlyMapped', parentRow));
 			});
     },
