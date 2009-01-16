@@ -257,6 +257,15 @@ namespace Engage.Dnn.Locator {
         protected global::System.Web.UI.WebControls.DropDownList RegionDropDownList;
         
         /// <summary>
+        /// AddingRegionsLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label AddingRegionsLabel;
+        
+        /// <summary>
         /// lblZip control.
         /// </summary>
         /// <remarks>

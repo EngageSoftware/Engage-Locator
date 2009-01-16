@@ -103,6 +103,9 @@ namespace Engage.Dnn.Locator
                     this.lblStatus.Visible = false;
                 }
 
+                // Only Host users can make changes to lists
+                this.AddingRegionsLabel.Visible = this.UserInfo.IsSuperUser;
+
                 this.LoadCustomAttributes();
 
                 this.txtLocationId.Focus();

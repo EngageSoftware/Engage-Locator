@@ -76,7 +76,7 @@
                             <dnn:label id="lblState" runat="server" text="State:" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="RegionDropDownList" CssClass="Normal" runat="server" TabIndex="7"/>
+                            <asp:DropDownList ID="RegionDropDownList" CssClass="Normal" runat="server" TabIndex="7"/><asp:Label ID="AddingRegionsLabel" runat="server" ResourceKey="AddingRegions.Text" CssClass="Normal"/>
                         </td>
                     </tr>
                     <tr>

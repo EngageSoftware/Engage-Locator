@@ -273,4 +273,7 @@
   <data name="Please try submitting your location again.Text" xml:space="preserve">
     <value>- Please try submitting your location again.</value>
   </data>
+  <data name="AddingRegions.Text" xml:space="preserve">
+    <value>&lt;a href="http://www.engagemodules.com/Modules/EngageLocator/LocatorDocumentation.aspx?topic=Adding+Regions" target="_blank"&gt;How to Add Regions to This List&lt;/a&gt;</value>
+  </data>
 </root>
