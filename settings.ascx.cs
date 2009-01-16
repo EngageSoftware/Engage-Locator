@@ -1,6 +1,6 @@
 // <copyright file="Settings.ascx.cs" company="Engage Software">
 // Engage: Locator - http://www.engagemodules.com
-// Copyright (c) 2004-2008
+// Copyright (c) 2004-2009
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -31,6 +31,15 @@ namespace Engage.Dnn.Locator
     public partial class Settings : ModuleSettingsBase
     {
         /// <summary>
+        /// Gets the local shared resource file.
+        /// </summary>
+        /// <value>The local shared resource file.</value>
+        private static string LocalSharedResourceFile
+        {
+            get { return "~" + Framework.Utility.GetDesktopModuleFolderName(Utility.DesktopModuleName) + Localization.LocalResourceDirectory + "/" + Localization.LocalSharedResourceFile; }
+        }
+
+        /// <summary>
         /// Loads the settings.
         /// </summary>
         public override void LoadSettings()
@@ -57,8 +66,9 @@ namespace Engage.Dnn.Locator
                     {
                         selectedRestrictionOption = "Radius";
                     }
-                    
-                    this.rblRestrictions.Items.FindByValue(selectedRestrictionOption).Selected = true;
+
+                    this.SearchRestrictionsRadioButtonList.Items.FindByValue(selectedRestrictionOption).Selected = true;
+                    this.SetRadiusOptionsRowVisibility();
 
                     // set Show Location Details
                     string locationDetailsSetting = Dnn.Utility.GetStringSetting(this.Settings, "ShowLocationDetails");
@@ -68,26 +78,29 @@ namespace Engage.Dnn.Locator
                         {
                             case "FALSE":
                             case "NODETAILS":
-                                this.rbNoDetails.Checked = true;
+                                this.NoLocationDetailsRadioButton.Checked = true;
                                 break;
                             case "DETAILSPAGE":
-                                this.rbDetailsPage.Checked = this.chkModerateComments.Enabled = this.chkAllowComments.Checked = this.cbLocationRating.Enabled = true;
+                                this.LocationDetailSeparatePageRadioButton.Checked =
+                                        this.ModerateCommentsCheckBox.Enabled =
+                                        this.AllowCommentsCheckBox.Checked = 
+                                        this.AllowRatingsCheckBox.Enabled = true;
                                 break;
                             case "TRUE":
                             case "SAMEPAGE":
-                                this.rbSamePage.Checked = true;
+                                this.LocationDetailsSamePageRadioButton.Checked = true;
                                 break;
                         }
                     }
                     else
                     {
-                        this.rbNoDetails.Checked = true;
+                        this.NoLocationDetailsRadioButton.Checked = true;
                     }
 
                     this.LocationsPerPageTextBox.Text = Dnn.Utility.GetIntSetting(this.Settings, "LocationsPerPage", 10).ToString(CultureInfo.InvariantCulture);
-                    this.cbLocationRating.Checked = Utility.GetBooleanPortalSetting("LocatorAllowRatings", this.PortalId, false);
-                    this.chkAllowComments.Checked = Utility.GetBooleanPortalSetting("LocatorAllowComments", this.PortalId, false);
-                    this.chkModerateComments.Checked = Utility.GetBooleanPortalSetting("LocatorCommentModeration", this.PortalId, false);
+                    this.AllowRatingsCheckBox.Checked = Utility.GetBooleanPortalSetting("LocatorAllowRatings", this.PortalId, false);
+                    this.AllowCommentsCheckBox.Checked = Utility.GetBooleanPortalSetting("LocatorAllowComments", this.PortalId, false);
+                    this.ModerateCommentsCheckBox.Checked = Utility.GetBooleanPortalSetting("LocatorCommentModeration", this.PortalId, false);
 
                     if (Dnn.Utility.GetBoolSetting(this.Settings, "ShowDefaultDisplay", false))
                     {
@@ -108,11 +121,31 @@ namespace Engage.Dnn.Locator
                     this.chkPostalCode.Checked = Dnn.Utility.GetBoolSetting(this.Settings, "SearchPostalCode", true);
                     this.chkCountry.Checked = Dnn.Utility.GetBoolSetting(this.Settings, "SearchCountry", false);
 
+                    this.IncludeUnlimitedMilesRadiusCheckBox.Checked = Dnn.Utility.GetBoolSetting(this.Settings, "IncludeUnlimitedMilesRadius", true);
+                    foreach (ListItem li in this.DefaultRadiusDropDownList.Items)
+                    {
+                        // li.Value becomes li.Text if you don't explicitly reset it, as below.  BD
+                        li.Value = li.Value;
+                        li.Text = String.Format(CultureInfo.CurrentCulture, "{0} {1}", li.Value, Localization.GetString("Miles", this.LocalResourceFile));
+                    }
+
+                    if (this.IncludeUnlimitedMilesRadiusCheckBox.Checked)
+                    {
+                        this.DefaultRadiusDropDownList.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", LocalSharedResourceFile), string.Empty));
+                    }
+
+                    ListItem defaultItem = this.DefaultRadiusDropDownList.Items.FindByValue(Dnn.Utility.GetStringSetting(this.Settings, "DefaultRadius", string.Empty));
+                    if (defaultItem != null)
+                    {
+                        this.DefaultRadiusDropDownList.ClearSelection();
+                        defaultItem.Selected = true;
+                    }
+
                     // set MapType
                     this.rblMapDisplayType.SelectedValue = Dnn.Utility.GetEnumSetting(this.Settings, "MapType", MapType.Normal).ToString();
 
                     // set Submission Settings
-                    this.chkAllowLocations.Checked = Utility.GetBooleanPortalSetting("LocatorAllowSubmissions", this.PortalId, false);
+                    this.AllowLocationSubmissionsCheckBox.Checked = Utility.GetBooleanPortalSetting("LocatorAllowSubmissions", this.PortalId, false);
                     this.chkModerateLocations.Checked = Utility.GetBooleanPortalSetting("LocatorSubmissionModeration", this.PortalId, false);
 
                     // fill gridview with existing locator modules
@@ -140,7 +173,7 @@ namespace Engage.Dnn.Locator
                     this.dshSearchSettings.IsExpanded = false;
                 }
             }
-            catch (Exception exc) 
+            catch (Exception exc)
             {
                 // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
@@ -161,10 +194,10 @@ namespace Engage.Dnn.Locator
             {
                 ModuleController objModules = new ModuleController();
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "SearchTitle", this.txtSearchTitle.Text);
-                objModules.UpdateTabModuleSetting(this.TabModuleId, "Country", this.rblRestrictions.Items.FindByValue("Country").Selected.ToString(CultureInfo.InvariantCulture));
-                objModules.UpdateTabModuleSetting(this.TabModuleId, "Radius", this.rblRestrictions.Items.FindByValue("Radius").Selected.ToString(CultureInfo.InvariantCulture));
-                objModules.UpdateTabModuleSetting(this.TabModuleId, "DisplayProvider", this.rblProviderType.SelectedItem.Text);
-                objModules.UpdateTabModuleSetting(this.TabModuleId, this.rblProviderType.SelectedValue + ".ApiKey", this.txtApiKey.Text);
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "Country", this.SearchRestrictionsRadioButtonList.Items.FindByValue("Country").Selected.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "Radius", this.SearchRestrictionsRadioButtonList.Items.FindByValue("Radius").Selected.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "DisplayProvider", this.ProviderTypeRadioButtonList.SelectedItem.Text);
+                objModules.UpdateTabModuleSetting(this.TabModuleId, this.ProviderTypeRadioButtonList.SelectedValue + ".ApiKey", this.txtApiKey.Text);
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "DefaultCountry", this.ddlLocatorCountry.SelectedValue);
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "MapType", this.rblMapDisplayType.SelectedValue);
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "LocationsPerPage", int.Parse(this.LocationsPerPageTextBox.Text, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture));
@@ -175,26 +208,28 @@ namespace Engage.Dnn.Locator
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "SearchCityRegion", this.chkCityRegion.Checked.ToString(CultureInfo.InvariantCulture));
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "SearchPostalCode", this.chkPostalCode.Checked.ToString(CultureInfo.InvariantCulture));
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "SearchCountry", this.chkCountry.Checked.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "IncludeUnlimitedMilesRadius", this.IncludeUnlimitedMilesRadiusCheckBox.Checked.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "DefaultRadius", this.DefaultRadiusDropDownList.SelectedValue.ToString(CultureInfo.InvariantCulture));
 
-                if (this.rbNoDetails.Checked)
+                if (this.NoLocationDetailsRadioButton.Checked)
                 {
                     objModules.UpdateTabModuleSetting(this.TabModuleId, "ShowLocationDetails", "NoDetails");
                 }
-                else if (this.rbSamePage.Checked)
+                else if (this.LocationDetailsSamePageRadioButton.Checked)
                 {
                     objModules.UpdateTabModuleSetting(this.TabModuleId, "ShowLocationDetails", "SamePage");
                 }
-                else if (this.rbDetailsPage.Checked)
+                else if (this.LocationDetailSeparatePageRadioButton.Checked)
                 {
                     objModules.UpdateTabModuleSetting(this.TabModuleId, "ShowLocationDetails", "DetailsPage");
                 }
 
                 HostSettingsController hsc = new HostSettingsController();
-                hsc.UpdateHostSetting("LocatorAllowSubmissions" + this.PortalId.ToString(CultureInfo.InvariantCulture), this.chkAllowLocations.Checked.ToString(CultureInfo.InvariantCulture));
+                hsc.UpdateHostSetting("LocatorAllowSubmissions" + this.PortalId.ToString(CultureInfo.InvariantCulture), this.AllowLocationSubmissionsCheckBox.Checked.ToString(CultureInfo.InvariantCulture));
                 hsc.UpdateHostSetting("LocatorSubmissionModeration" + this.PortalId.ToString(CultureInfo.InvariantCulture), this.chkModerateLocations.Checked.ToString(CultureInfo.InvariantCulture));
-                hsc.UpdateHostSetting("LocatorAllowRatings" + this.PortalId.ToString(CultureInfo.InvariantCulture), this.cbLocationRating.Checked.ToString(CultureInfo.InvariantCulture));
-                hsc.UpdateHostSetting("LocatorAllowComments" + this.PortalId.ToString(CultureInfo.InvariantCulture), this.chkAllowComments.Checked.ToString(CultureInfo.InvariantCulture));
-                hsc.UpdateHostSetting("LocatorCommentModeration" + this.PortalId.ToString(CultureInfo.InvariantCulture), this.chkModerateComments.Checked.ToString(CultureInfo.InvariantCulture));
+                hsc.UpdateHostSetting("LocatorAllowRatings" + this.PortalId.ToString(CultureInfo.InvariantCulture), this.AllowRatingsCheckBox.Checked.ToString(CultureInfo.InvariantCulture));
+                hsc.UpdateHostSetting("LocatorAllowComments" + this.PortalId.ToString(CultureInfo.InvariantCulture), this.AllowCommentsCheckBox.Checked.ToString(CultureInfo.InvariantCulture));
+                hsc.UpdateHostSetting("LocatorCommentModeration" + this.PortalId.ToString(CultureInfo.InvariantCulture), this.ModerateCommentsCheckBox.Checked.ToString(CultureInfo.InvariantCulture));
 
                 foreach (GridViewRow dr in this.gvTabModules.Rows)
                 {
@@ -207,7 +242,7 @@ namespace Engage.Dnn.Locator
                     }
                 }
             }
-            catch (Exception exc) 
+            catch (Exception exc)
             {
                 // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
@@ -225,6 +260,72 @@ namespace Engage.Dnn.Locator
             {
                 AJAX.RegisterScriptManager();
             }
+
+            this.ApiKeyValidator.ServerValidate += this.ApiKeyValidator_ServerValidate;
+            this.ProviderTypeValidator.ServerValidate += this.ProviderTypeValidator_ServerValidate;
+            this.SearchOptionsValidator.ServerValidate += this.SearchOptionsValidator_ServerValidate;
+            this.LocatorCountryValidator.ServerValidate += this.LocatorCountryValidator_ServerValidate;
+            this.SearchResultsModuleValidator.ServerValidate += this.SearchResultsModuleValidator_ServerValidate;
+            this.AllowCommentsCheckBox.CheckedChanged += this.AllowCommentsCheckBox_CheckedChanged;
+            this.AllowLocationSubmissionsCheckBox.CheckedChanged += this.AllowLocationSubmissionsCheckBox_CheckedChanged;
+            this.IncludeUnlimitedMilesRadiusCheckBox.CheckedChanged += this.IncludeUnlimitedMilesRadiusCheckBox_CheckedChanged;
+            this.LocationDetailsSamePageRadioButton.CheckedChanged += this.LocationDetailsRadioButtons_CheckChanged;
+            this.NoLocationDetailsRadioButton.CheckedChanged += this.LocationDetailsRadioButtons_CheckChanged;
+            this.LocationDetailSeparatePageRadioButton.CheckedChanged += this.LocationDetailsRadioButtons_CheckChanged;
+            this.SearchRestrictionsRadioButtonList.SelectedIndexChanged += this.SearchRestrictionsRadioButtonList_SelectedIndexChanged;
+            this.ProviderTypeRadioButtonList.SelectedIndexChanged += this.ProviderTypeRadioButtonList_SelectedIndexChanged;
+        }
+
+        /// <summary>
+        /// Handles the CheckChanged event of the LocatorModuleRadioButtons control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+        protected void LocatorModuleRadioButtons_CheckChanged(object sender, EventArgs e)
+        {
+            RadioButton selectedRadioButton = (RadioButton)sender;
+
+            foreach (GridViewRow dr in this.gvTabModules.Rows)
+            {
+                RadioButton currentModuleRadioButton = (RadioButton)dr.FindControl("LocatorModuleRadioButton");
+                currentModuleRadioButton.Checked = currentModuleRadioButton == selectedRadioButton;
+            }
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the AllowCommentsCheckBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+        private void AllowCommentsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.AllowCommentsCheckBox.Checked)
+            {
+                this.ModerateCommentsCheckBox.Enabled = this.AllowCommentsCheckBox.Checked;
+            }
+            else
+            {
+                this.ModerateCommentsCheckBox.Enabled = false;
+                this.ModerateCommentsCheckBox.Checked = false;
+            }
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the AllowLocationSubmissionsCheckBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+        private void AllowLocationSubmissionsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.AllowLocationSubmissionsCheckBox.Checked)
+            {
+                this.chkModerateLocations.Enabled = this.AllowLocationSubmissionsCheckBox.Checked;
+            }
+            else
+            {
+                this.chkModerateLocations.Checked = false;
+                this.chkModerateLocations.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -232,11 +333,11 @@ namespace Engage.Dnn.Locator
         /// </summary>
         /// <param name="source">The source of the event.</param>
         /// <param name="args">The <see cref="System.Web.UI.WebControls.ServerValidateEventArgs" /> instance containing the event data.</param>
-        protected void apiKey_ServerValidate(object source, ServerValidateEventArgs args)
+        private void ApiKeyValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            if (this.rblProviderType.SelectedItem != null)
+            if (this.ProviderTypeRadioButtonList.SelectedItem != null)
             {
-                MapProvider mp = MapProvider.CreateInstance(this.rblProviderType.SelectedValue, this.txtApiKey.Text);
+                MapProvider mp = MapProvider.CreateInstance(this.ProviderTypeRadioButtonList.SelectedValue, this.txtApiKey.Text);
                 args.IsValid = mp.IsKeyValid();
             }
             else
@@ -247,39 +348,33 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
-        /// Handles the CheckedChanged event of the chkAllowComments control.
+        /// Handles the CheckedChanged event of the IncludeUnlimitedMilesRadiusCheckBox control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        protected void chkAllowComments_CheckedChanged(object sender, EventArgs e)
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void IncludeUnlimitedMilesRadiusCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.chkAllowComments.Checked)
+            if (this.IncludeUnlimitedMilesRadiusCheckBox.Checked)
             {
-                this.chkModerateComments.Enabled = this.chkAllowComments.Checked;
+                this.DefaultRadiusDropDownList.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", LocalSharedResourceFile), string.Empty));
             }
             else
             {
-                this.chkModerateComments.Enabled = false;
-                this.chkModerateComments.Checked = false;
+                this.DefaultRadiusDropDownList.Items.Remove(this.DefaultRadiusDropDownList.Items.FindByValue(string.Empty));
             }
         }
 
         /// <summary>
-        /// Handles the CheckedChanged event of the chkAllowLocations control.
+        /// Handles the CheckChanged event of the radio button controls used to select where the location details are displayed.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        protected void chkAllowLocations_CheckedChanged(object sender, EventArgs e)
+        private void LocationDetailsRadioButtons_CheckChanged(object sender, EventArgs e)
         {
-            if (this.chkAllowLocations.Checked)
-            {
-                this.chkModerateLocations.Enabled = this.chkAllowLocations.Checked;
-            }
-            else
-            {
-                this.chkModerateLocations.Checked = false;
-                this.chkModerateLocations.Enabled = false;
-            }
+            this.AllowCommentsCheckBox.Enabled =
+                    this.ModerateCommentsCheckBox.Enabled =
+                    this.AllowRatingsCheckBox.Enabled =
+                    this.AllowCommentsCheckBox.Checked = this.ModerateCommentsCheckBox.Checked = this.LocationDetailSeparatePageRadioButton.Checked;
         }
 
         /// <summary>
@@ -287,7 +382,7 @@ namespace Engage.Dnn.Locator
         /// </summary>
         /// <param name="source">The source of the event.</param>
         /// <param name="args">The <see cref="System.Web.UI.WebControls.ServerValidateEventArgs" /> instance containing the event data.</param>
-        protected void LocatorCountryValidator_ServerValidate(object source, ServerValidateEventArgs args)
+        private void LocatorCountryValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
             if (this.ddlLocatorCountry.SelectedIndex > 0)
             {
@@ -301,11 +396,54 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
+        /// Handles the SelectedIndexChanged event of the ProviderTypeRadioButtonList control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+        private void ProviderTypeRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.DisplayAPI();
+        }
+
+        /// <summary>
+        /// Handles the ServerValidate event of the ProviderTypeValidator control.
+        /// </summary>
+        /// <param name="source">The source of the event.</param>
+        /// <param name="args">The <see cref="System.Web.UI.WebControls.ServerValidateEventArgs" /> instance containing the event data.</param>
+        private void ProviderTypeValidator_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            if (this.ProviderTypeRadioButtonList.SelectedItem == null)
+            {
+                args.IsValid = false;
+                this.dshMapProvider.IsExpanded = true;
+            }
+        }
+
+        /// <summary>
+        /// Handles the ServerValidate event of the SearchOptionsValidator control.
+        /// </summary>
+        /// <param name="source">The source of the event.</param>
+        /// <param name="args">The <see cref="System.Web.UI.WebControls.ServerValidateEventArgs" /> instance containing the event data.</param>
+        private void SearchOptionsValidator_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            if (this.chkAddress.Checked || this.chkCityRegion.Checked || this.chkPostalCode.Checked || this.chkPostalCode.Checked
+                || this.chkCountry.Checked)
+            {
+                args.IsValid = true;
+            }
+            else
+            {
+                args.IsValid = false;
+                this.dshSearchSettings.IsExpanded = true;
+            }
+        }
+
+        /// <summary>
         /// Handles the ServerValidate event of the SearchResultsModuleValidator control.
         /// </summary>
         /// <param name="source">The source of the event.</param>
         /// <param name="args">The <see cref="System.Web.UI.WebControls.ServerValidateEventArgs" /> instance containing the event data.</param>
-        protected void SearchResultsModuleValidator_ServerValidate(object source, ServerValidateEventArgs args)
+        private void SearchResultsModuleValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
             string tabId = string.Empty;
             foreach (GridViewRow row in this.gvTabModules.Rows)
@@ -331,96 +469,26 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
-        /// Handles the ServerValidate event of the ProviderTypeValidator control.
-        /// </summary>
-        /// <param name="source">The source of the event.</param>
-        /// <param name="args">The <see cref="System.Web.UI.WebControls.ServerValidateEventArgs" /> instance containing the event data.</param>
-        protected void ProviderTypeValidator_ServerValidate(object source, ServerValidateEventArgs args)
-        {
-            if (this.rblProviderType.SelectedItem == null)
-            {
-                args.IsValid = false;
-                this.dshMapProvider.IsExpanded = true;
-            }
-        }
-
-        /// <summary>
-        /// Handles the ServerValidate event of the SearchOptionsValidator control.
-        /// </summary>
-        /// <param name="source">The source of the event.</param>
-        /// <param name="args">The <see cref="System.Web.UI.WebControls.ServerValidateEventArgs" /> instance containing the event data.</param>
-        protected void SearchOptionsValidator_ServerValidate(object source, ServerValidateEventArgs args)
-        {
-            if (this.chkAddress.Checked || this.chkCityRegion.Checked || this.chkPostalCode.Checked || this.chkPostalCode.Checked
-                || this.chkCountry.Checked)
-            {
-                args.IsValid = true;
-            }
-            else
-            {
-                args.IsValid = false;
-                this.dshSearchSettings.IsExpanded = true;
-            }
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the ddlProviderType control.
+        /// Handles the SelectedIndexChanged event of the SearchRestrictionsRadioButtonList control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void ddlProviderType_SelectedIndexChanged(object sender, EventArgs e)
+        private void SearchRestrictionsRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DropDownList ddl = (DropDownList)sender;
-            this.txtApiKey.Text = Dnn.Utility.GetStringSetting(this.Settings, ddl.SelectedValue + ".ApiKey");
+            this.SetRadiusOptionsRowVisibility();
         }
 
         /// <summary>
-        /// Handles the CheckChanged event of the LocatorModuleRadioButtons control.
+        /// Sets the visibility of <see cref="RadiusOptionsRow"/>.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        protected void LocatorModuleRadioButtons_CheckChanged(object sender, EventArgs e)
+        private void SetRadiusOptionsRowVisibility()
         {
-            RadioButton rbselected = (RadioButton)sender;
-
-            foreach (GridViewRow dr in this.gvTabModules.Rows)
-            {
-                RadioButton rb = (RadioButton)dr.FindControl("LocatorModuleRadioButton");
-                if (rb == rbselected)
-                {
-                    rb.Checked = true;
-                }
-                else
-                {
-                    rb.Checked = false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handles the CheckChanged event of the rbLoctionDetails control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        protected void rbLoctionDetails_CheckChanged(object sender, EventArgs e)
-        {
-            this.chkAllowComments.Enabled = this.chkModerateComments.Enabled = this.cbLocationRating.Enabled = this.rbDetailsPage.Checked;
-            this.chkModerateComments.Enabled = this.chkAllowComments.Checked = this.chkModerateComments.Checked = this.rbDetailsPage.Checked;
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the rblProviderType control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        protected void rblProviderType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.DisplayAPI();
+            this.RadiusOptionsRow.Visible = this.SearchRestrictionsRadioButtonList.SelectedValue == "Radius";
         }
 
         private void DisplayAPI()
         {
-            this.txtApiKey.Text = Dnn.Utility.GetStringSetting(this.Settings, this.rblProviderType.SelectedValue + ".ApiKey");
+            this.txtApiKey.Text = Dnn.Utility.GetStringSetting(this.Settings, this.ProviderTypeRadioButtonList.SelectedValue + ".ApiKey");
             this.txtApiKey.Focus();
         }
 
@@ -459,15 +527,15 @@ namespace Engage.Dnn.Locator
 
         private void DisplayProviderType()
         {
-            this.rblProviderType.DataSource = MapProviderType.GetMapProviderTypes();
-            this.rblProviderType.DataTextField = "Name";
-            this.rblProviderType.DataValueField = "ClassName";
-            this.rblProviderType.DataBind();
+            this.ProviderTypeRadioButtonList.DataSource = MapProviderType.GetMapProviderTypes();
+            this.ProviderTypeRadioButtonList.DataTextField = "Name";
+            this.ProviderTypeRadioButtonList.DataValueField = "ClassName";
+            this.ProviderTypeRadioButtonList.DataBind();
             string displayProvider = Dnn.Utility.GetStringSetting(this.Settings, "DisplayProvider");
-            ListItem li = this.rblProviderType.Items.FindByText(displayProvider);
+            ListItem li = this.ProviderTypeRadioButtonList.Items.FindByText(displayProvider);
             if (li != null)
             {
-                this.rblProviderType.SelectedValue = li.Value;
+                this.ProviderTypeRadioButtonList.SelectedValue = li.Value;
             }
         }
 

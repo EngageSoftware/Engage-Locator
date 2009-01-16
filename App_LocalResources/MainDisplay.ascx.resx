@@ -156,9 +156,6 @@
   <data name="lnkCircleK.Text" xml:space="preserve">
     <value>Find a Location</value>
   </data>
-  <data name="Miles.Text" xml:space="preserve">
-    <value> Miles</value>
-  </data>
   <data name="Website.Text" xml:space="preserve">
     <value>Location Website</value>
   </data>
@@ -237,9 +234,6 @@
   <data name="NoLocationsFound.Text" xml:space="preserve">
     <value>We're sorry, but there were no locations found by your search.  Try increasing the search distance, or search for a different location.</value>
   </data>
-  <data name="UnlimitedMiles.Text" xml:space="preserve">
-    <value>Unlimited Miles</value>
-  </data>
   <data name="NoSelection.Text" xml:space="preserve">
     <value>Please choose a search criteria.</value>
   </data>
@@ -294,5 +288,8 @@
   </data>
   <data name="Please refine your search.Text" xml:space="preserve">
     <value>Please refine your search.</value>
+  </data>
+  <data name="SearchRadiusLabel.Text" xml:space="preserve">
+    <value>Search Radius</value>
   </data>
 </root>

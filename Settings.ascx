@@ -10,7 +10,7 @@
             <dnn:label ID="lblMapProviders" ResourceKey="lblMapProviders" runat="server" />
         </td>
         <td width="350">
-            <asp:RadioButtonList ID="rblProviderType" CssClass="Normal" runat="server" AutoPostBack="true" OnSelectedIndexChanged="rblProviderType_SelectedIndexChanged" RepeatDirection="horizontal" Width="200px" />
+            <asp:RadioButtonList ID="ProviderTypeRadioButtonList" CssClass="Normal" runat="server" AutoPostBack="true" RepeatDirection="horizontal" Width="200px" />
             <div>
                 <asp:Label ID="lblApiMapProvider" CssClass="Normal" runat="server" resourceKey="lblApiMapProvider" />
             </div>
@@ -21,7 +21,7 @@
             &nbsp;
         </td>
         <td width="350">
-            <asp:CustomValidator ID="ProviderTypeValidator" runat="server" CssClass="Normal" ResourceKey="ProviderTypeValidator" OnServerValidate="ProviderTypeValidator_ServerValidate"/>
+            <asp:CustomValidator ID="ProviderTypeValidator" runat="server" CssClass="Normal" ResourceKey="ProviderTypeValidator" />
         </td>
     </tr>
     <tr>
@@ -33,7 +33,7 @@
             <div>
                 <asp:Label ID="lblApiInstructions" CssClass="Normal" runat="server" resourceKey="lblApiInstructions" />
             </div>
-            <asp:CustomValidator ID="ApiKeyValidator" runat="server" CssClass="Normal" resourcekey="ApiKeyValidator" OnServerValidate="apiKey_ServerValidate"/>
+            <asp:CustomValidator ID="ApiKeyValidator" runat="server" CssClass="Normal" resourcekey="ApiKeyValidator"/>
         </td>
     </tr>
     <tr>
@@ -44,7 +44,7 @@
             <div>
                 <asp:DropDownList ID="ddlLocatorCountry" runat="server" CssClass="Normal" />
             </div>
-            <asp:CustomValidator ID="LocatorCountryValidator" runat="server" ControlToValidate="ddlLocatorCountry" ResourceKey="LocatorCountryValidator" OnServerValidate="LocatorCountryValidator_ServerValidate" />
+            <asp:CustomValidator ID="LocatorCountryValidator" runat="server" ControlToValidate="ddlLocatorCountry" ResourceKey="LocatorCountryValidator" />
         </td>
     </tr>
 </table>
@@ -77,9 +77,9 @@
             <dnn:label ID="lblShowLocationDetails" runat="server" ResourceKey="lblShowLocationDetails" />
         </td>
         <td width="350">
-            <asp:RadioButton ID="rbSamePage" runat="server" GroupName="rbLocationDetails" resourcekey="rbSamePage" CssClass="Normal" AutoPostBack="true" OnCheckedChanged="rbLoctionDetails_CheckChanged" />
-            <asp:RadioButton ID="rbDetailsPage" runat="server" GroupName="rbLocationDetails" resourcekey="rbDetailsPage" CssClass="Normal" AutoPostBack="true" OnCheckedChanged="rbLoctionDetails_CheckChanged" />
-            <asp:RadioButton ID="rbNoDetails" runat="server" GroupName="rbLocationDetails" resourcekey="rbNoDetails" CssClass="Normal" AutoPostBack="true" OnCheckedChanged="rbLoctionDetails_CheckChanged" />
+            <asp:RadioButton ID="LocationDetailsSamePageRadioButton" runat="server" GroupName="rbLocationDetails" resourcekey="rbSamePage" CssClass="Normal" AutoPostBack="true" />
+            <asp:RadioButton ID="LocationDetailSeparatePageRadioButton" runat="server" GroupName="rbLocationDetails" resourcekey="rbDetailsPage" CssClass="Normal" AutoPostBack="true" />
+            <asp:RadioButton ID="NoLocationDetailsRadioButton" runat="server" GroupName="rbLocationDetails" resourcekey="rbNoDetails" CssClass="Normal" AutoPostBack="true" />
         </td>
     </tr>
     <tr>
@@ -96,7 +96,7 @@
             <dnn:label ID="lblLocationRating" runat="server" ResourceKey="lblLocationRating" />
         </td>
         <td>
-            <asp:CheckBox ID="cbLocationRating" runat="server" Enabled="false" />
+            <asp:CheckBox ID="AllowRatingsCheckBox" runat="server" Enabled="false" />
         </td>
     </tr>
     <tr>
@@ -104,7 +104,7 @@
             <dnn:label ID="lblLocationComments" runat="server" ResourceKey="lblLocationComments" />
         </td>
         <td>
-            <asp:CheckBox ID="chkAllowComments" runat="server" Enabled="false" AutoPostBack="True" oncheckedchanged="chkAllowComments_CheckedChanged" />
+            <asp:CheckBox ID="AllowCommentsCheckBox" runat="server" Enabled="false" AutoPostBack="True" />
         </td>
     </tr>
     <tr>
@@ -112,7 +112,7 @@
             <dnn:label ID="lblModerateComments" runat="server" ResourceKey="lblModerateComments" />
         </td>
         <td>
-            <asp:CheckBox ID="chkModerateComments" runat="server" Enabled="false" />
+            <asp:CheckBox ID="ModerateCommentsCheckBox" runat="server" Enabled="false" />
         </td>
     </tr>
     <tr>
@@ -170,7 +170,7 @@
                 <AlternatingRowStyle BackColor="#eeeeee" />
                 <RowStyle BackColor="#f8f8f8" ForeColor="Black" />
             </asp:GridView>
-            <asp:CustomValidator ID="SearchResultsModuleValidator" runat="server" CssClass="Normal" ResourceKey="SearchResultsModuleValidator" OnServerValidate="SearchResultsModuleValidator_ServerValidate"/>
+            <asp:CustomValidator ID="SearchResultsModuleValidator" runat="server" CssClass="Normal" ResourceKey="SearchResultsModuleValidator" />
         </td>
     </tr>
     <tr>
@@ -196,7 +196,7 @@
                     </td>
                 </tr>
             </table>
-            <asp:CustomValidator ID="SearchOptionsValidator" runat="server" CssClass="Normal" OnServerValidate="SearchOptionsValidator_ServerValidate" resourcekey="cvSearchOptions" />
+            <asp:CustomValidator ID="SearchOptionsValidator" runat="server" CssClass="Normal" resourcekey="cvSearchOptions" />
         </td>
     </tr>
     <tr>
@@ -205,7 +205,7 @@
         </td>
         <td width="350">
             <div id="dvAddress">
-                <asp:RadioButtonList ID="rblRestrictions" runat="server" CssClass="Normal" RepeatDirection="horizontal">
+                <asp:RadioButtonList ID="SearchRestrictionsRadioButtonList" runat="server" CssClass="Normal" AutoPostBack="true" RepeatDirection="horizontal">
                     <asp:ListItem Value="Country" resourcekey="liSearchRestrictionCountry" />
                     <asp:ListItem Value="Radius" resourcekey="liSearchRestrictionRadius" />
                     <asp:ListItem Value="None" resourcekey="liSearchRestrictionNone" />
@@ -216,6 +216,21 @@
             </div>
         </td>
     </tr>
+    <tr id="RadiusOptionsRow" runat="server">
+        <td class="SubHead" width="150" valign="top">
+            <dnn:label ResourceKey="DefaultRadiusLabel" runat="server" />
+        </td>
+        <td width="350">
+            <asp:DropDownList ID="DefaultRadiusDropDownList" runat="server">
+                <asp:ListItem Text="5" />
+                <asp:ListItem Text="10" />
+                <asp:ListItem Text="25" />
+                <asp:ListItem Text="50" />
+                <asp:ListItem Text="100" />
+            </asp:DropDownList>
+            <asp:CheckBox ID="IncludeUnlimitedMilesRadiusCheckBox" runat="server" AutoPostBack="true" ResourceKey="IncludeUnlimitedMilesRadiusCheckBox.Text" />
+        </td>
+    </tr>
 </table>
 <dnn:sectionhead ID="dshSubmissionSettings" runat="Server" CSSClass="Head" section="tblSubmissionSettings" resourcekey="dshSubmissionSettings" IsExpanded="true" IncludeRule="true" />
 <table id="tblSubmissionSettings" runat="server" cellspacing="0" cellpadding="0" style="padding-bottom: 20px;" border="0" summary="Module Mode">
@@ -224,7 +239,7 @@
             <dnn:label ID="lblAllowSubmissions" runat="server" ResourceKey="lblAllowSubmissions" />
         </td>
         <td width="350">
-            <asp:CheckBox ID="chkAllowLocations" runat="server" AutoPostBack="True" oncheckedchanged="chkAllowLocations_CheckedChanged" />
+            <asp:CheckBox ID="AllowLocationSubmissionsCheckBox" runat="server" AutoPostBack="True" />
         </td>
     </tr>
     <tr>

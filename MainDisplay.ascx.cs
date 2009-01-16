@@ -1,6 +1,6 @@
 // <copyright file="MainDisplay.ascx.cs" company="Engage Software">
 // Engage: Locator - http://www.engagemodules.com
-// Copyright (c) 2004-2008
+// Copyright (c) 2004-2009
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -499,11 +499,20 @@ namespace Engage.Dnn.Locator
             {
                 // li.Value becomes li.Text if you don't explicitly reset it, as below.  BD
                 li.Value = li.Value;
-                li.Text = String.Format(CultureInfo.CurrentCulture, "{0} {1}", li.Value, Localization.GetString("Miles", this.LocalResourceFile));
+                li.Text = String.Format(CultureInfo.CurrentCulture, "{0} {1}", li.Value, Localization.GetString("Miles", this.LocalSharedResourceFile));
             }
 
-            this.SearchRadiusDropDownList.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", this.LocalResourceFile), string.Empty));
-            this.SearchRadiusDropDownList.SelectedValue = string.Empty;
+            if (Dnn.Utility.GetBoolSetting(this.Settings, "IncludeUnlimitedMilesRadius", true))
+            {
+                this.SearchRadiusDropDownList.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", this.LocalSharedResourceFile), string.Empty));
+            }
+
+            ListItem defaultItem = this.SearchRadiusDropDownList.Items.FindByValue(Dnn.Utility.GetStringSetting(this.Settings, "DefaultRadius", string.Empty));
+            if (defaultItem != null)
+            {
+                this.SearchRadiusDropDownList.ClearSelection();
+                defaultItem.Selected = true;
+            }
 
             ListController listController = new ListController();
 
@@ -764,7 +773,7 @@ namespace Engage.Dnn.Locator
 
                     if (locationsGridDistanceLabel.Visible)
                     {
-                        locationsGridDistanceLabel.Text = location.Distance.Value.ToString("#.00", CultureInfo.CurrentCulture) + Localization.GetString("Miles", this.LocalResourceFile);
+                        locationsGridDistanceLabel.Text = location.Distance.Value.ToString("#.00", CultureInfo.CurrentCulture) + Localization.GetString("Miles", this.LocalSharedResourceFile);
                     }
 
                     ////HyperLink siteLink = (HyperLink)e.Item.FindControl("SiteLink");

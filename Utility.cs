@@ -13,7 +13,6 @@ namespace Engage.Dnn.Locator
 {
     using System;
     using System.Globalization;
-
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
 
@@ -22,6 +21,11 @@ namespace Engage.Dnn.Locator
     /// </summary>
     public class Utility
     {
+        /// <summary>
+        /// The name of the desktop module
+        /// </summary>
+        public const string DesktopModuleName = "Engage: Locator";
+
         /// <summary>
         /// Gets the portal setting with the given key as a <see cref="bool"/>, returning <paramref name="defaultSetting"/> if the setting doesn't exist.
         /// </summary>

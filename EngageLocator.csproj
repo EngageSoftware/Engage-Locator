@@ -328,6 +328,8 @@
     <Content Include="Images\update.gif" />
     <Content Include="Images\updateBt.gif" />
     <Content Include="Images\updateBtDisabled.gif" />
+    <Content Include="App_LocalResources\SharedResources.resx">
+    </Content>
     <EmbeddedResource Include="JavaScript\GoogleLocator.js" />
     <EmbeddedResource Include="JavaScript\BaseLocator.js" />
     <EmbeddedResource Include="JavaScript\YahooLocator.js" />

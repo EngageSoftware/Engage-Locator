@@ -14,9 +14,6 @@ namespace Engage.Dnn.Locator
     using System;
     using System.Diagnostics;
     using System.Globalization;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
-
     using Maps;
 
     /// <summary>
@@ -30,7 +27,7 @@ namespace Engage.Dnn.Locator
         /// <value>The name of the desktop module.</value>
         public override string DesktopModuleName
         {
-            get { return "EngageLocator"; }
+            get { return Utility.DesktopModuleName; }
         }
 
         /// <summary>

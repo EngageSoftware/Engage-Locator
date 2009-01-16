@@ -41,13 +41,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblMapProviders;
         
         /// <summary>
-        /// rblProviderType control.
+        /// ProviderTypeRadioButtonList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblProviderType;
+        protected global::System.Web.UI.WebControls.RadioButtonList ProviderTypeRadioButtonList;
         
         /// <summary>
         /// lblApiMapProvider control.
@@ -221,31 +221,31 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblShowLocationDetails;
         
         /// <summary>
-        /// rbSamePage control.
+        /// LocationDetailsSamePageRadioButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbSamePage;
+        protected global::System.Web.UI.WebControls.RadioButton LocationDetailsSamePageRadioButton;
         
         /// <summary>
-        /// rbDetailsPage control.
+        /// LocationDetailSeparatePageRadioButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbDetailsPage;
+        protected global::System.Web.UI.WebControls.RadioButton LocationDetailSeparatePageRadioButton;
         
         /// <summary>
-        /// rbNoDetails control.
+        /// NoLocationDetailsRadioButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbNoDetails;
+        protected global::System.Web.UI.WebControls.RadioButton NoLocationDetailsRadioButton;
         
         /// <summary>
         /// LocationsPerPageLabel control.
@@ -275,13 +275,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblLocationRating;
         
         /// <summary>
-        /// cbLocationRating control.
+        /// AllowRatingsCheckBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbLocationRating;
+        protected global::System.Web.UI.WebControls.CheckBox AllowRatingsCheckBox;
         
         /// <summary>
         /// lblLocationComments control.
@@ -293,13 +293,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblLocationComments;
         
         /// <summary>
-        /// chkAllowComments control.
+        /// AllowCommentsCheckBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkAllowComments;
+        protected global::System.Web.UI.WebControls.CheckBox AllowCommentsCheckBox;
         
         /// <summary>
         /// lblModerateComments control.
@@ -311,13 +311,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblModerateComments;
         
         /// <summary>
-        /// chkModerateComments control.
+        /// ModerateCommentsCheckBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkModerateComments;
+        protected global::System.Web.UI.WebControls.CheckBox ModerateCommentsCheckBox;
         
         /// <summary>
         /// lblMapType control.
@@ -473,13 +473,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblOptional;
         
         /// <summary>
-        /// rblRestrictions control.
+        /// SearchRestrictionsRadioButtonList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblRestrictions;
+        protected global::System.Web.UI.WebControls.RadioButtonList SearchRestrictionsRadioButtonList;
         
         /// <summary>
         /// lblOptionalInst control.
@@ -489,6 +489,33 @@ namespace Engage.Dnn.Locator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblOptionalInst;
+        
+        /// <summary>
+        /// RadiusOptionsRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow RadiusOptionsRow;
+        
+        /// <summary>
+        /// DefaultRadiusDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DefaultRadiusDropDownList;
+        
+        /// <summary>
+        /// IncludeUnlimitedMilesRadiusCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox IncludeUnlimitedMilesRadiusCheckBox;
         
         /// <summary>
         /// dshSubmissionSettings control.
@@ -518,13 +545,13 @@ namespace Engage.Dnn.Locator {
         protected global::DotNetNuke.UI.UserControls.LabelControl lblAllowSubmissions;
         
         /// <summary>
-        /// chkAllowLocations control.
+        /// AllowLocationSubmissionsCheckBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkAllowLocations;
+        protected global::System.Web.UI.WebControls.CheckBox AllowLocationSubmissionsCheckBox;
         
         /// <summary>
         /// lblSubmissionModeration control.
