@@ -11,6 +11,8 @@
 
 namespace Engage.Dnn.Locator
 {
+    using DotNetNuke.Services.Localization;
+
     /// <summary>
     /// A provided geocode result, not obtained from a web service.
     /// </summary>
@@ -41,7 +43,10 @@ namespace Engage.Dnn.Locator
         /// <value>The error message, or <c>null</c> if there is no error.</value>
         public override string ErrorMessage
         {
-            get { throw new System.NotImplementedException(); }
+            get
+            {
+                return this.Successful ? null : Localization.GetString("BadManualResult.Text", Utility.LocalSharedResourceFile);
+            }
         }
     }
 }

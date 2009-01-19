@@ -15,6 +15,7 @@ namespace Engage.Dnn.Locator
     using System.Globalization;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// A class containing utilities for Engage: Locator
@@ -25,6 +26,15 @@ namespace Engage.Dnn.Locator
         /// The name of the desktop module
         /// </summary>
         public const string DesktopModuleName = "Engage: Locator";
+
+        /// <summary>
+        /// Gets the local shared resource file.
+        /// </summary>
+        /// <value>The local shared resource file.</value>
+        public static string LocalSharedResourceFile
+        {
+            get { return "~" + Framework.Utility.GetDesktopModuleFolderName(DesktopModuleName) + Localization.LocalResourceDirectory + "/" + Localization.LocalSharedResourceFile; }
+        }
 
         /// <summary>
         /// Gets the portal setting with the given key as a <see cref="bool"/>, returning <paramref name="defaultSetting"/> if the setting doesn't exist.

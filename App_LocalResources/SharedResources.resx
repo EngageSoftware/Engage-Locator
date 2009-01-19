@@ -117,8 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BadKey.Text" xml:space="preserve">
+    <value>The given key is either invalid or does not match the domain for which it was given.</value>
+  </data>
+  <data name="BadManualResult.Text" xml:space="preserve">
+    <value>The provided Latitude and/or Longitude were invalid</value>
+  </data>
+  <data name="BadRequest.Text" xml:space="preserve">
+    <value>The address was empty or missing, you must provide an address value.</value>
+  </data>
+  <data name="Forbidden.Text" xml:space="preserve">
+    <value>You do not have permission to access this resource, or are over your rate limit.</value>
+  </data>
   <data name="Miles.Text" xml:space="preserve">
     <value> Miles</value>
+  </data>
+  <data name="MissingAddress.Text" xml:space="preserve">
+    <value>The address was empty or missing, you must provide an address value.</value>
+  </data>
+  <data name="ServerError.Text" xml:space="preserve">
+    <value>A geocoding request could not be successfully processed, yet the exact reason for the failure is not known.</value>
+  </data>
+  <data name="ServiceUnavailable.Text" xml:space="preserve">
+    <value>An internal problem prevented the geocoding service from returning data to you.</value>
+  </data>
+  <data name="TooManyQueries.Text" xml:space="preserve">
+    <value>The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time.</value>
+  </data>
+  <data name="UnavailableAddress.Text" xml:space="preserve">
+    <value>The geocode for the given address or the route for the given directions query cannot be returned due to legal or contractual reasons.</value>
+  </data>
+  <data name="UnknownAddress.Text" xml:space="preserve">
+    <value>No corresponding geographic location could be found for the specified address. This may be due to the fact that the address is relatively new, or it may be incorrect.</value>
+  </data>
+  <data name="UnknownDirections.Text" xml:space="preserve">
+    <value>Could not compute directions between the points mentioned in the query. This is usually because there is no route available between the two points, or because we do not have data for routing in that region.</value>
   </data>
   <data name="UnlimitedMiles.Text" xml:space="preserve">
     <value>Unlimited Miles</value>

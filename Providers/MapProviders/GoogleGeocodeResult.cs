@@ -11,6 +11,8 @@
 
 namespace Engage.Dnn.Locator
 {
+    using DotNetNuke.Services.Localization;
+
     /// <summary>
     /// The result of a geocoding request to Google
     /// </summary>
@@ -71,7 +73,20 @@ namespace Engage.Dnn.Locator
         /// <value>The error message, or <c>null</c> if there is no error.</value>
         public override string ErrorMessage
         {
-            get { throw new System.NotImplementedException(); }
+            get
+            {
+                switch (this.statusCode)
+                {
+                    case GoogleStatusCode.BadKey:
+                    case GoogleStatusCode.MissingAddress:
+                    case GoogleStatusCode.ServerError:
+                    case GoogleStatusCode.UnavailableAddress:
+                    case GoogleStatusCode.UnknownAddress:
+                        return Localization.GetString(this.statusCode.ToString(), Utility.LocalSharedResourceFile);
+                    default:
+                        return null;
+                }
+            }
         }
     }
 }

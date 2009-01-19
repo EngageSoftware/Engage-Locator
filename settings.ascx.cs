@@ -31,15 +31,6 @@ namespace Engage.Dnn.Locator
     public partial class Settings : ModuleSettingsBase
     {
         /// <summary>
-        /// Gets the local shared resource file.
-        /// </summary>
-        /// <value>The local shared resource file.</value>
-        private static string LocalSharedResourceFile
-        {
-            get { return "~" + Framework.Utility.GetDesktopModuleFolderName(Utility.DesktopModuleName) + Localization.LocalResourceDirectory + "/" + Localization.LocalSharedResourceFile; }
-        }
-
-        /// <summary>
         /// Loads the settings.
         /// </summary>
         public override void LoadSettings()
@@ -131,7 +122,7 @@ namespace Engage.Dnn.Locator
 
                     if (this.IncludeUnlimitedMilesRadiusCheckBox.Checked)
                     {
-                        this.DefaultRadiusDropDownList.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", LocalSharedResourceFile), string.Empty));
+                        this.DefaultRadiusDropDownList.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", Utility.LocalSharedResourceFile), string.Empty));
                     }
 
                     ListItem defaultItem = this.DefaultRadiusDropDownList.Items.FindByValue(Dnn.Utility.GetStringSetting(this.Settings, "DefaultRadius", string.Empty));
@@ -356,7 +347,7 @@ namespace Engage.Dnn.Locator
         {
             if (this.IncludeUnlimitedMilesRadiusCheckBox.Checked)
             {
-                this.DefaultRadiusDropDownList.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", LocalSharedResourceFile), string.Empty));
+                this.DefaultRadiusDropDownList.Items.Add(new ListItem(Localization.GetString("UnlimitedMiles", Utility.LocalSharedResourceFile), string.Empty));
             }
             else
             {
@@ -501,17 +492,20 @@ namespace Engage.Dnn.Locator
             this.lbLocationType.DataBind();
 
             string displayTypes = Dnn.Utility.GetStringSetting(this.Settings, "DisplayTypes");
-            string[] displayTypesArray = displayTypes.Split(',');
-
-            ////lbLocationType.SelectedIndex = 0;
-
-            foreach (string s in displayTypesArray)
+            if (displayTypes != null)
             {
-                foreach (ListItem locationItems in this.lbLocationType.Items)
+                string[] displayTypesArray = displayTypes.Split(',');
+
+                ////lbLocationType.SelectedIndex = 0;
+
+                foreach (string s in displayTypesArray)
                 {
-                    if (locationItems.Value == s)
+                    foreach (ListItem locationItems in this.lbLocationType.Items)
                     {
-                        locationItems.Selected = true;
+                        if (locationItems.Value == s)
+                        {
+                            locationItems.Selected = true;
+                        }
                     }
                 }
             }

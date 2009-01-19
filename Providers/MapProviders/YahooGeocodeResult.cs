@@ -11,6 +11,8 @@
 
 namespace Engage.Dnn.Locator
 {
+    using DotNetNuke.Services.Localization;
+
     /// <summary>
     /// The result of a geocoding request to Yahoo!
     /// </summary>
@@ -71,7 +73,23 @@ namespace Engage.Dnn.Locator
         /// <value>The error message, or <c>null</c> if there is no error.</value>
         public override string ErrorMessage
         {
-            get { throw new System.NotImplementedException(); }
+            get {
+                switch (this.statusCode)
+                {
+                    case YahooStatusCode.BadRequest:
+                    case YahooStatusCode.Forbidden:
+                    case YahooStatusCode.ServiceUnavailable:
+                        return Localization.GetString(this.statusCode.ToString(), Utility.LocalSharedResourceFile);
+                    default:
+                        switch (this.accuracyCode)
+                        {
+                            case YahooAccuracyCode.Unknown:
+                                return Localization.GetString("UnknownAddress", Utility.LocalSharedResourceFile);
+                            default:
+                                return null;
+                        }
+                }
+            }
         }
     }
 }
