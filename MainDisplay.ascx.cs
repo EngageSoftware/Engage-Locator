@@ -66,7 +66,7 @@ namespace Engage.Dnn.Locator
         /// <value>The display tab ID.</value>
         private int DisplayTabId
         {
-            get { return Dnn.Utility.GetIntSetting(this.Settings, "DisplayResultsTab", this.TabId); }
+            get { return Dnn.Utility.GetIntSetting(this.Settings, "DisplayResultsTabId", this.TabId); }
         }
 
         /// <summary>
@@ -403,6 +403,7 @@ namespace Engage.Dnn.Locator
             this.AddParameter(parameters, "Country");
             this.AddParameter(parameters, "FilterCountry");
             this.AddParameter(parameters, "Distance");
+            this.AddParameter(parameters, "All");
 
             return Globals.NavigateURL(this.TabId, string.Empty, parameters.ToArray());
         }
