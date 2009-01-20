@@ -186,11 +186,13 @@
     <copy todir="temp" flatten="true">
       <fileset>
         <include name="**${resourcezip.dir}/Resources.zip" />
+        <include name="../../bin/Engage${ModuleName}.dll" />
+        <include name="../../bin/LumenWorks.Framework.IO.dll" />
         <include name="**/References/*.dll" />
         <include name="**/*.sqldataprovider" />
         <include name="**/Licenses/EULA-Standard.txt" />
         <include name="**/*.dnn" />
-		    <include name="**/*.txt" />
+        <include name="/*??.??.??.txt" />
 
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/Engage.${ModuleName}.dnn" />
@@ -221,10 +223,12 @@
       <fileset>
         <include name="**${resourcezip.dir}/Resources.zip" />
         <include name="**/References/*.dll" />
+        <include name="../../bin/Engage${ModuleName}.dll" />
+        <include name="../../bin/LumenWorks.Framework.IO.dll" />
         <include name="**/*.sqldataprovider" />
         <include name="**/Licenses/EULA-Professional.txt" />
         <include name="**/*.dnn" />
-		    <include name="**/*.txt" />
+        <include name="/*??.??.??.txt" />
 
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/Engage.${ModuleName}.dnn" />
@@ -255,10 +259,12 @@
       <fileset>
         <include name="**${resourcezip.dir}/Resources.zip" />
         <include name="**/References/*.dll" />
+        <include name="../../bin/Engage${ModuleName}.dll" />
+        <include name="../../bin/LumenWorks.Framework.IO.dll" />
         <include name="**/*.sqldataprovider" />
         <include name="**/Licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
-		    <include name="**/*.txt" />
+        <include name="/*??.??.??.txt" />
 
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/Engage.${ModuleName}.dnn" />
@@ -289,14 +295,19 @@
       <fileset>
         <include name="**${resourcezip.dir}/Resources.zip" />
         <include name="**/References/*.dll" />
+        <include name="../../bin/Engage${ModuleName}.dll" />
+        <include name="../../bin/LumenWorks.Framework.IO.dll" />
         <include name="**/*.sqldataprovider" />
         <include name="**/Licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
-		    <include name="**/*.txt" />
+        <include name="/*??.??.??.txt" />
         
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/Engage.${ModuleName}.dnn" />
         <exclude name="**/BuildSupport/**/*" />
+        <exclude name="**/References/DotNetNuke.dll"/>
+        <exclude name="**/References/DotNetNuke.WebUtility.dll"/>
+        <exclude name="**/References/Microsoft.ApplicationBlocks.Data.dll"/>
       </fileset>
     </copy>
 

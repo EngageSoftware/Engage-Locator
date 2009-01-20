@@ -116,6 +116,12 @@
           <name>LumenWorks.Framework.IO.dll</name>
         </file>
         <file>
+          <name>Engage.Dnn.Framework.dll</name>
+        </file>
+        <file>
+          <name>Engage.Framework.dll</name>
+        </file>
+        <file>
           <name>Engage.Dnn.UserFeedback.dll</name>
         </file>
         <file>
