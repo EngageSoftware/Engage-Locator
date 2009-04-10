@@ -159,7 +159,6 @@ namespace Engage.Dnn.Locator
 
                 location.ExternalIdentifier = this.txtLocationId.Text;
                 location.Name = this.txtName.Text;
-                location.Website = this.txtWebsite.Text;
                 location.Address = this.txtAddress1.Text;
                 location.Address2 = this.txtAddress2.Text;
                 location.City = this.txtCity.Text;

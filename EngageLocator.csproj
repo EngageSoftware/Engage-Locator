@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B001E2F2-72ED-49F6-93E7-D0819D799075}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -68,8 +68,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\WINDOWS\assembly\GAC_MSIL\System.Web.Extensions\1.0.61025.0__31bf3856ad364e35\System.Web.Extensions.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -83,6 +82,9 @@
       <DependentUpon>AttributeDefinitions.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\LocationCollection.cs" />
+    <Compile Include="ManageLocation.ascx.designer.cs">
+      <DependentUpon>ManageLocation.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Providers\MapProviders\ManualGeocodeResult.cs" />
     <Compile Include="JavaScript\Location.cs" />
     <Compile Include="ManageComments.ascx.cs">
@@ -132,9 +134,6 @@
     <Compile Include="ManageLocation.ascx.cs">
       <DependentUpon>ManageLocation.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ManageLocation.ascx.designer.cs">
-      <DependentUpon>ManageLocation.ascx</DependentUpon>
     </Compile>
     <Compile Include="Maps\MapProviderType.cs" />
     <Compile Include="Maps\MapType.cs" />

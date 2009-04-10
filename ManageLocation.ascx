@@ -24,7 +24,7 @@
                             <dnn:label id="lblLocationId" runat="server" text="Key:" />
                         </td>
                         <td>
-                            <asp:TextBox ID="txtLocationId" CssClass="Normal" runat="server" TabIndex="1"></asp:TextBox>
+                            <asp:TextBox ID="txtLocationId" CssClass="Normal" runat="server" TabIndex="1" />
                             <asp:RequiredFieldValidator ID="rfvLocationId" runat="server" ControlToValidate="txtLocationId"
                                 ErrorMessage="Please Enter Key" ValidationGroup="addLocation">*</asp:RequiredFieldValidator></td>
                     </tr>
@@ -33,7 +33,7 @@
                             <dnn:label id="lblName" runat="server" text="Location Name:" />
                         </td>
                         <td>
-                            <asp:TextBox ID="txtName" CssClass="Normal" runat="server" TabIndex="2"></asp:TextBox>
+                            <asp:TextBox ID="txtName" CssClass="Normal" runat="server" TabIndex="2" />
                             <asp:RequiredFieldValidator ID="rfvName" runat="server" ErrorMessage="Please Enter Name of Location"
                                 ControlToValidate="txtName" ValidationGroup="addLocation">*</asp:RequiredFieldValidator></td>
                     </tr>
@@ -42,7 +42,8 @@
                             <dnn:label id="lblWebsite" runat="server" text="Website:" />
                         </td>
                         <td>
-                            <asp:TextBox ID="txtWebsite" CssClass="Normal" runat="server" TabIndex="3"></asp:TextBox>
+                            <asp:TextBox ID="txtWebsite" CssClass="Normal" runat="server" TabIndex="3" />
+                            <asp:RegularExpressionValidator ID="WebsiteRegexValidator" ControlToValidate="txtWebsite" ValidationGroup="addLocation" ValidationExpression="^https?://.*$" ErrorMessage="Website must begin with http:// or https://" runat="server" />
                         </td>
                     </tr>
                     <tr>
@@ -50,7 +51,7 @@
                             <dnn:label id="lblAddress1" runat="server" text="Address:" />
                         </td>
                         <td>
-                            <asp:TextBox ID="txtAddress1" CssClass="Normal" runat="server" TabIndex="4"></asp:TextBox>
+                            <asp:TextBox ID="txtAddress1" CssClass="Normal" runat="server" TabIndex="4" />
                             <asp:RequiredFieldValidator ID="rfvAddress1" runat="server" ErrorMessage="Please Enter Address"
                                 ControlToValidate="txtAddress1" ValidationGroup="addLocation">*</asp:RequiredFieldValidator></td>
                     </tr>
@@ -59,7 +60,7 @@
                             <dnn:label id="lblAddress2" runat="server" text="Address (cont):" />
                         </td>
                         <td>
-                            <asp:TextBox ID="txtAddress2" CssClass="Normal" runat="server" TabIndex="5"></asp:TextBox>
+                            <asp:TextBox ID="txtAddress2" CssClass="Normal" runat="server" TabIndex="5" />
                         </td>
                     </tr>
                     <tr>
@@ -67,7 +68,7 @@
                             <dnn:label id="lblCity" runat="server" text="City:" />
                         </td>
                         <td>
-                            <asp:TextBox ID="txtCity" CssClass="Normal" runat="server" TabIndex="6"/>
+                            <asp:TextBox ID="txtCity" CssClass="Normal" runat="server" TabIndex="6" />
                             <asp:RequiredFieldValidator ID="rfvCity" runat="server" ErrorMessage="Please select a City" ControlToValidate="txtCity" ValidationGroup="addLocation">*</asp:RequiredFieldValidator>
                         </td>
                     </tr>
@@ -76,7 +77,7 @@
                             <dnn:label id="lblState" runat="server" text="State:" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="RegionDropDownList" CssClass="Normal" runat="server" TabIndex="7"/><asp:Label ID="AddingRegionsLabel" runat="server" ResourceKey="AddingRegions.Text" CssClass="Normal"/>
+                            <asp:DropDownList ID="RegionDropDownList" CssClass="Normal" runat="server" TabIndex="7" /><asp:Label ID="AddingRegionsLabel" runat="server" ResourceKey="AddingRegions.Text" CssClass="Normal" />
                         </td>
                     </tr>
                     <tr>
@@ -85,7 +86,7 @@
                             &nbsp;
                         </td>
                         <td style="height: 47px">
-                            <asp:TextBox ID="txtZip" CssClass="Normal" runat="Server" TabIndex="8"/>
+                            <asp:TextBox ID="txtZip" CssClass="Normal" runat="Server" TabIndex="8" />
                             <asp:RequiredFieldValidator ID="rfvZip" runat="server" ErrorMessage="Please select a PostalCode" ControlToValidate="txtZip" ValidationGroup="addLocation">*</asp:RequiredFieldValidator>
                         </td>
                     </tr>        
@@ -94,7 +95,7 @@
                             <dnn:label id="lblCountry" runat="server" text="Country:" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="CountryDropDownList" CssClass="Normal" runat="server" TabIndex="9"/>
+                            <asp:DropDownList ID="CountryDropDownList" CssClass="Normal" runat="server" TabIndex="9" />
                             <asp:CompareValidator ID="cvCountry" runat="server" ControlToValidate="CountryDropDownList"
                                 ErrorMessage="Please Select a Country" Operator="NotEqual" ValueToCompare="-1"
                                 ValidationGroup="addLocation">*</asp:CompareValidator>
@@ -106,7 +107,7 @@
                             &nbsp;
                         </td>
                         <td style="height: 47px">
-                            <asp:TextBox ID="txtLatitude" CssClass="Normal" runat="Server" TabIndex="10"/>
+                            <asp:TextBox ID="txtLatitude" CssClass="Normal" runat="Server" TabIndex="10" />
                             <asp:RangeValidator ID="LatitideRangeValidator" runat="server" ControlToValidate="txtLatitude" ErrorMessage="Latitude must be between -90 and 90" MinimumValue="-90" MaximumValue="90" Type="Double" ValidationGroup="addLocation">*</asp:RangeValidator>
                         </td>
                     </tr>
@@ -116,7 +117,7 @@
                             &nbsp;
                         </td>
                         <td style="height: 47px">
-                            <asp:TextBox ID="txtLongitude" CssClass="Normal" runat="Server" TabIndex="11"/>
+                            <asp:TextBox ID="txtLongitude" CssClass="Normal" runat="Server" TabIndex="11" />
                             <asp:RangeValidator ID="LongitudeRangeValidator" runat="server" ControlToValidate="txtLongitude" ErrorMessage="Longitude must be between -180 and 180" MinimumValue="-180" MaximumValue="180" Type="Double" ValidationGroup="addLocation">*</asp:RangeValidator>
                         </td>
                     </tr>
@@ -125,7 +126,7 @@
                             <dnn:label id="lblPhone" runat="server" text="Phone Number:" />
                         </td>
                         <td style="height: 42px">
-                            <asp:TextBox ID="txtPhone" CssClass="Normal" runat="server" TabIndex="12"></asp:TextBox>
+                            <asp:TextBox ID="txtPhone" CssClass="Normal" runat="server" TabIndex="12" />
                         </td>
                     </tr>
                     <tr>
