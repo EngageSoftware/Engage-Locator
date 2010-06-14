@@ -14,6 +14,14 @@ namespace Engage.Dnn.Locator
     using System;
     using System.Diagnostics;
     using System.Globalization;
+
+#if TRIAL
+    using System.Web.UI;
+
+    using Engage.Dnn.Locator.Components;
+    using Engage.Licensing;
+#endif
+
     using Maps;
 
     /// <summary>
@@ -111,6 +119,19 @@ namespace Engage.Dnn.Locator
             string apiKey = Dnn.Utility.GetStringSetting(this.Settings, providerType.ClassName + ".ApiKey");
             return MapProvider.CreateInstance(providerType, apiKey);
         }
+
+#if TRIAL
+        /// <summary>
+        /// Raises the <see cref="Control.Init"/> event.
+        /// </summary>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected override void OnInit(EventArgs e)
+        {
+            this.LicenseProvider = new TrialLicenseProvider(FeaturesController.ModuleLicenseKey);
+
+            base.OnInit(e);
+        }
+#endif
 
         /// <summary>
         /// Handles the OnClick event of the lbSettings control.
