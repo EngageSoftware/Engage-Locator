@@ -25,16 +25,21 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Trial|Any CPU = Trial|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Trial|Any CPU.ActiveCfg = Trial|Any CPU
+		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Trial|Any CPU.Build.0 = Trial|Any CPU
 		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Trial|Any CPU.ActiveCfg = Release|Any CPU
+		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Trial|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

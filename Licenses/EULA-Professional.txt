@@ -1,6 +1,6 @@
 ENGAGE SOFTWARE END USER LICENSE AGREEMENT (EULA)
 
-This is a CONTRACT between you (either an individual or a single entity) and ENGAGE SOFTWARE, which covers your use of "Engage: Locator" and related software components. All such software is referred to herein as the "Software Product." A software license issued to a designated user only by ENGAGE SOFTWARE or its authorized agents is required for each user of the Software Product. If you do not agree to the terms of this EULA, then do not install or use the Software Product or the Software Product License. By explicitly accepting this End-User License Agreement (EULA) you are acknowledging and agreeing to be bound by the following terms:
+This is a CONTRACT between you (either an individual or a single entity) and ENGAGE SOFTWARE, which covers your use of an Engage Module or Skin and related software components. All such software is referred to herein as the "Software Product." A software license issued to a designated user only by ENGAGE SOFTWARE or its authorized agents is required for each user of the Software Product. If you do not agree to the terms of this EULA, then do not install or use the Software Product or the Software Product License. By explicitly accepting this End-User License Agreement (EULA) you are acknowledging and agreeing to be bound by the following terms:
 
 Summary of this EULA:
 1.	Evaluation copies may only be used to determine suitability
