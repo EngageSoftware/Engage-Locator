@@ -400,5 +400,6 @@
     <include name="MSBuild/*.dll"/>
     <include name="MSBuild/*.targets"/>
     <exclude name="**/obj/**"/>
+    <exclude name="Release.txt" />
   </patternset>
 </project>
