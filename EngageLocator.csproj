@@ -368,6 +368,7 @@
     <Content Include="References\Engage.Dnn.UserFeedback.dll" />
     <Content Include="References\Engage.Framework.dll" />
     <Content Include="References\Microsoft.ApplicationBlocks.Data.dll" />
+    <Content Include="References\System.Web.Extensions.dll" />
     <Content Include="Services\WebServices.asmx" />
     <Content Include="Settings.ascx" />
   </ItemGroup>
