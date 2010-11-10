@@ -94,3 +94,25 @@ AS
 	 	END
 GO
 
+/********************************ModuleTitle was moved from Modules table to TabModules table **********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocatorTabModules]
+	@portalId int
+AS
+	SELECT 
+		t.Title, tm.TabId, tm.ModuleTitle, tm.ModuleId 
+	FROM {databaseOwner}[{objectQualifier}TabModules] tm 
+		JOIN {databaseOwner}[{objectQualifier}Modules] m ON (tm.ModuleId = m.ModuleId)
+		JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md ON (m.ModuleDefId = md.ModuleDefId)
+		JOIN {databaseOwner}[{objectQualifier}Tabs] t ON (tm.TabId = t.TabId)
+	WHERE 
+		t.PortalId = @portalId
+		AND m.IsDeleted = 0
+		AND t.IsDeleted = 0
+		AND t.IsVisible = 1
+		AND md.FriendlyName = 'EngageLocator'
+GO

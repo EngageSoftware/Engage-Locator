@@ -25,8 +25,8 @@ using System.Web.UI;
 [assembly: ComVisible(false)]
 [assembly: Guid("3d5900ae-111a-45be-96b3-d9e4606ca793")]
 
-[assembly: AssemblyVersion("01.04.00.*")]
-[assembly: AssemblyFileVersion("01.04.00.00")]
+[assembly: AssemblyVersion("01.04.01.*")]
+[assembly: AssemblyFileVersion("01.04.01.00")]
 
 [assembly: WebResource("Engage.Dnn.Locator.JavaScript.BaseLocator.js", "text/javascript")]
 [assembly: WebResource("Engage.Dnn.Locator.JavaScript.GoogleLocator.js", "text/javascript")]

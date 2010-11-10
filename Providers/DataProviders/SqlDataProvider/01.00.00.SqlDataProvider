@@ -390,7 +390,30 @@ GO
 INSERT INTO {databaseOwner}[{objectQualifier}EngageLocator_LocationType] VALUES ('Default')
 GO
 
-INSERT INTO {databaseOwner}[{objectQualifier}Schedule] VALUES ('Engage.Dnn.Locator.DataImportScheduler', 30, 'm',	60,	's', 25, '', 0,	1, '', NULL)
+INSERT INTO {databaseOwner}[{objectQualifier}Schedule] 
+           ([TypeFullName]
+           ,[TimeLapse]
+           ,[TimeLapseMeasurement]
+           ,[RetryTimeLapse]
+           ,[RetryTimeLapseMeasurement]
+           ,[RetainHistoryNum]
+           ,[AttachToEvent]
+           ,[CatchUpEnabled]
+           ,[Enabled]
+           ,[ObjectDependencies]
+           ,[Servers])
+     VALUES
+           ('Engage.Dnn.Locator.DataImportScheduler'
+           ,30
+           ,'m'
+           ,60
+           ,'s'
+           ,25
+           ,''
+           ,0
+           ,1
+           ,''
+           ,null)
 GO
 
 CREATE  PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spUpdateImportedLocationRow]
