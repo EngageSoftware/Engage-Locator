@@ -719,7 +719,7 @@ namespace Engage.Dnn.Locator
             }
             else
             {
-                this.locationId = Data.DataProvider.Instance().UpdateLocation(this);                
+                Data.DataProvider.Instance().UpdateLocation(this);                
             }
         }
 
