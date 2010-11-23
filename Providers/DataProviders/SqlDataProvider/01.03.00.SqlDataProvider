@@ -25,11 +25,10 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EngageLocator_spGetEngageLocat
 	@portalId int
 AS
 	SELECT 
-		t.Title, tm.TabId, m.ModuleTitle, tm.ModuleId 
-	FROM {databaseOwner}[{objectQualifier}TabModules] tm 
-		JOIN {databaseOwner}[{objectQualifier}Modules] m ON (tm.ModuleId = m.ModuleId)
-		JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md ON (m.ModuleDefId = md.ModuleDefId)
-		JOIN {databaseOwner}[{objectQualifier}Tabs] t ON (tm.TabId = t.TabId)
+		t.Title, m.TabId, m.ModuleTitle, m.ModuleId 
+	FROM dbo.[vw_Modules] m 
+		JOIN dbo.[ModuleDefinitions] md ON (m.ModuleDefId = md.ModuleDefId)
+		JOIN dbo.[Tabs] t ON (m.TabId = t.TabId)
 	WHERE 
 		t.PortalId = @portalId
 		AND m.IsDeleted = 0
