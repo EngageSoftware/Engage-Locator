@@ -1,7 +1,7 @@
 ///<reference name="MicrosoftAjax.js" />
 ///<reference name="jQuery.1.2.6.js" />
 google.load('maps', '2');
-google.load('jquery', '1.2');
+//google.load('jquery', '1.2');
 
 Type.registerNamespace('Engage.Dnn.Locator');
 
