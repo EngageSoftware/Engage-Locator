@@ -86,7 +86,7 @@ namespace Engage.Dnn.Locator
         /// </returns>
         public override bool IsKeyValid()
         {
-            return this.ApiKey != null && this.ApiKey.Length > 64 && this.ApiKey.Length < 74;
+            return this.ApiKey != null;
         }
 
         /// <summary>
