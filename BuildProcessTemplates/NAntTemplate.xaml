@@ -30,7 +30,7 @@
   <this:Process.Metadata>
     <mtbw:ProcessParameterMetadataCollection />
   </this:Process.Metadata>
-  <sap:VirtualizedContainerService.HintSize>588,1913</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>588,2008</sap:VirtualizedContainerService.HintSize>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
   <sap:WorkflowViewStateService.ViewState>
     <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -38,7 +38,7 @@
       <x:Boolean x:Key="ShouldCollapseAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sad:XamlDebuggerXmlReader.FileName="C:\Users\bdukes\Documents\Visual Studio 2008\Projects\TFS\Employment\BuildProcessTemplates\NAntTemplate.xaml" sap:VirtualizedContainerService.HintSize="548,1873" mtbwt:BuildTrackingParticipant.Importance="None" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
+  <Sequence sad:XamlDebuggerXmlReader.FileName="C:\inetpub\wwwroot\DotNetNuke\Website\DesktopModules\EngageLocator\BuildProcessTemplates\NAntTemplate.xaml" sap:VirtualizedContainerService.HintSize="548,1968" mtbwt:BuildTrackingParticipant.Importance="None" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
     <Sequence.Variables>
       <Variable x:TypeArguments="mtbc:IBuildDetail" Name="BuildDetail" />
     </Sequence.Variables>
@@ -272,7 +272,7 @@
                       <x:Boolean x:Key="IsPinned">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <mtbwa:InvokeProcess Arguments="[String.Format(&quot;-D:testBuild=false -D:binDirectory=&quot;&quot;{0}&quot;&quot;&quot;, BinariesDirectory)]" DisplayName="NAnt" FileName="D:\Tools\nant\bin\NAnt.exe" sap:VirtualizedContainerService.HintSize="234,198" WorkingDirectory="[SourcesDirectory &amp; &quot;\Source&quot;]">
+                  <mtbwa:InvokeProcess Arguments="[String.Format(&quot;-D:testBuild=false -D:binDirectory=&quot;&quot;{0}&quot;&quot;&quot;, BinariesDirectory)]" DisplayName="NAnt" FileName="D:\Tools\nant\bin\NAnt.exe" sap:VirtualizedContainerService.HintSize="234,198" WorkingDirectory="[SourcesDirectory]">
                     <mtbwa:InvokeProcess.ErrorDataReceived>
                       <ActivityAction x:TypeArguments="x:String">
                         <ActivityAction.Argument>
@@ -295,7 +295,7 @@
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                   </mtbwa:InvokeProcess>
-                  <mtbwa:InvokeProcess Arguments="[String.Format(&quot;&quot;&quot;{0}&quot;&quot; &quot;&quot;{1}&quot;&quot;&quot;, Path.Combine(SourcesDirectory, &quot;Source&quot;, &quot;package&quot;, &quot;*.zip&quot;), BinariesDirectory)]" DisplayName="Copy Packages" FileName="xcopy" sap:VirtualizedContainerService.HintSize="234,198">
+                  <mtbwa:InvokeProcess Arguments="[String.Format(&quot;&quot;&quot;{0}&quot;&quot; &quot;&quot;{1}&quot;&quot;&quot;, Path.Combine(SourcesDirectory, &quot;package&quot;, &quot;*.zip&quot;), BinariesDirectory)]" DisplayName="Copy Packages" FileName="xcopy" sap:VirtualizedContainerService.HintSize="234,198">
                     <mtbwa:InvokeProcess.ErrorDataReceived>
                       <ActivityAction x:TypeArguments="x:String">
                         <ActivityAction.Argument>
@@ -720,11 +720,11 @@
         </TryCatch.Try>
       </TryCatch>
     </mtbwa:AgentScope>
-    <mtbwa:InvokeForReason DisplayName="Check In Gated Changes for CheckInShelveset Builds" sap:VirtualizedContainerService.HintSize="526,51" Reason="CheckInShelveset">
+    <mtbwa:InvokeForReason DisplayName="Check In Gated Changes for CheckInShelveset Builds" sap:VirtualizedContainerService.HintSize="526,146" Reason="CheckInShelveset">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <mtbwa:CheckInGatedChanges DisplayName="Check In Gated Changes" sap:VirtualizedContainerService.HintSize="200,22" />
