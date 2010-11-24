@@ -57,7 +57,7 @@ namespace Engage.Dnn.Locator
             string mapParameters = String.Format(CultureInfo.InvariantCulture, "currentLocationSpan: {0}, noLocationSpan: {1}, instructionSpan: {2}, directionsLink: {3}, directionsSection: {4}, mapType: {5}, locationsArray: {6}", GetElementJavaScript(currentLocationSpanId), GetElementJavaScript(noLocationSpanId), GetElementJavaScript(instructionSpanId), GetElementJavaScript(directionsLinkId), GetElementJavaScript(directionsSectionId), ConvertMapType(mapType), new JavaScriptSerializer().Serialize(locationsAsJson));
 
             scriptManager.Scripts.Add(new ScriptReference("http://api.maps.yahoo.com/ajaxymap?v=3.8&appid=" + this.ApiKey));
-            scriptManager.Scripts.Add(new ScriptReference("http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"));
+            ////scriptManager.Scripts.Add(new ScriptReference("http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"));
             scriptManager.Scripts.Add(new ScriptReference("Engage.Dnn.Locator.JavaScript.BaseLocator.js", "EngageLocator"));
             scriptManager.Scripts.Add(new ScriptReference("Engage.Dnn.Locator.JavaScript.YahooLocator.js", "EngageLocator"));
             ScriptManager.RegisterStartupScript(

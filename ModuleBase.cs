@@ -39,6 +39,16 @@ namespace Engage.Dnn.Locator
         }
 
         /// <summary>
+        /// Raises the <see cref="EventArgs"/> event.
+        /// </summary>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            this.AddJQueryReference();
+        }
+        
+        /// <summary>
         /// Gets a value indicating whether ratings are enabled for the module on this portal.
         /// </summary>
         /// <value><c>true</c> if ratings are enabled; otherwise, <c>false</c>.</value>
