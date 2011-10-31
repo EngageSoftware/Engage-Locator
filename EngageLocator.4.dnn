@@ -8,7 +8,7 @@
       <description>
         The Locator Module from Engage Software for DotNetNuke (http://www.engagemodules.com)
       </description>
-      <version latestVersion="latestVersion">01.04.00</version>
+      <version latestVersion="latestVersion">01.04.02</version>
       <businesscontrollerclass>Engage.Dnn.Locator.Components.FeaturesController</businesscontrollerclass>
       <dependencies></dependencies>
       <resourcefile>Resources.zip</resourcefile>
@@ -102,6 +102,10 @@
         <file>
           <path>Providers\DataProviders\SqlDataProvider</path>
           <name>01.04.00.SqlDataProvider</name>
+        </file>
+        <file>
+          <path>Providers\DataProviders\SqlDataProvider</path>
+          <name>01.04.02.SqlDataProvider</name>
         </file>
         <file>
 		      <name>01.03.00.txt</name>

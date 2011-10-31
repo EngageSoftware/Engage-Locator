@@ -33,6 +33,11 @@ namespace Engage.Dnn.Locator
     /// </summary>
     public partial class MainDisplay : ModuleBase
     {
+        protected string DefaultRadius
+        {
+            get { return Dnn.Utility.GetStringSetting(this.Settings, "DefaultRadius", string.Empty); }
+        }
+
         /// <summary>
         /// Gets a value indicating whether to allow the user to restrict their search by country.
         /// </summary>
@@ -86,6 +91,17 @@ namespace Engage.Dnn.Locator
         private bool ShowMapDefaultDisplay
         {
             get { return Dnn.Utility.GetBoolSetting(this.Settings, "ShowMapDefaultDisplay", false); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether [always show search].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [always show search]; otherwise, <c>false</c>.
+        /// </value>
+        private bool AlwaysShowSearch
+        {
+            get { return Dnn.Utility.GetBoolSetting(this.Settings, "AlwaysShowSearch", false); }
         }
 
         /// <summary>
@@ -408,8 +424,17 @@ namespace Engage.Dnn.Locator
             return Globals.NavigateURL(this.TabId, string.Empty, parameters.ToArray());
         }
 
+        /// <summary>
+        /// Displays the location list.
+        /// </summary>
         private void DisplayLocationList()
         {
+            this.LocatorDisplayMultiView.Visible = true;
+
+            // set search view
+            this.SearchPanel.Visible = this.AlwaysShowSearch;
+            this.NewSearchButton.Visible = !this.AlwaysShowSearch;
+
             LocationCollection locations = null;
             MapProvider mapProvider = this.GetMapProvider();
 
@@ -523,6 +548,10 @@ namespace Engage.Dnn.Locator
             this.SearchRegionDropDownList.DataValueField = "EntryID";
             this.SearchRegionDropDownList.DataBind();
             this.SearchRegionDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
+            this.SearchRegionDropDownList.SelectedValue = this.SearchRegionId.HasValue
+                                                              ? this.SearchRegionId.Value.ToString(
+                                                                  CultureInfo.InvariantCulture)
+                                                              : string.Empty;
 
             // fill the country dropdown
             this.SearchCountryDropDownList.DataSource = listController.GetListEntryInfoCollection("Country");
@@ -530,8 +559,10 @@ namespace Engage.Dnn.Locator
             this.SearchCountryDropDownList.DataValueField = "EntryId";
             this.SearchCountryDropDownList.DataBind();
             this.SearchCountryDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
-            this.SearchCountryDropDownList.SelectedIndex = 0;
-
+            this.SearchCountryDropDownList.SelectedValue = this.SearchCountryId.HasValue
+                                                                               ? this.SearchCountryId.Value.ToString(
+                                                                                   CultureInfo.InvariantCulture)
+                                                                               : string.Empty;
             if (this.ShowCountry)
             {
                 this.FillCountry();
@@ -633,6 +664,7 @@ namespace Engage.Dnn.Locator
                 string error = String.Empty;
                 if (!IsConfigured(this.TabModuleId, ref error))
                 {
+                    this.SearchPanel.Visible = false;
                     this.LocatorDisplayMultiView.SetActiveView(this.SetupView);
                     if (this.UserInfo.IsInRole(this.PortalSettings.ActiveTab.AdministratorRoles))
                     {
@@ -647,7 +679,9 @@ namespace Engage.Dnn.Locator
                 }
                 else
                 {
-                    this.LocatorDisplayMultiView.SetActiveView(this.SearchView);
+                    this.SearchPanel.Visible = true;
+                    this.LocatorDisplayMultiView.Visible = false;
+                    ////this.LocatorDisplayMultiView.SetActiveView(this.SearchView);
                     if (!this.IsPostBack)
                     {
                         this.FillDropDowns();
@@ -658,6 +692,7 @@ namespace Engage.Dnn.Locator
                         }
 
                         this.SetSearchDisplay();
+                        this.FillSearchPanel();
 
                         if (!this.ShowCountry && !this.ShowRadius)
                         {
@@ -684,7 +719,9 @@ namespace Engage.Dnn.Locator
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void NewSearchButton_Click(object sender, EventArgs e)
         {
-            this.LocatorDisplayMultiView.SetActiveView(this.SearchView);
+            ////this.LocatorDisplayMultiView.SetActiveView(this.SearchView);
+            this.SearchPanel.Visible = true;
+            this.LocatorDisplayMultiView.Visible = false;
 
             this.SearchAddressTextBox.Text = string.Empty;
             this.SearchCityTextBox.Text = string.Empty;
@@ -785,6 +822,25 @@ namespace Engage.Dnn.Locator
                     locationsGridAddressLabel.Text = location.FullAddress;
                 }
             }
+        }
+
+        /// <summary>
+        /// Fills the search panel.
+        /// </summary>
+        private void FillSearchPanel()
+        {
+            if (!this.SearchPanel.Visible)
+            {
+                return;
+            }
+
+            this.SearchAddressTextBox.Text = this.SearchAddress;
+            this.SearchCityTextBox.Text = this.SearchCity;
+            this.SearchPostalCodeTextBox.Text = this.SearchPostalCode;
+            this.SearchRadiusDropDownList.SelectedValue = this.Radius.HasValue
+                                                                ? this.Radius.Value.ToString(
+                                                                    CultureInfo.InvariantCulture)
+                                                                : this.DefaultRadius;
         }
     }
 }

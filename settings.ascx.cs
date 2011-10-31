@@ -96,15 +96,23 @@ namespace Engage.Dnn.Locator
                     if (Dnn.Utility.GetBoolSetting(this.Settings, "ShowDefaultDisplay", false))
                     {
                         this.rbDisplayAll.Checked = true;
+                        this.AlwaysShowSearchCheckBox.Enabled = true;
                     }
                     else if (Dnn.Utility.GetBoolSetting(this.Settings, "ShowMapDefaultDisplay", false))
                     {
                         this.rbShowMap.Checked = true;
+                        this.AlwaysShowSearchCheckBox.Enabled = true;
                     }
                     else
                     {
                         this.rbSearch.Checked = true;
                     }
+
+                    if (Dnn.Utility.GetBoolSetting(this.Settings, "AlwaysShowSearch", false) && this.AlwaysShowSearchCheckBox.Enabled)
+                    {
+                        this.AlwaysShowSearchCheckBox.Checked = true;
+                    }
+
 
                     // set search parameters
                     this.chkAddress.Checked = Dnn.Utility.GetBoolSetting(this.Settings, "SearchAddress", false);
@@ -195,6 +203,7 @@ namespace Engage.Dnn.Locator
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "DisplayTypes", this.GetLocationTypeList());
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "ShowDefaultDisplay", this.rbDisplayAll.Checked.ToString(CultureInfo.InvariantCulture));
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "ShowMapDefaultDisplay", this.rbShowMap.Checked.ToString(CultureInfo.InvariantCulture));
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "AlwaysShowSearch", this.AlwaysShowSearchCheckBox.Checked.ToString(CultureInfo.InvariantCulture));
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "SearchAddress", this.chkAddress.Checked.ToString(CultureInfo.InvariantCulture));
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "SearchCityRegion", this.chkCityRegion.Checked.ToString(CultureInfo.InvariantCulture));
                 objModules.UpdateTabModuleSetting(this.TabModuleId, "SearchPostalCode", this.chkPostalCode.Checked.ToString(CultureInfo.InvariantCulture));
@@ -261,6 +270,9 @@ namespace Engage.Dnn.Locator
             this.AllowLocationSubmissionsCheckBox.CheckedChanged += this.AllowLocationSubmissionsCheckBox_CheckedChanged;
             this.IncludeUnlimitedMilesRadiusCheckBox.CheckedChanged += this.IncludeUnlimitedMilesRadiusCheckBox_CheckedChanged;
             this.LocationDetailsSamePageRadioButton.CheckedChanged += this.LocationDetailsRadioButtons_CheckChanged;
+            this.rbSearch.CheckedChanged += this.DefaultDisplayRadioGroup_CheckedChanged;
+            this.rbShowMap.CheckedChanged += this.DefaultDisplayRadioGroup_CheckedChanged;
+            this.rbDisplayAll.CheckedChanged += this.DefaultDisplayRadioGroup_CheckedChanged;
             this.NoLocationDetailsRadioButton.CheckedChanged += this.LocationDetailsRadioButtons_CheckChanged;
             this.LocationDetailSeparatePageRadioButton.CheckedChanged += this.LocationDetailsRadioButtons_CheckChanged;
             this.SearchRestrictionsRadioButtonList.SelectedIndexChanged += this.SearchRestrictionsRadioButtonList_SelectedIndexChanged;
@@ -280,6 +292,20 @@ namespace Engage.Dnn.Locator
             {
                 RadioButton currentModuleRadioButton = (RadioButton)dr.FindControl("LocatorModuleRadioButton");
                 currentModuleRadioButton.Checked = currentModuleRadioButton == selectedRadioButton;
+            }
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the SearchRadioButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void DefaultDisplayRadioGroup_CheckedChanged(object sender, EventArgs e)
+        {
+            this.AlwaysShowSearchCheckBox.Enabled = !this.rbSearch.Checked;
+            if (!this.AlwaysShowSearchCheckBox.Enabled)
+            {
+                this.AlwaysShowSearchCheckBox.Checked = false;
             }
         }
 

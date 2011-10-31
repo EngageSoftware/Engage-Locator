@@ -187,7 +187,7 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
     <value>Show Location Details</value>
   </data>
   <data name="lblDefaultDisplay.Help" xml:space="preserve">
-    <value>Choose if you would like the default display for the end user to display the search option, list all of your Locations without the map or list all of your Locations with the map.</value>
+    <value>Choose if you would like the default display for the end user to display the search option, list all of your Locations without the map, list all of your Locations with the map or display search option and list all of your locations with the map.</value>
   </data>
   <data name="lblDefaultDisplay.Text" xml:space="preserve">
     <value>Default Display</value>
@@ -350,5 +350,11 @@ Yahoo API Key - Allows the Locator Module to communicate with google's API. Clic
   </data>
   <data name="IncludeUnlimitedMilesRadiusCheckBox.Text" xml:space="preserve">
     <value>Include "Unlimited Miles" as a Radius Option</value>
+  </data>
+  <data name="lblAlwaysShowSearch.Help" xml:space="preserve">
+    <value>Select this option if you always want to display search options</value>
+  </data>
+  <data name="lblAlwaysShowSearch.Text" xml:space="preserve">
+    <value>Always show search</value>
   </data>
 </root>

@@ -67,9 +67,17 @@
             <dnn:label ID="lblDefaultDisplay" runat="server" ResourceKey="lblDefaultDisplay" />
         </td>
         <td width="350">
-            <asp:RadioButton ID="rbSearch" runat="server" CssClass="Normal" GroupName="rbDefaultDisplay" resourcekey="rbSearch" />
-            <asp:RadioButton ID="rbDisplayAll" runat="server" CssClass="Normal" GroupName="rbDefaultDisplay" resourcekey="rbDisplayAll" />
-            <asp:RadioButton ID="rbShowMap" runat="server" CssClass="Normal" GroupName="rbDefaultDisplay" resourcekey="rbShowMap" />
+            <asp:RadioButton ID="rbSearch" runat="server" CssClass="Normal" GroupName="rbDefaultDisplay" resourcekey="rbSearch"  AutoPostBack="true"/>
+            <asp:RadioButton ID="rbDisplayAll" runat="server" CssClass="Normal" GroupName="rbDefaultDisplay" resourcekey="rbDisplayAll" AutoPostBack="true" />
+            <asp:RadioButton ID="rbShowMap" runat="server" CssClass="Normal" GroupName="rbDefaultDisplay" resourcekey="rbShowMap" AutoPostBack="true" />
+        </td>
+    </tr>
+    <tr>
+        <td class="SubHead">
+            <dnn:label ID="lblAlwaysShowSearch" runat="server" ResourceKey="lblAlwaysShowSearch" />
+        </td>
+        <td>
+            <asp:CheckBox ID="AlwaysShowSearchCheckBox" runat="server" Enabled="false" />
         </td>
     </tr>
     <tr>
