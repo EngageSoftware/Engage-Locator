@@ -114,22 +114,22 @@
           <name>Uninstall.SqlDataProvider</name>
         </file>
         <file>
-          <name>EngageLocator.dll</name>
+          <name>bin\EngageLocator.dll</name>
         </file>
         <file>
-          <name>LumenWorks.Framework.IO.dll</name>
+          <name>bin\LumenWorks.Framework.IO.dll</name>
         </file>
         <file>
-          <name>Engage.Dnn.Framework.dll</name>
+          <name>bin\Engage.Dnn.Framework.dll</name>
         </file>
         <file>
-          <name>Engage.Framework.dll</name>
+          <name>bin\Engage.Framework.dll</name>
         </file>
         <file>
-          <name>Engage.Dnn.UserFeedback.dll</name>
+          <name>bin\Engage.Dnn.UserFeedback.dll</name>
         </file>
         <file>
-          <name>AjaxControlToolkit.dll</name>
+          <name>bin\AjaxControlToolkit.dll</name>
         </file>
       </files>
     </folder>
