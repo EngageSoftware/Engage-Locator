@@ -1,0 +1,166 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Engage: Locator" type="Module" version="01.04.02">
+      <friendlyName>Engage: Locator</friendlyName>
+      <description>The Locator Module from Engage Software for DotNetNuke (http://www.engagemodules.com)</description>
+      <owner>
+        <name>Engage Software</name>
+        <organization>Engage Software</organization>
+        <url>http://www.engagesoftware.com/</url>
+        <email>support@engagemodules.com</email>
+      </owner>
+      <dependencies>
+        <dependency type="CoreVersion">5.0.0</dependency>
+      </dependencies>
+      <components>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/EngageLocator</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\EngageLocator</basePath>
+            <script type="Install">
+              <name>01.00.00.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+            <script type="Install">
+              <name>01.02.00.SqlDataProvider</name>
+              <version>01.02.00</version>
+            </script>
+            <script type="Install">
+              <name>01.03.00.SqlDataProvider</name>
+              <version>01.03.00</version>
+            </script>
+            <script type="Install">
+              <name>01.03.02.SqlDataProvider</name>
+              <version>01.03.02</version>
+            </script>
+            <script type="Install">
+              <name>01.03.04.SqlDataProvider</name>
+              <version>01.03.04</version>
+            </script>
+            <script type="Install">
+              <name>01.04.00.SqlDataProvider</name>
+              <version>01.04.00</version>
+            </script>
+            <script type="Install">
+              <name>01.04.02.SqlDataProvider</name>
+              <version>01.04.02</version>
+            </script>
+            <script type="UnInstall">
+              <name>Uninstall.SqlDataProvider</name>
+              <version latestVersion="latestVersion">01.04.02</version>
+            </script>
+          </scripts>
+        </component>
+        <component type="Cleanup" fileName="01.03.00.txt" version="01.03.00" />
+        <component type="Module">
+          <desktopModule>
+            <moduleName>Engage: Locator</moduleName>
+            <foldername>EngageLocator</foldername>
+            <businessControllerClass>Engage.Dnn.Locator.Components.FeaturesController</businessControllerClass>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Engage: Locator</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/EngageLocator/MainDisplay.ascx</controlSrc>
+                    <controlType>View</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Import</controlKey>
+                    <controlTitle>Import Locations</controlTitle>
+                    <controlSrc>DesktopModules/EngageLocator/Import.ascx</controlSrc>
+                    <controlType>Edit</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>ManageLocation</controlKey>
+                    <controlTitle>Manage Location</controlTitle>
+                    <controlSrc>DesktopModules/EngageLocator/ManageLocation.ascx</controlSrc>
+                    <controlType>View</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>ManageLocations</controlKey>
+                    <controlTitle>Manage Locations</controlTitle>
+                    <controlSrc>DesktopModules/EngageLocator/ManageLocations.ascx</controlSrc>
+                    <controlType>Edit</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>AttributeDefinitions</controlKey>
+                    <controlTitle>Custom Attributes</controlTitle>
+                    <controlSrc>DesktopModules/EngageLocator/AttributeDefinitions.ascx</controlSrc>
+                    <controlType>Edit</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>EditAttributeDefinition</controlKey>
+                    <controlTitle>Edit Custom Attributes</controlTitle>
+                    <controlSrc>DesktopModules/EngageLocator/EditAttributeDefinition.ascx</controlSrc>
+                    <controlType>Edit</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>ManageComment</controlKey>
+                    <controlTitle>Manage Comment</controlTitle>
+                    <controlSrc>DesktopModules/EngageLocator/ManageComment.ascx</controlSrc>
+                    <controlType>Edit</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>ManageComments</controlKey>
+                    <controlTitle>Manage Comments</controlTitle>
+                    <controlSrc>DesktopModules/EngageLocator/ManageComments.ascx</controlSrc>
+                    <controlType>Edit</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Details</controlKey>
+                    <controlTitle>Location Details</controlTitle>
+                    <controlSrc>DesktopModules/EngageLocator/Details.ascx</controlSrc>
+                    <controlType>View</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlTitle>Locator Settings</controlTitle>
+                    <controlSrc>DesktopModules/EngageLocator/Settings.ascx</controlSrc>
+                    <controlType>Edit</controlType>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>EngageLocator.dll</name>
+              <version latestVersion="latestVersion">01.04.02</version>
+            </assembly>
+            <assembly>
+              <name>LumenWorks.Framework.IO.dll</name>
+              <version>03.00.00</version>
+            </assembly>
+            <assembly>
+              <name>Engage.Framework.dll</name>
+              <version>03.03.00</version>
+            </assembly>
+            <assembly>
+              <name>Engage.Dnn.Framework.dll</name>
+              <version>03.03.00</version>
+            </assembly>
+            <assembly>
+              <name>Engage.Dnn.UserFeedback.dll</name>
+              <version>01.00.01</version>
+            </assembly>
+            <assembly>
+              <name>AjaxControlToolkit.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

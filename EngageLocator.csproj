@@ -233,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Docs\EngageLocatorTutorial.pdf" />
+    <None Include="EngageLocator.5.dnn" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.00.00.SqlDataProvider" />
     <None Include="EngageLocator.Build">
       <SubType>Designer</SubType>

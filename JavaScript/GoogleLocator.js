@@ -26,7 +26,7 @@ Engage.Dnn.Locator.GoogleMap.prototype = {
                 var parentRow = jQuery(this).parents('tr.locationEntryTR');
 			    var locationPoint = self._locationsArray[Engage.Dnn.Locator.BaseMap.getRowIndex(parentRow)].getLatLng();
 			    if (!locationPoint || (!locationPoint.lat() && !locationPoint.lng())) {
-			        this.hide();
+			        jQuery(this).hide();
 			    }
 			})
 			.filter('a:visible')

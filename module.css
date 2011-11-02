@@ -436,7 +436,7 @@ table.commentsTable
 .addressFirstLine .Normal, .addressSecondLine .Normal 
 {
 	float: left;
-	width: 50px;
+	width: 60px;
 	text-align: right;
 	padding-top: 1px;
 	padding-right: 5px;
@@ -481,7 +481,7 @@ table.commentsTable
 .addressSecondLine .ltRegion
 {
 	float: left;
-	width: 155px;
+	width: 165px;
 }
 
 .addressSecondLine .ltDropDownList .Normal

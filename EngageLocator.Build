@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project xmlns="http://nant.sf.net/release/0.90/nant.xsd" name="Engage Build Script" basedir="." default="package">
   <property name="projectName" value="Locator"/>
-  <property name="createTrialPackage" value="true"/>
+  <property name="createTrialPackage" value="false"/>
   <property name="trialPackageLicenseName" value="Trial"/>
-  <property name="versions" value="4"/>
+  <property name="versions" value="4,5"/>
   <property name="licenses" value="Standard,Professional,Enterprise"/>
   <property name="packageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
   <property name="dependencySourcePackageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_DependencySource" dynamic="true"/>
