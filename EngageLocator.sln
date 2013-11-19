@@ -1,43 +1,31 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngageLocator", "EngageLocator.csproj", "{B001E2F2-72ED-49F6-93E7-D0819D799075}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LumenWorks.Framework.IO", "CsvReader\LumenWorks.Framework.IO\LumenWorks.Framework.IO.csproj", "{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://etg30.etg-inc.net:8080/
-		SccProjectUniqueName0 = CsvReader\\LumenWorks.Framework.IO\\LumenWorks.Framework.IO.csproj
-		SccProjectName0 = CsvReader/LumenWorks.Framework.IO
-		SccLocalPath0 = CsvReader\\LumenWorks.Framework.IO
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = EngageLocator.csproj
-		SccLocalPath2 = .
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Trial|Any CPU = Trial|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Trial|Any CPU.ActiveCfg = Trial|Any CPU
+		{B001E2F2-72ED-49F6-93E7-D0819D799075}.Trial|Any CPU.Build.0 = Trial|Any CPU
 		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Trial|Any CPU.ActiveCfg = Release|Any CPU
+		{8EBD24FC-80F8-46F2-B0EF-F2065FE823C0}.Trial|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
