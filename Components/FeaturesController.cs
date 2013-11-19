@@ -20,13 +20,6 @@ namespace Engage.Dnn.Locator.Components
     /// </summary>
     public class FeaturesController : ISearchable
     {
-#if TRIAL
-        /// <summary>
-        /// The license key for this module
-        /// </summary>
-        public static readonly Guid ModuleLicenseKey = new Guid("351C7821-6B69-4273-B700-C5B90CA0BB5E");
-#endif
-
         /// <summary>
         /// Gets a list of search items to populate the DNN search index for the given module instance
         /// </summary>
