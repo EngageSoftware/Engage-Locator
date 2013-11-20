@@ -2,16 +2,16 @@
 <project xmlns="http://nant.sf.net/release/0.92/nant.xsd" name="Engage Build Script" basedir="." default="package">
   <property name="projectName" value="Locator"/>
   <property name="versions" value="4,5"/>
-  <property name="licenses" value="Standard,Professional,Enterprise"/>
-  <property name="packageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
   <property name="dependencySourcePackageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_DependencySource" dynamic="true"/>
+  <property name="licenses" value="Free"/>
+  <property name="packageFileNameTemplate" value="${projectName}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
   <property name="createSourcePackage" value="true"/>
-  <property name="sourcePackageLicenseName" value="Enterprise"/>
-  <property name="combineSourceWithInstallPackage" value="true"/>
   <patternset id="dependencySourcePackages">
     <include name="Engage.Framework_Source.zip"/>
     <include name="Engage.Dnn.Framework_Source.zip"/>
   </patternset>
+  <property name="sourcePackageLicenseName" value="Free"/>
+  <property name="combineSourceWithInstallPackage" value="false"/>
   <property name="projectDllName" value="Engage${projectName}.dll" />
   <property name="solutionFile" value="Engage${projectName}.sln"/>
   <property name="binDirectory" value="..\..\bin" overwrite="false"/>
@@ -230,7 +230,7 @@
     <property name="installPackageFileName" value="${packageFileNameTemplate}"/>
     <property name="packageType" value="Source"/>
     <property name="sourcePackageFileName" value="${packageFileNameTemplate}"/>
-    <zip zipfile="${packageDirectory}/${projectName}_${sourcePackageLicenseName}_${projectVersion}.zip">
+    <zip zipfile="${packageDirectory}/${projectName}_${projectVersion}.zip">
       <fileset basedir="${packageDirectory}">
         <include name="${installPackageFileName}.zip"/>
         <include name="${sourcePackageFileName}.zip"/>

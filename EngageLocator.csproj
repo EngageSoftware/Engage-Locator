@@ -205,9 +205,7 @@
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Licenses\EULA-Enterprise.htm" />
-    <Content Include="Licenses\EULA-Professional.htm" />
-    <Content Include="Licenses\EULA-Standard.htm" />
+    <Content Include="Licenses\EULA-Free.htm" />
     <Content Include="MainDisplay.ascx" />
     <Content Include="module.css" />
   </ItemGroup>
@@ -253,9 +251,7 @@
     <Content Include="Images\start-over.gif" />
     <Content Include="Images\view-all.gif" />
     <Content Include="Images\view-map.gif" />
-    <Content Include="Licenses\EULA-Enterprise.txt" />
-    <Content Include="Licenses\EULA-Professional.txt" />
-    <Content Include="Licenses\EULA-Standard.txt" />
+    <Content Include="Licenses\EULA-Free.txt" />
     <Content Include="ManageLocation.ascx" />
   </ItemGroup>
   <ItemGroup>
