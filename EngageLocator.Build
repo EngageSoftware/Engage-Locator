@@ -253,6 +253,8 @@
     <include name="MSBuild/*.dll"/>
     <include name="MSBuild/*.targets"/>
     <exclude name="**/obj/**"/>
+    <exclude name="**/bin/**"/>
+    <exclude name="**/TeamProjectConfig/**"/>
     <exclude name="Release.txt" />
   </patternset>
 </project>
